@@ -1,0 +1,74 @@
+// TWMS V1.40.1 ICS 人物快速移動
+// 原創: 007
+// ICS: 冷羽楓痕 (修正斷線問題)
+
+[enable]
+alloc(SpeedUp,128)
+alloc(Speed,4)
+alloc(FakeTime,4)
+label(SpeedChk)
+label(Normal)
+label(HookTime)
+label(HookTime2)
+label(InitTime)
+
+Speed: // 移動速度
+dd 05
+
+SpeedUp:
+cmp [esp],0086F3AE	//8b 83 ?? 00 00 00 8b 4d ?? 83 c0
+jne 008B4E99		//53 56 57 8b f9 8d 77 ?? 8b 06 8b ce ff 50 ?? 8b d8 85 db 74
+
+mov eax,[Speed]
+
+SpeedChk:
+test eax,eax
+je Normal
+
+dec eax
+push eax
+push ecx
+call 008B4E99
+pop ecx
+pop eax
+jmp SpeedChk
+
+Normal:
+call 008B4E99
+ret
+
+HookTime:
+cmp [FakeTime],0
+je InitTime
+
+HookTime2:
+mov eax,[FakeTime]
+add eax,1FE
+mov [FakeTime],eax
+jmp 00DA130E
+
+InitTime:
+mov [FakeTime],eax
+push eax
+lea eax,[HookTime2]
+sub eax,00EB7FC7    // 00EB7FC2+5
+mov [00EB7FC3],eax  // 00EB7FC2+1
+pop eax
+jmp 00DA130E
+
+00B6124C:
+dd SpeedUp
+
+00EB7FC2:
+jmp HookTime
+
+[disable]
+00B6124C:
+dd 008B4E99
+
+00EB7FC2:
+jmp 00DA130E
+
+dealloc(SpeedUp)
+dealloc(Speed)
+dealloc(FakeTime)

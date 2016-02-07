@@ -1,0 +1,41 @@
+//TWMS137 ¶W¯Å²Â©Ç
+[enable]
+005B1CAC://83 F8 04 0F ?? ?? 00 00 00 8b ce
+jmp 005b1d65
+nop
+
+/*
+For BCB
+
+AsmJump(0x005B1CA9, SuperStupidMob, 4);
+
+__asm
+{
+cmp [SuperStupidMobSW],0
+je NormalReturn
+
+CheatReturn:
+push 0x005b1d65
+ret
+
+NormalReturn:
+cmp eax,04
+jne CheatReturn
+mov ecx,esi
+push 0x005B1CB9
+push 0x0059f849
+ret
+}
+
+*/
+
+/*
+005B1CA9 - 83 f8 04                   - cmp eax,04
+005B1CAC - 0f 85 b3 00 00 00          - jne 005b1d65
+005B1CB2 - 8b ce                      - mov ecx,esi
+005B1CB4 - e8 90 db fe ff             - call 0059f849
+*/
+ 
+[disable]
+005B1CAC:
+jne 005b1d65

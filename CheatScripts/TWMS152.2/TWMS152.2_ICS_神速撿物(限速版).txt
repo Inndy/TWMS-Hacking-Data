@@ -1,0 +1,55 @@
+// TWMS152.2 ICS 神速撿物(限速版)
+// Auther: Inndy
+[ENABLE]
+Alloc(FakeTime, 4)
+Alloc(SuperPick, 512)
+Label(LoopPick)
+Label(NormalPick)
+
+SuperPick:
+Cmp  [Esp], 009B9136 // 50 8b cf e8 ?? ?? ?? ff 8b 06 8d 4d ?? 51
+Jne  004B5242
+Add  Esp, 4
+Call 004B5242
+Mov  Ecx, 5
+LoopPick:
+Dec  Ecx
+Test Ecx, Ecx
+Je   NormalPick
+Push Ecx
+Push Eax
+
+Push Eax
+Mov  Ecx, [FakeTime]
+Mov  Eax, [00F71328]
+Add  [Eax+1C], Ecx
+Mov  Ecx, [00F75850]
+Call 00506764
+Mov  Ecx, [FakeTime]
+Mov  Eax, [00F71328]
+Sub  [Eax+1C], Ecx
+Add  [FakeTime], 1E
+Mov  Eax, [00F6C600]
+And  [Eax+000020F0], 0
+Pop  Eax
+Pop  Ecx
+Jmp  LoopPick
+NormalPick:
+Push Eax
+Mov  Ecx, [00F75850]
+Call 00506764
+Push Eax
+Mov  Eax, [00F6C600]
+And  [Eax+000020F0], 0
+And  [Eax+000020F4], 0
+Pop  Eax
+Jmp  009B913E
+
+00DBCCA8:
+DD   SuperPick
+[DISABLE]
+00DBCCA8:
+DD   004B5242
+
+Dealloc(SuperPick)
+Dealloc(FakeTime)

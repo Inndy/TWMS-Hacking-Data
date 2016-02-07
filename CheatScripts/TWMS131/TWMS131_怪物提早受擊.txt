@@ -1,0 +1,8 @@
+//TWMS131_怪物提早受擊
+//Update：Inndy
+[ENABLE]
+0058875D:
+DB EB 60 90 90 90 90
+[DISABLE]
+0058875D:
+DB 0f 88 bc 01 00 00

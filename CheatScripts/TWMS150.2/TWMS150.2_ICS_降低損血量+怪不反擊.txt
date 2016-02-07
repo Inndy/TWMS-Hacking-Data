@@ -1,0 +1,39 @@
+// TWMS150.2 ICS ­°§C·l¦å¶q
+// Auther: Inndy
+// UpdateTime: 2012-11-07
+[ENABLE]
+Alloc(RHNFB, 128)
+Label(Normal)
+Label(ReduceHurts)
+Label(NoFightBack)
+
+RHNFB:
+Cmp  [Esp], 009238DE // 6a 64 99 59 f7 f9 83 f8 ?? 0f 85 ?? 00 00 00 8b ce
+Je   ReduceHurts
+Cmp  [Esp+58], 00613F50 // [1/2] // 8B CE E8 ?? ?? ?? FF 83 F8 FF 0F 8F ?? ?? 00 00 8B CE
+Je   NoFightBack
+Jmp  Normal
+
+NoFightBack:
+Mov  [Esp+58], 0061414A
+Jmp  Normal
+
+ReduceHurts:
+Mov  Eax, [Ebp+58]
+Shr  Eax, 2 // ·l¦å¶q / 4
+Sub  [Ebp+58], Eax
+Jmp  Normal
+
+Normal:
+Jmp  008F9CC7
+
+00C8A1A4:
+DD   RHNFB
+[DISABLE]
+00C8A1A4: // [1/1]
+DD   008F9CC7 // 6a 08 b8 ?? ?? ?? 00 e8 ?? ?? ?? 00 8b 0d ?? ?? ?? 00 85 c9 74
+
+Dealloc(RHNFB)
+
+// 0095C95B - ff 50 50                   - call dword ptr [eax+50]
+// 00930231 - 6a 08                      - push 08

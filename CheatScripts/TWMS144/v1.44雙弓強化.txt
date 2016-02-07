@@ -1,0 +1,24 @@
+//v144 雙弓昇龍刺擊半屏打 by.aaaddress1
+alloc(Skill,128)
+00885842:
+jmp 00885848
+nop
+ 
+ 
+//v144雙弓昇龍刺擊加速移動攻擊 by.aaaddress1
+alloc(Skill,128)
+00885842:
+jmp 00885848
+nop
+0088586F:
+jmp Skill
+nop
+Skill:
+mov eax,[ebp-00000c90]
+mov eax,[eax+0c]
+sub eax,000001F4//加速 (範圍0~500) 
+jmp 0088587D
+ 
+ 
+ ?0042F27A
+eax=控制雙弓攻擊方向(1/0)

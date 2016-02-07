@@ -1,0 +1,42 @@
+[Enable]
+Registersymbol(MobCheck)
+Alloc(MobCheck,256)
+Label(MobStupid)
+
+MobCheck:
+And Dword Ptr [Ebp+00],00
+Pop Edi
+Pop Esi
+Pop Ebp
+Pop Ebx
+//33 D2 B9 60 EA 00 00 F7 F1 8D 8E     81 C2
+Cmp [Esp], 007C9612
+Je MobStupid
+Ret
+//Call 0040BC16
+MobStupid:
+Add Esp,04
+Xor Edx,Edx
+Mov Ecx,0000EA60
+//
+Lea Ecx,[Esi+00000300]
+//
+Push Edx
+Call 004201BE
+Mov Ebx,[Ebp+0C]
+Lea Edi,[Esi+000002F0]
+Cmp [Edi],Ebx
+Je 007C9645
+Jmp 007C963A
+
+0040811E:
+Jmp MobCheck
+Nop
+
+[Disable]
+//83 65 00 00 5F 5E 5D 5B C3
+0040811E:
+Db 83 65 00 00 5F 5E
+
+Dealloc(MobCheck)
+Unregistersymbol(MobCheck)

@@ -1,0 +1,18 @@
+// TWMS145 ICS Àþ¶¡¶°º¡
+// Auther: Inndy
+[ENABLE]
+Alloc(Full, 128)
+
+Full:
+Cmp  [Esp], 008968DC // 8B ?? ?? ?? 00 00 2B 08 83 F9 FA
+Jne  00495DF0
+And  [Esi+00005E14], 00
+Jmp  00495DF0
+
+00BB28F0:
+DD   Full
+[DISABLE]
+00BB28F0:
+DD   00495DF0
+
+Dealloc(Full)

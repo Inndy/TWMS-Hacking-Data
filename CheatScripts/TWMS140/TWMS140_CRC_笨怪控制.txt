@@ -1,0 +1,45 @@
+// TWMS V1.40.1 StupidMob & SetAggro
+// 出處: ccplz
+// 修改: 冷羽楓痕
+
+[enable]
+alloc(AutoAggro,128)
+alloc(Switch,4)
+label(StupidMob)
+label(SetAggro)
+
+Switch: // 0: 超級笨怪 1: 強制怪物跟隨、魔攻 (遇人失效)
+DD 0
+
+AutoAggro:
+call 008b5040
+
+cmp [Switch],0
+je StupidMob
+cmp [Switch],1
+je SetAggro
+jmp 008BC229
+
+//-------- StupidMob ---------
+StupidMob:
+mov [esi+000002a8],0
+jmp 008BC229
+
+//--------- SetAggro ---------
+SetAggro:
+push edx
+mov edx,[00cbdcd0]
+add edx,4
+mov [esi+000002a8],edx // 83 a6 ? ? 00 00 00 5e 5d c2 1c 00
+pop edx
+jmp 008BC229
+
+008BC224:
+jmp AutoAggro
+
+[disable]
+008BC224: // e8 ? ? ? ? 3b c7 75 ? 33 c0 eb ? 83 be ? ? ? ? 06
+call 008b5040
+
+dealloc(AutoAggro)
+dealloc(Switch)

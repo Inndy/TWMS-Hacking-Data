@@ -1,0 +1,55 @@
+//00840966 - 74 7b                      - je 008409e3 //Nop掉，地雷狂掉
+[ENABLE]
+Alloc(FastBomb_ICS, 32)
+Alloc(FastBomb_Main, 64)
+
+FastBomb_ICS:
+Cmp [Esp], 0084091D	//85 c0 74 02 33 db 33 ff
+Jne 008B33F9		//d9 ee dc 51 ?? df e0
+Mov [Esp], FastBomb_Main
+Jmp 008B33F9
+
+FastBomb_Main:
+DB   85 c0                              //0084091D - test eax,eax
+DB   74 02                              //0084091F - je 00840923
+DB   33 db                              //00840921 - xor ebx,ebx
+DB   33 ff                              //00840923 - xor edi,edi
+DB   39 be 3c 5c 00 00                  //00840925 - cmp [esi+00005c3c],edi
+DB   75 1a                              //0084092B - jne 00840947
+DB   3b df                              //0084092D - cmp ebx,edi
+DB   74 16                              //0084092F - je 00840947
+call 0088f5fd                           //00840931 - call 0088f5fd
+DB   2d e8 03 00 00                     //00840936 - sub eax,000003e8
+DB   89 86 38 5c 00 00                  //0084093B - mov [esi+00005c38],eax
+DB   89 9e 3c 5c 00 00                  //00840941 - mov [esi+00005c3c],ebx
+DB   3b 9e 3c 5c 00 00                  //00840947 - cmp ebx,[esi+00005c3c]
+DB   74 11                              //0084094D - je 00840960
+call 0088f5fd                           //0084094F - call 0088f5fd
+DB   89 86 38 5c 00 00                  //00840954 - mov [esi+00005c38],eax
+DB   89 9e 3c 5c 00 00                  //0084095A - mov [esi+00005c3c],ebx
+DB   39 be 3c 5c 00 00                  //00840960 - cmp [esi+00005c3c],edi
+
+Jmp 00840968
+
+????????:
+DD FastBomb_ICS 
+[DISABLE]
+????????:
+DD 008B33F9
+
+DeAlloc(FastBomb_ICS)
+DeAlloc(FastBomb_Main)
+
+/*
+以下其中一個是ICS點，因為全部指向同一位址，我懶得找
+00B5DA2C
+00B5DC94
+00B5DE7C
+00B5E11C
+00B5E30C
+00B5E52C
+00B5E724
+00B5E90C
+00B5EAF4
+00B5ECE4
+*/

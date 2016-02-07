@@ -1,0 +1,98 @@
+[ENABLE]
+Alloc(Blast, 4096)
+Alloc(MobKBSwitch, 4)
+RegisterSymbol(MobKBSwitch)
+Alloc(MobJumpSwitch, 4)
+RegisterSymbol(MobJumpSwitch)
+Label(BlastBack)
+Label(God)
+Label(GodMain)
+Label(Stupid)
+Label(StupidMain)
+Label(MobKB)
+Label(MobKBMain)
+Label(MobJump)
+Label(MobJumpMain)
+//------------------------------
+MobKBSwitch:
+DD   1      //0不控制 1不KB 2絕對KB
+MobJumpSwitch:
+DD   1      //0不控制 1不跳 2狂跳
+//------------------------------
+Blast:
+Cmp  [Esp+1C], 00918B0E // e8 ?? ?? ?? ff f6 80 ?? ?? 00 00 02 74 05
+Je   God
+Cmp  [Esp+1C], 0097872C // 33 d2 b9 60 ea 00 00 f7 f1
+Je   Stupid
+Cmp  [Esp+1C], 00979ACB // 6a 05 33 d2 59 f7 f1 85 d2
+Je   MobJump
+Cmp  [Esp+34], 0060B253 // 83 7D ?? 01 75 ?? 8B 4D ?? E8 ?? ?? ?? FF 39
+Je   MobKB
+
+BlastBack:
+Jmp  00726AC5
+//--------------------
+God:
+Mov  [Esp+1C], GodMain
+Jmp  BlastBack
+Stupid:
+Mov  [Esp+1C], StupidMain
+Jmp  BlastBack
+MobJump:
+Mov  [Esp+1C], MobJumpMain
+Jmp  BlastBack
+MobKB:
+Mov  [Esp+34], MobKBMain
+Jmp  BlastBack
+//------------------------------
+GodMain:
+Mov  Ecx, [Ebp+58]
+Test Ecx, Ecx
+Je   00919076 // And Ecx, 000009C4
+And  Ecx, 7
+Inc  Ecx
+Inc  Ecx
+Mov  [Ebp+58], Ecx
+Mov  Ecx, [Ebp+4C]
+Push 05
+Lea  Eax, [Ebp+04]
+Push Eax
+Mov  [Ebp+48], #30000
+Jmp  009190A2
+//--------------------
+StupidMain:
+Xor  Edx, Edx
+Mov  Ecx, 0000EA60
+Lea  Ecx, [Esi+000002C0]
+Jmp  00978741 // Push Edx
+//--------------------
+MobJumpMain:
+Push 05
+Xor  Edx, Edx
+Pop  Ecx
+Div  Ecx
+Test Edx, Edx
+Cmp  [MobJumpSwitch], 1 //怪不跳
+Je   00979ADF           // Jne To...
+Cmp  [MobJumpSwitch], 2 //怪狂跳
+Je   00979AD6           // Mov  Ecx, Esi
+Jmp  00979AD2           // Test Edx, Edx
+//--------------------
+MobKBMain:
+Cmp  [MobKBSwitch], 01  //不KB
+Je   0060B266           //Xor Edx, Edx
+Cmp  [MobKBSwitch], 02  //絕對KB
+Je   0060B26A           //Mov Ddx, [Ebp+XX]
+Jmp  0060B253
+//------------------------------
+00DE5FEC:
+DD   Blast
+[DISABLE]
+00DE5FEC:
+DD   00726AC5
+
+Dealloc(Blast)
+Dealloc(MobKBSwitch)
+UnregisterSymbol(MobKBSwitch)
+Dealloc(MobJumpSwitch)
+UnregisterSymbol(MobJumpSwitch)

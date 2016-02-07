@@ -1,0 +1,16 @@
+[ENABLE]
+registersymbol(MyNoBack)
+alloc(MyNoBack,128)
+007799E6: 
+jmp MyNoBack
+MyNoBack:
+call 00408096
+lea ecx,[ebx+00002bac]
+push FFFF1D70
+jmp 0077A1C0 
+
+[disable]
+007799E6:
+call 00408096
+unregistersymbol(MyNoBack)
+dealloc(MyNoBack)

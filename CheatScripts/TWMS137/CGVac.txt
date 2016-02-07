@@ -1,0 +1,88 @@
+long CGVacAdr			= 0x005AF275//50 0F ?? ?? ??8B ? ? 50 0F BF ? ? 50 0F BF ? ? 50 0F BF
+[ENABLE]
+Alloc(CGVac, 1024)
+Label(InitMob)
+Label(InitMob)
+Label(StartVac)
+Label(TEST2)
+Label(Waits)
+Label(Return)
+
+CGVac:
+Push   Eax
+Cmp    [MyCGKey], 0
+Je     Return
+Mov    Ecx, Dword ptr DS:[Ebp-10]
+Cmp    Dword ptr DS:[Ecx+08], 0
+Je     InitMob
+Cmp    Dword ptr DS:[Ecx+08], 1
+Jnz    StartVac //Jnz TEMP
+Jmp    Return
+
+/*
+TEMP:
+Call   00821538
+Cmp    Eax, [WaitTime]
+Jl     Return
+Cmp    Eax,Dword ptr DS:[Ecx+08]
+Jge    StartVac
+Jmp    Return
+*/
+
+InitMob:
+Call   00821538
+Add    Eax,300
+Mov    Dword ptr DS:[Ecx+08], Eax
+Jmp    Return
+
+StartVac:
+//Mov    [VacIng],1
+//Mov    [XiGuaiCounts],0
+//Push   Ebx
+//Mov    Ebx,[XiGuaiCount]
+//Cmp    [XiGuaiCounts],Ebx
+//Pop    Ebx
+//Jge    Waits
+Pop    Eax
+Inc    [XiGuaiCounts]
+Mov    Dword ptr DS:[Ecx+08], 01
+Push   00
+Push   04
+Movsx  Eax, Word ptr [Ebp-50]
+Push   Eax
+Push   0
+Sub    [MobSpY], 5
+Push   [MobSpY]
+Add    [MobSpY], 5
+Push   [MobSpX]
+Mov    Eax, [MobSpX]
+Mov    Dword ptr DS:[Ecx+022E], Eax
+Mov    Dword ptr DS:[Ecx+0694], Eax
+Mov    Eax, [MobSpY]
+Mov    Dword ptr DS:[Ecx+0230], Eax
+Mov    Dword ptr DS:[Ecx+0698], Eax
+Mov    Dword ptr DS:[Ecx+0298], 06
+Mov    Dword ptr DS:[Ecx+04], 01
+Push   1
+Jmp    005AF290
+
+TEST2:
+Mov    [VacIng],0
+Jmp    Return
+
+Waits:
+Mov    [XiGuaiCounts], 0
+Add    Eax, 600
+Mov    [WaitTime], Eax
+
+Return:
+Mov    [VacIng], 1
+Pop    Eax
+Push   Eax
+Movzx  Eax, Byte ptr [Ebp-4E]
+Jmp    005AF27A
+
+005AF275:
+Jmp	   GCVac
+
+[DISABLE]

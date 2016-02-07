@@ -1,0 +1,21 @@
+//TWMSv158.4閃爍無敵
+//更新 放棄
+//原創 Jer
+[Enable]
+Alloc(BringBringInvincible, 128)
+
+BringBringInvincible:
+Cmp [Esp], 00A495D2//1// 
+Jne 00AA26B3//2//
+test eax,eax
+Push 00A4967A//3//  // 00A4C3D0
+Pop [Esp]
+Jmp 00AA26B3//2//
+
+00F69D14://4//
+DD BringBringInvincible
+[Disable]
+
+00F69D14://4//
+DD 00AA26B3//2//
+DeAlloc(BringBringInvincible)

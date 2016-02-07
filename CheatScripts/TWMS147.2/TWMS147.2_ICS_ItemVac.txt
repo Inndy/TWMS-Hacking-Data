@@ -1,0 +1,44 @@
+[enable]
+alloc(ItemVac,256)
+label(SetItemXY)
+alloc(PickNoDc,64)
+
+PickNoDc:
+cmp [esp],00942BF4 // 85 C0 74 ?? 8B 06 5F
+jne 0094F4BA // 55 8B EC 83 EC ?? 53 8B 1D ?? ?? ?? 00 56 8B F1 57
+xor eax,eax
+ret 0004
+
+ItemVac:
+cmp [esp],004E5DA9 // 85 c0 75 ?? 83 4d fc ff 8d 4d ?? e8 ?? ?? ff ff
+je SetItemXY
+cmp [esp],004E5051 // 85 C0 74 07 39 5D ?? 75
+jne PtInRect
+xor eax,eax
+inc eax
+ret 000c
+
+SetItemXY:
+mov eax,[esp+08]
+mov [ebx],eax
+mov eax,[esp+0C]
+mov [ebx+04],eax
+xor eax,eax
+inc eax
+ret 000c
+
+00DBB00C:
+dd ItemVac
+
+00C335B8:
+DD PickNoDc
+
+[disable]
+00DBB00C:
+dd PtInRect
+
+00C335B8:
+DD 0094F4BA
+
+dealloc(ItemVac)
+dealloc(PickNoDc)

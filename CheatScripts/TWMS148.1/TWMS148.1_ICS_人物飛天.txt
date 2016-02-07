@@ -1,0 +1,134 @@
+// TWMS148.1 ICS 人物飛天
+// ICS: Inndy
+[ENABLE]
+Alloc(MyFly, 1024)
+
+Label(MyFly009744da)
+Label(MyFly009744be)
+Label(MyFly00974536)
+Label(MyFly009744c0)
+Label(MyFly00974536)
+Label(MyFly0097450c)
+
+MyFly:
+Cmp  [Esp], 00974475
+Jne  00973A17
+Add  Esp, 04
+Call 00973A17
+db 85 c0                                 // 00974475 - test eax,eax
+je 00974613                              // 00974477 - je 00974613
+db 8b 86 50 01 00 00                     // 0097447d - mov eax,[esi+00000150]
+db 8d 48 24                              // 00974483 - lea ecx,[eax+24]
+call 0043109f                            // 00974486 - call 0043109f
+db dc 0d 60 a7 c7 00                     // 0097448b - fmul qword ptr [00c7a760] : 0000
+db dd 5d bc                              // 00974491 - fstp qword ptr [ebp-44]
+db dd 45 c4                              // 00974494 - fld qword ptr [ebp-3c]
+db dc 0d 58 a7 c7 00                     // 00974497 - fmul qword ptr [00c7a758] : D41D
+db dd 5d b4                              // 0097449d - fstp qword ptr [ebp-4c]
+db d9 ee                                 // 009744a0 - fldz
+db 39 9e 18 01 00 00                     // 009744a2 - cmp [esi+00000118],ebx
+je MyFly009744da                         // 009744a8 - je 009744da
+db 39 9e 1c 01 00 00                     // 009744aa - cmp [esi+0000011c],ebx
+jne MyFly009744be                        // 009744b0 - jne 009744be
+db dc 5d e4                              // 009744b2 - fcomp qword ptr [ebp-1c]
+db df e0                                 // 009744b5 - fnstsw ax
+db f6 c4 05                              // 009744b7 - test ah,05
+jp MyFly00974536                         // 009744ba - jp 00974536
+jmp MyFly009744c0                        // 009744bc - jmp 009744c0
+MyFly009744be:
+db dd d8                                 // 009744be - fstp st(0)
+MyFly009744c0:
+db db 86 24 01 00 00                     // 009744c0 - fild dword ptr [esi+00000124]
+db dc 0d 50 a7 c7 00                     // 009744c6 - fmul qword ptr [00c7a750] : 0000
+db dc 35 10 52 bf 00                     // 009744cc - fdiv qword ptr [00bf5210] : 0000
+db dd 5d e4                              // 009744d2 - fstp qword ptr [ebp-1c]
+jmp 00974575                             // 009744d5 - jmp 00974575
+MyFly009744da:
+db dc 5d e4                              // 009744da - fcomp qword ptr [ebp-1c]
+db df e0                                 // 009744dd - fnstsw ax
+db f6 c4 05                              // 009744df - test ah,05
+jp MyFly00974536                         // 009744e2 - jp 00974536
+db 38 9e c4 00 00 00                     // 009744e4 - cmp [esi+000000c4],bl
+je MyFly0097450c                         // 009744ea - je 0097450c
+db dd 45 bc                              // 009744ec - fld qword ptr [ebp-44]
+db dd 05 98 24 c0 00                     // 009744ef - fld qword ptr [00c02498] : 0000
+db dc c9                                 // 009744f5 - fmul st(1),st(0)
+db dd 05 08 50 bf 00                     // 009744f7 - fld qword ptr [00bf5008] : 0000
+db dc fa                                 // 009744fd - fdiv st(2),st(0)
+db d9 ca                                 // 009744ff - fxch st(2)
+db dd 5d bc                              // 00974501 - fstp qword ptr [ebp-44]
+db dc 4d c4                              // 00974504 - fmul qword ptr [ebp-3c]
+db de f1                                 // 00974507 - fdivrp st(1),st(0)
+db dd 5d c4                              // 00974509 - fstp qword ptr [ebp-3c]
+MyFly0097450c:
+db dd 45 dc                              // 0097450c - fld qword ptr [ebp-24]
+db 83 ec 20                              // 0097450f - sub esp,20
+db dd 5c 24 18                           // 00974512 - fstp qword ptr [esp+18]
+db 8d 45 e4                              // 00974516 - lea eax,[ebp-1c]
+db dd 45 bc                              // 00974519 - fld qword ptr [ebp-44]
+db dd 5c 24 10                           // 0097451c - fstp qword ptr [esp+10]
+db dd 45 d4                              // 00974520 - fld qword ptr [ebp-2c]
+db dd 5c 24 08                           // 00974523 - fstp qword ptr [esp+08]
+db dd 45 c4                              // 00974527 - fld qword ptr [ebp-3c]
+db dd 1c 24                              // 0097452a - fstp qword ptr [esp]
+db 50                                    // 0097452d - push eax
+call 00971ff3                            // 0097452e - call 00971ff3
+db 83 c4 24                              // 00974533 - add esp,24
+MyFly00974536:
+db dd 45 dc                              // 00974536 - fld qword ptr [ebp-24]
+db 8b 86 50 01 00 00                     // 00974539 - mov eax,[esi+00000150]
+db 83 ec 18                              // 0097453f - sub esp,18
+db dd 5c 24 10                           // 00974542 - fstp qword ptr [esp+10]
+db 8d 48 24                              // 00974546 - lea ecx,[eax+24]
+db dd 45 bc                              // 00974549 - fld qword ptr [ebp-44]
+db dd 5c 24 08                           // 0097454c - fstp qword ptr [esp+08]
+db dd 45 d4                              // 00974550 - fld qword ptr [ebp-2c]
+db dd 1c 24                              // 00974553 - fstp qword ptr [esp]
+call 0043109f                            // 00974556 - call 0043109f
+db dc 0d 18 b8 c0 00                     // 0097455b - fmul qword ptr [00c0b818] : 0000
+db 51                                    // 00974561 - push ecx
+db 51                                    // 00974562 - push ecx
+db 8d 45 e4                              // 00974563 - lea eax,[ebp-1c]
+db dc 4d d4                              // 00974566 - fmul qword ptr [ebp-2c]
+db dd 1c 24                              // 00974569 - fstp qword ptr [esp]
+db 50                                    // 0097456c - push eax
+push 00974572
+db 55                                    // 00971f87 - push ebp
+db 8b ec                                 // 00971f88 - mov ebp,esp
+db d9 ee                                 // 00971f8a - fldz
+db dd 45 1c                              // 00971f8c - fld qword ptr [ebp+1c]
+db d8 d1                                 // 00971f8f - fcom st(0),st(1)
+db df e0                                 // 00971f91 - fnstsw ax
+db f6 c4 05                              // 00971f93 - test ah,05
+jnp 00971fed                             // 00971f96 - jnp 00971fed
+db 8b 4d 08                              // 00971f98 - mov ecx,[ebp+08]
+db d9 c9                                 // 00971f9b - fxch st(1)
+db dc 5d 0c                              // 00971f9d - fcomp qword ptr [ebp+0c]
+db df e0                                 // 00971fa0 - fnstsw ax
+db f6 c4 05                              // 00971fa2 - test ah,05
+jp 00971fca                              // 00971fa5 - jp 00971fca
+db dc 11                                 // 00971fa7 - fcom qword ptr [ecx]
+db df e0                                 // 00971fa9 - fnstsw ax
+db f6 c4 41                              // 00971fab - test ah,41
+jne 00971fef                             // 00971fae - jne 00971fef
+//db dd 45 0c                              // 00971fb0 - fld qword ptr [ebp+0c]
+fldz
+db dc 75 14                              // 00971fb3 - fdiv qword ptr [ebp+14]
+db dc 4d 24                              // 00971fb6 - fmul qword ptr [ebp+24]
+db dc 01                                 // 00971fb9 - fadd qword ptr [ecx]
+db dd 11                                 // 00971fbb - fst qword ptr [ecx]
+db d8 d9                                 // 00971fbd - fcomp st(0),st(1)
+db df e0                                 // 00971fbf - fnstsw ax
+db f6 c4 41                              // 00971fc1 - test ah,41
+jne 00971fef                             // 00971fc4 - jne 00971fef
+db dd 19                                 // 00971fc6 - fstp qword ptr [ecx]
+db 5d                                    // 00971fc8 - pop ebp
+db c3                                    // 00971fc9 - ret
+
+00C7B6DC:
+DD   MyFly
+[DISABLE]
+00C7B6DC:
+DD   00973A17
+
+Dealloc(MyFly)

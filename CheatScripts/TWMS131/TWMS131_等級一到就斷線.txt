@@ -1,0 +1,33 @@
+// Twms V1.31.1 单碞耞絬
+//  k0960132, coffeeKing1234
+// TargetLevel 砞ヘ夹单
+// NowLevel 琌ヘ玡单讽ヘ玡单=ヘ夹单碞穦耞絬
+//穝Homax 
+
+[enable]
+registersymbol(TargetLevel)
+registersymbol(NowLevel)
+alloc(CheckLevel,128)
+label(TargetLevel)
+label(NowLevel)
+label(CheckLevelRet)
+CheckLevel:
+    mov [NowLevel], eax
+    cmp [TargetLevel], 00
+    jz CheckLevelRet
+    cmp eax, [TargetLevel]
+    je 00000000
+    jmp CheckLevelRet
+TargetLevel:
+  dd  00
+NowLevel:
+  dd  00
+0061FA1B:
+jmp CheckLevel
+CheckLevelRet:
+[disable]
+0061FA1B:
+cmp eax,000000c8
+unregistersymbol(TargetLevel)
+unregistersymbol(NowLevel)
+dealloc(CheckLevel)

@@ -1,0 +1,166 @@
+[ENABLE]
+registersymbol(Main)
+alloc(Main,1024)
+registersymbol(Time)
+alloc(Time,4)
+registersymbol(RLCtrlW)
+alloc(RLCtrlW,4)
+registersymbol(RLCtrlJ)
+alloc(RLCtrlJ,4)
+registersymbol(StupidMons)
+alloc(StupidMons,4)
+registersymbol(MissTime)
+alloc(MissTime,4)
+registersymbol(MissTimeCmp)
+alloc(MissTimeCmp,4)
+label(Nohurt)
+label(NohurtMain)
+label(NohurtMainI)
+label(NohurtMainII)
+label(StupidMonster)
+label(StupidMonsterMain)
+label(StupidMonsterMainI)
+label(JumpControl)
+label(JumpControlMain)
+label(WalkControl)
+label(WalkControlMain)
+label(StupidReturn)
+label(JumpRet)
+label(WalkRet)
+//==============
+Time:
+dd FFFF8AD0
+MissTime: //°jÁ×¦¸¼Æ
+DD 5
+RLCtrlW: // ¨« 2¥ª3¥k 4Ãö
+DD 4
+RLCtrlJ: // ¸õ 2¥ª3¥k 4Ãö
+db 4   
+StupidMons: // ²Â©Ç 0Ãö 1¶}
+dd 0 
+//==============
+00bbb594:
+dd Main
+//==============
+
+Main:
+cmp [esp+1c],007F6227 // 6A 64 33 D2 59 F7 F1 89 55
+je Nohurt //µL¼Ä
+cmp [esp+1c],0084D379 // 33 d2 b9 60 ea 00 00 f7 f1
+je StupidMonster //²Â©Ç
+cmp [esp+1c],0084E389 // 6a 03 59 89 47 20 33 d2 f7 f1 c7 47
+je JumpControl //±±©Ç ¸õ
+cmp [esp+1c],0084DF64 // 6a 03 59 89 47 20 33 d2 f7 f1 89 5f
+je WalkControl //±±©Ç
+jmp 00675C15
+//==============
+Nohurt:
+mov [esp+1c],NohurtMain
+jmp 00675C15
+
+StupidMonster:
+mov [esp+1c],StupidMonsterMain
+jmp 00675C15
+
+JumpControl:
+mov [esp+1c],JumpControlMain
+jmp 00675C15
+
+WalkControl:
+mov [esp+1c],WalkControlMain
+jmp 00675C15
+
+//-------------------------
+WalkControlMain:
+push 03
+pop ecx
+cmp [RLCtrlW],4
+je WalkRet
+mov eax,[RLCtrlW]
+mov [edi+20],eax
+jmp 0084DF67
+
+WalkRet:
+mov [edi+20],eax
+jmp 0084DF67
+
+//-------------------------
+JumpControlMain:
+push 03
+pop ecx
+cmp [RLCtrlJ],4
+je JumpRet
+mov eax,[RLCtrlJ]
+mov [edi+20],eax
+jmp 0084E38C
+
+JumpRet:
+mov [edi+20],eax
+jmp 0084E38C
+
+//-------------------------
+StupidMonsterMain:
+cmp [StupidMons],1
+jne StupidReturn
+xor edx,edx
+mov ecx,0000ea60
+lea ecx,[esi+000002b0]
+push edx
+call 00420fcc
+mov ebx,[ebp+0c]
+lea edi,[esi+000002a0]
+cmp [edi],ebx
+je StupidMonsterMainI
+jmp 0084D3A1
+
+StupidMonsterMainI:
+jmp 0084d3ac
+
+StupidReturn:
+jmp 0084D379
+//-------------------------
+NohurtMain:
+push 64
+xor edx,edx
+pop ecx
+div ecx
+call 004297F5
+test byte ptr [eax+0000019C],02
+je NohurtMainI
+jmp 007F623F
+//==============
+NohurtMainI:
+lea ecx,[esi+00003280]
+push [Time]
+pushad
+mov eax,[MissTime]
+cmp [MissTimeCmp],eax
+popad
+jg NohurtMainII
+mov [ebp+5C],0
+inc [MissTimeCmp]
+jmp 007F6ACC
+//==============
+NohurtMainII:
+mov [MissTimeCmp],0
+jmp 007F6ACC
+//-------------------------
+
+[DISABLE]
+00bbb594:
+dd 00675C15
+
+dealloc(Main)
+unregistersymbol(Main)
+dealloc(Time)
+unregistersymbol(Time)
+dealloc(RLCtrlW)
+unregistersymbol(RLCtrlW)
+dealloc(RLCtrlJ)
+unregistersymbol(RLCtrlJ)
+dealloc(StupidMons)
+unregistersymbol(StupidMons)
+dealloc(MissTime)
+unregistersymbol(MissTime)
+dealloc(MissTimeCmp)
+unregistersymbol(MissTimeCmp)

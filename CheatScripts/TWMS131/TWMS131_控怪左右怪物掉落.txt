@@ -1,0 +1,62 @@
+//Twms V131.1 ±±©Ç¥ª¥k©Çª«±¼¸¨
+[enable]
+Registersymbol(MobLRD)
+Alloc(MobLRD, 256)
+Registersymbol(MobLRtemp)
+Alloc(MobLRtemp, 4)
+Label(LRstart)
+Label(MobwalkL)
+Label(MobwalkR)
+Label(MobR)
+Label(MobL)
+Label(normal)
+MobLRtemp:
+dd 0
+MobLRD:
+pushfd
+push eax
+mov eax,[00acf52c]
+cmp [eax+454],A
+je MobR
+cmp [eax+454],B
+je MobL
+cmp [eax+454],15
+je normal
+cmp [eax+454],14
+je normal
+LRstart:
+pop eax
+cmp [MobLRtemp],1
+je MobwalkR
+jg MobwalkL
+popfd
+jne 007cc1a2
+jmp 007CC05A
+normal:
+mov [MobLRtemp],0
+jmp LRstart
+MobR:
+mov [MobLRtemp],1
+jmp LRstart
+MobL:
+mov [MobLRtemp],2
+jmp LRstart
+MobwalkR:
+popfd
+fstp st(1)
+jmp 007CC089
+MobwalkL:
+popfd
+fnstsw ax
+fstp st(0)
+jmp 007CC089
+007CC054:
+jmp MobLRD
+nop
+[disable]
+Unregistersymbol(MobLRtemp)
+Dealloc(MobLRtemp)
+Unregistersymbol(MobLRD)
+Dealloc(MobLRD)
+007CC054:
+jne 007cc1a2

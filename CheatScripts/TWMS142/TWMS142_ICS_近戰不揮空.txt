@@ -1,0 +1,44 @@
+//------------------------------------------------------------------
+// Name¡G	No Empty Attack
+// Version:	TWMS142
+// Update:	Inndy
+// EIP¡G	NoEmptyAtkICS
+// Aob¡G	ff 15 ?? ?? ?? 00 ff b5 ?? ?? ff ff 6a 00 6a 00 6a 00 6a 00 6a 00 6a 00
+//------------------------------------------------------------------
+[ENABLE]
+Alloc(NoEmptyAtkICS,512)
+
+NoEmptyAtkICS:
+Cmp  [Esp], 00864044
+Jne  OffsetRect
+Add  Esp, 4
+Call OffsetRect
+
+Push [Ebp-000001a4]
+Push 00
+Push 00
+Push 00
+Push 00
+Push 00
+Push 00
+Push [Ebp-00000184]
+Lea  Eax,[Ebp-00000180]
+Push Eax
+Lea  Eax,[Ebp-68]
+Push Eax
+Call 00435F7C
+Mov  Ecx,Eax
+Call 005D2AD3
+Mov  [Ebp-78],Eax
+Test Eax, Eax
+Je   00864338 //8b 85 ?? fe ff ff 89 85 ?? ?? ff ff 81 bd ?? ?? ff ff ?? ?? ?? ?? 74 02 eb 4c
+Jmp  00864073
+
+00CCC9F4:
+DD NoEmptyAtkICS
+
+[DISABLE]
+00CCC9F4:
+DD OffsetRect
+
+DeAlloc(NoEmptyAtkICS)

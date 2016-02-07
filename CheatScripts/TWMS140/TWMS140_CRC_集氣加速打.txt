@@ -1,0 +1,40 @@
+//集氣加速打  TWMS V140
+[enable]
+Registersymbol(Nodelay)
+Alloc(Nodelay, 128)
+Registersymbol(AttackTimes)
+Alloc(AttackTimes, 4)
+Registersymbol(cszp)
+Alloc(cszp,128)
+Label(Refresh)
+//------------------------------------------------------------------
+Nodelay:
+inc [AttackTimes]
+cmp [AttackTimes],2 //此值與下列值互減得到的等於正常次數
+jle 0085E66C+5
+call 009416f0
+cmp [AttackTimes],4 //此值至少要比上面的大1
+jg Refresh
+jmp 0085E66C+5
+//------------------------------------------------------------------
+Refresh:
+mov [AttackTimes],0 //無延遲間格
+jmp 0085E66C+5
+//------------------------------------------------------------------
+0085E66C://無延遲
+jmp Nodelay
+//------------------------------------------------------------------
+0085E13C:
+db 90 90 90 90 90
+//------------------------------------------------------------------
+[disable]
+0085E66C://無延遲
+call 009416f0
+
+0085E13C://瞬間集氣
+call 0088f5fd
+
+Unregistersymbol(Nodelay)
+dealloc(Nodelay)
+Unregistersymbol(AttackTimes)
+dealloc(AttackTimes)

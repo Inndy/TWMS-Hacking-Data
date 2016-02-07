@@ -1,0 +1,48 @@
+*Buff = rand()
+*(Buff+1) = Ror(Result ^ *Buff, 5)
+*(Buff+2) = *(Buff+1) + Ror(*Buff ^ 0xBAADF00D, 5)
+
+*Buff = 0
+*(Buff+1) = 20000003
+*(Buff+2) = 8DD56F83
+
+00E164E8
+
+6DD56F80
+
+// GetValue
+{
+	int result;
+	result = DynamicData[0] ^ __ROL__(DynamicData[1], 5);
+	if ( DynamicData[1] + __ROR__(DynamicData[0] ^ 0xBAADF00D, 5) != DynamicData[2] ) Dead();
+	return result;
+}
+// SetValue
+{
+	int result;
+	DynamicData[0] = 0;
+	DynamicData[1] = __ROR__(Value, 5);
+	DynamicData[2] = DynamicData[1] + 0x6DD56F80;
+	return result;
+}
+// 55 8B EC 8B 45 08 8B 50 04 8B 08
+004058A9 - 55                         - push ebp
+004058AA - 8B EC                      - mov ebp,esp
+004058AC - 8B 45 08                   - mov eax,[ebp+08]
+004058AF - 8B 50 04                   - mov edx,[eax+04]
+004058B2 - 8B 08                      - mov ecx,[eax]
+004058B4 - 8B C2                      - mov eax,edx
+004058B6 - C1 C0 05                   - rol eax,05
+004058B9 - 33 C1                      - xor eax,ecx
+004058BB - 81 F1 0DF0ADBA             - xor ecx,BAADF00D
+004058C1 - C1 C9 05                   - ror ecx,05
+004058C4 - 03 CA                      - add ecx,edx
+004058C6 - 3B 4D 0C                   - cmp ecx,[ebp+0C]
+004058C9 - 74 15                      - je 004058E0 // ¨S¸õ´NError Code: 5  Access Denied
+004058CB - 68 2851CD00                - push 00CD5128
+004058D0 - 8D 45 08                   - lea eax,[ebp+08]
+004058D3 - 50                         - push eax
+004058D4 - C7 45 08 05000000          - mov [ebp+08],00000005
+004058DB - E8 236F6000                - call 00A0C803
+004058E0 - 5D                         - pop ebp
+004058E1 - C3                         - ret 

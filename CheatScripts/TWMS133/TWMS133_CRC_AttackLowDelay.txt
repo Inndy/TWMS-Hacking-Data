@@ -1,0 +1,48 @@
+//TWMS133 CRC §ðÀ»§C©µ¿ð
+[enable]
+registersymbol(LastTime)
+alloc(LastTime, 4)
+registersymbol(AttackTimes)
+alloc(AttackTimes, 4)
+registersymbol(Attnodelay)
+alloc(Attnodelay, 128)
+label(NoDelay)
+registersymbol(GetDelay)
+alloc(GetDelay, 128)
+Attnodelay:
+push eax
+mov eax,[00BB7098]
+sub [eax+1c],2710
+cmp [AttackTimes],2
+jge GetDelay
+
+NoDelay:
+inc [AttackTimes]
+mov eax,[00BB7098]
+add [eax+1C],2710
+mov eax,[eax+1c]
+mov [LastTime],eax
+mov eax,ffff0000
+JMP 0044E2EA
+
+GetDelay:
+mov [AttackTimes],0
+add [eax+1C],2710
+mov eax,[eax+1c]
+sub eax,[LastTime]
+cmp eax,3E8//1¬í
+pop eax
+jge NoDelay
+cmp eax,02
+jg 0044e2e7
+JMP 0044E2E4
+
+0044E2DF:
+jmp Attnodelay
+[disable]
+0044E2DF:
+cmp eax,02
+jg 0044e2e7
+unregistersymbol(LastTime)
+dealloc(LastTime)
+unregistersymbol(AttackTimes)

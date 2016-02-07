@@ -1,0 +1,2 @@
+cc 56 e8 ?? ?? ff ff ff 74 24 08 8b f0 8b ce e8 ?? ?? ff ff 8b c6 5e c2 04 00 55 8b ec
+004DE8AB - e8 1f fc ff ff             - call 004de4cf

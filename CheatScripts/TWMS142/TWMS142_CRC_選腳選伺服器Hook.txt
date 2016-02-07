@@ -1,0 +1,57 @@
+//Hook Choose Character
+//Auther: Inndy
+//此數據能夠取得選擇角色時的ID
+[ENABLE]
+Alloc(HookCooseCharacter, 32)
+Alloc(CharID, 4)
+RegisterSymbol(CharID)
+
+HookCooseCharacter:
+Mov  Eax, [Eax+4]    // PacketBuffer
+Mov  Eax, [Eax+2]    // Char ID
+Mov  [CharID], Eax   // Char ID
+Mov  Eax, [Esp+4]    // PacketStruct
+Jmp  00486158        // Back to Sending Packet
+
+00584E09:
+Call HookCooseCharacter
+[DISABLE]
+00584E09:
+Call 00486158
+
+Dealloc(HookCooseCharacter)
+Dealloc(CharID)
+UnregisterSymbol(CharID)
+
+
+
+
+//Hook Choose Server
+//Auther: Inndy
+//此數據能夠取得所選的伺服器和頻道
+[ENABLE]
+Alloc(HookCooseServer, 32)
+Alloc(Server, 4)
+RegisterSymbol(Server)
+Alloc(Channel, 4)
+RegisterSymbol(Channel)
+
+HookCooseServer:
+Mov  Eax, [Eax+4]    // PacketBuffer
+Mov  Ax, [Eax+3]     // Server And Channel
+Mov  [Server], Al    // Server
+Mov  [Channel], Ah   // Channel
+Mov  Eax, [Esp+4]    // PacketStruct
+Jmp  00486158        // Back to Sending Packet
+
+00580D07:
+Call HookCooseServer
+[DISABLE]
+00580D07:
+Call 00486158
+
+Dealloc(HookCooseServer)
+Dealloc(Server)
+UnregisterSymbol(Server)
+Dealloc(Channel)
+UnregisterSymbol(Channel)

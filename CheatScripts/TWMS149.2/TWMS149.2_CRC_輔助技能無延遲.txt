@@ -1,0 +1,15 @@
+// TWMS149.2 CRC 輔助技能無延遲
+// Auther: Inndy
+[ENABLE]
+// Skill Action Bypass
+00933D08: // 89 86 ?? 04 00 00 8B 01 6A 06 FF 50 20 83
+DB 90 90 90 90 90 90
+
+00933FA6: // 74 0A 8B 4D ?? 6A 01 E8
+DB EB
+[DISABLE]
+00933D08:
+DB 89 86 A0 04 00 00
+
+00933FA6:
+DB 74

@@ -1,0 +1,7 @@
+//Twms V1.31.1 近戰不揮空
+[Enable]
+0077C594:
+jne 0077c5e2
+[Disable]
+0077C594:
+je 0077c5e2

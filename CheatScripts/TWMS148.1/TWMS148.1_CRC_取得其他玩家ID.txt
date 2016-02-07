@@ -1,0 +1,26 @@
+//148.1 Monster 人物object Id 取得 By.aaaddress1.
+// j 會隨機噴一個地址,該地址以char格式讀取會是
+//地圖內任意玩家的ID.
+alloc(MyGetObjectId,128)
+RegisterSymbol(MyGetObjectId)
+alloc(j,04)
+RegisterSymbol(j)
+MyGetObjectId://adr = 007F1F4C
+mov [ecx],ebx
+push 007F1F53
+cmp dword ptr [esp+04],00
+push edi
+mov edi,ecx
+je 00422CC3
+push esi
+mov esi,[esp+10]
+cmp esi,FF
+jne 00422CE0
+push [esp+0C]
+push 00422CDD
+mov ecx,[esp+04]
+test ecx,0003
+je 00A0EA30
+mov al,[ecx]
+mov [j],ecx
+jmp 00A0EA0E

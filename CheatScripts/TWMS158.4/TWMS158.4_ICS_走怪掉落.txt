@@ -1,0 +1,9 @@
+//TwMS v158.4_ICS_走怪掉落
+//更新:aqt741852
+
+[Enable]
+00F6DBF8:
+DD 00AFF95B 
+[Disable]
+00F6DBF8:
+DD 00B0B173

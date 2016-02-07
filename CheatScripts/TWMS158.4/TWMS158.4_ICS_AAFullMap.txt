@@ -1,0 +1,44 @@
+// TWMS158.4 ICS AAFullMap
+[Enable]
+GlobalAlloc(AAFullMapKey, 4)
+Alloc(AAFullMap, 512)
+Label(FullMap)
+Label(Fix)
+Label(ExitFullMap)
+
+AAFullMap:
+Add  Esp, 04
+Call VariantClear
+Cmp  [Esp], 0069FA9D
+Je   FullMap
+Cmp  [Esp], 0069FC6C
+Je   Fix
+Ret
+
+FullMap:
+DB   59 8D 45 A0 50 8B CF
+Push 0069FAA9 // Return Address
+DB   56 57 8B 7C 24 0C
+Cmp  [AAFullMapKey], 0
+Je   ExitFullMap
+Pushad
+Mov  Ecx, [0115BB3C]
+Add  Ecx, 4
+Push Edi
+Call 004CDCEA
+Popad
+ExitFullMap:
+Jmp  00439B0B // Push [Edi]
+
+Fix:
+DB   59 8D 45 A0 50 8D 8E 28 07 00 00
+Call 00672C6C
+Jmp  0069FC83
+
+00D47288:
+DD AAFullMap
+[Disable]
+00D47288:
+DD VariantClear
+
+Dealloc(AAFullMap)

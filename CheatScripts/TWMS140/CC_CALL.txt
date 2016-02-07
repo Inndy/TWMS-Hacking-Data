@@ -1,0 +1,91 @@
+004EBDD7 - 6a 10                      - push 10
+004EBDD9 - b8 5e 34 98 00             - mov eax,0098345e
+004EBDDE - e8 56 62 45 00             - call 00942039
+004EBDE3 - 8b 0d e8 26 cc 00          - mov ecx,[00cc26e8] : 00000000
+004EBDE9 - 33 ff                      - xor edi,edi
+004EBDEB - 3b cf                      - cmp ecx,edi
+004EBDED - 74 05                      - je 004ebdf4
+004EBDEF - e8 6a dc f6 ff             - call 00459a5e
+004EBDF4 - 8b 35 c0 d9 cb 00          - mov esi,[00cbd9c0] : 00CCE958
+004EBDFA - 39 7d 0c                   - cmp [ebp+0c],edi
+004EBDFD - 75 15                      - jne 004ebe14
+004EBDFF - 57                         - push edi
+004EBE00 - 68 f4 01 00 00             - push 000001f4
+004EBE05 - 8b ce                      - mov ecx,esi
+004EBE07 - e8 eb 14 f9 ff             - call 0047d2f7
+004EBE0C - 85 c0                      - test eax,eax
+004EBE0E - 0f 84 e3 00 00 00          - je 004ebef7
+004EBE14 - 8b 86 a0 48 00 00          - mov eax,[esi+000048a0]
+004EBE1A - 8b 5d 08                   - mov ebx,[ebp+08]
+004EBE1D - 39 3c 98                   - cmp [eax+ebx*4],edi
+004EBE20 - 74 20                      - je 004ebe42
+004EBE22 - 8b 86 50 20 00 00          - mov eax,[esi+00002050]
+004EBE28 - 8b 8e 4c 20 00 00          - mov ecx,[esi+0000204c]
+004EBE2E - 6a 13                      - push 13
+004EBE30 - 50                         - push eax
+004EBE31 - 51                         - push ecx
+004EBE32 - e8 6c 36 3a 00             - call 0088f4a3
+004EBE37 - 83 c4 0c                   - add esp,0c
+004EBE3A - 85 c0                      - test eax,eax
+004EBE3C - 0f 84 b5 00 00 00          - je 004ebef7
+004EBE42 - 39 3d d0 dc cb 00          - cmp [00cbdcd0],edi : 00000000
+004EBE48 - 0f 84 a9 00 00 00          - je 004ebef7
+004EBE4E - 8b ce                      - mov ecx,esi
+004EBE50 - e8 6f fa ff ff             - call 004eb8c4
+004EBE55 - 85 c0                      - test eax,eax
+004EBE57 - 75 33                      - jne 004ebe8c
+004EBE59 - a1 d0 dc cb 00             - mov eax,[00cbdcd0] : 00000000
+004EBE5E - 39 b8 78 04 00 00          - cmp [eax+00000478],edi
+004EBE64 - 7e 26                      - jle 004ebe8c
+004EBE66 - 57                         - push edi
+004EBE67 - 57                         - push edi
+004EBE68 - 57                         - push edi
+004EBE69 - 57                         - push edi
+004EBE6A - 51                         - push ecx
+004EBE6B - 8b c4                      - mov eax,esp
+004EBE6D - 89 65 0c                   - mov [ebp+0c],esp
+004EBE70 - 68 f2 00 00 00             - push 000000f2
+004EBE75 - 50                         - push eax
+004EBE76 - e8 b0 9d 1c 00             - call 006b5c2b
+004EBE7B - 8b c8                      - mov ecx,eax
+004EBE7D - e8 2c 41 f3 ff             - call 0041ffae
+004EBE82 - e8 44 44 3b 00             - call 008a02cb
+004EBE87 - 83 c4 14                   - add esp,14
+004EBE8A - eb 6b                      - jmp 004ebef7
+004EBE8C - e8 3d 2d f4 ff             - call 0042ebce
+004EBE91 - 3b c7                      - cmp eax,edi
+004EBE93 - 74 1a                      - je 004ebeaf
+004EBE95 - f6 80 b4 01 00 00 10       - test byte ptr [eax+000001b4],10
+004EBE9C - 74 11                      - je 004ebeaf
+004EBE9E - 57                         - push edi
+004EBE9F - 57                         - push edi
+004EBEA0 - 57                         - push edi
+004EBEA1 - 57                         - push edi
+004EBEA2 - 51                         - push ecx
+004EBEA3 - 8b c4                      - mov eax,esp
+004EBEA5 - 89 65 0c                   - mov [ebp+0c],esp
+004EBEA8 - 68 ff 00 00 00             - push 000000ff
+004EBEAD - eb c6                      - jmp 004ebe75
+004EBEAF - 6a 36                      - push 36
+004EBEB1 - 8d 4d e4                   - lea ecx,[ebp-1c]
+004EBEB4 - e8 66 3d 11 00             - call 005ffc1f
+004EBEB9 - 53                         - push ebx
+004EBEBA - 8d 4d e4                   - lea ecx,[ebp-1c]
+004EBEBD - 89 7d fc                   - mov [ebp-04],edi
+004EBEC0 - e8 de 67 f2 ff             - call 004126a3
+004EBEC5 - e8 33 37 3a 00             - call 0088f5fd
+004EBECA - 50                         - push eax
+004EBECB - 8d 4d e4                   - lea ecx,[ebp-1c]
+004EBECE - e8 ee 67 f2 ff             - call 004126c1
+004EBED3 - 8b 0d 04 dd cb 00          - mov ecx,[00cbdd04] : 00000000
+004EBED9 - 8d 45 e4                   - lea eax,[ebp-1c]
+004EBEDC - 50                         - push eax
+004EBEDD - e8 bf a2 f9 ff             - call 004861a1		//µo¥]
+004EBEE2 - 6a 01                      - push 01
+004EBEE4 - 8b ce                      - mov ecx,esi
+004EBEE6 - e8 5e 13 f9 ff             - call 0047d249
+004EBEEB - 83 4d fc ff                - or dword ptr [ebp-04],ff
+004EBEEF - 8d 4d e8                   - lea ecx,[ebp-18]
+004EBEF2 - e8 f1 9f f3 ff             - call 00425ee8
+004EBEF7 - e8 15 62 45 00             - call 00942111
+004EBEFC - c2 08 00                   - ret 0008

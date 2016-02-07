@@ -1,0 +1,6 @@
+[enable]
+00BE4010:
+db 43 61 70 2C 0B 83 63 19 95 6F 1A 8E
+[disable]
+00BE4010:
+db D9 09 74 FF 4E A0 FB CF 1C 70 2A 72

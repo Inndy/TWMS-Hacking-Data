@@ -1,0 +1,21 @@
+//Twms V1.31.1 人物不後退
+//更新 Homax
+//原作 Silent (yesjerry1995)
+[enable]
+007799E6:  
+call 00408096
+
+lea ecx,[ebx+00002bf4] // 0077A1B5
+push FFFFF448
+jmp 0077A1C0
+db 90 90 90 90 90 90
+[disable]
+007799E6:
+call 00408096
+push 64
+xor edx,edx
+pop ecx
+div ecx
+mov [ebp+30],edx
+call 00428eff
+test byte ptr [eax+00000178],02

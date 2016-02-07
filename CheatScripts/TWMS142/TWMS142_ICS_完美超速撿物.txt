@@ -1,0 +1,214 @@
+//TWMS142 ICS 完美超速撿物
+//Auther: Inndy
+[ENABLE]
+Alloc(NowTimes, 4)
+Alloc(FakeTime, 4)
+Alloc(SuperPickICS, 1024)
+Label(MultiPick)
+Label(ItemPick)
+
+Label(NoDelayPickICS)
+Label(NoDelayPick)
+Label(NoDelayPick01)
+Label(NoDelayPick02)
+Label(NoDelayPick03)
+
+//For MyFakeCall
+Label(MyFakeCall)
+Label(MyFakeCall01)
+Label(MyFakeCall02)
+Label(MyFakeCall03)
+Label(MyFakeCall04)
+
+SuperPickICS:
+Cmp  [Esp], 0086D7FD
+Jne  004929A9
+Mov  [Esp], MultiPick
+Jmp  004929A9
+
+MultiPick:
+Push Eax
+Mov  Ecx, Edi
+Mov  [NowTimes], 09
+ItemPick:
+Push Eax
+Call 004D4AB7
+Mov  Ecx, [00CC7978]
+Mov  Eax, [Esp]
+Dec  [NowTimes]
+Cmp  [NowTimes], 00
+Jg   ItemPick
+Call 004D4AB7
+Jmp  0086D805
+
+NoDelayPickICS:
+Cmp  [Esp], 004D4BDD
+Jne  PtInRect
+Mov  [Esp], NoDelayPick
+Jmp  PtInRect
+
+NoDelayPick:
+DB   85 c0                              //004D4BDD - test eax,eax
+jne NoDelayPick01                        //004D4BDF - jne 004d4bf9
+DB   83 4d fc ff                        //004D4BE1 - or dword ptr [ebp-04],ff
+DB   8d 4d e4                           //004D4BE5 - lea ecx,[ebp-1c]
+call 004d3920                           //004D4BE8 - call 004d3920
+DB   83 7d 08 00                        //004D4BED - cmp dword ptr [ebp+08],00
+jne 004d4b17                            //004D4BF1 - jne 004d4b17
+jmp NoDelayPick03                        //004D4BF7 - jmp 004d4c2a
+NoDelayPick01:
+DB   33 c0                              //004D4BF9 - xor eax,eax
+DB   39 46 30                           //004D4BFB - cmp [esi+30],eax
+jne NoDelayPick02                        //004D4BFE - jne 004d4c0e
+DB   ff 76 34                           //004D4C00 - push [esi+34]
+DB   8b 0d 54 fc cb 00                  //004D4C03 - mov ecx,[00cbfc54] : 06400ED4
+call 00574410                           //004D4C09 - call 00574410
+NoDelayPick02:
+DB   8b 4d f0                           //004D4C0E - mov ecx,[ebp-10]
+DB   50                                 //004D4C11 - push eax
+DB   ff 76 20                           //004D4C12 - push [esi+20]
+DB   57                                 //004D4C15 - push edi
+call MyFakeCall
+DB   83 4d fc ff                        //004D4C1B - or dword ptr [ebp-04],ff
+DB   8d 4d e4                           //004D4C1F - lea ecx,[ebp-1c]
+DB   89 5e 54                           //004D4C22 - mov [esi+54],ebx
+call 004d3920                           //004D4C25 - call 004d3920
+NoDelayPick03:
+call 009439d1                           //004D4C2A - call 009439d1
+DB   c2 04 00                           //004D4C2F - ret 0004
+
+
+
+MyFakeCall:
+DB   6a 14                              //008F05DF - push 14
+DB   b8 61 70 a1 00                     //008F05E1 - mov eax,00a17061
+call 009438f9                           //008F05E6 - call 009438f9
+DB   8b f1                              //008F05EB - mov esi,ecx
+DB   6a 00                              //008F05ED - push 00
+DB   6a 1e                              //008F05EF - push 1e
+call 0047d2ae                           //008F05F1 - call 0047d2ae
+DB   85 c0                              //008F05F6 - test eax,eax
+je MyFakeCall04                         //008F05F8 - je 008f0778
+DB   8b 0d 70 ff cb 00                  //008F05FE - mov ecx,[00cbff70] : 00000000
+call 004c42da                           //008F0604 - call 004c42da
+DB   85 c0                              //008F0609 - test eax,eax
+jne MyFakeCall04                        //008F060B - jne 008f0778
+DB   8b 0d 70 ff cb 00                  //008F0611 - mov ecx,[00cbff70] : 00000000
+call 004c42ed                           //008F0617 - call 004c42ed
+DB   85 c0                              //008F061C - test eax,eax
+jne MyFakeCall04                        //008F061E - jne 008f0778
+DB   8b 0d 70 ff cb 00                  //008F0624 - mov ecx,[00cbff70] : 00000000
+call 004c4300                           //008F062A - call 004c4300
+DB   85 c0                              //008F062F - test eax,eax
+jne MyFakeCall04                        //008F0631 - jne 008f0778
+DB   a1 70 ff cb 00                     //008F0637 - mov eax,[00cbff70] : 00000000
+DB   83 b8 74 3d 00 00 00               //008F063C - cmp dword ptr [eax+00003d74],00
+jne MyFakeCall04                        //008F0643 - jne 008f0778
+DB   8d 8e 88 21 00 00                  //008F0649 - lea ecx,[esi+00002188]
+call 00651114                           //008F064F - call 00651114
+DB   85 c0                              //008F0654 - test eax,eax
+je MyFakeCall02                         //008F0656 - je 008f0699
+DB   8d 45 0c                           //008F0658 - lea eax,[ebp+0c]
+DB   68 89 17 00 00                     //008F065B - push 00001789
+DB   50                                 //008F0660 - push eax
+call 006b6d98                           //008F0661 - call 006b6d98
+DB   8b c8                              //008F0666 - mov ecx,eax
+call 0041ffc5                           //008F0668 - call 0041ffc5
+DB   83 65 fc 00                        //008F066D - and dword ptr [ebp-04],00
+DB   6a 0b                              //008F0671 - push 0b
+DB   50                                 //008F0673 - push eax
+call 0047d49e                           //008F0674 - call 0047d49e
+DB   8b 45 0c                           //008F0679 - mov eax,[ebp+0c]
+MyFakeCall01:
+DB   83 4d fc ff                        //008F067C - or dword ptr [ebp-04],ff
+DB   59                                 //008F0680 - pop ecx
+DB   59                                 //008F0681 - pop ecx
+DB   85 c0                              //008F0682 - test eax,eax
+je MyFakeCall04                         //008F0684 - je 008f0778
+DB   83 c0 f4                           //008F068A - add eax,f4
+DB   50                                 //008F068D - push eax
+call 0040d826                           //008F068E - call 0040d826
+DB   59                                 //008F0693 - pop ecx
+jmp MyFakeCall04                        //008F0694 - jmp 008f0778
+MyFakeCall02:
+DB   8b 0d 70 ff cb 00                  //008F0699 - mov ecx,[00cbff70] : 00000000
+call 0060eb41                           //008F069F - call 0060eb41
+DB   85 c0                              //008F06A4 - test eax,eax
+je MyFakeCall03                         //008F06A6 - je 008f06d1
+DB   8d 45 08                           //008F06A8 - lea eax,[ebp+08]
+DB   68 e9 1e 00 00                     //008F06AB - push 00001ee9
+DB   50                                 //008F06B0 - push eax
+call 006b6d98                           //008F06B1 - call 006b6d98
+DB   8b c8                              //008F06B6 - mov ecx,eax
+call 0041ffc5                           //008F06B8 - call 0041ffc5
+DB   6a 0b                              //008F06BD - push 0b
+DB   50                                 //008F06BF - push eax
+DB   c7 45 fc 01 00 00 00               //008F06C0 - mov [ebp-04],00000001
+call 0047d49e                           //008F06C7 - call 0047d49e
+DB   8b 45 08                           //008F06CC - mov eax,[ebp+08]
+jmp MyFakeCall01                        //008F06CF - jmp 008f067c
+MyFakeCall03:
+DB   ff 75 0c                           //008F06D1 - push [ebp+0c]
+DB   8b 8e 94 46 00 00                  //008F06D4 - mov ecx,[esi+00004694]
+call 004d5700                           //008F06DA - call 004d5700
+DB   68 42 01 00 00                     //008F06DF - push 00000142
+DB   8d 4d e0                           //008F06E4 - lea ecx,[ebp-20]
+call 00600954                           //008F06E7 - call 00600954
+DB   c7 45 fc 02 00 00 00               //008F06EC - mov [ebp-04],00000002
+call 0042ebfe                           //008F06F3 - call 0042ebfe
+DB   8a 80 9c 01 00 00                  //008F06F8 - mov al,[eax+0000019c]
+DB   88 45 f0                           //008F06FE - mov [ebp-10],al
+DB   ff 75 f0                           //008F0701 - push [ebp-10]
+DB   8d 4d e0                           //008F0704 - lea ecx,[ebp-20]
+call 0041062e                           //008F0707 - call 0041062e
+call 00890c81                           //008F070C - call 00890c81
+DB   50                                 //008F0711 - push eax
+DB   8d 4d e0                           //008F0712 - lea ecx,[ebp-20]
+call 0041064c                           //008F0715 - call 0041064c
+DB   8b 7d 08                           //008F071A - mov edi,[ebp+08]
+DB   0f b7 07                           //008F071D - movzx eax,word ptr [edi]
+DB   50                                 //008F0720 - push eax
+DB   8d 4d e0                           //008F0721 - lea ecx,[ebp-20]
+call 00426c93                           //008F0724 - call 00426c93
+DB   0f b7 47 04                        //008F0729 - movzx eax,word ptr [edi+04]
+DB   50                                 //008F072D - push eax
+DB   8d 4d e0                           //008F072E - lea ecx,[ebp-20]
+call 00426c93                           //008F0731 - call 00426c93
+DB   ff 75 0c                           //008F0736 - push [ebp+0c]
+DB   8d 4d e0                           //008F0739 - lea ecx,[ebp-20]
+call 0041064c                           //008F073C - call 0041064c
+DB   ff 75 10                           //008F0741 - push [ebp+10]
+DB   8d 4d e0                           //008F0744 - lea ecx,[ebp-20]
+call 0041064c                           //008F0747 - call 0041064c
+DB   8b 0d a4 ff cb 00                  //008F074C - mov ecx,[00cbffa4] : 00000000
+DB   8d 45 e0                           //008F0752 - lea eax,[ebp-20]
+DB   50                                 //008F0755 - push eax
+Mov Edi, [Esp]      // PacketStruct
+Mov Edi, [Edi+4]    // PacketBuffer
+Mov Eax, [Edi+3]    // Time
+Add Eax, [FakeTime] // 修改包包時間，達成不斷
+Mov [Edi+3], Eax    // 寫入包包時間
+Add [FakeTime],64   // 增加假的時間，可以調整看看
+push 008F0766
+jmp  00486158
+DB   83 4d fc ff                        //008F0766 - or dword ptr [ebp-04],ff
+DB   8d 4d e4                           //008F076A - lea ecx,[ebp-1c]
+DB   89 be 5c 4a 00 00                  //008F076D - mov [esi+00004a5c],edi
+call 00425e6b                           //008F0773 - call 00425e6b
+MyFakeCall04:
+call 009439d1                           //008F0778 - call 009439d1
+DB   c2 0c 00                           //008F077D - ret 000c
+
+00B5DEBC:
+DD   SuperPickICS
+00CCCA24:
+DD   NoDelayPickICS
+[DISABLE]
+00B5DEBC:
+DD   004929A9
+00CCCA24:
+DD   PtInRect
+
+Dealloc(NowTimes)
+Dealloc(FakeTime)
+Dealloc(SuperPickICS)

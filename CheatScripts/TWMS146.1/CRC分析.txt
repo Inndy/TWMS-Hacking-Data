@@ -1,0 +1,103 @@
+DWORD crc_32_tab[255];
+
+void GenerateCRC32Table()
+{
+	DWORD crc, i, j;
+	for (i = 0; i < 256; i++)
+	{
+		crc = i;
+		for (j = 8; j > 0; j--)
+		{
+			crc >>= 1;
+			if (crc & 1)
+				crc ^= 0xEDB88320;
+		}
+		crc_32_tab[i] = crc;
+	}
+}
+
+DWORD GenerateCRC32(char* DataBuf, DWORD len)
+{
+	DWORD oldcrc32;
+	DWORD crc32;
+	DWORD oldcrc;
+	DWORD charcnt;
+	char c, t;
+	oldcrc32 = 0x00000000;				//初值為0
+	charcnt = 0;
+	while(len--)
+	{
+		t = (oldcrc32 >> 24) & 0xFF;	//要移出的字節的值
+		oldcrc = crc_32_tab[t];			//根據移出的字節的值查表
+		c = DataBuf[charcnt];			//新移進來的字節值
+		oldcrc32 = (oldcrc32 << 8) | c;	//將新移進來的字節值添在寄存器末字節中
+		oldcrc32 ^= oldcrc;				//將寄存器與查出的值進行xor運算
+		charcnt++;
+	}
+	crc32 = oldcrc32;
+	return crc32;
+}
+
+shr -> 右位移 ( sh[R] -> Right )
+shl -> 左位移 ( sh[L] -> Left  )
+
+//TWMS146
+
+00997F85 - c7 85 58 ff ff ff 00 00 00 00 - mov [ebp-000000a8],00000000
+00997F8F - c7 45 cc 00 00 00 00       - mov [ebp-34],00000000
+00997F96 - eb 09                      - jmp 00997fa1
+00997F98 - 8b 4d cc                   - mov ecx,[ebp-34]			// 已經運算長度
+00997F9B - 83 c1 01                   - add ecx,01
+00997F9E - 89 4d cc                   - mov [ebp-34],ecx
+00997FA1 - 8b 55 cc                   - mov edx,[ebp-34]
+00997FA4 - 3b 55 c8                   - cmp edx,[ebp-38]			// 總長度
+00997FA7 - 0f 83 63 02 00 00          - jae 00998210
+00997FAD - 8b 45 cc                   - mov eax,[ebp-34]
+00997FB0 - 3b 85 74 ff ff ff          - cmp eax,[ebp-0000008c]
+00997FB6 - 0f 85 07 02 00 00          - jne 009981c3				// 運算
+00997FBC - e9 be 53 5c 00             - jmp 00f5d37f
+
+009981C3 - 33 c0                      - xor eax,eax
+009981C5 - 03 c2                      - add eax,edx
+009981C7 - 8b 55 18                   - mov edx,[ebp+18]			// Ptr 2 CRC
+009981CA - 83 e8 08                   - sub eax,08
+009981CD - 8b 02                      - mov eax,[edx]
+009981CF - c1 e8 08                   - shr eax,08
+009981D2 - 33 c9                      - xor ecx,ecx
+009981D4 - 8b c8                      - mov ecx,eax
+009981D6 - c1 e1 08                   - shl ecx,08
+009981D9 - 8b 4d 08                   - mov ecx,[ebp+08]			// 計算起始處
+009981DC - 03 4d cc                   - add ecx,[ebp-34]
+009981DF - 33 d2                      - xor edx,edx
+009981E1 - 8b 5d 08                   - mov ebx,[ebp+08]
+009981E4 - 8a 11                      - mov dl,[ecx]
+009981E6 - 80 c2 01                   - add dl,01
+009981E9 - 8b 4d 18                   - mov ecx,[ebp+18]
+009981EC - 8b 09                      - mov ecx,[ecx]
+009981EE - 80 ea 01                   - sub dl,01
+009981F1 - 33 ca                      - xor ecx,edx
+009981F3 - 81 e1 ff 00 00 00          - and ecx,000000ff
+009981F9 - 83 f1 16                   - xor ecx,16
+009981FC - 83 f1 16                   - xor ecx,16
+009981FF - 33 04 8d 44 8f d4 00       - xor eax,[ecx*4+00d48f44]	// CRC表（跟正常的CRC表不同）
+00998206 - 8b 55 18                   - mov edx,[ebp+18]
+00998209 - 89 02                      - mov [edx],eax
+0099820B - e9 88 fd ff ff             - jmp 00997f98
+00998210 - e9 77 6d 5c 00             - jmp 00f5ef8c
+
+
+
+
+009981C7 - 8b 55 18                   - mov edx,[ebp+18]
+009981CD - 8b 02                      - mov eax,[edx]
+009981CF - c1 e8 08                   - SHR EAX,08
+009981D9 - 8b 4d 08                   - mov ecx,[ebp+08]
+009981DC - 03 4d cc                   - add ecx,[ebp-34]
+009981E1 - 8b 5d 08                   - mov ebx,[ebp+08]
+009981E9 - 8b 4d 18                   - mov ecx,[ebp+18]
+009981EC - 8b 09                      - mov ecx,[ecx]              // [Ecx] = 讀取記憶體 (4 Bytes)
+009981F3 - 81 e1 ff 00 00 00          - and ecx,000000ff
+009981FF - 33 04 8d 44 8f d4 00       - xor eax,[ecx*4+00d48f44]   // 00d48f44 = Hash Table
+00998206 - 8b 55 18                   - mov edx,[ebp+18]
+00998209 - 89 02                      - mov [edx],eax
+0099820B - e9 88 fd ff ff             - jmp 00997f98

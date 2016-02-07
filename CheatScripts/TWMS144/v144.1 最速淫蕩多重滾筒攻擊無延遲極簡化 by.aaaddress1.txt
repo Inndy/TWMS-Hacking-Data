@@ -1,0 +1,8 @@
+//v144.1 最速淫蕩多重滾筒攻擊無延遲極簡化 by.aaaddress1
+00854980:
+nop
+nop
+nop
+nop
+nop
+nop

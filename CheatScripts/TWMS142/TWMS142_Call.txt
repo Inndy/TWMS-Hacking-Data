@@ -1,0 +1,15 @@
+//進入商場
+Push 00
+Push 00
+Mov  Ecx, [00CBFC60] // 004E7C53 - 8B 0D 60FCCB00             - mov ecx,[00CBFC60]
+Call 008EF336
+
+//換頻
+Push 00
+Push 05 // 頻道-1
+Call 004EC1F5
+
+//自動按鍵
+Mov  Ecx, [00CBFF70] // 同Kami-Teleport
+Push 001D0000 // Ctrl
+Call 0086CC02

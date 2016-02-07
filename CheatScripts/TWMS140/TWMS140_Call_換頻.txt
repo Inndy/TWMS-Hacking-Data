@@ -1,0 +1,12 @@
+void ChangeChannel(long Channel)
+{
+    DWORD ChangeChannel_Call = 0x004EBDD7;
+    __asm
+    {
+        Pushad
+        Push 0
+        Push [Channel]
+        Call dword ptr [ChangeChannel_Call]
+        Popad
+    }
+}

@@ -1,0 +1,26 @@
+[ENABLE]
+Alloc(MultiPick, 256)
+Label(ItemPick)
+Alloc(NowTimes, 4)
+
+MultiPick:
+Mov  [NowTimes], #9
+ItemPick:
+Push Eax
+Call 004D4AB7
+Mov  Ecx, [00CC7978]
+Mov  Eax, [Esp]
+Dec  [NowTimes]
+Cmp  [NowTimes], 00
+Jg   ItemPick
+Call 004D4AB7
+Jmp  0086D805
+
+0086D800:
+Jmp MultiPick
+[DISABLE]
+0086D800:
+call 004D4AB7
+
+Dealloc(MultiPick)
+Dealloc(NowTimes)

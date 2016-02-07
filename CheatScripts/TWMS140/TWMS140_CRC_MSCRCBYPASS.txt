@@ -1,0 +1,81 @@
+[Enable]
+Alloc(Hook, 256)
+Alloc(FakeDump, 10047488)
+Alloc(MyCopyMemory, 128)
+CreateThread(MyCopyMemory)
+
+MyCopyMemory:
+    mov     edi, FakeDump	//目標
+    mov     esi, 00401000	//來源
+    mov     ecx, 00265400	//長度 / 4
+    repe    movsd
+    ret
+
+Hook:
+//    Label(HSCRCBypass)
+//    Label(BackToOP)
+    Label(MSCRCBypass)
+    Label(BackToMS)
+    Label(MSCRCCrack)
+    Label(BackToCrack)
+
+/*
+HSCRCBypass:
+    Mov  Eax, Fs:[20]
+    Cmp  Eax, [Esp+0C]
+    Jne  BackToOP
+    Mov  Fs:[34], 57
+    Xor  Eax, Eax
+    Ret  000C
+
+BackToOP:
+    Push Ebp
+    Mov  Ebp, Esp
+    Jmp  OpenProcess+5
+*/
+MSCRCBypass:
+    Push Esi
+    Cmp  Esi, 00401000
+    Jnge BackToMS
+    Cmp  Esi, 00CD8000
+    Jg   BackToMS
+    Sub  Esi, 00401000
+    Add  Esi, FakeDump	//Dump
+    Mov  Ecx, [Ebp+18]
+    Mov  Ecx, [Ecx]
+    Xor  Ecx, Edx
+
+BackToMS:
+    And  Ecx, 000000FF
+    Pop  Esi
+    Jmp  0095EA19
+
+MSCRCCrack:
+    Cmp  Edx, 0095EA11
+    Jnge BackToCrack
+    Cmp  Edx, 0095EA19
+    Jg   BackToCrack
+    Sub  Edx, 00401000
+    Push Ebx
+    Add  Edx, FakeDump	//Dump
+    Pop  Ebx
+    Add  Esp, 4
+    Push [Edx]
+
+BackToCrack:
+    Jmp 00D9F825
+
+OpenProcess:
+    Jmp    HSCRCBypass
+0095EA13:    //33 ca 81 e1 ff 00 00 00
+    Jmp    MSCRCBypass
+    Nop
+00DA9AF5:    //e9 ?? ?? ff ff 01 de 81 c6
+    Jmp    MSCRCCrack
+004F1EF5:    //e8 ?? ?? ?? 00 51 51 8b cc
+    Nop
+    Nop
+    Nop
+    Nop
+    Nop
+[Disable]

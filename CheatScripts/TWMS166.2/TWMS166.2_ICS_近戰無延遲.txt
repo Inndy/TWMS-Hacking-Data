@@ -1,0 +1,23 @@
+[ENABLE]
+GlobalAlloc(GND_ICS,256)
+Label(GndHook)
+
+GND_ICS:
+Cmp [Esp], 00C2B885 //89 ? ? ? ? ? 83 ? ? ? ? ? ? 74 ? 8b ? ? ? ? ? 8b ? ? ? ? ? 3b
+Jne 00BF8826 //8b ? ? ? ? ? 85 ? 74 ? 83 ? ? eb ? 33 ? 85 ? 74 ? 83 ? ? c3 33 ? c3 8b ? ? ? ? ? 85 ? 74 ? 83[14/11]
+Mov [Esp], GndHook
+jmp 00BF8826
+
+GndHook:
+mov [ebp-00000278],eax
+cmp dword ptr [ebp-0000023C],00
+je 00C2B8B4
+mov eax,[ebp-00002D9C]
+mov ecx,[ebp-0000023C]
+jmp 00C2B8A8
+
+012C88F0:
+DD GND_ICS
+[DISABLE]
+012C88F0:
+DD 00BF8826

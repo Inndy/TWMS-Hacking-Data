@@ -1,0 +1,30 @@
+// TWMS151.2 ¨ú±o¦å¡BÅ]¡B¸gÅç­È
+// Auther: Inndy
+// ICS: [00CE8508] = 00897EDA, End At 008F684E
+// UpdateTime: 2013-01-10
+[ENABLE]
+Alloc(Params, 28)
+Alloc(Hook, 128)
+RegisterSymbol(Params)
+
+Hook:
+Add Esp, 04
+Pop [Params+00] // HpNow
+Pop [Params+04] // HpFull
+Pop [Params+08] // MpNow
+Pop [Params+0C] // MpFull
+Pop [Params+10] // ExpNow
+Pop [Params+14] // ExpFull
+Pop [Params+18] // Unknow
+Sub Esp, 20
+Jmp 0089433B
+
+008980A6: // [5/5] E8 ?? ?? ?? FF 83 EC ?? 8B CC 89 65 ?? 68 00 01 00 00 68 ?? ?? ?? 00 E8
+Call Hook
+[DISABLE]
+008980A6:
+db e8 90 c2 ff ff
+
+Dealloc(Params)
+Dealloc(Hook)
+UnregisterSymbol(Params)

@@ -1,0 +1,50 @@
+//TWMSv158.4全圖吸物
+//更新 放棄
+//原創 Cam1596
+//ICS. 冷雨楓痕
+[Enable]
+alloc(ItemVac,256)
+label(SetItemXY)
+alloc(PickNoDc,64)
+
+PickNoDc:
+cmp [esp], 00B002A4//1//
+jne 00570912//2//
+add esp, 04
+call 00570912//2
+xor eax,eax
+jmp 00B002A4//1
+
+ItemVac:
+cmp [esp],005287B4//3//
+je SetItemXY
+cmp [esp],00527A46//4//
+jne PtInRect
+xor eax,eax
+inc eax
+ret 000c
+
+SetItemXY:
+mov eax,[esp+08]
+mov [ebx],eax
+mov eax,[esp+0C]
+mov [ebx+04],eax
+xor eax,eax
+inc eax
+ret 000c
+
+0116FA2C://6
+dd ItemVac
+
+00ED2984://5
+DD PickNoDc
+
+[Disable]
+0116FA2C://6
+dd PtInRect
+
+00ED2984://5
+DD 00570912//2
+
+dealloc(ItemVac)
+dealloc(PickNoDc)

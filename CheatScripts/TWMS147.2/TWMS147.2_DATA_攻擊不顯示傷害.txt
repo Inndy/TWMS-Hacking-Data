@@ -1,0 +1,81 @@
+005E2F89 - 68 8c 00 00 00             - push 0000008c
+005E2F8E - b8 df 1b a4 00             - mov eax,00a41bdf
+005E2F93 - e8 11 54 3f 00             - call 009d83a9
+005E2F98 - 8b f1                      - mov esi,ecx
+
+005E3782 - 8b ce                      - mov ecx,esi
+005E3784 - e8 87 e9 01 00             - call 00602110
+//================================================
+00605541 - 6a 14                      - push 14
+00605543 - b8 d9 53 a4 00             - mov eax,00a453d9
+00605548 - e8 5c 2e 3d 00             - call 009d83a9
+0060554D - 8b f1                      - mov esi,ecx
+0060554F - e8 0b a4 e2 ff             - call 0042f95f
+00605554 - 8b c8                      - mov ecx,eax
+00605556 - e8 d6 b0 fc ff             - call 005d0631
+0060555B - 8b 46 28                   - mov eax,[esi+28]
+0060555E - 89 45 f0                   - mov [ebp-10],eax
+
+00605568 - 50                         - push eax
+00605569 - e8 51 de ff ff             - call 006033bf
+0060556E - 59                         - pop ecx
+0060556F - 8b 48 04                   - mov ecx,[eax+04]
+00605572 - 8b 01                      - mov eax,[ecx]
+00605574 - ff 10                      - call dword ptr [eax] // Eax == 00BC4A4C, [Eax] == 00602300
+
+00602300 - 68 bc 00 00 00             - push 000000bc
+00602305 - b8 ab 51 a4 00             - mov eax,00a451ab
+0060230A - e8 9a 60 3d 00             - call 009d83a9
+0060230F - 8b f1                      - mov esi,ecx
+
+00602DF3 - 8b ce                      - mov ecx,esi
+00602DF5 - e8 16 f3 ff ff             - call 00602110
+//================================================
+00602110 - 55                         - push ebp
+00602111 - 8b ec                      - mov ebp,esp
+00602113 - 83 ec 3c                   - sub esp,3c
+00602116 - 53                         - push ebx
+00602117 - 8b d9                      - mov ebx,ecx
+00602119 - 8b 83 e8 04 00 00          - mov eax,[ebx+000004e8]
+0060211F - 89 45 f8                   - mov [ebp-08],eax
+//================================================
+0060212F - 8d 45 f8                   - lea eax,[ebp-08]
+00602132 - 50                         - push eax
+00602133 - e8 62 c9 fe ff             - call 005eea9a
+00602138 - 8b f0                      - mov esi,eax   // Esi來源
+//================================================
+006021F6 - 8D 46 54                   - lea eax,[esi+54]
+006021F9 - 50                         - push eax
+006021FA - E8 6D 32 E0 FF             - call 0040546C // Nop掉
+006021FF - FF 76 50                   - push [esi+50]
+00602202 - 89 45 E8                   - mov [ebp-18],eax
+//================================================
+00602288 - FF 75 E8                   - push [ebp-18] // 改這個
+0060228B - FF 75 E4                   - push [ebp-1C]
+0060228E - FF 75 E0                   - push [ebp-20]
+00602291 - FF 75 DC                   - push [ebp-24]
+00602294 - FF 75 D8                   - push [ebp-28]
+00602297 - FF 75 D4                   - push [ebp-2C]
+0060229A - FF 75 D0                   - push [ebp-30]
+0060229D - E8 83 EC FF FF             - call 00600F25 // 往這裡面找ICS點
+//================================================
+00600F96 - FF 50 50                   - call dword ptr [eax+50]
+//================================================
+[ENABLE]
+Alloc(Hook, 32)
+
+Hook:
+Cmp  [Esp], 00600F99
+Jne  008C0670
+Cmp  [Ebp+04], 006022A2 // 8d 45 cc 50 8b cb e8 ?? ?? ff ff ff
+Jne  008C0670           // 6a 08 b8 ?? ?? ?? 00 e8 ?? ?? ?? 00 8b 0d ?? ?? ?? 00 85 c9 74
+Mov  [Ebp+20], 60000000
+Jmp  008C0670
+
+00C2F524:
+DD   Hook
+[DISABLE]
+00C2F524: // [1/1]
+DD   008C0670
+
+Dealloc(Hook)

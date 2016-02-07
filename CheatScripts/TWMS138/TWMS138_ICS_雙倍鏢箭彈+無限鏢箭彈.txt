@@ -1,0 +1,111 @@
+[enable]
+Alloc(DoubleFire_ICS, 64)
+Alloc(DoubleFire_1, 512)
+Alloc(DoubleFire_2, 128)
+Alloc(DoubleFire_3, 128)
+Label(Dark00837eca)
+Label(Dark00837f44)
+
+DoubleFire_ICS:
+Cmp [Esp], 00837EA5
+Jne 0089365D
+Mov [Esp], DoubleFire_1
+Jmp 0089365D
+
+DoubleFire_1:
+DB   85 c0                              //00837EA5 - test eax,eax
+je Dark00837eca                         //00837EA7 - je 00837eca
+DB   83 a5 60 f3 ff ff 00               //00837EA9 - and dword ptr [ebp-00000ca0],00
+DB   83 4d fc ff                        //00837EB0 - or dword ptr [ebp-04],ff
+DB   8d 8d 0c fe ff ff                  //00837EB4 - lea ecx,[ebp-000001f4]
+call 00820b1f                           //00837EBA - call 00820b1f
+DB   8b 85 60 f3 ff ff                  //00837EBF - mov eax,[ebp-00000ca0]
+jmp 0083b8f2                            //00837EC5 - jmp 0083b8f2
+Dark00837eca:
+DB   81 bd 08 fe ff ff a9 12 16 02      //00837ECA - cmp [ebp-000001f8],021612a9
+je Dark00837f44                         //00837ED4 - je 00837f44
+DB   81 bd 08 fe ff ff 51 99 17 02      //00837ED6 - cmp [ebp-000001f8],02179951
+je Dark00837f44                         //00837EE0 - je 00837f44
+DB   ff b5 08 fe ff ff                  //00837EE2 - push [ebp-000001f8]
+call 006433a9                           //00837EE8 - call 006433a9
+DB   59                                 //00837EED - pop ecx
+DB   85 c0                              //00837EEE - test eax,eax
+je Dark00837f44                         //00837EF0 - je 00837f44
+DB   8d 85 d4 f4 ff ff                  //00837EF2 - lea eax,[ebp-00000b2c]
+DB   50                                 //00837EF8 - push eax
+DB   8d 85 08 fe ff ff                  //00837EF9 - lea eax,[ebp-000001f8]
+DB   50                                 //00837EFF - push eax
+DB   8b 8d 9c ea ff ff                  //00837F00 - mov ecx,[ebp-00001564]
+DB   81 c1 ec 55 00 00                  //00837F06 - add ecx,000055ec
+call 0045fc39                           //00837F0C - call 0045fc39
+DB   85 c0                              //00837F11 - test eax,eax
+je Dark00837f44                         //00837F13 - je 00837f44
+DB   8b 85 b8 fe ff ff                  //00837F15 - mov eax,[ebp-00000148]
+DB   3b 85 d4 f4 ff ff                  //00837F1B - cmp eax,[ebp-00000b2c]
+jnl Dark00837f44                        //00837F21 - jnl 00837f44
+DB   83 a5 5c f3 ff ff 00               //00837F23 - and dword ptr [ebp-00000ca4],00
+DB   83 4d fc ff                        //00837F2A - or dword ptr [ebp-04],ff
+DB   8d 8d 0c fe ff ff                  //00837F2E - lea ecx,[ebp-000001f4]
+call 00820b1f                           //00837F34 - call 00820b1f
+DB   8b 85 5c f3 ff ff                  //00837F39 - mov eax,[ebp-00000ca4]
+jmp 0083b8f2                            //00837F3F - jmp 0083b8f2
+Dark00837f44:
+DB   83 7d 08 00                        //00837F44 - cmp dword ptr [ebp+08],00
+Jne DoubleFire_2
+DB   8b 8d 9c ea ff ff                  //00837F4E - mov ecx,[ebp-00001564]
+DB   81 c1 90 00 00 00                  //00837F54 - add ecx,00000090
+call 0042023e                           //00837F5A - call 0042023e
+DB   85 c0                              //00837F5F - test eax,eax
+Je DoubleFire_2
+DB   ff b5 dc fd ff ff                  //00837F67 - push [ebp-00000224]
+DB   ff b5 e0 fd ff ff                  //00837F6D - push [ebp-00000220]
+call 00644ce2                           //00837F73 - call 00644ce2
+DB   59                                 //00837F78 - pop ecx
+DB   59                                 //00837F79 - pop ecx
+DB   85 c0                              //00837F7A - test eax,eax
+Jne DoubleFire_2
+Jmp 00837F7E
+
+DoubleFire_2:
+DB   ff 75 c4                           //00837FEB - push [ebp-3c]
+DB   ff 75 0c                           //00837FEE - push [ebp+0c]
+DB   ff 75 08                           //00837FF1 - push [ebp+08]
+DB   ff b5 e0 fd ff ff                  //00837FF4 - push [ebp-00000220]
+DB   8b 85 9c ea ff ff                  //00837FFA - mov eax,[ebp-00001564]
+DB   ff b0 d8 03 00 00                  //838000 - push [eax+000003d8]
+call 00665eba                           //838006 - call 00665eba
+DB   83 c4 14                           //0083800B - add esp,14
+DB   89 45 c8                           //0083800E - mov [ebp-38],eax
+DB   83 7d c8 00                        //838011 - cmp dword ptr [ebp-38],00
+Jnl DoubleFire_3
+Jmp 00838017
+
+
+DoubleFire_3:
+DB   8b 8d dc fd ff ff                  //838084 - mov ecx,[ebp-00000224]
+call 006755e0                           //0083808A - call 006755e0
+DB   f7 d8                              //0083808F - neg eax
+DB   1b c0                              //838091 - sbb eax,eax
+DB   f7 d8                              //838093 - neg eax
+DB   89 85 bc fe ff ff                  //838095 - mov [ebp-00000144],eax
+DB   8b 8d dc fd ff ff                  //0083809B - mov ecx,[ebp-00000224]
+//call 00675cd9                           //008380A1 - call 00675cd9
+DB   f7 d8                              //008380A6 - neg eax
+DB   1b c0                              //008380A8 - sbb eax,eax
+DB   f7 d8                              //008380AA - neg eax
+DB   89 85 fc fd ff ff                  //008380AC - mov [ebp-00000204],eax
+DB   8b 8d dc fd ff ff                  //008380B2 - mov ecx,[ebp-00000224]
+Xor eax,eax
+Inc eax
+Jmp 008380B8
+
+00B30FD8:
+DD DoubleFire_ICS
+[disable]
+00B30FD8:
+DD 0089365D
+
+DeAlloc(DoubleFire_ICS)
+DeAlloc(DoubleFire_1)
+DeAlloc(DoubleFire_2)
+DeAlloc(DoubleFire_3)

@@ -1,0 +1,651 @@
+007所改位置
+/*-------------------------------------------------------------------------------*/
+004B0C2A    90              nop
+004B0C2B    90              nop
+004B0C2C    90              nop
+004B0C2D    90              nop
+004B0C2E    90              nop
+004B0C2F    90              nop
+/*-------------------------------------------------------------------------------*/
+004B1005    83C0 00         add eax,0
+/*-------------------------------------------------------------------------------*/
+004CC1E9    33DB            xor ebx,ebx
+/*-------------------------------------------------------------------------------*/
+/*----原call 007E12EF----*/
+004CE420    90              nop
+004CE421    90              nop
+004CE422    90              nop
+004CE423    90              nop
+004CE424    90              nop
+/*-------------------------------------------------------------------------------*/
+005832CE  - E9 5D8EA80F     jmp 1000C130
+/*-------------------------------------------------------------------------------*/
+00585110  - E9 BB6DA80F     jmp 1000BED0
+/*-------------------------------------------------------------------------------*/
+00585596    83C0 00         add eax,0
+/*-------------------------------------------------------------------------------*/
+005869D9    90              nop
+005869DA  - E9 5156A80F     jmp 1000C030
+/*-------------------------------------------------------------------------------*/
+005AFCBC  - E9 AFC3A50F     jmp 1000C070
+/*-------------------------------------------------------------------------------*/
+005BC2D3    83C0 00         add eax,0
+/*-------------------------------------------------------------------------------*/
+00610069  - E9 82FBA00F     jmp 1001FBF0
+0061006E    8800            mov byte ptr ds:[eax],al
+/*-------------------------------------------------------------------------------*/
+/*---躲偵測?(本人一直不相信007是用封包去躲偵測，我只認為他是用封包防偵測)----*/
+00633A42    90              nop
+00633A43    90              nop
+00633A44    90              nop
+00633A45    90              nop
+00633A46    90              nop
+00633A47    90              nop
+/*-------------------------------------------------------------------------------*/
+006D0374    90              nop
+006D0375    90              nop
+006D0376    90              nop
+006D0377    90              nop
+006D0378    90              nop
+006D0379    90              nop
+/*-------------------------------------------------------------------------------*/
+/*----怪怪的喔----*/
+0074F662    B8 05000000     mov eax,5
+/*-------------------------------------------------------------------------------*/
+00750617    90              nop
+00750618    90              nop
+00750619    90              nop
+0075061A    90              nop
+0075061B    90              nop
+0075061C    90              nop
+/*-------------------------------------------------------------------------------*/
+0075063C    90              nop
+0075063D    90              nop
+0075063E    90              nop
+0075063F    90              nop
+00750640    90              nop
+00750641    90              nop
+/*-------------------------------------------------------------------------------*/
+0075067F    E8 2C0F8B0F     call 100015B0
+/*-------------------------------------------------------------------------------*/
+007506AF    90              nop
+007506B0    90              nop
+007506B1    90              nop
+007506B2    90              nop
+007506B3    90              nop
+007506B4    90              nop
+/*-------------------------------------------------------------------------------*/
+007531A1    90              nop
+007531A2    90              nop
+007531A3    90              nop
+007531A4    90              nop
+007531A5    90              nop
+007531A6    90              nop
+/*-------------------------------------------------------------------------------*/
+00762EB5    90              nop
+00762EB6  - E9 758C8A0F     jmp 1000BB30
+/*-------------------------------------------------------------------------------*/
+/*----動作很大喔----*/
+0076ACD4    68 62B07600     push 76B062
+0076ACD9    C3              retn
+0076ACDA    42              inc edx
+0076ACDB    6F              outs dx,dword ptr es:[edi]
+0076ACDC    40              inc eax
+0076ACDD    017410 81       add dword ptr ds:[eax+edx-7F],esi
+0076ACE1    BD 58FEFFFF     mov ebp,-1A8
+0076ACE6    0E              push cs
+0076ACE7    2D 31010F85     sub eax,850F0131
+0076ACEC    93              xchg eax,ebx
+0076ACED    0000            add byte ptr ds:[eax],al
+0076ACEF    0083 7D84000F   add byte ptr ds:[ebx+F00847D],al
+0076ACF5    8E89 0000008B   mov cs,word ptr ds:[ecx+8B000000]
+0076ACFB    8D1CF5 FFFFE842 lea ebx,dword ptr ds:[esi*8+42E8FFFF]
+0076AD02    84E0            test al,ah
+0076AD04    FF85 C0757A8B   inc dword ptr ss:[ebp+8B7A75C0]
+0076AD0A    8D18            lea ebx,dword ptr ds:[eax]
+0076AD0C    E8 FFFFE840     call 415FAD10
+0076AD11    E8 FDFF8B85     call 8602AD13
+0076AD16    18E8            sbb al,ch
+0076AD18    FFFF            ???  
+/*-------------------------------------------------------------------------------*/
+00780BEC  - E9 0FB0880F     jmp 1000BC00
+/*-------------------------------------------------------------------------------*/
+007AE4AE    E8 ADE0850F     call 1000C560
+/*-------------------------------------------------------------------------------*/
+007B0063  - E9 58B9850F     jmp 1000B9C0
+/*-------------------------------------------------------------------------------*/
+007B9173  - E9 0885840F     jmp 10001680
+007B9178  ^ 75 FC           jnz short 007B9176
+/*-------------------------------------------------------------------------------*/
+007CCEF6    90              nop
+007CCEF7    90              nop
+007CCEF8    90              nop
+007CCEF9    90              nop
+007CCEFA    90              nop
+/*-------------------------------------------------------------------------------*/
+/*----{push 174B->push 6E8意義何在?}----*/
+007D2792    68 E8060000     push 6E8
+/*-------------------------------------------------------------------------------*/
+007DC823    90              nop
+007DC824    90              nop
+007DC825    90              nop
+007DC826    90              nop
+007DC827    90              nop
+007DC828    90              nop
+/*-------------------------------------------------------------------------------*/
+/*----微修改?(jnz 007FB4E8->jnz 007FB4F4)----*/
+007FB437    0F85 B7000000   jnz 007FB4F4
+/*-------------------------------------------------------------------------------*/
+0080CA87    C3              retn
+/*-------------------------------------------------------------------------------*/
+008155DE    33C0            xor eax,eax
+008155E0    C2 0C00         retn 0C
+/*-------------------------------------------------------------------------------*/
+0083C58A  - E9 D1347E0F     jmp 1001FA60
+/*-------------------------------------------------------------------------------*/
+0083CB8C  - E9 2F2F7E0F     jmp 1001FAC0
+/*-------------------------------------------------------------------------------*/
+008EB000    0000            add byte ptr ds:[eax],al
+008EB002    78 04           js short 008EB008
+008EB004    1801            sbb byte ptr ds:[ecx],al
+008EB006    78 04           js short 008EB00C
+008EB008    45              inc ebp
+008EB009    0B78 04         or edi,dword ptr ds:[eax+4]
+008EB00C    27              daa
+008EB00D    0C 78           or al,78
+008EB00F    04 00           add al,0
+008EB011    0079 04         add byte ptr ds:[ecx+4],bh
+008EB014    0E              push cs
+008EB015    05 79041006     add eax,6100479
+008EB01A    79 04           jns short 008EB020
+008EB01C    FD              std
+008EB01D    06              push es
+008EB01E    79 04           jns short 008EB024
+008EB020    0B08            or ecx,dword ptr ds:[eax]
+008EB022    79 04           jns short 008EB028
+008EB024    E1 08           loopde short 008EB02E
+008EB026    79 04           jns short 008EB02C
+008EB028    6209            bound ecx,qword ptr ds:[ecx]
+008EB02A    79 04           jns short 008EB030
+008EB02C    49              dec ecx
+008EB02D    0A79 04         or bh,byte ptr ds:[ecx+4]
+008EB030    0000            add byte ptr ds:[eax],al
+008EB032    0000            add byte ptr ds:[eax],al
+008EB034    8ECC            mov cs,sp
+008EB036    E2 6B           loopd short 008EB0A3
+/*-------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------*/
+/*---------------------------------------結束------------------------------------*/
+/*-------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------*/
+
+
+
+★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆
+★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+
+
+
+/*-------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------*/
+以下不知道是不是007修改(我會放上來就是懷疑"是")
+/*-------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------*/
+008EB06A    EC              in al,dx
+008EB06B    01A3 00EC01A7   add dword ptr ds:[ebx+A701EC00],esp
+008EB071    01EC            add esp,ebp
+008EB073    0178 02         add dword ptr ds:[eax+2],edi
+008EB076    EC              in al,dx
+008EB077    01CE            add esi,ecx
+008EB079    06              push es
+008EB07A    EC              in al,dx
+008EB07B    01AC0A EC01B00B add dword ptr ds:[edx+ecx+BB001EC],ebp
+008EB082    EC              in al,dx
+008EB083    0162 0C         add dword ptr ds:[edx+C],esp
+008EB086    EC              in al,dx
+008EB087    0100            add dword ptr ds:[eax],eax
+008EB089    00ED            add ch,ch
+008EB08B    010E            add dword ptr ds:[esi],ecx
+008EB08D    04 ED           add al,0ED
+008EB08F    01CF            add edi,ecx
+008EB091    04 ED           add al,0ED
+008EB093    016E 05         add dword ptr ds:[esi+5],ebp
+008EB096    ED              in eax,dx
+008EB097    0122            add dword ptr ds:[edx],esp
+008EB099    06              push es
+008EB09A    ED              in eax,dx
+008EB09B    0162 07         add dword ptr ds:[edx+7],esp
+008EB09E    ED              in eax,dx
+008EB09F    0191 09ED0196   add dword ptr ds:[ecx+9601ED09],edx
+008EB0A5    09ED            or ebp,ebp
+008EB0A7    0129            add dword ptr ds:[ecx],ebp
+008EB0A9    0D ED010000     or eax,1ED
+008EB0AE    EF              out dx,eax
+008EB0AF    0107            add dword ptr ds:[edi],eax
+008EB0B1    04 EF           add al,0EF
+008EB0B3    01EA            add edx,ebp
+008EB0B5    04 EF           add al,0EF
+008EB0B7    0129            add dword ptr ds:[ecx],ebp
+008EB0B9    09EF            or edi,ebp
+008EB0BB    0100            add dword ptr ds:[eax],eax
+008EB0BD    0035 02000036   add byte ptr ds:[36000002],dh
+008EB0C3    0243 10         add al,byte ptr ds:[ebx+10]
+008EB0C6    36:0272 1C      add dh,byte ptr ss:[edx+1C]
+008EB0CA    36:0219         add bl,byte ptr ss:[ecx]
+008EB0CD    1D 3602301E     sbb eax,1E300236
+008EB0D2    36:02B1 1E36020>add dh,byte ptr ss:[ecx+2361E]
+008EB0D9    0037            add byte ptr ds:[edi],dh
+008EB0DB    02B2 003702B5   add dh,byte ptr ds:[edx+B5023700]
+008EB0E1    05 3702AB07     add eax,7AB0237
+008EB0E6    37              aaa
+008EB0E7    02440A 37       add al,byte ptr ds:[edx+ecx+37]
+008EB0EB    0232            add dh,byte ptr ds:[edx]
+008EB0ED    0B37            or esi,dword ptr ds:[edi]
+008EB0EF    02D6            add dl,dh
+008EB0F1    2D 9B770000     sub eax,779B
+008EB0F6    3802            cmp byte ptr ds:[edx],al
+008EB0F8    4E              dec esi
+008EB0F9    05 38025305     add eax,5530238
+008EB0FE    3802            cmp byte ptr ds:[edx],al
+008EB100    E2 05           loopd short 008EB107
+008EB102    3802            cmp byte ptr ds:[edx],al
+008EB104    E7 05           out 5,eax
+008EB106    3802            cmp byte ptr ds:[edx],al
+008EB108    53              push ebx
+008EB109    07              pop es
+008EB10A    3802            cmp byte ptr ds:[edx],al
+008EB10C    D807            fadd dword ptr ds:[edi]
+008EB10E    3802            cmp byte ptr ds:[edx],al
+008EB110    8508            test dword ptr ds:[eax],ecx
+008EB112    3802            cmp byte ptr ds:[edx],al
+008EB114    2F              das
+008EB115    0938            or dword ptr ds:[eax],edi
+008EB117    02C3            add al,bl
+008EB119    0938            or dword ptr ds:[eax],edi
+008EB11B    025C0A 38       add bl,byte ptr ds:[edx+ecx+38]
+008EB11F    02540B 38       add dl,byte ptr ds:[ebx+ecx+38]
+008EB123    0203            add al,byte ptr ds:[ebx]
+008EB125    0C 38           or al,38
+008EB127    02CD            add cl,ch
+008EB129    0C 38           or al,38
+008EB12B    02F8            add bh,al
+008EB12D    0D 38020000     or eax,238
+008EB132    EB 02           jmp short 008EB136
+008EB134    E8 05EB0200     call 00919C3E
+008EB139    00EC            add ah,ch
+008EB13B    0227            add ah,byte ptr ds:[edi]
+008EB13D    0BEC            or ebp,esp
+008EB13F    02E1            add ah,cl
+008EB141    0BEC            or ebp,esp
+008EB143    02E6            add ah,dh
+008EB145    0BEC            or ebp,esp
+008EB147    0251 0C         add dl,byte ptr ds:[ecx+C]
+008EB14A    EC              in al,dx
+008EB14B    0256 0C         add dl,byte ptr ds:[esi+C]
+008EB14E    EC              in al,dx
+008EB14F    0200            add al,byte ptr ds:[eax]
+008EB151    0011            add byte ptr ds:[ecx],dl
+008EB153    0370 05         add esi,dword ptr ds:[eax+5]
+008EB156    1103            adc dword ptr ds:[ebx],eax
+008EB158    0306            add eax,dword ptr ds:[esi]
+008EB15A    1103            adc dword ptr ds:[ebx],eax
+008EB15C    E0 0E           loopdne short 008EB16C
+008EB15E    1103            adc dword ptr ds:[ebx],eax
+008EB160    0000            add byte ptr ds:[eax],al
+008EB162    1203            adc al,byte ptr ds:[ebx]
+008EB164    6202            bound eax,qword ptr ds:[edx]
+008EB166    1203            adc al,byte ptr ds:[ebx]
+008EB168    67:0212         add dl,byte ptr ss:[bp+si]
+008EB16B    0300            add eax,dword ptr ds:[eax]
+008EB16D    0023            add byte ptr ds:[ebx],ah
+008EB16F    0300            add eax,dword ptr ds:[eax]
+008EB171    002403          add byte ptr ds:[ebx+eax],ah
+008EB174    0000            add byte ptr ds:[eax],al
+008EB176    2204DA          and al,byte ptr ds:[edx+ebx*8]
+008EB179    0D 2204DF0D     or eax,0DDF0422
+008EB17E    2204A5 0E2204AA and al,byte ptr ds:[AA04220E]
+008EB185    0E              push cs
+008EB186    22040D 0F220400 and al,byte ptr ds:[ecx+4220F]
+008EB18D    0023            add byte ptr ds:[ebx],ah
+008EB18F    04 8B           add al,8B
+008EB191    0123            add dword ptr ds:[ebx],esp
+008EB193    04 4A           add al,4A
+008EB195    0223            add ah,byte ptr ds:[ebx]
+008EB197    04 41           add al,41
+008EB199    0323            add esp,dword ptr ds:[ebx]
+008EB19B    04 46           add al,46
+008EB19D    0323            add esp,dword ptr ds:[ebx]
+008EB19F    04 4B           add al,4B
+008EB1A1    0323            add esp,dword ptr ds:[ebx]
+008EB1A3    04 DE           add al,0DE
+008EB1A5    0323            add esp,dword ptr ds:[ebx]
+008EB1A7    04 70           add al,70
+008EB1A9    04 23           add al,23
+008EB1AB    04 3E           add al,3E
+008EB1AD    0D 2304A077     or eax,77A00423
+008EB1B2    9A 7760779A 770>call far 0077:9A776077
+008EB1B9    002404          add byte ptr ss:[esp+eax],ah
+008EB1BC    70 0E           jo short 008EB1CC
+008EB1BE    24 04           and al,4
+008EB1C0    0000            add byte ptr ds:[eax],al
+008EB1C2    25 04DE0025     and eax,2500DE04
+008EB1C7    04 D6           add al,0D6
+008EB1C9    0A25 04850B25   or ah,byte ptr ds:[250B8504]
+008EB1CF    04 07           add al,7
+008EB1D1    0D 25040C0D     or eax,0D0C0425
+008EB1D6    25 04770D25     and eax,250D7704
+008EB1DB    04 7C           add al,7C
+008EB1DD    0D 25040000     or eax,425
+008EB1E2    26:04 38        add al,38
+008EB1E5    0226            add ah,byte ptr ds:[esi]
+008EB1E7    04 18           add al,18
+008EB1E9    05 26041C07     add eax,71C0426
+008EB1EE    26:04 EB        add al,0EB
+008EB1F1    07              pop es
+008EB1F2    26:04 F9        add al,0F9
+008EB1F5    0A26            or ah,byte ptr ds:[esi]
+008EB1F7    04 00           add al,0
+008EB1F9    0027            add byte ptr ds:[edi],ah
+008EB1FB    04 00           add al,0
+008EB1FD    0028            add byte ptr ds:[eax],ch
+008EB1FF    04 22           add al,22
+008EB201    1828            sbb byte ptr ds:[eax],ch
+008EB203    04 28           add al,28
+008EB205    1828            sbb byte ptr ds:[eax],ch
+008EB207    04 B0           add al,0B0
+008EB209    1A28            sbb ch,byte ptr ds:[eax]
+008EB20B    04 42           add al,42
+008EB20D    1D 2804221E     sbb eax,1E220428
+008EB212    2804DF          sub byte ptr ds:[edi+ebx*8],al
+008EB215    1E              push ds
+008EB216    2804E4          sub byte ptr ss:[esp],al
+008EB219    1E              push ds
+008EB21A    280400          sub byte ptr ds:[eax+eax],al
+008EB21D    0029            add byte ptr ds:[ecx],ch
+008EB21F    04 B2           add al,0B2
+008EB221    0029            add byte ptr ds:[ecx],ch
+008EB223    04 4F           add al,4F
+008EB225    217A 77         and dword ptr ds:[edx+77],edi
+008EB228    B7 00           mov bh,0
+008EB22A    290400          sub dword ptr ds:[eax+eax],eax
+008EB22D    002A            add byte ptr ds:[edx],ch
+008EB22F    04 87           add al,87
+008EB231    122A            adc ch,byte ptr ds:[edx]
+008EB233    04 2D           add al,2D
+008EB235    132A            adc ebp,dword ptr ds:[edx]
+008EB237    04 7D           add al,7D
+008EB239    14 2A           adc al,2A
+008EB23B    04 31           add al,31
+008EB23D    15 2A041616     adc eax,1616042A
+008EB242    2A04B1          sub al,byte ptr ds:[ecx+esi*4]
+008EB245    1B2A            sbb ebp,dword ptr ds:[edx]
+008EB247    04 60           add al,60
+008EB249    1C 2A           sbb al,2A
+008EB24B    04 3C           add al,3C
+008EB24D    1D 2A040000     sbb eax,42A
+008EB252    0000            add byte ptr ds:[eax],al
+/*-------------------------------------------------------------------------------*/
+008EB27B    0000            add byte ptr ds:[eax],al
+008EB27D    002B            add byte ptr ds:[ebx],ch
+008EB27F    04 4A           add al,4A
+008EB281    022B            add ch,byte ptr ds:[ebx]
+008EB283    04 61           add al,61
+008EB285    05 2B04B108     add eax,8B1042B
+008EB28A    2B0400          sub eax,dword ptr ds:[eax+eax]
+008EB28D    002C04          add byte ptr ss:[esp+eax],ch
+008EB290    65:7D C0        jge short 008EB253
+008EB293    0000            add byte ptr ds:[eax],al
+008EB295    002D 04000032   add byte ptr ds:[32000004],ch
+008EB29B    04 7A           add al,7A
+008EB29D    0C 32           or al,32
+008EB29F    04 00           add al,0
+008EB2A1    0033            add byte ptr ds:[ebx],dh
+008EB2A3    04 5D           add al,5D
+008EB2A5    0133            add dword ptr ds:[ebx],esi
+008EB2A7    04 19           add al,19
+008EB2A9    04 33           add al,33
+008EB2AB    04 6E           add al,6E
+008EB2AD    06              push es
+008EB2AE    3304EA          xor eax,dword ptr ds:[edx+ebp*8]
+008EB2B1    0833            or byte ptr ds:[ebx],dh
+008EB2B3    04 00           add al,0
+008EB2B5    003404          add byte ptr ss:[esp+eax],dh
+008EB2B8    2A03            sub al,byte ptr ds:[ebx]
+008EB2BA    34 04           xor al,4
+008EB2BC    0000            add byte ptr ds:[eax],al
+008EB2BE    54              push esp
+008EB2BF    04 9B           add al,9B
+008EB2C1    095404 64       or dword ptr ss:[esp+eax+64],edx
+008EB2C5    0D 54040000     or eax,454
+008EB2CA    55              push ebp
+008EB2CB    04 4B           add al,4B
+008EB2CD    0355 04         add edx,dword ptr ss:[ebp+4]
+008EB2D0    8E0455 04E20655 mov es,word ptr ds:[edx*2+5506E204]
+008EB2D7    04 0D           add al,0D
+008EB2D9    0955 04         or dword ptr ss:[ebp+4],edx
+008EB2DC    5F              pop edi
+008EB2DD    0955 04         or dword ptr ss:[ebp+4],edx
+008EB2E0    0000            add byte ptr ds:[eax],al
+008EB2E2    77 04           ja short 008EB2E8
+008EB2E4    1C 03           sbb al,3
+008EB2E6    77 04           ja short 008EB2EC
+008EB2E8    2C 06           sub al,6
+008EB2EA    77 04           ja short 008EB2F0
+008EB2EC    3E:0877 04      or byte ptr ds:[edi+4],dh
+008EB2F0    8E08            mov cs,word ptr ds:[eax]                 ; 不允許分段 CS
+008EB2F2    77 04           ja short 008EB2F8
+008EB2F4    53              push ebx
+008EB2F5    0C 77           or al,77
+008EB2F7    04 00           add al,0
+008EB2F9    0000            add byte ptr ds:[eax],al
+008EB2FB    00ED            add ch,ch
+/*-------------------------------------------------------------------------------*/
+008EB36E    CB              retf
+008EB36F    0100            add dword ptr ds:[eax],eax
+008EB371    0000            add byte ptr ds:[eax],al
+008EB373    0010            add byte ptr ds:[eax],dl
+008EB375    1D E501101E     sbb eax,1E1001E5
+008EB37A    E5 01           in eax,1
+008EB37C    90              nop
+008EB37D    1F              pop ds
+008EB37E    E5 01           in eax,1
+008EB380    90              nop
+008EB381    21E5            and ebp,esp
+008EB383    0100            add dword ptr ds:[eax],eax
+008EB385    0000            add byte ptr ds:[eax],al
+008EB387    00F0            add al,dh
+008EB389    91              xchg eax,ecx
+/*-------------------------------------------------------------------------------*/
+00A6C557    001CB6          add byte ptr ds:[esi+esi*4],bl
+00A6C55A    B0 14           mov al,14
+00A6C55C    7F 00           jg short 00A6C55E
+00A6C55E    0000            add byte ptr ds:[eax],al
+00A6C560    6300            arpl word ptr ds:[eax],ax
+00A6C562    0000            add byte ptr ds:[eax],al
+00A6C564    64:0000         add byte ptr fs:[eax],al
+00A6C567    0063 00         add byte ptr ds:[ebx],ah
+00A6C56A    0000            add byte ptr ds:[eax],al
+00A6C56C    6C              ins byte ptr es:[edi],dx
+00A6C56D    5D              pop ebp
+00A6C56E    92              xchg eax,edx
+/*-------------------------------------------------------------------------------*/
+00A6F36F    00E4            add ah,ah
+00A6F371    08A40D 1F000000 or byte ptr ss:[ebp+ecx+1F],ah
+00A6F378    1100            adc dword ptr ds:[eax],eax
+00A6F37A    0000            add byte ptr ds:[eax],al
+00A6F37C    64:0000         add byte ptr fs:[eax],al
+/*-------------------------------------------------------------------------------*/
+00A7B72B    005CA6 51       add byte ptr ds:[esi+51],bl
+00A7B72F    14 FF           adc al,0FF
+00A7B731    0300            add eax,dword ptr ds:[eax]
+00A7B733    00B401 00006400 add byte ptr ds:[ecx+eax+640000],dh
+00A7B73A    0000            add byte ptr ds:[eax],al
+00A7B73C    1F              pop ds
+00A7B73D    0300            add eax,dword ptr ds:[eax]
+/*-------------------------------------------------------------------------------*/
+00A7BBD7    004CA8 30       add byte ptr ds:[eax+ebp*4+30],cl
+00A7BBDB    007F 00         add byte ptr ds:[edi],bh
+00A7BBDE    0000            add byte ptr ds:[eax],al
+00A7BBE0    3800            cmp byte ptr ds:[eax],al
+00A7BBE2    0000            add byte ptr ds:[eax],al
+00A7BBE4    64:0000         add byte ptr fs:[eax],al
+00A7BBE7    0063 00         add byte ptr ds:[ebx],ah
+00A7BBEA    0000            add byte ptr ds:[eax],al
+00A7BBEC    44              inc esp
+00A7BBED    9B              wait
+00A7BBEE    97              xchg eax,edi
+/*-------------------------------------------------------------------------------*/
+00A7F3FF    002CA0          add byte ptr ds:[eax],ch
+00A7F402    3000            xor byte ptr ds:[eax],al
+00A7F404    7F 00           jg short 00A7F406
+00A7F406    0000            add byte ptr ds:[eax],al
+00A7F408    3B00            cmp eax,dword ptr ds:[eax]
+00A7F40A    0000            add byte ptr ds:[eax],al
+00A7F40C    64:0000         add byte ptr fs:[eax],al
+00A7F40F    0063 00         add byte ptr ds:[ebx],ah
+00A7F412    0000            add byte ptr ds:[eax],al
+00A7F414    0000            add byte ptr ds:[eax],al
+00A7F416    0000            add byte ptr ds:[eax],al
+00A7F418    44              inc esp
+00A7F419    9B              wait
+00A7F41A    97              xchg eax,edi
+/*-------------------------------------------------------------------------------*/
+00A8ABB7    00441D A4       add byte ptr ss:[ebp+ebx-5C],al
+00A8ABBB    0D 1F000000     or eax,1F
+00A8ABC0    0C 00           or al,0
+00A8ABC2    0000            add byte ptr ds:[eax],al
+00A8ABC4    64:0000         add byte ptr fs:[eax],al
+/*-------------------------------------------------------------------------------*/
+00A8DAFF    001E            add byte ptr ds:[esi],bl
+00A8DB01    0100            add dword ptr ds:[eax],eax
+00A8DB03    00FC            add ah,bh
+00A8DB05    FA              cli
+00A8DB06    45              inc ebp
+00A8DB07    13C4            adc eax,esp
+00A8DB09    64:             prefix fs:
+00A8DB0A    2E:15 B4CAA600  adc eax,0A6CAB4
+00A8DB10    44              inc esp
+00A8DB11    9B              wait
+/*-------------------------------------------------------------------------------*/
+00A91150    0800            or byte ptr ds:[eax],al
+00A91152    0000            add byte ptr ds:[eax],al
+00A91154    D4 BF           aam 0BF
+00A91156    AC              lods byte ptr ds:[esi]
+00A91157    14 1C           adc al,1C
+00A91159    C0AC14 94739700>shr byte ptr ss:[esp+edx+977394],0
+/*-------------------------------------------------------------------------------*/
+00A93EE9    B8 9200E47F     mov eax,7FE40092
+00A93EEE    6A 1A           push 1A
+00A93EF0    3F              aas
+00A93EF1    0000            add byte ptr ds:[eax],al
+00A93EF3    001F            add byte ptr ds:[edi],bl
+00A93EF5    0000            add byte ptr ds:[eax],al
+00A93EF7    006400 00       add byte ptr ds:[eax+eax],ah
+00A93EFB    0031            add byte ptr ds:[ecx],dh
+/*-------------------------------------------------------------------------------*/
+00A965B0    7F 1D           jg short 00A965CF
+00A965B2    63C9            arpl cx,cx
+00A965B4    80E2 9C         and dl,9C
+00A965B7    36:75 98        jnz short 00A96552
+/*-------------------------------------------------------------------------------*/
+00A96610    48              dec eax
+00A96611    07              pop es
+00A96612  ^ 71 AF           jno short 00A965C3
+00A96614    0000            add byte ptr ds:[eax],al
+00A96616    0000            add byte ptr ds:[eax],al
+00A96618    0000            add byte ptr ds:[eax],al
+/*-------------------------------------------------------------------------------*/
+00A96634    2005 9319A266   and byte ptr ds:[66A21993],al
+00A9663A    43              inc ebx
+00A9663B    0002            add byte ptr ds:[edx],al
+00A9663D    0000            add byte ptr ds:[eax],al
+00A9663F    00B4C5 22000000 add byte ptr ss:[ebp+eax*8+22],dh
+/*-------------------------------------------------------------------------------*/
+00A967D8    44              inc esp
+00A967D9    07              pop es
+00A967DA    3127            xor dword ptr ds:[edi],esp
+00A967DC    4B              dec ebx
+00A967DD    07              pop es
+00A967DE    A1 B64B0761     mov eax,dword ptr ds:[61074BB6]
+00A967E3    4D              dec ebp
+00A967E4    4B              dec ebx
+00A967E5    07              pop es
+00A967E6    F1              int1
+00A967E7    B1 4B           mov cl,4B
+00A967E9    07              pop es
+00A967EA    014B 44         add dword ptr ds:[ebx+44],ecx
+00A967ED    07              pop es
+00A967EE    3127            xor dword ptr ds:[edi],esp
+00A967F0    44              inc esp
+00A967F1    07              pop es
+00A967F2    B1 3F           mov cl,3F
+00A967F4    4B              dec ebx
+00A967F5    07              pop es
+00A967F6    41              inc ecx
+00A967F7    49              dec ecx
+00A967F8    4B              dec ebx
+00A967F9    07              pop es
+00A967FA    61              popad
+00A967FB    43              inc ebx
+00A967FC    4B              dec ebx
+00A967FD    07              pop es
+00A967FE    B1 58           mov cl,58
+00A96800    5C              pop esp
+00A96801  ^ 73 93           jnb short 00A96796
+00A96803    00449B 97       add byte ptr ds:[ebx+ebx*4-69],al
+/*-------------------------------------------------------------------------------*/
+00A9683F    000A            add byte ptr ds:[edx],cl
+00A96841    0000            add byte ptr ds:[eax],al
+00A96843    0025 00000000   add byte ptr ds:[0],ah
+/*-------------------------------------------------------------------------------*/
+00A96BF0    0100            add dword ptr ds:[eax],eax
+00A96BF2    0000            add byte ptr ds:[eax],al
+/*-------------------------------------------------------------------------------*/
+00A97017    0090 18870401   add byte ptr ds:[eax+1048718],dl
+/*-------------------------------------------------------------------------------*/
+00A97120    04 00           add al,0
+/*-------------------------------------------------------------------------------*/
+00A97613    0003            add byte ptr ds:[ebx],al
+/*-------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------*/
+/*------------------------------------不找了-------------------------------------*/
+/*-------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

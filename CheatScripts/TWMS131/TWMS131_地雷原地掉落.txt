@@ -1,0 +1,14 @@
+//Twms V1.31.1 ¦a¹p­ì¦a±¼¸¨
+[Enable]
+alloc(Bombnodelay,128)
+Registersymbol(Bombnodelay)
+Bombnodelay:
+call 007a2beb
+add eax,0
+jmp 0075FFA9
+0075FF9C:
+jmp Bombnodelay
+[Disable]
+0075FF9C:
+je 00760016
+call 007a2beb

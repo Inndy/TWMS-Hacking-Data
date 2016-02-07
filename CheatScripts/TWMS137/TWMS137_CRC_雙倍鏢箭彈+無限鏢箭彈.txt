@@ -1,0 +1,41 @@
+[enable]
+registersymbol(DoubleFire)
+alloc(DoubleFire, 32)
+registersymbol(DFireKey)
+alloc(DFireKey, 4)
+alloc(NoDecKey, 4)
+label(NoDec)
+
+NoDecKey:
+dd 1
+
+DoubleFire:
+cmp [NoDecKey],1
+je NoDec
+call 00652e63
+NoDec:
+neg eax
+sbb eax,eax
+neg eax
+mov [ebp-00000200],eax
+mov ecx,[ebp-00000220]
+
+cmp [DFireKey], 00
+je Normal
+xor eax,eax
+inc eax
+Normal:
+call 006295d7
+jmp 007ed095
+
+007ED079: // E8 ?? ?? ?? FF F7 D8 1B C0 F7 D8 89 85 ?? ?? FF FF 8B 8D ?? ?? FF FF E8 ?? ?? ?? FF F7 D8 1B C0 F7 D8 89 85 ?? ?? FF FF 81
+jmp DoubleFire
+[disable]
+007ED079:
+call 00652e63
+
+unregistersymbol(DoubleFire)
+dealloc(DoubleFire)
+unregistersymbol(DFireKey)
+dealloc(DFireKey)
+dealloc(NoDecKey)

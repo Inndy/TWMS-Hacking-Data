@@ -1,0 +1,45 @@
+[enable]
+Label(return)
+Label(normal)
+Registersymbol(speed)
+Alloc(speed, 4)
+Registersymbol(speedup)
+Alloc(speedup, 128)
+
+speed:
+dd 3 //數值越大速度越快 (0為正常)
+
+speedup:
+push esi
+mov esi,[speed]
+
+return:
+cmp esi,0
+je normal
+
+dec esi
+push eax
+push ecx
+call dword ptr [eax]
+pop ecx
+pop eax
+jmp return
+
+normal:
+pop esi
+call dword ptr [eax]
+mov eax,[esi+30]
+jmp 00797607
+
+00797602: //85 c9 74 04 8b 01 ff 10 8b 46 30
+jmp speedup
+
+[disable]
+Unregistersymbol(speed)
+Dealloc(speed)
+Unregistersymbol(speedup)
+Dealloc(speedup)
+
+00797602:
+call dword ptr [eax]
+mov eax,[esi+30]

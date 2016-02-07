@@ -1,0 +1,21 @@
+// TWMS153.1 ICS ¥þ¹Ï¼²À»
+// UpdateTime: 2013-02-23
+
+[ENABLE]
+Alloc(FullMapHit, 64)
+
+FullMapHit:
+Cmp [Esp], 0065268F  // 83 4d fc ff 8d 4d f0 85 c0
+Jne IntersectRect
+Xor Eax, Eax
+Inc Eax, Eax
+Ret 000C
+
+00F7D230:
+DD FullMapHit
+
+[DISABLE]
+00F7D230:
+DD IntersectRect
+
+DeAlloc(FullMapHit)

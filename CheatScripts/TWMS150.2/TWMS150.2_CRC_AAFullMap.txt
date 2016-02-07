@@ -1,0 +1,45 @@
+//v150.2 ¯u.¥þ¹Ï By.aaaddress1.
+alloc(SetMobXY,128)
+alloc(SetNoDC,128)
+SetMobXY:
+lea ecx,[esi+00000634]
+push 006149FD
+push esi
+push edi
+mov edi,[esp+0c]
+mov esi,[00e1847c]
+mov esi,[esi+70e4] //X
+sub esi,32
+mov [edi],esi
+push [edi]
+mov esi,ecx
+lea ecx,[esi+0c]
+call 00426BFC
+mov ecx,[00e1847c]
+mov ecx,[ecx+70e8]//Y
+mov [edi+04],ecx
+jmp 00431471
+
+SetNoDC:
+lea ecx,[esi+00000634]
+push 00614AFD
+push esi
+mov esi,ecx
+push edi
+lea ecx,[esi+0c]
+call 0042717E
+mov edi,[esp+0c]
+mov [edi],ecx
+mov eax,[edi]
+mov ecx,esi
+call 0042717E
+mov [edi+04],01
+mov eax,[edi+04]
+db 5F 5E C2 04 00
+
+00614AEB://8d 8e ? ? ? ? e8 ? ? ? ? 85 c0 75 03 6a 00 c3 [2/2]
+jmp SetNoDC
+nop
+006149F2://8d 8e ? ? ? ? e8 ? ? ? ? 8b 86 ? ? ? ? 3b c3 74 1c [2/2]
+jmp SetMobXY
+nop

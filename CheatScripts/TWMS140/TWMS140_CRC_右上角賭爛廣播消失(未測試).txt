@@ -1,0 +1,19 @@
+/*
+// Credits to ???
+// Updated by Ozko
+// gMS v99.1
+[enable]
+00B0B0C7:
+db 90 90 90 90 90 90 90 90
+[disable]
+00B0B0C7:
+db ff 75 0c e8 2e 4e 02 00
+// 90 90 90 90 90 90 90 90 90 81 EC ?? ?? ?? ?? 33 C0
+*/
+
+[enable]
+0092F027:
+db 90 90 90 90 90 90 90 90
+[disable]
+0092F027:
+db ff 75 0c e8 2e 4e 02 00

@@ -1,0 +1,79 @@
+//TWMS 134.1定點生怪 定怪 笨怪 怪物不擊退
+//使用方法:打開之後~把怪全清光吧= =
+//建議不要換頻易斷~~換圖~測試過~應該不會斷
+//55 8B EC 53 8B 5D 10 56 57
+[enable]
+registersymbol(Spawn)
+alloc(Spawn,256)
+alloc(Sonoff,4)
+alloc(rx,4)
+alloc(ry,4)
+label(S01)
+label(Spawn_ret)
+//----------------------定點生怪
+Spawn:
+cmp [Sonoff],01
+je S01
+pushad
+mov edx,[00bba448]  //ok a1 ?? ?? ?? ?? 3b c6 74 ?? 8b 93 ?? ?? ?? ??
+mov eax,[edx+00000b18]        //X a1 ?? ?? ?? ?? 3b c6 74 ?? 8b 93 ?? ?? ?? ?? ---ok
+mov [rx],eax
+mov eax,[edx+00000b1C]        //Y ---ok
+mov [ry],eax
+popad
+mov [Sonoff],00000001
+jmp Spawn_ret
+
+S01:
+mov [ecx+000002e0],00000006 //FF B1 ?? ?? 00 00 81 C1 D8 02 00 00 51
+cmp [esp],0059C1A8 //83 C0 40 50 E8 ?? ?? ?? ?? 59 --------ok
+jne Spawn_ret
+cmp dword ptr [esp+18],02 //83 7C 24 18 02 90
+jne Spawn_ret
+push ecx
+mov eax,[rx]
+mov [esp+0c],eax
+mov eax,[ry]
+mov [esp+10],eax
+push eax
+mov ecx,[00bb9d70] //ok 6A 01 68 FF FF FF 7F 8D 45 ??
+call 0042ad65 //50 E8 ?? ?? ?? ?? 3B C3 74 ??  ----ok
+mov ecx,eax
+mov [esp+20],ecx
+pop ecx
+Spawn_ret:
+push ebp
+mov ebp,esp
+push ebx
+mov ebx,[ebp+10]
+push esi
+jmp 0083B95E
+0083B956:
+jmp Spawn
+//----------------------定點生怪
+//----------------------定怪
+005ABF1F://定怪(危險) 56 E8 ?? ?? ?? ?? E9 ?? ?? ?? ?? 56 E8
+DB 90 90 90 90 90 90
+//----------------------定怪
+//----------------------超級笨怪
+005A9F06://83 F8 04 0F ?? ?? 00 00 00
+jmp 005a9fbf
+nop
+//----------------------超級笨怪
+//----------------------不擊退
+007C5945:
+jmp 008bc8cb
+//----------------------不擊退
+[disable]
+0083B956:
+db 55 8b ec 53 8B EC
+005A9F06:
+jne 005a9fbf
+005B59FC:
+jne 005b5a05
+005ABF1F:
+DB 56 e8 9b 69 ff ff
+007C5945:
+call 008bc8cb
+unregistersymbol(Spawn)
+dealloc(Spawn)

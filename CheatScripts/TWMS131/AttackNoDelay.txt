@@ -1,0 +1,19 @@
+[Enable]
+alloc(NoDelayAttacked,64)
+alloc(MyFakeTime,4)
+MyFakeTime:
+readmem([00acf940]+1c,4)
+00463D09:
+call NoDelayAttacked
+mov [esp+08],00000000
+db 90 90 90 90
+006FE060:
+call NoDelayAttacked
+NoDelayAttacked: 
+mov eax,MyFakeTime
+add [eax],bb8
+mov eax,[eax]
+ret
+[Disable]
+dealloc(NoDelayAttacked)
+dealloc(MyFakeTime)

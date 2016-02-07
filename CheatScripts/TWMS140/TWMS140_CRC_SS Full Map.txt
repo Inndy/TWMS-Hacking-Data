@@ -1,0 +1,43 @@
+004302BA - 56                         - push esi
+004302BB - 57                         - push edi
+004302BC - 8b 7c 24 0c                - mov edi,[esp+0c]
+004302C0 - ff 37                      - push [edi]
+004302C2 - 8b f1                      - mov esi,ecx
+004302C4 - 8d 4e 0c                   - lea ecx,[esi+0c]
+004302C7 - e8 48 5b ff ff             - call 00425e14
+004302CC - ff 77 04                   - push [edi+04]
+004302CF - 8b ce                      - mov ecx,esi
+004302D1 - e8 3e 5b ff ff             - call 00425e14
+004302D6 - 5f                         - pop edi
+004302D7 - 8b c6                      - mov eax,esi
+004302D9 - 5e                         - pop esi
+004302DD - 6a 04                      - push 04
+
+
+
+
+[ENABLE]
+alloc(SetXY,128)
+//-------------SS¥þ¹Ï---------------------
+005D06CE:
+call SetXY
+SetXY:
+push esi
+push edi
+mov edi,[00cbdcd0]
+push [edi+3e74]
+mov esi,ecx
+lea ecx,[esi+0c]
+call 00425E14
+push [edi+3e78]
+mov ecx,esi
+call  00425E14 //00425E14 - 55  - push ebp
+pop edi
+mov eax,esi
+pop esi
+ret 0004
+
+//-----------------------------------------
+[DISABLE]
+005D06CE:
+call 004302ba

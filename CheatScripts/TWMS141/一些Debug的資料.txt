@@ -1,0 +1,66 @@
+0086D383 - FF 50 10                   - call dword ptr [eax+10]	//Eax+10 = 00B5B75C
+0086D388 - 89 8B 185A0000             - mov [ebx+00005A18],ecx
+人物X軸		00cbdcd0	5a18
+
+//完美XY
+005DBE07 - 89 46 50                   - mov [esi+50],eax
+005DBEE8 - 3B 46 50                   - cmp eax,[esi+50]
+005DC06B - 0FB7 46 50                 - movzx eax,word ptr [esi+50]
+
+005DCDB9 - 8B 77 34                   - mov esi,[edi+34]
+
+005DCD6D - 8B 7D 10                   - mov edi,[ebp+10]
+
+008D9E27 - 53                         - push ebx
+005DCD6D - 8B 7D 10                   - mov edi,[ebp+10]
+005DCD70 - 85 FF                      - test edi,edi
+005DCD72 - 74 52                      - je 005DCDC6
+005DCD74 - 8B 43 30                   - mov eax,[ebx+30]
+
+
+//攻擊次數
+008644E1 - 81 C1 504F0000             - add ecx,00004F50
+008644E7 - E8 6B90FDFF                - call 0083D557
+0083D581 - 8B 41 08                   - mov eax,[ecx+08]
+
+//按鍵上的物品數量
+007BD88F - 8D 46 63                   - lea eax,[esi+63]
+007BD8B0 - 8B F8                      - mov edi,eax
+007BD8E1 - 8D B7 20180000             - lea esi,[edi+00001820]
+007BD8E7 - 8B CE                      - mov ecx,esi
+007BD8E9 - E8 2284FFFF                - call 007B5D10
+
+
+007B5D9A - 8D 9E F8000000             - lea ebx,[esi+000000F8]
+
+007B5DF9 - E8 87DF1800                - call 00943D85
+
+007B5F11 - 89 43 08                   - mov [ebx+08],eax // 按鍵上的物品數量
+
+//CharPid
+00838C8D - 8D 8E 90000000             - lea ecx,[esi+00000090]
+00456742 - 8B D9                      - mov ebx,ecx
+004577E9 - 8B 8B F41E0000             - mov ecx,[ebx+00001EF4]
+
+//過圖次數
+0057CB0F - 8D 4E 10                   - lea ecx,[esi+10]
+
+0057CB12 - E8 F3F5FFFF                - call 0057C10A
+
+0057C10F - 8B F1                      - mov esi,ecx
+0057C111 - 8B 06                      - mov eax,[esi]
+0057C14B - FF 40 FC                   - inc [eax-04]
+
+//丟錢CALL
+00909EAA - E8 0DC3B7FF                - call 004861BC
+
+//系統時間初始化
+008DEAF7 - 89 7E 1C                   - mov [esi+1C],edi
+
+//系統時間跑Ticket (一次30ms, 0x1E)
+008DEB20 - 83 46 1C 1E                - add dword ptr [esi+1C],1E
+
+//系統時間取得CALL
+00890D49 - A1 384ACC00                - mov eax,[00CC4A38] : [00000000]
+00890D4E - 8B 40 1C                   - mov eax,[eax+1C]
+00890D51 - C3                         - ret 

@@ -1,0 +1,8 @@
+//TWMS133 CRC ©Ç¤£À»°h
+//§ó·s:Inndy
+[Enable]
+005A8F35:
+db 90 90
+[Disable]
+005A8F35:
+db 7d 04

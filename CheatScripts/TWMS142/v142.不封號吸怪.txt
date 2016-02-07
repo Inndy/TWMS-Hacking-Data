@@ -1,0 +1,82 @@
+//v142. 不封號吸怪 By.ms890110 , Fixed By.aaaddress1
+//只吸400y範圍內的怪物.
+[ENABLE]
+
+Alloc(MobVac, 1024)
+Alloc(VacXY, 8)
+Alloc(MobVacXY, 8)
+Label(StartVac)
+Label(BackToVac)
+Label(DropVac)
+Label(NormalRet)
+Label(InitMob)
+
+VacXY:
+readmem([00cc7b68]+b0c, 8)
+
+MobVac:
+Pushad
+Mov  Ebx, Esi
+Mov  Eax, [Ebx+00000110]
+Sub  Eax, 0C
+Mov  Ebx, Eax   // Ebx = MonsterEsi
+Add  Eax, 10    // Eax = MonsterEsi+10
+Mov  Edi, [Eax] // Edi = [MonsterEsi+10]
+Mov  Ecx, Eax   // Ecx = MonsterEsi+10
+Add  Edi, 00000084
+Cmp  [Ebx+04], 01
+Jl   InitMob
+Push [Ebx+000006a0] // Y
+Push [Ebx+0000069c] // X
+Pop  [MobVacXY]
+Pop  [MobVacXY+04]
+
+Push Ecx
+Mov  Ecx, [VacXY+04]
+Add  Ecx, #200
+Cmp  [Ebx+6a0], Ecx
+Jg   DropVac
+Sub  Ecx, #400
+Cmp  [Ebx+6a0], Ecx
+Jl   BackToVac
+Push [VacXY+04]
+Push [VacXY]
+Mov  [Ebx+000002a0], 06
+Pop  [MobVacXY]
+Pop  [MobVacXY+04]
+BackToVac:
+Pop  Ecx
+StartVac:
+Push 0
+Push 0
+Push 0
+Push 0
+Push [MobVacXY+04]
+Push [MobVacXY]
+Push 1
+Call dword ptr[Edi]
+NormalRet:
+Popad
+Mov  Ecx, Esi
+Call 005BD036
+Jmp  005D1371
+
+DropVac:
+Sub  [MobVacXY+04], #20
+Jmp  BackToVac
+
+InitMob:
+Inc  [Ebx+04]
+Jmp  NormalRet
+
+005D136C:
+jmp MobVac
+
+
+[DISABLE]
+005D136C:
+Call 005BD036
+
+Dealloc(MobVac)
+Dealloc(VacXY)
+Dealloc(MobVacXY)

@@ -1,0 +1,27 @@
+// TWMS 147.2 ICS 接收封包過濾（此為過濾普頻說話）
+// Auther: Inndy
+[ENABLE]
+Alloc(PacketFilter, 256)
+Label(Back)
+
+PacketFilter:
+Cmp [Esp+14], 00492BE7
+Jne 05340CDE
+Push Eax
+Mov Eax, [Ebp+08]
+Mov Eax, [Eax+08]
+Lea Eax, [Eax+04]
+Cmp word ptr [Eax], 00F9
+Jne Back
+Mov [Esp+18], 00492C9B
+Back:
+Pop Eax 
+Jmp 05340CDE
+
+00AEB094:
+DD PacketFilter
+[DISABLE]
+00AEB094:
+DD 05340CDE
+
+Dealloc(PacketFilter)

@@ -1,0 +1,93 @@
+
+Alloc(MobVac,512)
+label(InitMob)
+label(normal)
+label(vacborn)
+Alloc(tmp,4)
+registersymbol(tmp)
+Alloc(addr,4)
+registersymbol(addr)
+Alloc(VacXY,8)
+VacXY:
+readmem([00cc7b68]+b0c, 8)
+MobVac:
+call 0042E8DB
+pushad
+mov ebx,esi
+mov eax,[ebx+00000110]
+add eax,F4
+mov [tmp],eax
+mov eax,[tmp]
+add eax,10
+mov ebx,[tmp]
+cmp [ebx+4],0
+je InitMob
+push eax
+call 00890C81
+cmp eax,[ebx+4]
+pop eax
+jg normal
+cmp [ebx+2a0],6
+jne vacborn
+push eax
+call 00890C81
+cmp eax,[ebx+4]
+pop eax
+jl normal
+mov edi,[eax]
+mov ecx,eax
+add edi,00000084
+push 0
+push 0
+push 0
+push 0
+push [VacXY+4]
+push [VacXY]
+push 1
+call dword ptr[edi]
+mov edi,[edi]
+mov [addr],edi
+normal:
+popad
+jmp 005D14DC+5
+
+vacborn:
+mov [ebx+2a0],6
+pushad
+call 00890C81
+add eax,#1500
+mov [ebx+4],eax
+popad
+
+mov edi,[eax]
+mov ecx,eax
+add edi,00000084
+push 0
+push 0
+push 0
+push 0
+push [ebx+8]
+push [ebx+24]
+push 1
+call dword ptr[edi]
+mov edi,[edi]
+mov [addr],edi
+popad
+jmp 005D14DC+5
+
+InitMob:
+mov eax,[ebx+69c]
+mov [ebx+24],eax
+mov eax,[ebx+6a0]
+mov [ebx+8],eax
+
+call 00890C81
+add eax,#4200
+
+mov [ebx+4],eax
+jmp normal
+
+
+
+005D14DC:
+jmp MobVac

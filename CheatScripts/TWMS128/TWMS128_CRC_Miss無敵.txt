@@ -1,0 +1,27 @@
+//===============================================
+//Miss無敵-5次 for TWMS128(CRC)
+//更新：s519052002
+[enable]
+registersymbol(Miss)
+alloc(Miss, 128)
+alloc(MissRound, 4)
+label(StopMiss)
+label(StopMiss1)
+Miss:
+        inc     [MissRound]
+        cmp     [MissRound], 5 //MISS次數 16進位
+         ja      StopMiss
+        xor     eax,eax
+        jmp     006D83C0   //add je 下2
+StopMiss:
+        mov     [MissRound], 0
+StopMiss1:
+        jmp     006DB3BD    //add下1
+006DB3B7:
+jmp Miss
+nop
+[disable]
+006DB3B7:
+db 0f 84 d4 0f 00 00 
+unregistersymbol(Miss)
+dealloc(Miss)

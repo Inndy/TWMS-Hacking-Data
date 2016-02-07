@@ -1,0 +1,1120 @@
+// TWMS159.1 ICS 攻擊不顯示傷害
+// Auther: Inndy
+//
+// TWMS153.1 0064F828 - call dword ptr [eax+50]
+[ENABLE]
+Alloc(Hook, 32)
+
+Hook:
+Cmp  [Ebp+04], 006A23DC // 8d 45 cc 50 8b cb e8 ?? ?? ff ff ff
+Jne  00A8A1CE // 下面CALL開頭 // 50 8B ?? E8 ?? ?? ?? FF 83 4D FC FF 8D 4D ?? E8 ?? ?? ?? FF E8 ?? ?? ?? 00 C2 08 00 6A
+Mov  [Ebp+20], 38FFFFFF
+Jmp  00A8A1CE
+
+00FC67F4:
+DD   Hook
+[DISABLE]
+00FC67F4: // [1/1]
+DD   00A8A1CE
+
+Dealloc(Hook)
+
+
+
+
+
+
+
+
+
+
+Label(MyLabel006A16F4)
+Label(MyLabel006A2227)
+Label(MyLabel006A177D)
+Label(MyLabel006A178F)
+Label(MyLabel006A180A)
+Label(MyLabel006A180D)
+Label(MyLabel006A17E3)
+Label(MyLabel006A180D)
+Label(MyLabel006A1817)
+Label(MyLabel006A1850)
+Label(MyLabel006A184B)
+Label(MyLabel006A1853)
+Label(MyLabel006A1856)
+Label(MyLabel006A1866)
+Label(MyLabel006A1869)
+Label(MyLabel006A18A6)
+Label(MyLabel006A1897)
+Label(MyLabel006A1A9E)
+Label(MyLabel006A1904)
+Label(MyLabel006A18D1)
+Label(MyLabel006A1904)
+Label(MyLabel006A1B33)
+Label(MyLabel006A1A9E)
+Label(MyLabel006A192E)
+Label(MyLabel006A1A9E)
+Label(MyLabel006A194B)
+Label(MyLabel006A1A9E)
+Label(MyLabel006A19BC)
+Label(MyLabel006A19AF)
+Label(MyLabel006A1A50)
+Label(MyLabel006A1A9E)
+Label(MyLabel006A19DE)
+Label(MyLabel006A1A50)
+Label(MyLabel006A1A63)
+Label(MyLabel006A1A75)
+Label(MyLabel006A1B33)
+Label(MyLabel006A1ABF)
+Label(MyLabel006A1AC6)
+Label(MyLabel006A1AE3)
+Label(MyLabel006A1C7B)
+Label(MyLabel006A1B19)
+Label(MyLabel006A1B33)
+Label(MyLabel006A1C7B)
+Label(MyLabel006A1C54)
+Label(MyLabel006A1B67)
+Label(MyLabel006A1B6E)
+Label(MyLabel006A1B80)
+Label(MyLabel006A1B84)
+Label(MyLabel006A1BB0)
+Label(MyLabel006A1C54)
+Label(MyLabel006A1BCD)
+Label(MyLabel006A1C54)
+Label(MyLabel006A1C38)
+Label(MyLabel006A1C54)
+Label(MyLabel006A1C6F)
+Label(MyLabel006A1C7B)
+Label(MyLabel006A1DE4)
+Label(MyLabel006A1D1F)
+Label(MyLabel006A1D19)
+Label(MyLabel006A1D1F)
+Label(MyLabel006A1D23)
+Label(MyLabel006A1D3C)
+Label(MyLabel006A1D4D)
+Label(MyLabel006A1DB6)
+Label(MyLabel006A1DAF)
+Label(MyLabel006A1DAB)
+Label(MyLabel006A1DC9)
+Label(MyLabel006A1DA2)
+Label(MyLabel006A1DC4)
+Label(MyLabel006A1DC6)
+Label(MyLabel006A1DE7)
+Label(MyLabel006A1DFD)
+Label(MyLabel006A1F39)
+Label(MyLabel006A1E7D)
+Label(MyLabel006A1E8E)
+Label(MyLabel006A1E99)
+Label(MyLabel006A1EE5)
+Label(MyLabel006A1F27)
+Label(MyLabel006A2067)
+Label(MyLabel006A2091)
+Label(MyLabel006A1F82)
+Label(MyLabel006A1F98)
+Label(MyLabel006A1FA4)
+Label(MyLabel006A1FC6)
+Label(MyLabel006A1FC0)
+Label(MyLabel006A1FD1)
+Label(MyLabel006A1EDB)
+Label(MyLabel006A2058)
+Label(MyLabel006A2091)
+Label(MyLabel006A207E)
+Label(MyLabel006A20B0)
+Label(MyLabel006A2200)
+Label(MyLabel006A21FB)
+Label(MyLabel006A2200)
+Label(MyLabel006A21B7)
+Label(MyLabel006A21B3)
+Label(MyLabel006A2200)
+Label(MyLabel006A2227)
+
+
+alloc(fakecall, 4096)
+registersymbol(fakecall)
+fakecall:
+db 6A 5C                                 // 006A16BA - push 5C
+db B8 3C A8 C9 00                        // 006A16BC - mov eax,00C9A83C : [0824548B]
+call 00C14729                            // 006A16C1 - call 00C14729
+db 8B F1                                 // 006A16C6 - mov esi,ecx
+db 89 75 F0                              // 006A16C8 - mov [ebp-10],esi
+db 33 FF                                 // 006A16CB - xor edi,edi
+db 89 7D EC                              // 006A16CD - mov [ebp-14],edi
+call 004385BE                            // 006A16D0 - call 004385BE
+db 89 45 BC                              // 006A16D5 - mov [ebp-44],eax
+db 3B C7                                 // 006A16D8 - cmp eax,edi
+je MyLabel006A16F4                       // 006A16DA - je 006A16F4
+db 81 B8 CC 01 00 00 FD 03 00 00         // 006A16DC - cmp [eax+000001CC],000003FD
+jne MyLabel006A16F4                      // 006A16E6 - jne 006A16F4
+db 39 BE 9C 09 00 00                     // 006A16E8 - cmp [esi+0000099C],edi
+jne MyLabel006A2227                      // 006A16EE - jne 006A2227
+MyLabel006A16F4:
+db 8B 1D 74 72 1C 01                     // 006A16F4 - mov ebx,[011C7274] : [3086AEB4]
+db 8B 0D 20 6F 1C 01                     // 006A16FA - mov ecx,[011C6F20] : [011E7E70]
+db 8D 45 A0                              // 006A1700 - lea eax,[ebp-60]
+db 50                                    // 006A1703 - push eax
+db 89 5D AC                              // 006A1704 - mov [ebp-54],ebx
+call 00426A66                            // 006A1707 - call 00426A66
+db 8B 40 04                              // 006A170C - mov eax,[eax+04]
+db 8D 4D A0                              // 006A170F - lea ecx,[ebp-60]
+db 89 45 E8                              // 006A1712 - mov [ebp-18],eax
+call 0042595A                            // 006A1715 - call 0042595A
+db 8B 35 18 6F 1C 01                     // 006A171A - mov esi,[011C6F18] : [1C53BA5C]
+db 57                                    // 006A1720 - push edi
+db 57                                    // 006A1721 - push edi
+db 57                                    // 006A1722 - push edi
+db 8D 45 A8                              // 006A1723 - lea eax,[ebp-58]
+db 89 7D A8                              // 006A1726 - mov [ebp-58],edi
+db 50                                    // 006A1729 - push eax
+db 8B 03                                 // 006A172A - mov eax,[ebx]
+db 8B CB                                 // 006A172C - mov ecx,ebx
+db FF 50 50                              // 006A172E - call dword ptr [eax+50]
+db 2D D0 07 00 00                        // 006A1731 - sub eax,000007D0
+db F7 D8                                 // 006A1736 - neg eax
+db 1B C0                                 // 006A1738 - sbb eax,eax
+db 25 2F 42 0F 00                        // 006A173A - and eax,000F422F
+db 05 11 2D 31 01                        // 006A173F - add eax,01312D11 : [67976121]
+db 50                                    // 006A1744 - push eax
+db FF 75 E8                              // 006A1745 - push [ebp-18]
+db 8B CE                                 // 006A1748 - mov ecx,esi
+call 00787F9C                            // 006A174A - call 00787F9C
+db FF B3 1C 04 00 00                     // 006A174F - push [ebx+0000041C]
+db 8B F0                                 // 006A1755 - mov esi,eax
+call 00475BA0                            // 006A1757 - call 00475BA0
+db 59                                    // 006A175C - pop ecx
+db 8B 8B 40 34 00 00                     // 006A175D - mov ecx,[ebx+00003440]
+db 39 4D 08                              // 006A1763 - cmp [ebp+08],ecx
+jne MyLabel006A177D                      // 006A1766 - jne 006A177D
+db 3B F7                                 // 006A1768 - cmp esi,edi
+jle MyLabel006A177D                      // 006A176A - jle 006A177D
+db 83 F8 2C                              // 006A176C - cmp eax,2C
+jne MyLabel006A177D                      // 006A176F - jne 006A177D
+db 39 7D 1C                              // 006A1771 - cmp [ebp+1C],edi
+jle MyLabel006A177D                      // 006A1774 - jle 006A177D
+db 8B CB                                 // 006A1776 - mov ecx,ebx
+call 00A8A2E2                            // 006A1778 - call 00A8A2E2
+MyLabel006A177D:
+db 83 7D 2C 0C                           // 006A177D - cmp dword ptr [ebp+2C],0C
+je MyLabel006A178F                       // 006A1781 - je 006A178F
+db 8B 4D F0                              // 006A1783 - mov ecx,[ebp-10]
+call 0068400E                            // 006A1786 - call 0068400E
+db 85 C0                                 // 006A178B - test eax,eax
+je MyLabel006A180A                       // 006A178D - je 006A180A
+MyLabel006A178F:
+db FF 75 E8                              // 006A178F - push [ebp-18]
+db 8B 0D 18 6F 1C 01                     // 006A1792 - mov ecx,[011C6F18] : [1C53BA5C]
+call 00788EFA                            // 006A1798 - call 00788EFA
+db 8B 75 F0                              // 006A179D - mov esi,[ebp-10]
+db 85 C0                                 // 006A17A0 - test eax,eax
+je MyLabel006A180D                       // 006A17A2 - je 006A180D
+db 8B 8E 10 02 00 00                     // 006A17A4 - mov ecx,[esi+00000210]
+call 00441DB6                            // 006A17AA - call 00441DB6
+db 85 C0                                 // 006A17AF - test eax,eax
+jne MyLabel006A180D                      // 006A17B1 - jne 006A180D
+db 8B 8E 10 02 00 00                     // 006A17B3 - mov ecx,[esi+00000210]
+call 00675296                            // 006A17B9 - call 00675296
+db 83 F8 01                              // 006A17BE - cmp eax,01
+je MyLabel006A17E3                       // 006A17C1 - je 006A17E3
+db 8B 8E 10 02 00 00                     // 006A17C3 - mov ecx,[esi+00000210]
+call 00675296                            // 006A17C9 - call 00675296
+db 83 F8 03                              // 006A17CE - cmp eax,03
+je MyLabel006A17E3                       // 006A17D1 - je 006A17E3
+db 8B 8E 10 02 00 00                     // 006A17D3 - mov ecx,[esi+00000210]
+call 00675296                            // 006A17D9 - call 00675296
+db 83 F8 08                              // 006A17DE - cmp eax,08
+jne MyLabel006A180D                      // 006A17E1 - jne 006A180D
+MyLabel006A17E3:
+call 004385BE                            // 006A17E3 - call 004385BE
+db 39 B8 E8 01 00 00                     // 006A17E8 - cmp [eax+000001E8],edi
+jne MyLabel006A180D                      // 006A17EE - jne 006A180D
+db FF 75 E8                              // 006A17F0 - push [ebp-18]
+db 8B 0D 18 6F 1C 01                     // 006A17F3 - mov ecx,[011C6F18] : [1C53BA5C]
+db C7 45 E4 01 00 00 00                  // 006A17F9 - mov [ebp-1C],00000001
+call 0078E2AB                            // 006A1800 - call 0078E2AB
+db 89 45 E0                              // 006A1805 - mov [ebp-20],eax
+jmp MyLabel006A1817                      // 006A1808 - jmp 006A1817
+MyLabel006A180A:
+db 8B 75 F0                              // 006A180A - mov esi,[ebp-10]
+MyLabel006A180D:
+db 89 7D E4                              // 006A180D - mov [ebp-1C],edi
+db C7 45 E0 64 00 00 00                  // 006A1810 - mov [ebp-20],00000064
+MyLabel006A1817:
+db 8B 45 2C                              // 006A1817 - mov eax,[ebp+2C]
+db 8B 4D 0C                              // 006A181A - mov ecx,[ebp+0C]
+db 83 F8 03                              // 006A181D - cmp eax,03
+je MyLabel006A1850                       // 006A1820 - je 006A1850
+db 83 F8 04                              // 006A1822 - cmp eax,04
+je MyLabel006A1850                       // 006A1825 - je 006A1850
+db 83 F8 05                              // 006A1827 - cmp eax,05
+je MyLabel006A1850                       // 006A182A - je 006A1850
+db 33 D2                                 // 006A182C - xor edx,edx
+db 42                                    // 006A182E - inc edx
+db 3B C2                                 // 006A182F - cmp eax,edx
+jne MyLabel006A184B                      // 006A1831 - jne 006A184B
+db 81 F9 E9 1A 11 00                     // 006A1833 - cmp ecx,00111AE9
+je MyLabel006A1853                       // 006A1839 - je 006A1853
+db 81 F9 29 28 14 00                     // 006A183B - cmp ecx,00142829
+je MyLabel006A1853                       // 006A1841 - je 006A1853
+db 81 F9 89 A1 12 00                     // 006A1843 - cmp ecx,0012A189
+je MyLabel006A1853                       // 006A1849 - je 006A1853
+MyLabel006A184B:
+db 89 7D D4                              // 006A184B - mov [ebp-2C],edi
+jmp MyLabel006A1856                      // 006A184E - jmp 006A1856
+MyLabel006A1850:
+db 33 D2                                 // 006A1850 - xor edx,edx
+db 42                                    // 006A1852 - inc edx
+MyLabel006A1853:
+db 89 55 D4                              // 006A1853 - mov [ebp-2C],edx
+MyLabel006A1856:
+db 81 F9 FE 15 42 00                     // 006A1856 - cmp ecx,004215FE : [FDFCCEE8]
+jne MyLabel006A1866                      // 006A185C - jne 006A1866
+db 89 55 DC                              // 006A185E - mov [ebp-24],edx
+db 39 7D D4                              // 006A1861 - cmp [ebp-2C],edi
+jne MyLabel006A1869                      // 006A1864 - jne 006A1869
+MyLabel006A1866:
+db 89 7D DC                              // 006A1866 - mov [ebp-24],edi
+MyLabel006A1869:
+db 8B 8E 10 02 00 00                     // 006A1869 - mov ecx,[esi+00000210]
+call 00675296                            // 006A186F - call 00675296
+db 85 C0                                 // 006A1874 - test eax,eax
+jne MyLabel006A18A6                      // 006A1876 - jne 006A18A6
+db FF 75 0C                              // 006A1878 - push [ebp+0C]
+call 007573FD                            // 006A187B - call 007573FD
+db 59                                    // 006A1880 - pop ecx
+db 85 C0                                 // 006A1881 - test eax,eax
+jne MyLabel006A1897                      // 006A1883 - jne 006A1897
+db 8B 86 10 02 00 00                     // 006A1885 - mov eax,[esi+00000210]
+db 39 B8 3C 03 00 00                     // 006A188B - cmp [eax+0000033C],edi
+je MyLabel006A1A9E                       // 006A1891 - je 006A1A9E
+MyLabel006A1897:
+db FF 75 1C                              // 006A1897 - push [ebp+1C]
+db 8B CE                                 // 006A189A - mov ecx,esi
+call 006979D7                            // 006A189C - call 006979D7
+jmp MyLabel006A1A9E                      // 006A18A1 - jmp 006A1A9E
+MyLabel006A18A6:
+db 81 7D 0C 99 02 27 02                  // 006A18A6 - cmp [ebp+0C],02270299
+jne MyLabel006A1904                      // 006A18AD - jne 006A1904
+db 8B 45 08                              // 006A18AF - mov eax,[ebp+08]
+db 3B 83 40 34 00 00                     // 006A18B2 - cmp eax,[ebx+00003440]
+jne MyLabel006A1904                      // 006A18B8 - jne 006A1904
+db 8B CE                                 // 006A18BA - mov ecx,esi
+call 006753D0                            // 006A18BC - call 006753D0
+db 83 F8 FE                              // 006A18C1 - cmp eax,-02
+je MyLabel006A18D1                       // 006A18C4 - je 006A18D1
+db 8B CE                                 // 006A18C6 - mov ecx,esi
+call 006753D0                            // 006A18C8 - call 006753D0
+db 85 C0                                 // 006A18CD - test eax,eax
+jle MyLabel006A1904                      // 006A18CF - jle 006A1904
+MyLabel006A18D1:
+db 83 7D 2C 06                           // 006A18D1 - cmp dword ptr [ebp+2C],06
+jne MyLabel006A1904                      // 006A18D5 - jne 006A1904
+db FF 75 E0                              // 006A18D7 - push [ebp-20]
+db 33 C0                                 // 006A18DA - xor eax,eax
+db FF 75 E4                              // 006A18DC - push [ebp-1C]
+db 39 7D 18                              // 006A18DF - cmp [ebp+18],edi
+db FF 75 3C                              // 006A18E2 - push [ebp+3C]
+db 8B CE                                 // 006A18E5 - mov ecx,esi
+db FF 75 38                              // 006A18E7 - push [ebp+38]
+db FF 75 34                              // 006A18EA - push [ebp+34]
+db 6A 06                                 // 006A18ED - push 06
+db FF 75 28                              // 006A18EF - push [ebp+28]
+db 50                                    // 006A18F2 - push eax
+db 0F 94 C0                              // 006A18F3 - sete al
+db 50                                    // 006A18F6 - push eax
+db FF 75 14                              // 006A18F7 - push [ebp+14]
+call 0069F310                            // 006A18FA - call 0069F310
+jmp MyLabel006A1B33                      // 006A18FF - jmp 006A1B33
+MyLabel006A1904:
+db 8B 45 08                              // 006A1904 - mov eax,[ebp+08]
+db 3B 83 40 34 00 00                     // 006A1907 - cmp eax,[ebx+00003440]
+jne MyLabel006A1A9E                      // 006A190D - jne 006A1A9E
+db 8B CE                                 // 006A1913 - mov ecx,esi
+call 006753D0                            // 006A1915 - call 006753D0
+db 83 F8 FE                              // 006A191A - cmp eax,-02
+je MyLabel006A192E                       // 006A191D - je 006A192E
+db 8B CE                                 // 006A191F - mov ecx,esi
+call 006753D0                            // 006A1921 - call 006753D0
+db 85 C0                                 // 006A1926 - test eax,eax
+jng MyLabel006A1A9E                      // 006A1928 - jng 006A1A9E
+MyLabel006A192E:
+db 39 7D 2C                              // 006A192E - cmp [ebp+2C],edi
+je MyLabel006A1A9E                       // 006A1931 - je 006A1A9E
+db 8B CE                                 // 006A1937 - mov ecx,esi
+call 00675424                            // 006A1939 - call 00675424
+db 85 C0                                 // 006A193E - test eax,eax
+je MyLabel006A194B                       // 006A1940 - je 006A194B
+db 39 7D E4                              // 006A1942 - cmp [ebp-1C],edi
+je MyLabel006A1A9E                       // 006A1945 - je 006A1A9E
+MyLabel006A194B:
+db 80 BE D5 00 00 00 00                  // 006A194B - cmp byte ptr [esi+000000D5],00
+jne MyLabel006A1A9E                      // 006A1952 - jne 006A1A9E
+db 8B CE                                 // 006A1958 - mov ecx,esi
+call 0067540F                            // 006A195A - call 0067540F
+db 85 C0                                 // 006A195F - test eax,eax
+je MyLabel006A19BC                       // 006A1961 - je 006A19BC
+db 8B 45 0C                              // 006A1963 - mov eax,[ebp+0C]
+db 3D 0E 2A D7 00                        // 006A1966 - cmp eax,00D72A0E : [8D016A00]
+je MyLabel006A19BC                       // 006A196B - je 006A19BC
+db 3D 36 04 00 00                        // 006A196D - cmp eax,00000436
+je MyLabel006A19BC                       // 006A1972 - je 006A19BC
+db 3D 4F 7E 60 01                        // 006A1974 - cmp eax,01607E4F : [0006E904]
+je MyLabel006A19BC                       // 006A1979 - je 006A19BC
+db 3D 68 DE DA 01                        // 006A197B - cmp eax,01DADE68 : [00000014]
+je MyLabel006A19BC                       // 006A1980 - je 006A19BC
+db 8B 03                                 // 006A1982 - mov eax,[ebx]
+db 8B CB                                 // 006A1984 - mov ecx,ebx
+db FF 50 50                              // 006A1986 - call dword ptr [eax+50]
+db 50                                    // 006A1989 - push eax
+call 0048693C                            // 006A198A - call 0048693C
+db 59                                    // 006A198F - pop ecx
+db 85 C0                                 // 006A1990 - test eax,eax
+jne MyLabel006A19BC                      // 006A1992 - jne 006A19BC
+db 81 7D 0C 3D 7B A4 03                  // 006A1994 - cmp [ebp+0C],03A47B3D
+je MyLabel006A19BC                       // 006A199B - je 006A19BC
+db 81 7D 0C FE 15 42 00                  // 006A199D - cmp [ebp+0C],004215FE : [FDFCCEE8]
+jne MyLabel006A19AF                      // 006A19A4 - jne 006A19AF
+db 39 7D DC                              // 006A19A6 - cmp [ebp-24],edi
+je MyLabel006A1A50                       // 006A19A9 - je 006A1A50
+MyLabel006A19AF:
+db 81 7D 0C 89 DB 26 02                  // 006A19AF - cmp [ebp+0C],0226DB89
+jne MyLabel006A1A9E                      // 006A19B6 - jne 006A1A9E
+MyLabel006A19BC:
+db 81 7D 0C AD 87 9D 01                  // 006A19BC - cmp [ebp+0C],019D87AD : [5F003F00]
+jne MyLabel006A19DE                      // 006A19C3 - jne 006A19DE
+db 8D 45 18                              // 006A19C5 - lea eax,[ebp+18]
+db 50                                    // 006A19C8 - push eax
+db 8B CE                                 // 006A19C9 - mov ecx,esi
+db 89 7D 18                              // 006A19CB - mov [ebp+18],edi
+call 00690E76                            // 006A19CE - call 00690E76
+db 33 C0                                 // 006A19D3 - xor eax,eax
+db 39 7D 18                              // 006A19D5 - cmp [ebp+18],edi
+db 0F 94 C0                              // 006A19D8 - sete al
+db 89 45 18                              // 006A19DB - mov [ebp+18],eax
+MyLabel006A19DE:
+db 81 7D 0C 9A 02 27 02                  // 006A19DE - cmp [ebp+0C],0227029A
+jne MyLabel006A1A50                      // 006A19E5 - jne 006A1A50
+db 39 7D 24                              // 006A19E7 - cmp [ebp+24],edi
+jne MyLabel006A1A50                      // 006A19EA - jne 006A1A50
+db 8B CE                                 // 006A19EC - mov ecx,esi
+call 00683E97                            // 006A19EE - call 00683E97
+db 84 C0                                 // 006A19F3 - test al,al
+jne MyLabel006A1A50                      // 006A19F5 - jne 006A1A50
+db 8B 0D 18 6F 1C 01                     // 006A19F7 - mov ecx,[011C6F18] : [1C53BA5C]
+db 57                                    // 006A19FD - push edi
+db 57                                    // 006A19FE - push edi
+db 57                                    // 006A19FF - push edi
+db 8D 45 CC                              // 006A1A00 - lea eax,[ebp-34]
+db 50                                    // 006A1A03 - push eax
+db 68 9A 02 27 02                        // 006A1A04 - push 0227029A
+db FF 75 E8                              // 006A1A09 - push [ebp-18]
+db 89 7D CC                              // 006A1A0C - mov [ebp-34],edi
+call 00787F9C                            // 006A1A0F - call 00787F9C
+db 8B 4D CC                              // 006A1A14 - mov ecx,[ebp-34]
+db 3B CF                                 // 006A1A17 - cmp ecx,edi
+je MyLabel006A1A50                       // 006A1A19 - je 006A1A50
+db FF 75 10                              // 006A1A1B - push [ebp+10]
+call 0078D5D7                            // 006A1A1E - call 0078D5D7
+db 8B F0                                 // 006A1A23 - mov esi,eax
+db 8B 45 F0                              // 006A1A25 - mov eax,[ebp-10]
+db 8B CE                                 // 006A1A28 - mov ecx,esi
+db C6 80 10 01 00 00 01                  // 006A1A2A - mov byte ptr [eax+00000110],01
+call 00432884                            // 006A1A31 - call 00432884
+db 8B CE                                 // 006A1A36 - mov ecx,esi
+db 89 45 E8                              // 006A1A38 - mov [ebp-18],eax
+call 00432899                            // 006A1A3B - call 00432899
+db 8B 4D E8                              // 006A1A40 - mov ecx,[ebp-18]
+db 03 C8                                 // 006A1A43 - add ecx,eax
+db 8B 45 F0                              // 006A1A45 - mov eax,[ebp-10]
+db 89 88 14 01 00 00                     // 006A1A48 - mov [eax+00000114],ecx
+db 8B F0                                 // 006A1A4E - mov esi,eax
+MyLabel006A1A50:
+db 8B 45 BC                              // 006A1A50 - mov eax,[ebp-44]
+db 3B C7                                 // 006A1A53 - cmp eax,edi
+je MyLabel006A1A63                       // 006A1A55 - je 006A1A63
+db 81 B8 CC 01 00 00 FC 03 00 00         // 006A1A57 - cmp [eax+000001CC],000003FC
+jne MyLabel006A1A75                      // 006A1A61 - jne 006A1A75
+MyLabel006A1A63:
+db 81 7D 0C C9 26 73 02                  // 006A1A63 - cmp [ebp+0C],027326C9
+jne MyLabel006A1A75                      // 006A1A6A - jne 006A1A75
+db 39 7D 24                              // 006A1A6C - cmp [ebp+24],edi
+jne MyLabel006A1B33                      // 006A1A6F - jne 006A1B33
+MyLabel006A1A75:
+db FF 75 E0                              // 006A1A75 - push [ebp-20]
+db 33 C0                                 // 006A1A78 - xor eax,eax
+db FF 75 E4                              // 006A1A7A - push [ebp-1C]
+db 39 7D 18                              // 006A1A7D - cmp [ebp+18],edi
+db FF 75 3C                              // 006A1A80 - push [ebp+3C]
+db 8B CE                                 // 006A1A83 - mov ecx,esi
+db FF 75 38                              // 006A1A85 - push [ebp+38]
+db FF 75 34                              // 006A1A88 - push [ebp+34]
+db FF 75 2C                              // 006A1A8B - push [ebp+2C]
+db FF 75 28                              // 006A1A8E - push [ebp+28]
+db 50                                    // 006A1A91 - push eax
+db 0F 94 C0                              // 006A1A92 - sete al
+db 50                                    // 006A1A95 - push eax
+db FF 75 14                              // 006A1A96 - push [ebp+14]
+call 0069F310                            // 006A1A99 - call 0069F310
+MyLabel006A1A9E:
+db 8B 45 0C                              // 006A1A9E - mov eax,[ebp+0C]
+db BE 97 D6 9D 01                        // 006A1AA1 - mov esi,019DD697 : [35003200]
+db 3D 0F 26 31 00                        // 006A1AA6 - cmp eax,0031260F
+je MyLabel006A1ABF                       // 006A1AAB - je 006A1ABF
+db 3D 98 AA 4F 00                        // 006A1AAD - cmp eax,004FAA98 : [08C25EC6]
+je MyLabel006A1ABF                       // 006A1AB2 - je 006A1ABF
+db 3B C6                                 // 006A1AB4 - cmp eax,esi
+je MyLabel006A1ABF                       // 006A1AB6 - je 006A1ABF
+db 3D AE 4B 57 00                        // 006A1AB8 - cmp eax,00574BAE : [45C6B045]
+jne MyLabel006A1AC6                      // 006A1ABD - jne 006A1AC6
+MyLabel006A1ABF:
+db C7 45 20 01 00 00 00                  // 006A1ABF - mov [ebp+20],00000001
+MyLabel006A1AC6:
+db 3D 93 A1 12 00                        // 006A1AC6 - cmp eax,0012A193
+jne MyLabel006A1AE3                      // 006A1ACB - jne 006A1AE3
+db 8B 45 F0                              // 006A1ACD - mov eax,[ebp-10]
+db 8B 88 10 02 00 00                     // 006A1AD0 - mov ecx,[eax+00000210]
+call 00441DB6                            // 006A1AD6 - call 00441DB6
+db 85 C0                                 // 006A1ADB - test eax,eax
+je MyLabel006A1C7B                       // 006A1ADD - je 006A1C7B
+MyLabel006A1AE3:
+db 39 75 0C                              // 006A1AE3 - cmp [ebp+0C],esi
+jne MyLabel006A1B19                      // 006A1AE6 - jne 006A1B19
+db 8B 45 F0                              // 006A1AE8 - mov eax,[ebp-10]
+db 8B 88 10 02 00 00                     // 006A1AEB - mov ecx,[eax+00000210]
+call 00441DB6                            // 006A1AF1 - call 00441DB6
+db 85 C0                                 // 006A1AF6 - test eax,eax
+jne MyLabel006A1B33                      // 006A1AF8 - jne 006A1B33
+db 8B 45 F0                              // 006A1AFA - mov eax,[ebp-10]
+db 8B 88 10 02 00 00                     // 006A1AFD - mov ecx,[eax+00000210]
+call 00441DB6                            // 006A1B03 - call 00441DB6
+db 85 C0                                 // 006A1B08 - test eax,eax
+jne MyLabel006A1C7B                      // 006A1B0A - jne 006A1C7B
+db 39 7D 24                              // 006A1B10 - cmp [ebp+24],edi
+jne MyLabel006A1C7B                      // 006A1B13 - jne 006A1C7B
+MyLabel006A1B19:
+db 81 7D 0C AD 87 9D 01                  // 006A1B19 - cmp [ebp+0C],019D87AD : [5F003F00]
+je MyLabel006A1C54                       // 006A1B20 - je 006A1C54
+db 81 7D 0C 06 44 42 01                  // 006A1B26 - cmp [ebp+0C],01424406 : [5E28C549]
+je MyLabel006A1C54                       // 006A1B2D - je 006A1C54
+MyLabel006A1B33:
+db 39 7D DC                              // 006A1B33 - cmp [ebp-24],edi
+jne MyLabel006A1C54                      // 006A1B36 - jne 006A1C54
+db 39 7D 1C                              // 006A1B3C - cmp [ebp+1C],edi
+jl MyLabel006A1C54                       // 006A1B3F - jl 006A1C54
+db 8B 45 0C                              // 006A1B45 - mov eax,[ebp+0C]
+db 3D 59 C0 17 02                        // 006A1B48 - cmp eax,0217C059
+je MyLabel006A1B67                       // 006A1B4D - je 006A1B67
+db 3D 61 C0 17 02                        // 006A1B4F - cmp eax,0217C061
+je MyLabel006A1B67                       // 006A1B54 - je 006A1B67
+db 3D 62 C0 17 02                        // 006A1B56 - cmp eax,0217C062
+je MyLabel006A1B67                       // 006A1B5B - je 006A1B67
+db 89 7D 18                              // 006A1B5D - mov [ebp+18],edi
+db 3D 74 E7 17 02                        // 006A1B60 - cmp eax,0217E774
+jne MyLabel006A1B6E                      // 006A1B65 - jne 006A1B6E
+MyLabel006A1B67:
+db C7 45 18 01 00 00 00                  // 006A1B67 - mov [ebp+18],00000001
+MyLabel006A1B6E:
+db 3D C4 77 A4 03                        // 006A1B6E - cmp eax,03A477C4
+je MyLabel006A1B80                       // 006A1B73 - je 006A1B80
+db C6 45 2C 00                           // 006A1B75 - mov byte ptr [ebp+2C],00
+db 3D DB 9E A4 03                        // 006A1B79 - cmp eax,03A49EDB
+jne MyLabel006A1B84                      // 006A1B7E - jne 006A1B84
+MyLabel006A1B80:
+db C6 45 2C 01                           // 006A1B80 - mov byte ptr [ebp+2C],01
+MyLabel006A1B84:
+db 8B 75 F0                              // 006A1B84 - mov esi,[ebp-10]
+db 8B 06                                 // 006A1B87 - mov eax,[esi]
+db 8B CE                                 // 006A1B89 - mov ecx,esi
+db FF 50 0C                              // 006A1B8B - call dword ptr [eax+0C]
+db 84 C0                                 // 006A1B8E - test al,al
+je MyLabel006A1BB0                       // 006A1B90 - je 006A1BB0
+db 8B 06                                 // 006A1B92 - mov eax,[esi]
+db 8B CE                                 // 006A1B94 - mov ecx,esi
+db FF 50 0C                              // 006A1B96 - call dword ptr [eax+0C]
+db 84 C0                                 // 006A1B99 - test al,al
+je MyLabel006A1C54                       // 006A1B9B - je 006A1C54
+db 8B 45 08                              // 006A1BA1 - mov eax,[ebp+08]
+db 3B 83 40 34 00 00                     // 006A1BA4 - cmp eax,[ebx+00003440]
+jne MyLabel006A1C54                      // 006A1BAA - jne 006A1C54
+MyLabel006A1BB0:
+db 8B CE                                 // 006A1BB0 - mov ecx,esi
+call 00683301                            // 006A1BB2 - call 00683301
+db 84 C0                                 // 006A1BB7 - test al,al
+je MyLabel006A1BCD                       // 006A1BB9 - je 006A1BCD
+db 8B 45 08                              // 006A1BBB - mov eax,[ebp+08]
+db 3B 83 40 34 00 00                     // 006A1BBE - cmp eax,[ebx+00003440]
+jne MyLabel006A1C54                      // 006A1BC4 - jne 006A1C54
+db 8B 75 F0                              // 006A1BCA - mov esi,[ebp-10]
+MyLabel006A1BCD:
+db 8B CE                                 // 006A1BCD - mov ecx,esi
+call 005440AE                            // 006A1BCF - call 005440AE
+db 8B C8                                 // 006A1BD4 - mov ecx,eax
+call 00544A02                            // 006A1BD6 - call 00544A02
+db 50                                    // 006A1BDB - push eax
+call 006A38EC                            // 006A1BDC - call 006A38EC
+db 59                                    // 006A1BE1 - pop ecx
+db 85 C0                                 // 006A1BE2 - test eax,eax
+je MyLabel006A1C38                       // 006A1BE4 - je 006A1C38
+db FF 75 08                              // 006A1BE6 - push [ebp+08]
+db 8B 0D D8 B9 1C 01                     // 006A1BE9 - mov ecx,[011CB9D8] : [2BF6DE6C]
+call 00AF6078                            // 006A1BEF - call 00AF6078
+db 8B 10                                 // 006A1BF4 - mov edx,[eax]
+db 8B C8                                 // 006A1BF6 - mov ecx,eax
+db FF 52 10                              // 006A1BF8 - call dword ptr [edx+10]
+db 8B F0                                 // 006A1BFB - mov esi,eax
+db 8B CE                                 // 006A1BFD - mov ecx,esi
+call 00683D6B                            // 006A1BFF - call 00683D6B
+db 85 C0                                 // 006A1C04 - test eax,eax
+jle MyLabel006A1C54                      // 006A1C06 - jle 006A1C54
+db 8B CE                                 // 006A1C08 - mov ecx,esi
+call 00683D80                            // 006A1C0A - call 00683D80
+db 8B 4D F0                              // 006A1C0F - mov ecx,[ebp-10]
+db 8B F0                                 // 006A1C12 - mov esi,eax
+db 81 E6 FF FF 00 00                     // 006A1C14 - and esi,0000FFFF
+call 005440AE                            // 006A1C1A - call 005440AE
+db 8B C8                                 // 006A1C1F - mov ecx,eax
+call 00544A02                            // 006A1C21 - call 00544A02
+db 56                                    // 006A1C26 - push esi
+db 50                                    // 006A1C27 - push eax
+call 006A3913                            // 006A1C28 - call 006A3913
+db 59                                    // 006A1C2D - pop ecx
+db 59                                    // 006A1C2E - pop ecx
+db 3B C7                                 // 006A1C2F - cmp eax,edi
+je MyLabel006A1C54                       // 006A1C31 - je 006A1C54
+db F7 5D 1C                              // 006A1C33 - neg [ebp+1C]
+jmp MyLabel006A1C54                      // 006A1C36 - jmp 006A1C54
+MyLabel006A1C38:
+// db 57                                    // 006A1C38 - push edi
+// db FF 75 2C                              // 006A1C39 - push [ebp+2C]
+// db 8B CE                                 // 006A1C3C - mov ecx,esi
+// db 57                                    // 006A1C3E - push edi
+// db 57                                    // 006A1C3F - push edi
+// db FF 75 18                              // 006A1C40 - push [ebp+18]
+// db FF 75 40                              // 006A1C43 - push [ebp+40]
+// db FF 75 20                              // 006A1C46 - push [ebp+20]
+// db FF 75 24                              // 006A1C49 - push [ebp+24]
+// db FF 75 1C                              // 006A1C4C - push [ebp+1C]
+// call 00686114                            // 006A1C4F - call 00686114
+MyLabel006A1C54:
+db 81 7D 0C E9 1A 11 00                  // 006A1C54 - cmp [ebp+0C],00111AE9
+je MyLabel006A1C6F                       // 006A1C5B - je 006A1C6F
+db 81 7D 0C 29 28 14 00                  // 006A1C5D - cmp [ebp+0C],00142829
+je MyLabel006A1C6F                       // 006A1C64 - je 006A1C6F
+db 81 7D 0C 89 A1 12 00                  // 006A1C66 - cmp [ebp+0C],0012A189
+jne MyLabel006A1C7B                      // 006A1C6D - jne 006A1C7B
+MyLabel006A1C6F:
+db 8B 4D F0                              // 006A1C6F - mov ecx,[ebp-10]
+db 57                                    // 006A1C72 - push edi
+db FF 75 D4                              // 006A1C73 - push [ebp-2C]
+call 00684950                            // 006A1C76 - call 00684950
+MyLabel006A1C7B:
+db 8B 45 BC                              // 006A1C7B - mov eax,[ebp-44]
+db 3B C7                                 // 006A1C7E - cmp eax,edi
+je MyLabel006A1DE4                       // 006A1C80 - je 006A1DE4
+db 81 B8 CC 01 00 00 FC 03 00 00         // 006A1C86 - cmp [eax+000001CC],000003FC
+je MyLabel006A1DE4                       // 006A1C90 - je 006A1DE4
+db 89 7D BC                              // 006A1C96 - mov [ebp-44],edi
+db 8B 83 40 34 00 00                     // 006A1C99 - mov eax,[ebx+00003440]
+db 89 7D FC                              // 006A1C9F - mov [ebp-04],edi
+db 39 45 08                              // 006A1CA2 - cmp [ebp+08],eax
+jne MyLabel006A1D1F                      // 006A1CA5 - jne 006A1D1F
+db 8B 03                                 // 006A1CA7 - mov eax,[ebx]
+db 8B CB                                 // 006A1CA9 - mov ecx,ebx
+db FF 50 50                              // 006A1CAB - call dword ptr [eax+50]
+db 50                                    // 006A1CAE - push eax
+call 00759D97                            // 006A1CAF - call 00759D97
+db 59                                    // 006A1CB4 - pop ecx
+db 50                                    // 006A1CB5 - push eax
+db 8D 45 C8                              // 006A1CB6 - lea eax,[ebp-38]
+db 50                                    // 006A1CB9 - push eax
+db 8B CB                                 // 006A1CBA - mov ecx,ebx
+call 00A45E8D                            // 006A1CBC - call 00A45E8D
+db 50                                    // 006A1CC1 - push eax
+db 8D 4D B8                              // 006A1CC2 - lea ecx,[ebp-48]
+db C6 45 FC 01                           // 006A1CC5 - mov byte ptr [ebp-04],01
+db C7 45 EC 01 00 00 00                  // 006A1CC9 - mov [ebp-14],00000001
+call 006888C5                            // 006A1CD0 - call 006888C5
+db 39 78 04                              // 006A1CD5 - cmp [eax+04],edi
+jne MyLabel006A1D19                      // 006A1CD8 - jne 006A1D19
+db 8B 03                                 // 006A1CDA - mov eax,[ebx]
+db 8B CB                                 // 006A1CDC - mov ecx,ebx
+db FF 50 54                              // 006A1CDE - call dword ptr [eax+54]
+db 50                                    // 006A1CE1 - push eax
+db 8B 03                                 // 006A1CE2 - mov eax,[ebx]
+db 8B CB                                 // 006A1CE4 - mov ecx,ebx
+db FF 50 50                              // 006A1CE6 - call dword ptr [eax+50]
+db 50                                    // 006A1CE9 - push eax
+call 00759D2E                            // 006A1CEA - call 00759D2E
+db 59                                    // 006A1CEF - pop ecx
+db 59                                    // 006A1CF0 - pop ecx
+db 50                                    // 006A1CF1 - push eax
+db 8D 45 A0                              // 006A1CF2 - lea eax,[ebp-60]
+db 50                                    // 006A1CF5 - push eax
+db 8B CB                                 // 006A1CF6 - mov ecx,ebx
+call 00A45E8D                            // 006A1CF8 - call 00A45E8D
+db 50                                    // 006A1CFD - push eax
+db 8D 4D B8                              // 006A1CFE - lea ecx,[ebp-48]
+db C7 45 FC 02 00 00 00                  // 006A1D01 - mov [ebp-04],00000002
+db C7 45 EC 03 00 00 00                  // 006A1D08 - mov [ebp-14],00000003
+call 006888C5                            // 006A1D0F - call 006888C5
+db 39 78 04                              // 006A1D14 - cmp [eax+04],edi
+je MyLabel006A1D1F                       // 006A1D17 - je 006A1D1F
+MyLabel006A1D19:
+db C6 45 2F 01                           // 006A1D19 - mov byte ptr [ebp+2F],01
+jmp MyLabel006A1D23                      // 006A1D1D - jmp 006A1D23
+MyLabel006A1D1F:
+db C6 45 2F 00                           // 006A1D1F - mov byte ptr [ebp+2F],00
+MyLabel006A1D23:
+db F6 45 EC 02                           // 006A1D23 - test byte ptr [ebp-14],02
+db C7 45 FC 01 00 00 00                  // 006A1D27 - mov [ebp-04],00000001
+je MyLabel006A1D3C                       // 006A1D2E - je 006A1D3C
+db 83 65 EC FD                           // 006A1D30 - and dword ptr [ebp-14],-03
+db 8D 4D A0                              // 006A1D34 - lea ecx,[ebp-60]
+call 0067591D                            // 006A1D37 - call 0067591D
+MyLabel006A1D3C:
+db F6 45 EC 01                           // 006A1D3C - test byte ptr [ebp-14],01
+db 89 7D FC                              // 006A1D40 - mov [ebp-04],edi
+je MyLabel006A1D4D                       // 006A1D43 - je 006A1D4D
+db 8D 4D C8                              // 006A1D45 - lea ecx,[ebp-38]
+call 0067591D                            // 006A1D48 - call 0067591D
+MyLabel006A1D4D:
+db 80 7D 2F 00                           // 006A1D4D - cmp byte ptr [ebp+2F],00
+je MyLabel006A1DB6                       // 006A1D51 - je 006A1DB6
+db 8B 75 F0                              // 006A1D53 - mov esi,[ebp-10]
+db 8B 06                                 // 006A1D56 - mov eax,[esi]
+db 57                                    // 006A1D58 - push edi
+db 8D 4D C0                              // 006A1D59 - lea ecx,[ebp-40]
+db 51                                    // 006A1D5C - push ecx
+db 8B CE                                 // 006A1D5D - mov ecx,esi
+db FF 50 08                              // 006A1D5F - call dword ptr [eax+08]
+db 8B 4D BC                              // 006A1D62 - mov ecx,[ebp-44]
+db 8B 01                                 // 006A1D65 - mov eax,[ecx]
+db 57                                    // 006A1D67 - push edi
+db 8D 55 98                              // 006A1D68 - lea edx,[ebp-68]
+db 52                                    // 006A1D6B - push edx
+db FF 50 08                              // 006A1D6C - call dword ptr [eax+08]
+db 8B 45 98                              // 006A1D6F - mov eax,[ebp-68]
+db 05 70 FE FF FF                        // 006A1D72 - add eax,FFFFFE70
+db 39 45 C0                              // 006A1D77 - cmp [ebp-40],eax
+jle MyLabel006A1DAF                      // 006A1D7A - jle 006A1DAF
+db 8B 45 A0                              // 006A1D7C - mov eax,[ebp-60]
+db 05 90 01 00 00                        // 006A1D7F - add eax,00000190
+db 39 45 C8                              // 006A1D84 - cmp [ebp-38],eax
+jnl MyLabel006A1DAF                      // 006A1D87 - jnl 006A1DAF
+db 8B 45 9C                              // 006A1D89 - mov eax,[ebp-64]
+db 83 C0 28                              // 006A1D8C - add eax,28
+db 39 45 C4                              // 006A1D8F - cmp [ebp-3C],eax
+jnl MyLabel006A1DAF                      // 006A1D92 - jnl 006A1DAF
+db 8B 45 A4                              // 006A1D94 - mov eax,[ebp-5C]
+db 83 C0 D8                              // 006A1D97 - add eax,-28
+db 39 45 CC                              // 006A1D9A - cmp [ebp-34],eax
+jle MyLabel006A1DAF                      // 006A1D9D - jle 006A1DAF
+db 8B 45 BC                              // 006A1D9F - mov eax,[ebp-44]
+MyLabel006A1DA2:
+db 3B C7                                 // 006A1DA2 - cmp eax,edi
+je MyLabel006A1DAB                       // 006A1DA4 - je 006A1DAB
+db 83 C0 04                              // 006A1DA6 - add eax,04
+jmp MyLabel006A1DC9                      // 006A1DA9 - jmp 006A1DC9
+MyLabel006A1DAB:
+db 33 C0                                 // 006A1DAB - xor eax,eax
+jmp MyLabel006A1DC9                      // 006A1DAD - jmp 006A1DC9
+MyLabel006A1DAF:
+db A1 74 72 1C 01                        // 006A1DAF - mov eax,[011C7274] : [3086AEB4]
+jmp MyLabel006A1DA2                      // 006A1DB4 - jmp 006A1DA2
+MyLabel006A1DB6:
+db A1 74 72 1C 01                        // 006A1DB6 - mov eax,[011C7274] : [3086AEB4]
+db 3B C7                                 // 006A1DBB - cmp eax,edi
+je MyLabel006A1DC4                       // 006A1DBD - je 006A1DC4
+db 83 C0 04                              // 006A1DBF - add eax,04
+jmp MyLabel006A1DC6                      // 006A1DC2 - jmp 006A1DC6
+MyLabel006A1DC4:
+db 33 C0                                 // 006A1DC4 - xor eax,eax
+MyLabel006A1DC6:
+db 8B 75 F0                              // 006A1DC6 - mov esi,[ebp-10]
+MyLabel006A1DC9:
+db 57                                    // 006A1DC9 - push edi
+db 57                                    // 006A1DCA - push edi
+db 50                                    // 006A1DCB - push eax
+db FF 75 28                              // 006A1DCC - push [ebp+28]
+db 8B CE                                 // 006A1DCF - mov ecx,esi
+call 0068B3B5                            // 006A1DD1 - call 0068B3B5
+db 83 4D FC FF                           // 006A1DD6 - or dword ptr [ebp-04],-01
+db 8D 4D B8                              // 006A1DDA - lea ecx,[ebp-48]
+call 0067591D                            // 006A1DDD - call 0067591D
+jmp MyLabel006A1DE7                      // 006A1DE2 - jmp 006A1DE7
+MyLabel006A1DE4:
+db 8B 75 F0                              // 006A1DE4 - mov esi,[ebp-10]
+MyLabel006A1DE7:
+db 8B 45 08                              // 006A1DE7 - mov eax,[ebp+08]
+db 3B 83 40 34 00 00                     // 006A1DEA - cmp eax,[ebx+00003440]
+jne MyLabel006A1DFD                      // 006A1DF0 - jne 006A1DFD
+db 39 7D 1C                              // 006A1DF2 - cmp [ebp+1C],edi
+jle MyLabel006A1DFD                      // 006A1DF5 - jle 006A1DFD
+db 89 86 D0 07 00 00                     // 006A1DF7 - mov [esi+000007D0],eax
+MyLabel006A1DFD:
+db 89 7D 08                              // 006A1DFD - mov [ebp+08],edi
+db 8B 5D F0                              // 006A1E00 - mov ebx,[ebp-10]
+db 8D 4D A0                              // 006A1E03 - lea ecx,[ebp-60]
+db 83 C3 04                              // 006A1E06 - add ebx,04
+db 8B 03                                 // 006A1E09 - mov eax,[ebx]
+db 51                                    // 006A1E0B - push ecx
+db 8B CB                                 // 006A1E0C - mov ecx,ebx
+db C7 45 FC 03 00 00 00                  // 006A1E0E - mov [ebp-04],00000003
+db FF 50 10                              // 006A1E15 - call dword ptr [eax+10]
+db 8D 4D B8                              // 006A1E18 - lea ecx,[ebp-48]
+db 8B F0                                 // 006A1E1B - mov esi,eax
+db 8B 03                                 // 006A1E1D - mov eax,[ebx]
+db 51                                    // 006A1E1F - push ecx
+db 8B CB                                 // 006A1E20 - mov ecx,ebx
+db FF 50 10                              // 006A1E22 - call dword ptr [eax+10]
+db FF 70 04                              // 006A1E25 - push [eax+04]
+db FF 36                                 // 006A1E28 - push [esi]
+call 00B06A5E                            // 006A1E2A - call 00B06A5E
+db 39 7D 30                              // 006A1E2F - cmp [ebp+30],edi
+db 59                                    // 006A1E32 - pop ecx
+db 59                                    // 006A1E33 - pop ecx
+db 89 45 2C                              // 006A1E34 - mov [ebp+2C],eax
+jng MyLabel006A1F39                      // 006A1E37 - jng 006A1F39
+db 8D 45 28                              // 006A1E3D - lea eax,[ebp+28]
+db 68 B2 0F 00 00                        // 006A1E40 - push 00000FB2
+db 50                                    // 006A1E45 - push eax
+call 007FB344                            // 006A1E46 - call 007FB344
+db 8B C8                                 // 006A1E4B - mov ecx,eax
+call 00403470                            // 006A1E4D - call 00403470
+db 8B 00                                 // 006A1E52 - mov eax,[eax]
+db FF 75 30                              // 006A1E54 - push [ebp+30]
+db C6 45 FC 04                           // 006A1E57 - mov byte ptr [ebp-04],04
+db 50                                    // 006A1E5B - push eax
+db 8D 45 08                              // 006A1E5C - lea eax,[ebp+08]
+db 50                                    // 006A1E5F - push eax
+call 004169AB                            // 006A1E60 - call 004169AB
+db 8B 45 28                              // 006A1E65 - mov eax,[ebp+28]
+db 83 C4 0C                              // 006A1E68 - add esp,0C
+db C6 45 FC 03                           // 006A1E6B - mov byte ptr [ebp-04],03
+db 3B C7                                 // 006A1E6F - cmp eax,edi
+je MyLabel006A1E7D                       // 006A1E71 - je 006A1E7D
+db 83 C0 F4                              // 006A1E73 - add eax,-0C
+db 50                                    // 006A1E76 - push eax
+call 00402D1C                            // 006A1E77 - call 00402D1C
+db 59                                    // 006A1E7C - pop ecx
+MyLabel006A1E7D:
+db 83 7D 24 00                           // 006A1E7D - cmp dword ptr [ebp+24],00
+db BF C8 AC F1 00                        // 006A1E81 - mov edi,00F1ACC8 : [00000000]
+jg MyLabel006A1E8E                       // 006A1E86 - jg 006A1E8E
+db 83 7D 1C 00                           // 006A1E88 - cmp dword ptr [ebp+1C],00
+jne MyLabel006A1E99                      // 006A1E8C - jne 006A1E99
+MyLabel006A1E8E:
+db 6A FF                                 // 006A1E8E - push -01
+db 57                                    // 006A1E90 - push edi
+db 8D 4D 08                              // 006A1E91 - lea ecx,[ebp+08]
+call 00439F3A                            // 006A1E94 - call 00439F3A
+MyLabel006A1E99:
+db BE 80 57 1C 01                        // 006A1E99 - mov esi,011C5780 : [0000000A]
+db 56                                    // 006A1E9E - push esi
+db 8D 4D B0                              // 006A1E9F - lea ecx,[ebp-50]
+call 0040163C                            // 006A1EA2 - call 0040163C
+db 56                                    // 006A1EA7 - push esi
+db 8D 4D 98                              // 006A1EA8 - lea ecx,[ebp-68]
+db C6 45 FC 05                           // 006A1EAB - mov byte ptr [ebp-04],05
+call 0040163C                            // 006A1EAF - call 0040163C
+db 8D 45 B0                              // 006A1EB4 - lea eax,[ebp-50]
+db 50                                    // 006A1EB7 - push eax
+db 8D 45 98                              // 006A1EB8 - lea eax,[ebp-68]
+db 50                                    // 006A1EBB - push eax
+db 51                                    // 006A1EBC - push ecx
+db 89 65 1C                              // 006A1EBD - mov [ebp+1C],esp
+db 8B CC                                 // 006A1EC0 - mov ecx,esp
+db FF 75 08                              // 006A1EC2 - push [ebp+08]
+db C6 45 FC 06                           // 006A1EC5 - mov byte ptr [ebp-04],06
+call 00402C77                            // 006A1EC9 - call 00402C77
+db 83 3D 5C 6F 1E 01 00                  // 006A1ECE - cmp dword ptr [011E6F5C],00
+db C6 45 FC 07                           // 006A1ED5 - mov byte ptr [ebp-04],07
+jne MyLabel006A1EE5                      // 006A1ED9 - jne 006A1EE5
+MyLabel006A1EDB:
+db 68 03 40 00 80                        // 006A1EDB - push 80004003
+call 00C13B90                            // 006A1EE0 - call 00C13B90
+MyLabel006A1EE5:
+db 8D 45 C0                              // 006A1EE5 - lea eax,[ebp-40]
+db C6 45 FC 06                           // 006A1EE8 - mov byte ptr [ebp-04],06
+db 8B 0D 5C 6F 1E 01                     // 006A1EEC - mov ecx,[011E6F5C] : [0E19D144]
+db 50                                    // 006A1EF2 - push eax
+call 00403E24                            // 006A1EF3 - call 00403E24
+db 8D 45 98                              // 006A1EF8 - lea eax,[ebp-68]
+db 50                                    // 006A1EFB - push eax
+db C6 45 FC 09                           // 006A1EFC - mov byte ptr [ebp-04],09
+call 004012D1                            // 006A1F00 - call 004012D1
+db 8D 45 B0                              // 006A1F05 - lea eax,[ebp-50]
+db 50                                    // 006A1F08 - push eax
+db C6 45 FC 0A                           // 006A1F09 - mov byte ptr [ebp-04],0A
+call 004012D1                            // 006A1F0D - call 004012D1
+db 33 F6                                 // 006A1F12 - xor esi,esi
+db 59                                    // 006A1F14 - pop ecx
+db 59                                    // 006A1F15 - pop ecx
+db 66 39 75 C0                           // 006A1F16 - cmp [ebp-40],si
+jne MyLabel006A1F27                      // 006A1F1A - jne 006A1F27
+db 6A FF                                 // 006A1F1C - push -01
+db 57                                    // 006A1F1E - push edi
+db 8D 4D 08                              // 006A1F1F - lea ecx,[ebp+08]
+call 00439F3A                            // 006A1F22 - call 00439F3A
+MyLabel006A1F27:
+db 8D 45 C0                              // 006A1F27 - lea eax,[ebp-40]
+db 50                                    // 006A1F2A - push eax
+db C6 45 FC 03                           // 006A1F2B - mov byte ptr [ebp-04],03
+call 004012D1                            // 006A1F2F - call 004012D1
+jmp MyLabel006A2067                      // 006A1F34 - jmp 006A2067
+MyLabel006A1F39:
+db 39 7D 0C                              // 006A1F39 - cmp [ebp+0C],edi
+je MyLabel006A2091                       // 006A1F3C - je 006A2091
+db 8D 45 28                              // 006A1F42 - lea eax,[ebp+28]
+db 68 2D 08 00 00                        // 006A1F45 - push 0000082D
+db 50                                    // 006A1F4A - push eax
+call 007FB344                            // 006A1F4B - call 007FB344
+db 8B C8                                 // 006A1F50 - mov ecx,eax
+call 00403470                            // 006A1F52 - call 00403470
+db 8B 00                                 // 006A1F57 - mov eax,[eax]
+db FF 75 0C                              // 006A1F59 - push [ebp+0C]
+db C6 45 FC 0B                           // 006A1F5C - mov byte ptr [ebp-04],0B
+db 50                                    // 006A1F60 - push eax
+db 8D 45 08                              // 006A1F61 - lea eax,[ebp+08]
+db 50                                    // 006A1F64 - push eax
+call 004169AB                            // 006A1F65 - call 004169AB
+db 8B 45 28                              // 006A1F6A - mov eax,[ebp+28]
+db 83 C4 0C                              // 006A1F6D - add esp,0C
+db C6 45 FC 03                           // 006A1F70 - mov byte ptr [ebp-04],03
+db 85 C0                                 // 006A1F74 - test eax,eax
+je MyLabel006A1F82                       // 006A1F76 - je 006A1F82
+db 83 C0 F4                              // 006A1F78 - add eax,-0C
+db 50                                    // 006A1F7B - push eax
+call 00402D1C                            // 006A1F7C - call 00402D1C
+db 59                                    // 006A1F81 - pop ecx
+MyLabel006A1F82:
+db 8B 45 0C                              // 006A1F82 - mov eax,[ebp+0C]
+db BF C8 AC F1 00                        // 006A1F85 - mov edi,00F1ACC8 : [00000000]
+db 3D 4D 51 2F 00                        // 006A1F8A - cmp eax,002F514D
+je MyLabel006A1F98                       // 006A1F8F - je 006A1F98
+db 3D 8C D6 DF 03                        // 006A1F91 - cmp eax,03DFD68C
+jne MyLabel006A1FA4                      // 006A1F96 - jne 006A1FA4
+MyLabel006A1F98:
+db 83 7D 24 00                           // 006A1F98 - cmp dword ptr [ebp+24],00
+jg MyLabel006A1FC6                       // 006A1F9C - jg 006A1FC6
+db 83 7D 1C 00                           // 006A1F9E - cmp dword ptr [ebp+1C],00
+je MyLabel006A1FC6                       // 006A1FA2 - je 006A1FC6
+MyLabel006A1FA4:
+db 3D 7A 4D 52 01                        // 006A1FA4 - cmp eax,01524D7A : [127E6D72]
+je MyLabel006A1FC0                       // 006A1FA9 - je 006A1FC0
+db 3D EF 23 4E 00                        // 006A1FAB - cmp eax,004E23EF : [EEDCE81C]
+je MyLabel006A1FC0                       // 006A1FB0 - je 006A1FC0
+db 3D 43 41 40 00                        // 006A1FB2 - cmp eax,00404143 : [45C60838]
+je MyLabel006A1FC0                       // 006A1FB7 - je 006A1FC0
+db 3D 9E 24 57 00                        // 006A1FB9 - cmp eax,0057249E : [FC7D894C]
+jne MyLabel006A1FD1                      // 006A1FBE - jne 006A1FD1
+MyLabel006A1FC0:
+db 83 7D 24 00                           // 006A1FC0 - cmp dword ptr [ebp+24],00
+jle MyLabel006A1FD1                      // 006A1FC4 - jle 006A1FD1
+MyLabel006A1FC6:
+db 6A FF                                 // 006A1FC6 - push -01
+db 57                                    // 006A1FC8 - push edi
+db 8D 4D 08                              // 006A1FC9 - lea ecx,[ebp+08]
+call 00439F3A                            // 006A1FCC - call 00439F3A
+MyLabel006A1FD1:
+db BE 80 57 1C 01                        // 006A1FD1 - mov esi,011C5780 : [0000000A]
+db 56                                    // 006A1FD6 - push esi
+db 8D 4D B0                              // 006A1FD7 - lea ecx,[ebp-50]
+call 0040163C                            // 006A1FDA - call 0040163C
+db 56                                    // 006A1FDF - push esi
+db 8D 4D 98                              // 006A1FE0 - lea ecx,[ebp-68]
+db C6 45 FC 0C                           // 006A1FE3 - mov byte ptr [ebp-04],0C
+call 0040163C                            // 006A1FE7 - call 0040163C
+db 8D 45 B0                              // 006A1FEC - lea eax,[ebp-50]
+db 50                                    // 006A1FEF - push eax
+db 8D 45 98                              // 006A1FF0 - lea eax,[ebp-68]
+db 50                                    // 006A1FF3 - push eax
+db 51                                    // 006A1FF4 - push ecx
+db 89 65 1C                              // 006A1FF5 - mov [ebp+1C],esp
+db 8B CC                                 // 006A1FF8 - mov ecx,esp
+db FF 75 08                              // 006A1FFA - push [ebp+08]
+db C6 45 FC 0D                           // 006A1FFD - mov byte ptr [ebp-04],0D
+call 00402C77                            // 006A2001 - call 00402C77
+db 83 3D 5C 6F 1E 01 00                  // 006A2006 - cmp dword ptr [011E6F5C],00
+db C6 45 FC 0E                           // 006A200D - mov byte ptr [ebp-04],0E
+je MyLabel006A1EDB                       // 006A2011 - je 006A1EDB
+db 8D 45 C0                              // 006A2017 - lea eax,[ebp-40]
+db C6 45 FC 0D                           // 006A201A - mov byte ptr [ebp-04],0D
+db 8B 0D 5C 6F 1E 01                     // 006A201E - mov ecx,[011E6F5C] : [0E19D144]
+db 50                                    // 006A2024 - push eax
+call 00403E24                            // 006A2025 - call 00403E24
+db 8D 45 98                              // 006A202A - lea eax,[ebp-68]
+db 50                                    // 006A202D - push eax
+db C6 45 FC 10                           // 006A202E - mov byte ptr [ebp-04],10
+call 004012D1                            // 006A2032 - call 004012D1
+db 8D 45 B0                              // 006A2037 - lea eax,[ebp-50]
+db 50                                    // 006A203A - push eax
+db C6 45 FC 11                           // 006A203B - mov byte ptr [ebp-04],11
+call 004012D1                            // 006A203F - call 004012D1
+db 66 83 7D C0 00                        // 006A2044 - cmp word ptr [ebp-40],00
+db 59                                    // 006A2049 - pop ecx
+db 59                                    // 006A204A - pop ecx
+jne MyLabel006A2058                      // 006A204B - jne 006A2058
+db 6A FF                                 // 006A204D - push -01
+db 57                                    // 006A204F - push edi
+db 8D 4D 08                              // 006A2050 - lea ecx,[ebp+08]
+call 00439F3A                            // 006A2053 - call 00439F3A
+MyLabel006A2058:
+db 8D 45 C0                              // 006A2058 - lea eax,[ebp-40]
+db 50                                    // 006A205B - push eax
+db C6 45 FC 03                           // 006A205C - mov byte ptr [ebp-04],03
+call 004012D1                            // 006A2060 - call 004012D1
+db 33 F6                                 // 006A2065 - xor esi,esi
+MyLabel006A2067:
+db 8B 45 08                              // 006A2067 - mov eax,[ebp+08]
+db 59                                    // 006A206A - pop ecx
+db 3B C6                                 // 006A206B - cmp eax,esi
+je MyLabel006A2091                       // 006A206D - je 006A2091
+db 66 39 30                              // 006A206F - cmp [eax],si
+je MyLabel006A2091                       // 006A2072 - je 006A2091
+db 39 75 44                              // 006A2074 - cmp [ebp+44],esi
+je MyLabel006A207E                       // 006A2077 - je 006A207E
+db 39 75 24                              // 006A2079 - cmp [ebp+24],esi
+jne MyLabel006A20B0                      // 006A207C - jne 006A20B0
+MyLabel006A207E:
+db 8B 0D D0 B9 1C 01                     // 006A207E - mov ecx,[011CB9D0] : [148AB68C]
+db 56                                    // 006A2084 - push esi
+db 56                                    // 006A2085 - push esi
+db FF 75 2C                              // 006A2086 - push [ebp+2C]
+db 50                                    // 006A2089 - push eax
+call 00452E35                            // 006A208A - call 00452E35
+jmp MyLabel006A20B0                      // 006A208F - jmp 006A20B0
+MyLabel006A2091:
+db 8B 4D F0                              // 006A2091 - mov ecx,[ebp-10]
+db 6A 00                                 // 006A2094 - push 00
+db FF 75 2C                              // 006A2096 - push [ebp+2C]
+db 6A 00                                 // 006A2099 - push 00
+call 005440AE                            // 006A209B - call 005440AE
+db 8B C8                                 // 006A20A0 - mov ecx,eax
+call 00544A02                            // 006A20A2 - call 00544A02
+db 50                                    // 006A20A7 - push eax
+call 00B11012                            // 006A20A8 - call 00B11012
+db 83 C4 10                              // 006A20AD - add esp,10
+MyLabel006A20B0:
+db 80 7D 48 00                           // 006A20B0 - cmp byte ptr [ebp+48],00
+je MyLabel006A2200                       // 006A20B4 - je 006A2200
+db 8B 4D F0                              // 006A20BA - mov ecx,[ebp-10]
+db 80 B9 D5 00 00 00 00                  // 006A20BD - cmp byte ptr [ecx+000000D5],00
+jne MyLabel006A21FB                      // 006A20C4 - jne 006A21FB
+call 00683E97                            // 006A20CA - call 00683E97
+db 84 C0                                 // 006A20CF - test al,al
+jne MyLabel006A2200                      // 006A20D1 - jne 006A2200
+db FF 75 0C                              // 006A20D7 - push [ebp+0C]
+db 8B 0D 18 6F 1C 01                     // 006A20DA - mov ecx,[011C6F18] : [1C53BA5C]
+call 007637E6                            // 006A20E0 - call 007637E6
+db 8B F0                                 // 006A20E5 - mov esi,eax
+db 85 F6                                 // 006A20E7 - test esi,esi
+je MyLabel006A2200                       // 006A20E9 - je 006A2200
+db 68 E0 75 F3 00                        // 006A20EF - push 00F375E0 : ["lifting"]
+db 8D 8E 00 02 00 00                     // 006A20F4 - lea ecx,[esi+00000200]
+call 0043E152                            // 006A20FA - call 0043E152
+db 85 C0                                 // 006A20FF - test eax,eax
+jne MyLabel006A2200                      // 006A2101 - jne 006A2200
+db FF 75 10                              // 006A2107 - push [ebp+10]
+db 8B CE                                 // 006A210A - mov ecx,esi
+call 0078D5D7                            // 006A210C - call 0078D5D7
+db 8B F0                                 // 006A2111 - mov esi,eax
+db 8B CE                                 // 006A2113 - mov ecx,esi
+call 00432884                            // 006A2115 - call 00432884
+db 8B CE                                 // 006A211A - mov ecx,esi
+db 89 45 2C                              // 006A211C - mov [ebp+2C],eax
+call 00432884                            // 006A211F - call 00432884
+db 8B CE                                 // 006A2124 - mov ecx,esi
+db 89 45 24                              // 006A2126 - mov [ebp+24],eax
+call 004328C3                            // 006A2129 - call 004328C3
+db 81 7D 0C 9A 02 27 02                  // 006A212E - cmp [ebp+0C],0227029A
+db 89 45 48                              // 006A2135 - mov [ebp+48],eax
+db C6 45 1C 00                           // 006A2138 - mov byte ptr [ebp+1C],00
+jne MyLabel006A21B7                      // 006A213C - jne 006A21B7
+db 8B CE                                 // 006A213E - mov ecx,esi
+call 00684199                            // 006A2140 - call 00684199
+db 85 C0                                 // 006A2145 - test eax,eax
+je MyLabel006A21B7                       // 006A2147 - je 006A21B7
+db 8B CE                                 // 006A2149 - mov ecx,esi
+call 00432884                            // 006A214B - call 00432884
+db 8B CE                                 // 006A2150 - mov ecx,esi
+db 89 45 2C                              // 006A2152 - mov [ebp+2C],eax
+call 00432899                            // 006A2155 - call 00432899
+db 8B 4D AC                              // 006A215A - mov ecx,[ebp-54]
+db 83 C1 04                              // 006A215D - add ecx,04
+db 8D 55 D0                              // 006A2160 - lea edx,[ebp-30]
+db 89 45 24                              // 006A2163 - mov [ebp+24],eax
+db 8B 01                                 // 006A2166 - mov eax,[ecx]
+db 52                                    // 006A2168 - push edx
+db FF 50 10                              // 006A2169 - call dword ptr [eax+10]
+db 8D 4D D8                              // 006A216C - lea ecx,[ebp-28]
+db 8B F8                                 // 006A216F - mov edi,eax
+db 8B 03                                 // 006A2171 - mov eax,[ebx]
+db 51                                    // 006A2173 - push ecx
+db 8B CB                                 // 006A2174 - mov ecx,ebx
+db FF 50 10                              // 006A2176 - call dword ptr [eax+10]
+db 8B 0F                                 // 006A2179 - mov ecx,[edi]
+db 2B 08                                 // 006A217B - sub ecx,[eax]
+db 51                                    // 006A217D - push ecx
+call 00C16E29                            // 006A217E - call 00C16E29
+db 59                                    // 006A2183 - pop ecx
+db 8B CE                                 // 006A2184 - mov ecx,esi
+db 8B D8                                 // 006A2186 - mov ebx,eax
+call 006841AE                            // 006A2188 - call 006841AE
+db 8B F8                                 // 006A218D - mov edi,eax
+db 8B CE                                 // 006A218F - mov ecx,esi
+db 0F AF FB                              // 006A2191 - imul edi,ebx
+call 00684199                            // 006A2194 - call 00684199
+db 8B C8                                 // 006A2199 - mov ecx,eax
+db 8B C7                                 // 006A219B - mov eax,edi
+db 99                                    // 006A219D - cdq 
+db F7 F9                                 // 006A219E - idiv ecx
+db 8B CE                                 // 006A21A0 - mov ecx,esi
+db 8B F8                                 // 006A21A2 - mov edi,eax
+call 00684184                            // 006A21A4 - call 00684184
+db 03 C7                                 // 006A21A9 - add eax,edi
+db 3B 45 48                              // 006A21AB - cmp eax,[ebp+48]
+jnl MyLabel006A21B3                      // 006A21AE - jnl 006A21B3
+db 89 45 48                              // 006A21B0 - mov [ebp+48],eax
+MyLabel006A21B3:
+db C6 45 1C 01                           // 006A21B3 - mov byte ptr [ebp+1C],01
+MyLabel006A21B7:
+db 8B CE                                 // 006A21B7 - mov ecx,esi
+call 00432884                            // 006A21B9 - call 00432884
+db 8B CE                                 // 006A21BE - mov ecx,esi
+db 8B F8                                 // 006A21C0 - mov edi,eax
+call 00432884                            // 006A21C2 - call 00432884
+db 03 F8                                 // 006A21C7 - add edi,eax
+db 57                                    // 006A21C9 - push edi
+db FF 75 1C                              // 006A21CA - push [ebp+1C]
+db 8B CE                                 // 006A21CD - mov ecx,esi
+db 6A 00                                 // 006A21CF - push 00
+call 006841C3                            // 006A21D1 - call 006841C3
+db 50                                    // 006A21D6 - push eax
+db 8B CE                                 // 006A21D7 - mov ecx,esi
+call 004328AE                            // 006A21D9 - call 004328AE
+db 50                                    // 006A21DE - push eax
+db FF 75 48                              // 006A21DF - push [ebp+48]
+db FF 75 48                              // 006A21E2 - push [ebp+48]
+db FF 75 24                              // 006A21E5 - push [ebp+24]
+db FF 75 2C                              // 006A21E8 - push [ebp+2C]
+call 00B06A55                            // 006A21EB - call 00B06A55
+db 8B 4D F0                              // 006A21F0 - mov ecx,[ebp-10]
+db 50                                    // 006A21F3 - push eax
+call 0068AF2C                            // 006A21F4 - call 0068AF2C
+jmp MyLabel006A2200                      // 006A21F9 - jmp 006A2200
+MyLabel006A21FB:
+call 0068C4E8                            // 006A21FB - call 0068C4E8
+MyLabel006A2200:
+db 8B 45 AC                              // 006A2200 - mov eax,[ebp-54]
+db 8B 4D F0                              // 006A2203 - mov ecx,[ebp-10]
+db 83 A0 68 9A 00 00 00                  // 006A2206 - and dword ptr [eax+00009A68],00
+call 0068A173                            // 006A220D - call 0068A173 : [RPCRT4.I_RpcOpenClientThread+E3B]
+db 8B 45 08                              // 006A2212 - mov eax,[ebp+08]
+db 83 4D FC FF                           // 006A2215 - or dword ptr [ebp-04],-01
+db 85 C0                                 // 006A2219 - test eax,eax
+je MyLabel006A2227                       // 006A221B - je 006A2227
+db 83 C0 F4                              // 006A221D - add eax,-0C
+db 50                                    // 006A2220 - push eax
+call 00402D1C                            // 006A2221 - call 00402D1C
+db 59                                    // 006A2226 - pop ecx
+MyLabel006A2227:
+call 00C14801                            // 006A2227 - call 00C14801
+db C2 44 00                              // 006A222C - ret 0044

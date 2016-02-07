@@ -1,0 +1,97 @@
+DWORD BombRushSpeedUp_Call1 = 0x005D2AD3;
+DWORD BombRushSpeedUp_Call2 = 0x005BDAAF;
+DWORD ICS_Return = *(DWORD*)0x00CCC9F4;
+DWORD SwitchBombRushSpeedUp = 0;
+DWORD TIMES = 0;
+void __declspec(naked) BombRushSpeedUp_MAIN();
+DWORD BombRushSpeedUp_MAIN_addr = (DWORD)BombRushSpeedUp_MAIN ;
+void __declspec(naked) BombRushSpeedUp_MAIN()
+{
+VMProtectBeginMutation("BombRushSpeedUp_MAIN");
+__asm
+{
+LABEL_BombRushSpeedUp_MAIN_addr:
+MOV ECX,[0x00CC44FC]
+PUSHAD
+PUSH 0
+PUSH 0
+PUSH 0
+PUSH 0
+PUSH 0
+PUSH 0
+PUSH 0
+PUSH 01
+LEA EAX,[EBP+0x60]
+PUSH EAX
+LEA EAX,[EBP+0x1C]
+PUSH EAX
+MOV [EBP+0x60],EBX
+CALL DWORD PTR[BombRushSpeedUp_Call1]
+INC [TIMES]
+POPAD
+CMP [TIMES],0x20
+JL LABEL_BombRushSpeedUp_MAIN_addr
+MOV [TIMES],0
+Mov Eax,[Ebp+0x60]
+Mov [Ebp+0x68],Eax
+Cmp [Ebp+0x68],Ebx
+Je Label_00838DAA
+Mov Eax,[Ebp+0x68]
+Mov Ecx,[Eax+0x00000180]
+Cmp [Eax+0x0000031C],Ebx
+Jne Label_00838D98
+Mov Ecx,Eax
+Call Dword Ptr [BombRushSpeedUp_Call2]
+Mov Eax,[Ebp+0x68]
+Cmp [Eax+0x000003F0],Ebx
+Je Label_00838DAC
+Mov [Ebp+0x68],Ebx
+Mov Eax,[Ebp+0x68]
+Cmp Eax,Ebx
+Je Label_00838DAA
+Mov Eax,[Eax+0x0000017C]
+Push 00838DACh
+Ret
+Label_00838DAA:
+Push 00838DAAh
+Ret
+Label_00838D98:
+Push 00838D98h
+Ret
+Label_00838DAC:
+Push 00838DACh
+Ret
+BombRushSpeedUp_Normal:
+Push 00838D45h
+Ret
+}
+VMProtectEnd();
+}
+
+void __declspec(naked) BombRushSpeedUp_asm()
+{
+VMProtectBeginMutation("BombRushSpeedUp_asm");
+__asm
+{
+ICS_Entrance:
+PUSH EAX
+CMP [SwitchBombRushSpeedUp],1
+JNE BACK
+MOV EAX,[ESP+4]
+CMP EAX,0x00838D3F
+JNE BACK
+MOV EAX,DWORD PTR [BombRushSpeedUp_MAIN_addr]
+MOV [ESP+4],EAX
+BACK:
+POP EAX
+Push [ICS_Return]
+ret
+}
+VMProtectEnd();
+}
+void EnableBombRushSpeedUp()
+{
+VMProtectBeginUltra("EnableBombRushSpeedUp");
+*(DWORD*)(0x00CCC9F4) = (DWORD)BombRushSpeedUp_asm;
+VMProtectEnd();
+}

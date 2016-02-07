@@ -1,0 +1,45 @@
+[Enable]
+Alloc(HookEsp,64)
+Alloc(KamiVac,256)
+Label(KamiVacRet)
+//-------------------
+Alloc(Range,4)
+Alloc(Time,4)
+alloc(XD,4)
+//-------------------
+Range:
+dd 0
+
+HookEsp:
+Cmp [Esp+3C],00622611//
+Je KamiVac
+Jmp 0072C5C3//
+
+KamiVac:
+Pushad
+Mov Esi,[00e1cabc]
+Cmp [Esi+24],0
+Je KamiVacRet
+//-------------------
+Mov Esi,[Esi+28]
+Mov Esi,[Esi+04]
+Mov Esi,[Esi+134]
+Mov Esi,[Esi+24]
+Mov Eax,[Esi+58]
+Sub Eax,[Range]
+Mov Edi,[Esi+5C]
+//-------------------
+mov ebx,[00E1847C]
+mov [ebx+5F78],eax
+mov [ebx+5F7C],edi
+mov [ebx+5F70],01
+//-------------------
+KamiVacRet:
+Popad
+Jmp 0072C5C3//
+
+00Dfca4c:
+DD HookEsp
+[Disable]
+00Dfca4c:
+DD 0072C5C3//

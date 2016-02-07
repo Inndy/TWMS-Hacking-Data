@@ -1,0 +1,73 @@
+// TWMS147.4 ICS 怪物不移動
+// Auther: Inndy
+[Enable]
+Alloc(MobStatic, 128)
+Label(Control)
+Label(Return)
+
+MobStatic:
+DB 8B C1               // 00941B39 - mov eax,ecx
+DB 8B 48 08            // 00941B3B - mov ecx,[eax+08]
+DB 53                  // 00941B3E - push ebx
+DB 8B 5C 24 0C         // 00941B3F - mov ebx,[esp+0C]
+DB 56                  // 00941B43 - push esi
+DB 8D 50 F0            // 00941B44 - lea edx,[eax-10]
+DB F7 DA               // 00941B47 - neg edx
+DB 57                  // 00941B49 - push edi
+DB 8B 7C 24 10         // 00941B4A - mov edi,[esp+10]
+DB 1B D2               // 00941B4E - sbb edx,edx
+DB 23 D0               // 00941B50 - and edx,eax
+DB 52                  // 00941B52 - push edx
+DB 8D B0 DC 00 00 00   // 00941B53 - lea esi,[eax+000000DC]
+DB FF 36               // 00941B59 - push [esi]
+// DB 89 B8 EC 00 00 00   // 00941B5B - mov [eax+000000EC],edi // 怪物走向寫入點，但是人物也會流過這裡，要判斷是否為怪物
+
+Push Esi
+Sub  Esi, 20
+
+Cmp  [Esi+000002A0], 01
+Je   Control
+Cmp  [Esi+000002A0], 03
+Je   Control
+Jmp  Return
+
+Control:
+Mov  [Esi+000000FC], 00000000
+Jmp  Return
+
+Return:
+Pop  Esi
+Push 00941B61
+Ret
+
+00C32CB0:
+dd MobStatic
+[Disable]
+00C32CB0:
+dd 00941B39 // [5/10]
+
+Dealloc(MobStatic)
+
+
+
+
+
+
+
+
+
+
+
+0094BA2A - 55                         - push ebp
+0094BA2B - 8B EC                      - mov ebp,esp
+0094BA2D - 53                         - push ebx
+0094BA2E - 56                         - push esi
+0094BA2F - 8B F1                      - mov esi,ecx
+0094BA31 - DD 46 28                   - fld qword ptr [esi+28]
+0094BA34 - 57                         - push edi
+0094BA35 - E8 26ED0800                - call 009DA760
+0094BA3A - DD 46 30                   - fld qword ptr [esi+30]
+0094BA3D - 89 86 9C060000             - mov [esi+0000069C],eax // 寫入怪物X軸
+0094BA43 - E8 18ED0800                - call 009DA760
+0094BA48 - 8D 8E CC060000             - lea ecx,[esi+000006CC]
+0094BA4E - 89 86 A0060000             - mov [esi+000006A0],eax // 寫入怪物Y軸

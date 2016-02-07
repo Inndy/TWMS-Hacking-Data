@@ -1,0 +1,14 @@
+//147.4 卡牌風暴無冷卻 by.aaaddress1.
+alloc(Hk,24)
+label(BackToSet)
+
+Hk:
+cmp dword ptr [esp+1c],008E5A39
+jne BackToSet
+mov [esp+1c],008E60AD
+BackToSet:
+push 056E0337
+ret
+
+00AEB098:
+dd Hk

@@ -1,0 +1,7 @@
+// TWMS150.2 CRC «Ê¥]µL¼Ä
+[Enable]
+00923D2B:
+db 0F 85
+[Disable]
+00923D2B:
+db 0F 84

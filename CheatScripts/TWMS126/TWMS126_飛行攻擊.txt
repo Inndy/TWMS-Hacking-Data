@@ -1,0 +1,29 @@
+//v126.人物飛行全圖攻擊
+//AUTHER:AAADDRESS1
+[ENABLE]
+registersymbol(Times)
+alloc(VAC,64)
+alloc(Times,4)
+label(back)
+
+VAC:
+cmp [Times],0
+je back
+pushad
+mov eax,[00CDE80C]
+mov eax,[eax+17f4]
+sub eax,c
+mov ecx,[ebx+1A0]
+mov [eax+1a0],ecx
+popad
+mov [Times],0
+back:
+mov eax,[ebx+000002E0]
+jmp 007F7BF9
+
+007F7BF3:
+jmp VAC
+nop
+[DISABLE]
+007F7C02:
+db 8B 8B A0 01 00 00

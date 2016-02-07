@@ -1,0 +1,403 @@
+//TwMS v158.4_ICS_疾風N合一
+//更新+合併:冰Smith
+
+[Enable]
+RegisterSymbol(Main)
+Alloc(Main,20480)
+RegisterSymbol(ItemList)
+Alloc(ItemList,204800)
+RegisterSymbol(MissTime)
+RegisterSymbol(Miss_HOOK)
+RegisterSymbol(Miss)
+RegisterSymbol(Miss_KEY)
+RegisterSymbol(AABack)
+RegisterSymbol(AABackOnOff)
+RegisterSymbol(AAttackDir)
+RegisterSymbol(inst_Hook)
+RegisterSymbol(inst_OnOff)
+Alloc(MissTime,4)
+Alloc(Miss_HOOK, 1028)
+Alloc(Miss, 1028)
+Alloc(Miss_KEY, 1028)
+Alloc(AABack, 128)
+Alloc(AABackOnOff, 4)
+Alloc(AAttackDir, 4)
+Alloc(inst_Hook,128)
+Alloc(inst_OnOff,4)
+Alloc(inst,512)
+Label(HookESP)
+Label(HookFun)
+Label(HookOr1)
+Label(HookOr2)
+Label(Filter)
+Label(Skip)
+Label(End)
+Label(Ultimate)
+Label(Ultimate2)
+Label(AABack2)
+Label(doAABackNormal)
+Label(inst2)
+
+
+ItemList:
+//請在以下加入欲過濾名單
+dd 1F6EE0 //箭矢
+dd 1F72C8 //弩箭矢
+dd 3FA138 //妖精的眼淚
+dd 253B40 //吃蟲桔小姐
+dd 253B41 //吃蟲寶石君
+dd 253B4B //楓樹樹苗
+dd 264D3B //強化驚電弓製作法
+dd 264DB0 //龍尾巴法師斗篷製作法
+dd 264DB1 //帕爾困監視兵斗篷製作法
+dd 264E8F //莎莉絲手杖製作法
+dd 26548E //9階段敏捷藥水的製作書。
+dd 265495 //8階段智能藥水的製作書。
+dd 26549E //9階段幸運藥水的製作書。
+dd 2654E3 //提昇的 1階段敏捷藥水的製作書。
+dd 26555A //提昇的 10階段 幸運藥丸製作說明書
+dd 1F6EE0 //箭矢
+dd 1F72C8 //弩箭矢
+dd 3FA138 //妖精的眼淚
+dd 253B40 //吃蟲桔小姐
+dd 253B41 //吃蟲寶石君
+dd 253B4B //楓樹樹苗
+dd 264D3B //強化驚電弓製作法
+dd 264DB0 //龍尾巴法師斗篷製作法
+dd 264DB1 //帕爾困監視兵斗篷製作法
+dd 264E8F //莎莉絲手杖製作法
+dd 26548E //9階段敏捷藥水的製作書。
+dd 265495 //8階段智能藥水的製作書。
+dd 26549E //9階段幸運藥水的製作書。
+dd 2654E3 //提昇的 1階段敏捷藥水的製作書。
+dd 26555A //提昇的 10階段 幸運藥丸製作說明書
+dd 3D0ABB //有裂痕的沙漏
+dd 3D0ABC //綠色衣角
+dd 3D0ABE //微笑面具
+dd 3D0ACD //騎士的面具
+dd 3D0AD3 //金色假髮
+dd 3D0AD4 //某人的輪胎
+dd 3D0B59 //竊水賊的水瓶
+dd 3D0B5D //安全第一的標誌板
+dd 3D0E7A //龍的精髓
+dd 3D0EE9 //斑點紋卷碎片
+dd 3D0EEB //豹紋卷碎片
+dd 3D0EF1 //老虎紋卷碎片
+dd 3D0F9C //高級怪物公園入場卷
+dd 238D93 //高等子彈
+dd 1F95FA //冰柱
+dd 1F6EE0 //箭矢
+dd 1F72C8 //弩箭矢
+dd 3d0ac0 //綠色心臟
+dd 3d0abb//有裂痕的沙漏
+dd 3d0abc//綠色衣角
+dd 3d0abd//綠色尖帽
+dd 3d0abe//微笑面具
+dd 3d0abf//綠色頭盔
+dd 3d0ac0//綠色心臟
+dd 3d0ac1//藍色衣角
+dd 3d0ac2//藍色尖帽
+dd 3d0ac3//面無表情面具
+dd 3d0ac4//藍色頭盔
+dd 3d0ac5//藍色心臟
+dd 3d0ac6//紅色衣角
+dd 3d0ac7//紅色尖帽
+dd 3d0ac8//哀傷面具
+dd 3d0ac9//紅色頭盔
+dd 3d0aca//紅色心臟
+//請在以上加入欲過濾名單
+DD 00
+Miss_KEY: //0:無敵 1:MISS+無敵時間
+DD 0
+
+AABackOnOff:
+dd 1  // {0: 關閉 | 1: 開啟 }
+
+AAttackDir:
+dd 0 //遠攻者可改2
+    // 0: 怪不動
+    // 1: 怪退後一點點 (正常值)
+    // 2: 怪退後很多點
+    // 3: 怪反方向退到底
+    // A(以上): 怪退到底
+    // C: 怪物跳躍
+    
+inst_OnOff: // 怪物舜移
+DD 1     // {0: 關閉 | 1: 開啟 }      
+
+
+
+Main:
+
+cmp [0115bb3c],00000000    //原地攻擊         
+je 007E6073              
+mov eax,[0115bb3c]         
+mov [eax+7FC8], 0          // 
+
+cmp [0115bb3c],00000000    //攻擊次數         
+je 007E6073              
+mov eax,[0115bb3c]         
+mov [eax+81d0], 0          // 
+
+cmp [esp+24],00A9C91A //無敵:Miss
+je Miss_HOOK //
+Cmp [Esp+6C],0052BD55 //物品過濾
+Je  HookESP
+Cmp [Esp+3C],0069A0B9 //退怪3  EB  8B
+Je AABack2
+Cmp [Esp+24],00A5161F //終極100% 
+Je Ultimate2
+cmp [esp+4C],006B37B2 //怪物瞬移
+Je inst_Hook //
+Jmp 007E6073
+
+HookESP:
+Mov [Esp+6C], HookFun
+Jmp 007E6073
+
+Miss_HOOK:
+mov [esp+24],Miss
+jmp 007E6073
+
+AABack2:
+Mov [Esp+3C],AABack
+Jmp  007E6073
+
+Ultimate2:
+Mov [Esp+24],Ultimate
+Jmp 007E6073
+
+inst_Hook:
+Mov [Esp+4C],inst
+Jmp 007E6073
+
+//====================↓物品過濾↓====================\\
+
+
+HookFun:
+mov eax,[ebp+38]
+mov esi,[ebp+24]
+mov [esi+1C],al
+cmp eax,01
+Je HookOr1
+cmp eax,02
+Je HookOr1
+xor al,al
+Jmp HookOr2
+
+HookOr1:
+mov al,01
+
+HookOr2:
+mov [esi+1D],al
+mov eax,[ebp+6C]
+mov ecx,edi
+mov [esi+20],eax
+call 00409587
+movzx eax,al
+mov ecx,edi
+//Xor Eax, Eax   //過濾楓幣
+mov [esi+30],eax
+call 004095E2
+PUSH ESI
+MOV ESI,ItemList
+Filter:
+CMP EAX,C350
+JLE End
+CMP DWORD PTR DS:[ESI],0
+Je End  //JNE  白名單
+CMP DWORD PTR DS:[ESI],EAX
+Je Skip  //JNE  白名單
+ADD ESI,4
+JMP Filter
+Skip:
+XOR EAX,EAX
+End:
+POP ESI
+MOV ECX,EDI
+MOV [ESI+34],EAX
+Jmp 0052BD90 
+//====================↑物品過濾↑====================\\
+
+//====================↓MISS無敵↓====================\\
+
+Miss:
+mov [ebp+esi*4-000000ac],eax
+inc esi
+cmp esi,08
+jnge 00A9C913
+mov edi,[ebp+3c]
+lea ecx,[edi+000021f8]
+mov [ebp-34],ebx
+mov [ebp-3c],ebx
+mov [ebp-64],ebx
+mov [ebp-38],ebx
+mov [ebp-70],ebx
+mov [ebp+0c],ebx
+mov [ebp+04],ebx
+call 005ABA69
+mov esi,[ebp-40]
+push eax
+mov eax,[esi]
+mov ecx,esi
+call dword ptr [eax+54]
+push eax
+mov eax,[esi]
+mov ecx,esi
+call dword ptr [eax+50]
+push eax
+call 0074EAFB
+push [esi+0000041C]
+mov [ebp-48],eax
+mov [ebp-2C],edi // ebx ?
+mov [ebp-44],edi
+mov [ebp-4C],edi
+mov [ebp+14],edi
+mov [ebp-7C],edi
+mov [ebp-68],edi
+mov [ebp-30],edi
+mov [ebp-00000084],ebx
+mov [ebp-80],edi
+mov [ebp-78],edi
+call 004756D7
+push [esi+00000420]
+mov [ebp-00000088],eax
+call 004756D7
+add esp,14
+mov [ebp-28],eax
+
+// 00A9C9A9 - cmp [ebp+60],ebx
+cmp [ebp+60],edi // ebx ?
+Cmp [Miss_KEY],0
+je 00A9F3DE // Exit function
+
+cmp [ebp+50],ebx
+jne 00A9E1B4
+
+// 00A9CB43 - cmp [ebp+54],ebx
+cmp [ebp+54],ebx
+
+// 00A9E1CD - cmp [ebp+4C],ebx
+// 00A9E1D0 - jng 00A9E5D4
+// 00A9E1D6 - cmp [ebp-78],ebx
+// 00A9E1D9 - je 00A9E1EC
+jne 00A9E1CD
+cmp [ebp+4c],ebx
+mov ecx,[ebp+3c]
+add ecx,000021F8
+call 00798799
+xor ecx,ecx
+test eax,eax
+setle cl
+dec ecx
+and ecx,000009c4 // 2500
+add ecx,00000000
+jmp 00A9E5F6
+//====================↑MISS無敵↑====================\\
+
+//====================↓退怪模式↓====================\\
+AABack:
+cmp [AABackOnOff],0
+jz doAABackNormal
+// [ebp+44] = [AAttackDir]
+push [AAttackDir]
+pop [ebp+44]
+
+doAABackNormal:
+mov edx,[ebp+48]
+jmp 0069A0BC
+
+//00601AA3:
+//JMP AABack
+//====================↑退怪模式↑====================\\
+
+//====================↓100%終極↓====================\\
+Ultimate:
+push 64
+pop ecx
+xor edx,edx
+div ecx
+push [ebp-0c]
+mov ecx,[ebp-14]
+mov [ebp-24],edx
+call 0077C21A
+mov ecx,eax
+call 0075098E
+add eax,[ebp-04]
+cmp [ebp-24],eax
+jmp 00a51651
+
+//====================↑100%終極↑====================\\
+
+//====================↓怪物舜移↓====================\\
+inst:
+mov ecx,[ebp+18]
+cwde
+mov [ebp+14],eax
+fild dword ptr [ebp+14]
+fstp qword ptr [ebx]
+mov ax,[edi+0c]
+mov [ecx],eax
+movzx eax,byte ptr [edi+02]
+mov ecx,[ebp+1c]
+mov [ecx],eax
+movsx eax,word ptr [edi+12]
+mov [ebp+14],eax
+mov eax,[ebp+24]
+fild dword ptr [ebp+14]
+fstp qword ptr [eax]
+movsx eax,word ptr [edi+14]
+mov [ebp+14],eax
+mov eax,[ebp+28]
+fild dword ptr [ebp+14]
+fstp qword ptr [eax]
+lea ecx,[esi+24]
+push [ecx+0c]
+cmp [inst_OnOff],0
+jz inst2
+
+push eax
+mov eax,00000001
+mov [esi+2C],eax
+pop eax
+
+
+inst2:
+call 006b304e
+jmp 006B37F7
+
+//====================↑怪物舜移↑====================\\
+
+
+
+
+0113A744:
+DD Main
+
+[Disable]
+0113A744:
+DD 007E6073
+
+UnregisterSymbol(Main)
+Dealloc(Main)
+UnregisterSymbol(ItemList)
+Dealloc(ItemList)
+UnregisterSymbol(MissTime)
+UnregisterSymbol(Miss_HOOK)
+UnregisterSymbol(Miss)
+UnregisterSymbol(Miss_KEY)
+UnregisterSymbol(AABack)
+UnregisterSymbol(AABackOnOff)
+UnregisterSymbol(AAttackDir)
+UnregisterSymbol(inst_Hook)
+UnregisterSymbol(inst_OnOff)
+Dealloc(MissTime)
+Dealloc(Miss_HOOK)
+Dealloc(Miss)
+Dealloc(Miss_KEY)
+Dealloc(AABack)
+Dealloc(AABackOnOff)
+Dealloc(AAttackDir)
+Dealloc(inst_Hook)
+Dealloc(inst_OnOff)
+Dealloc(inst)

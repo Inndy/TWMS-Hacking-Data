@@ -1,0 +1,42 @@
+00685512 - 8b 44 24 04                - mov eax,[esp+04]	//Level
+00685516 - 3d c8 00 00 00             - cmp eax,000000c8
+0068551B - 7f 0d                      - jg 0068552a
+0068551D - 83 f8 01                   - cmp eax,01
+00685520 - 7d 03                      - jnl 00685525
+00685522 - 33 c0                      - xor eax,eax
+00685524 - 40                         - inc eax
+00685525 - 8b 04 81                   - mov eax,[ecx+eax*4]
+00685528 - eb 05                      - jmp 0068552f
+0068552A - b8 ff ff ff 7f             - mov eax,7fffffff
+0068552F - c2 04 00                   - ret 0004
+00685532 - ff 74 24 04                - push [esp+04]		//Level
+00685536 - b9 30 c4 cc 00             - mov ecx,00ccc430	//EXP表
+0068553B - e8 d2 ff ff ff             - call 00685512		//查詢升級所需EXP
+00685540 - c3                         - ret
+
+[ENABLE]
+Alloc(GetLevel, 64)
+Alloc(MyLevel, 4)
+RegisterSymbol(MyLevel)
+Alloc(EndLevel, 4)
+RegisterSymbol(EndLevel)
+
+GetLevel:
+Mov  Eax, [Esp]
+Mov  [MyLevel], Eax
+Cmp  Eax, [EndLevel]
+Jge  00000000
+Mov  Ecx, 00CCC430
+Jmp  0068553B
+
+00685536:
+Jmp  GetLevel
+[DISABLE]
+00685536:
+DB   B9 30 C4 CC 00
+
+Dealloc(GetLevel)
+Dealloc(MyLevel)
+UnregisterSymbol(MyLevel)
+Dealloc(EndLevel)
+UnregisterSymbol(EndLevel)

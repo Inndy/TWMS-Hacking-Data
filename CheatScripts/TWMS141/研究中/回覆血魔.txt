@@ -1,0 +1,103 @@
+// TWMS V1.41.1 定時回覆血魔
+// Made by Inndy
+[enable]
+Alloc(SendPacket, 256)
+Alloc(PacketStruct1, 16)
+Alloc(PacketStruct2, 16)
+Alloc(PacketData1, 19)
+Alloc(PacketData2, 19)
+Alloc(SendTime, 04)
+Alloc(Switch, 04)
+Alloc(FakeTime, 04)
+Label(Normal)
+Label(NextPacket)
+Registersymbol(Switch)
+CreateThread(SendPacket)
+
+/*
+8B 00 A7 20 E3 00 00 14 00 00 00 00 00 00 00 00 03 00 00
+8B 00 3D 21 E3 00 00 14 00 00 00 00 00 00 0A 00 00 00 00
+8B 00 CB 47 E3 00 00 14 00 00 00 00 00 00 00 00 03 00 00
+8B 00 61 48 E3 00 00 14 00 00 00 00 00 00 0A 00 00 00 00
+8B 00 EF 6E E3 00 00 14 00 00 00 00 00 00 00 00 03 00 00
+8B 00 85 6F E3 00 00 14 00 00 00 00 00 00 0A 00 00 00 00
+8B 00 13 96 E3 00 00 14 00 00 00 00 00 00 00 00 03 00 00
+8B 00 A9 96 E3 00 00 14 00 00 00 00 00 00 0A 00 00 00 00
+8B 00 37 BD E3 00 00 14 00 00 00 00 00 00 00 00 03 00 00
+8B 00 CD BD E3 00 00 14 00 00 00 00 00 00 0A 00 00 00 00
+
+8B [=T i m e=] 00 00 14 00 00 00 00 00 00 00 00 [M p] 00
+8B [=T i m e=] 00 00 14 00 00 00 00 00 00 [H p] 00 00 00
+*/
+
+// MP封包結構
+PacketStruct1:
+DD 00                   // 00
+DD PacketData1          // 封包資料位址
+DD #19                  // 封包長度
+DD 00                   // 00
+
+// HP封包結構
+PacketStruct2:
+DD 00                   // 00
+DD PacketData2          // 封包資料位址
+DD #19                  // 封包長度
+DD 00                   // 00
+
+PacketData1: // 放MP封包資料
+//    Time_______                                  MP___
+db 8B 00 00 00 00 00 00 14 00 00 00 00 00 00 00 00 32 00 00
+
+PacketData2: // 放HP封包資料
+//    Time_______                            HP___
+db 8B 00 00 00 00 00 00 14 00 00 00 00 00 00 32 00 00 00 00
+
+Switch: // 開關
+dd 01
+
+FakeTime:
+readmem([00cc4a38]+1c, 04)
+
+SendPacket:
+cmp [Switch],00 // 設0關閉
+je Normal
+
+mov eax,[00cc4a38]
+mov eax,[eax+1c]
+cmp eax,[SendTime]
+jl SendPacket
+
+add eax,000009C4 // 延遲時間(2500ms)
+mov [SendTime],eax
+
+add [FakeTime],3E8
+mov eax,[FakeTime]
+mov [PacketData1+02],eax // 假的時間
+mov [PacketData2+02],eax // 假的時間
+
+mov ecx,[00cbffa4] // !?
+push SendPacket
+push PacketStruct1
+push 00401005 // 假的返回位址
+push 004861BC // 送封包
+ret
+
+NextPacket:
+mov ecx,[00cbffa4] // !?
+push SendPacket
+push PacketStruct2
+push 00401005 // 假的返回位址
+push 004861BC // 送封包
+ret
+
+
+Normal:
+ret
+
+[disable]
+
+// 怪物基址 - 8b 0d ?? ?? ?? ?? 53 53 53 ff 70 ?? 8d 85 ?? ff ff ff
+// 地圖基址 - 8b 0d ?? ?? ?? 00 e8 ?? ?? ?? 00 e9 ?? ?? 00 00 8b ce e8 ?? ?? ?? ff 0f
+// 時間基址 - A1 ?? ?? ?? ?? 8B 40 ?? C3
+// !? - 8b 0d ? ? ? ? 8d 45 ? 50 e8 ? ? ? ? 6a 01 8b ce
+// 送封包位址 - 6a 38 b8 ? ? ? ? e8 ? ? ? ? 89 4d ? a1 3c 00 40 00

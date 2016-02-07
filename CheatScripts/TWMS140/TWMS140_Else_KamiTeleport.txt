@@ -1,0 +1,27 @@
+°ò§}AOB		a1 ?? ?? ?? 00 33 c9 3b c1 75 04
+
+Kami-X		00cbdcd0	4d48
+Kami-Y		00cbdcd0	4d4c
+SwitchAOB	C7 ?? ?? ?? ?? ?? 01 00 00 00 0F ?? ?? 89
+Switch		00cbdcd0	4d40
+Switch2		00cbdcd0	4d44
+
+
+0084F003 - c7 83 40 4d 00 00 01 00 00 00 - mov [ebx+00004d40],00000001	//Switch 1
+0084F00D - 0f 95 c0                   - setnc al
+0084F010 - 89 83 44 4d 00 00          - mov [ebx+00004d44],eax		//Switch 2
+0084F016 - 8b 45 54                   - mov eax,[ebp+54]
+0084F019 - 89 83 48 4d 00 00          - mov [ebx+00004d48],eax		//X
+0084F01F - 8b 45 58                   - mov eax,[ebp+58]
+0084F022 - 89 83 4c 4d 00 00          - mov [ebx+00004d4c],eax		//Y
+0084F028 - 8b 45 c4                   - mov eax,[ebp-3c]
+
+
+0F 84 ? ? ? ? 8B 8E ? ? ? ? 2B C8
+
+[ENABLE]
+0086B26E:
+db 85
+[DISABLE]
+0086B26E:
+db 84

@@ -1,0 +1,22 @@
+// 151.1 §Ö³t«õÄq
+[Enable]
+//Bypass Timestamp
+0093639C: // 7C ?? 39 9E ?? ?? 00 00 7F 03
+db 90 90
+
+//Bypass Slash-limit
+009363A4:
+db EB
+
+//Bypass time between mines
+009404B2: // 75 0E 57 6A
+db 90 90
+[Disable]
+0093639C:
+db 7C 31
+
+009363A4:
+db 7F
+
+009404B2:
+db 75 0e

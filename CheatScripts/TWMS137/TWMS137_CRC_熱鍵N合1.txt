@@ -1,0 +1,172 @@
+[ENABLE]
+//------------------------------
+Alloc(MouseRush,512)
+    Label(Dotele)
+    Label(RetMSRush)
+RegisterSymbol(RushSW)
+Alloc(RushSW,4)
+Alloc(MouseX,4)
+Alloc(MouseY,4)
+//----------------------
+Alloc(SpeedUp, 128)
+    Label(SpeedUp_Loop)
+    Label(RetSpeedUp)
+RegisterSymbol(SpeedSW)
+Alloc(SpeedSW, 4)
+//----------------------
+Alloc(Hotkey,256)
+    Label(Hotkey_F1)
+    Label(Hotkey_F2)
+    Label(Hotkey_F3)
+    Label(Hotkey_F4)
+    Label(RetHotkey)
+//------------------------------
+RushSW:
+DD 0
+MouseRush:
+Push   Edx
+Push   Ebx
+Mov    Edx, [00BD86D8]
+Cmp    [00BD86D8], 0
+Je     RetMSRush
+Cmp    [RushSW], 0
+Je     RetMSRush
+//--------------
+Mov    Ebx, [00BD86D8]
+Mov    Ebx, [Ebx+1954]
+Cmp    Esi, Ebx
+Jne    RetMSRush
+Mov    Eax, [00BD8B4C]//8B 0D ?? ?? ?? ?? 57 E8 ?? ?? ?? ?? 8D 45 ??
+Mov    Eax, [Eax+978]
+Mov    Ebx, [Eax+8C]
+Mov    Eax, [Eax+88]
+Mov    [Edi-4], Ebx
+Mov    [MouseX], Ebx
+Mov    [MouseY], Eax
+Cmp    [Edx+046C], 0A //¥k­w 
+Je     Dotele
+Cmp    [Edx+046C], 0B //¥ª­w
+Je     Dotele
+Cmp    [Edx+046C], 0E //¼Ó±è 
+Je     Dotele
+Cmp    [Edx+046C], 0F //¼Ó±è 
+Je     Dotele
+Cmp    [Edx+046C], 10 //Ã·¯Á
+Je     Dotele 
+Cmp    [Edx+046C], 11 //Ã·¯Á 
+Je     Dotele
+//Mov    [Edx+0468], 1388 //¤£Â_©I§l 
+Jmp    RetMSRush
+//--------------
+Dotele:
+Push   Ecx
+//SS-XY
+//AOB: 8b f1 8b 86 ?? ?? 00 00 8b 9e ?? ?? 00 00
+Mov    Ecx, [MouseX]
+Mov    [Edx+33D8], Ecx
+Mov    Ecx, [MouseY]
+Mov    [Edx+33DC], Ecx
+Mov    [Edx+046C], 13
+Pop    Ecx
+Mov    [RushSW], 0
+//--------------
+RetMSRush:
+Pop    Ebx
+Pop    Edx
+Mov    [Edi], Eax
+Mov    Edi, [Ebp+14]
+Jmp    008471BB
+//----------------------
+SpeedSW:
+DD 0
+SpeedUp:
+Push Esi
+Cmp [SpeedSW], 0
+Je RetSpeedUp
+Mov Esi,7
+//--------------
+SpeedUp_Loop:
+Cmp Esi,0
+Je RetSpeedUp
+Dec Esi
+Push Eax
+Push Ecx
+Call Dword Ptr [Eax]
+Pop Ecx
+Pop Eax
+Jmp SpeedUp_Loop
+//--------------
+RetSpeedUp:
+Pop Esi
+Call Dword Ptr [Eax]
+Mov Eax,[Esi+30]
+Jmp 00815137
+//----------------------
+Hotkey:
+
+Hotkey_F1:
+Cmp    Eax, 3B0000  //¼öÁä F1
+Jne    Hotkey_F2
+Not    [RushSW]
+Jmp RetHotkey
+//--------------
+Hotkey_F2:
+Cmp    Eax, 3C0000  //¼öÁä F2
+Jne    Hotkey_F3
+Not    [SpeedSW]
+Jmp RetHotkey
+//--------------
+Hotkey_F3:
+Cmp    Eax, 3D0000  //¼öÁä F3
+Jne    Hotkey_F4
+Pushad
+Mov    Eax, [00BD86D8]
+Mov    Ebx, [00BD8D60]
+Mov    Ecx, [Ebx+0B18]
+Mov    [Eax+4210], Ecx
+Mov    Ecx, [Ebx+0B1C]
+Mov    [Eax+4214], Ecx
+Popad
+Jmp RetHotkey
+//--------------
+Hotkey_F4:
+Cmp    Eax, 3E0000  //¼öÁä F4
+Jne    RetHotkey
+Mov    Ecx, [00BD86D8]
+Mov    [Ecx+4208], 1
+Jmp RetHotkey
+//--------------
+RetHotkey:
+Mov Ecx, [00BD3F20]
+Ret 
+//------------------------------
+008471B6:
+Jmp MouseRush
+//----------------------
+00815132:
+Jmp SpeedUp
+//----------------------
+00800C1C:
+Call Hotkey
+Nop
+[DISABLE]
+008471B6:
+DB 89 07 8B 7D 14
+
+00815132:
+DB FF 10 8B 46 30
+
+00800C1C:
+DB 8b 0d 20 3f bd 00
+//------------------------------
+DeAlloc(MouseRush)
+UnRegisterSymbol(RushSW)
+DeAlloc(RushSW)
+DeAlloc(MouseX)
+DeAlloc(MouseY)
+
+UnRegisterSymbol(SpeedSW)
+DeAlloc(SpeedSW)
+DeAlloc(SpeedUp)
+
+DeAlloc(Hotkey)

@@ -1,0 +1,213 @@
+//------------------------------------------------------------------
+// Name：	MobLR
+// Version:	TWMS140
+// Update:	Inndy
+// Address：	0089E7F4
+// EIP：	MobLR
+// Aob：	DD 07 DC 20 DD 5D ?? D9 EE DC 55 ?? DF E0 F6 C4 ?? 0F 8B
+// Aob：	DC 55 ?? DF E0 F6 C4 ?? 0F 8B ?? ?? ?? ?? 8B 83
+// Cortrol：	LRKey
+// 0:Off , 1:Left , 2:Right , 3:GoMe , 4:GoXY , 5:GetXY
+//------------------------------------------------------------------
+// AOB：	83 bb ?? 00 00 00 00 0f 84 ?? 00 00 00 8d
+// V137 00847A28 - 83 bb f4 00 00 00 00       - cmp dword ptr [ebx+000000f4],00
+// V138 00896978 - 83 bb f8 00 00 00 00       - cmp dword ptr [ebx+000000f8],00
+// V140 008B6960 - 83 bb fc 00 00 00 00       - cmp dword ptr [ebx+000000fc],00
+// V145 008E326C - 83 bb fc 00 00 00 00       - cmp dword ptr [ebx+000000fc],00
+//------------------------------------------------------------------
+// AOB：	83 be ?? ?? 00 00 03 57 8b 3d ?? ?? ?? 00
+// V138 0089D627 - 83 be 98 02 00 00 03       - cmp dword ptr [esi+00000298],03
+// V140 008B98E4 - 83 be a0 02 00 00 03       - cmp dword ptr [esi+000002a0],03
+// V145 008E6272 - 83 be a0 02 00 00 03       - cmp dword ptr [esi+000002a0],03
+// 
+// AOB：	8b 83 ?? ?? 00 00 83 f8 01 0f 85 ?? ?? 00 00
+// V138 0089E802 - 8b 83 98 02 00 00          - mov eax,[ebx+00000298]
+// V140 008BAE82 - 8b 83 a0 02 00 00          - mov eax,[ebx+000002a0]
+// V145 008E781E - 8b 83 a0 02 00 00          - mov eax,[ebx+000002a0]
+//------------------------------------------------------------------
+// AOB：	39 8e ?? ?? 00 00 7c
+// V138 0089B435 - 39 8e 94 06 00 00          - cmp [esi+00000694],ecx
+// V140 008B7AE0 - 39 8e 9c 06 00 00          - cmp [esi+0000069c],ecx
+// V145 008E445E - 39 8e 9c 06 00 00          - cmp [esi+0000069c],ecx
+//------------------------------------------------------------------
+[Enable]
+Registersymbol(MobLR)
+Alloc(MobLR, 1024)
+Registersymbol(MyState)
+Alloc(MyState, 4)
+Registersymbol(MyXYResh)
+Alloc(MyXYResh, 4)
+Registersymbol(LRKey)
+Alloc(LRKey, 4)
+Registersymbol(LRXY)
+Alloc(LRXY, 4)
+Alloc(FakeCall,64)
+
+Label(MobLRGo)
+Label(Left)
+Label(Right)
+Label(LRGoMe)
+Label(LRGoXY)
+Label(GetXY)
+Label(GetState)
+Label(XYAdd)
+Label(XYSub)
+Label(MobNormal)
+//----------------------------
+// 0:Off , 1:Left , 2:Right , 3:GoMe , 4:GoXY , 5:GetXY
+LRKey:
+Dd 0
+//----------------------------
+FakeCall:
+db 55                 // push ebp
+db 8b ec              // mov ebp,esp
+db 83 ec 20           // sub esp,20
+db 8b 45 08           // mov eax,[ebp+08]
+db 53                 // push ebx
+db 56                 // push esi
+db 8b 35 b8 21 cc 00  // mov esi,[00cc21b8]
+db 8b d9              // mov ebx,ecx
+db 57                 // push edi
+db 8d bb 88 00 00 00  // lea edi,[ebx+00000088]
+db dd 07              // fld qword ptr [edi]
+db dc 20              // fsub qword ptr [eax]
+db dd 5d e8           // fstp qword ptr [ebp-18]
+db d9 ee              // fldz
+//----------------------------
+MobLR:
+Cmp [Ebx+2A0], 1 //Wolk
+Je MobLRGo
+Cmp [Ebx+2A0], 2 //掉落的怪物
+Je MobLRGo
+Cmp [Ebx+2A0], 3 //Jump
+Je MobLRGo
+
+MobNormal:
+Jmp 008BAE74
+//----------------------------
+MobLRGo:
+
+//Mov [Ebx+2A0], 2
+//上面這行註解拿掉就是怪物掉落
+
+Push Eax
+Cmp [LRKey],1
+Je Left
+Cmp [LRKey],2
+Je Right
+Pop Eax
+
+Cmp [LRKey], 3
+Je LRGoMe
+Cmp [LRKey], 4
+Je LRGoXY
+Cmp [LRKey], 5
+Je GetXY
+Jmp MobNormal
+//----------------------------
+Left:
+Pop Eax
+Cmp Eax, 01
+Mov [Ebx+000000FC], FFFFFFFF
+Jmp MobNormal
+//----------------------------
+Right:
+Pop Eax
+Cmp Eax, 01
+Mov [Ebx+000000FC], 00000001
+Jmp MobNormal
+//----------------------------
+LRGoMe:
+Call GetState
+Push Eax
+Mov Eax,[00cc58c8]	//人物X軸
+Mov Eax,[Eax+0b0c]
+Sub Eax, 8
+Add Eax, [MyXYResh]
+Cmp [Ebx+69C], Eax
+Jl Right
+Add Eax, 10
+Add Eax, [MyXYResh]
+Cmp [Ebx+69C], Eax
+Jg Left
+Pop Eax
+Mov [Ebx+000000FC], 0
+Jmp MobNormal
+//----------------------------
+LRGoXY:
+Push Eax
+Mov Eax,[LRXY]
+Sub Eax, 8
+Cmp [Ebx+69C], Eax
+Jl Right
+Add Eax, 10
+Cmp [Ebx+69C], Eax
+Jg Left
+Pop Eax
+Mov [Ebx+000000FC], 0
+Jmp MobNormal
+//----------------------------
+GetXY:
+Push Eax
+Mov Eax,[00cc58c8]	//人物X軸
+Mov Eax,[Eax+0b0c]
+Mov [LRXY],0
+Mov [LRXY],Eax
+Mov [LRKey],4
+Pop Eax
+Jmp MobNormal
+//----------------------------
+GetState:
+Push Eax
+Mov Eax, [00cbdcd0]	//人物動作
+Mov Eax, [Eax+47C]
+Mov [MyState], Eax
+Pop Eax
+Cmp [MyState], 3
+Je XYSub
+Cmp [MyState], 5
+Je XYSub
+Cmp [MyState], 7
+Je XYSub
+Cmp [MyState], 9
+Je XYSub
+
+Cmp [MyState], 2
+Je XYAdd
+Cmp [MyState], 4
+Je XYAdd
+Cmp [MyState], 6
+Je XYAdd
+Cmp [MyState], 8
+Je XYAdd
+Ret
+//----------------------------
+XYAdd:
+Mov [MyXYResh], 00000020
+Ret
+//----------------------------
+XYSub:
+Mov [MyXYResh], FFFFFFE0
+Ret
+//----------------------------
+LRXY:
+Dd 0
+//----------------------------
+00B5E470:
+DD FakeCall
+//----------------------------
+[Disable]
+00B5E470: //Call From 008B50EF //ff 50 04 85 c0 0f 84 ?? 01 00 00
+DD 008BAE51
+
+Dealloc(LRXY)
+Dealloc(LRKey)
+Dealloc(MyState)
+Dealloc(MyXYResh)
+Dealloc(MobLR)
+Dealloc(FakeCall)
+Unregistersymbol(LRXY)
+Unregistersymbol(LRKey)
+Unregistersymbol(MyState)
+Unregistersymbol(MyXYResh)
+Unregistersymbol(MobLR)

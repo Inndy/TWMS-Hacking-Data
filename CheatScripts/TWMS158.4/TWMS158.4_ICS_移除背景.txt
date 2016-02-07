@@ -1,0 +1,27 @@
+// TWMS158.4 ICS 移除背景（007Style）
+// 來源：EMS
+[ENABLE]
+Alloc(Hook, 128)
+Label(BlackBack)
+
+Hook:
+Cmp [Esp+38], 006621B7
+Jne VariantInit
+Mov [Esp+38], BlackBack
+Jmp VariantInit
+
+BlackBack:
+// 8B F8 8D 45 ?? 50 C6 45 FC ?? E8 ?? ?? ?? FF 83 C4 0C 83 FF 01 75
+db 8B F8 8D 45 AC 50 C6 45 FC 13
+call 004012D1
+add esp,0c
+// cmp edi,01
+jmp 006621D3 // jne
+
+00D47294:
+DD Hook
+[DISABLE]
+00D47294:
+DD VariantInit
+
+Dealloc(Hook)

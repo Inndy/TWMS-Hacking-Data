@@ -1,0 +1,62 @@
+//TWMS138©wÂI¥Í©Ç ICS
+[ENABLE]
+Alloc(SpawnControl, 64)
+Label(Main)
+Label(SpawnRet)
+Alloc(MobSpX, 4)
+Alloc(MobSpY, 4)
+Alloc(SpawnKey, 4)
+
+SpawnKey:
+// 0: Off
+// 1: On
+// 2: Set Position
+DD 2
+
+SpawnControl:
+Cmp [Esp], 005B91DC
+Jne SpawnRet
+Cmp Dword ptr [Esp+18], 02
+Jne SpawnRet
+Cmp [SpawnKey], 0
+Je SpawnRet
+Cmp [SpawnKey], 1
+Je Main
+
+Push   Eax
+Mov    Eax, [00C8EFE0]
+Mov    Eax, [Eax+B18]
+Mov    [MobSpX], Eax
+Mov    Eax, [00C8EFE0]
+Mov    Eax, [Eax+B1C]
+Mov    [MobSpY], Eax
+Mov    [SpawnKey], 1
+Pop    Eax
+
+Main:
+Mov    [Ecx+0298], 06
+Push   Ecx
+Mov    Eax, [MobSpX]
+Mov    [Esp+0C], Eax
+Mov    Eax, [MobSpY]
+Mov    [Esp+10], Eax
+Push   Eax
+Mov    Ecx, [00C8E730]
+Call   0042D006 //6a ?? b8 ?? ?? ?? 00 e8 ?? ?? ?? 00 33 f6 89 75 f0 89 75 ec 89 75 fc
+Mov    Ecx, Eax
+Mov    [Esp+20], Ecx
+Pop    Ecx
+
+SpawnRet:
+Jmp    0089C0FE
+
+00B30880:
+DD SpawnControl
+[DISABLE]
+00B30880:
+DD 0089C0FE
+
+DeAlloc(SpawnKey)
+DeAlloc(MobSpX)
+DeAlloc(MobSpY)
+DeAlloc(SpawnControl)

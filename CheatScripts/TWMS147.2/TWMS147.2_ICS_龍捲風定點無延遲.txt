@@ -1,0 +1,126 @@
+// TWMS147.2 ICS 龍捲風定點 + 無延遲攻擊
+[ENABLE]
+Alloc(TornadoNoDelay, 512)
+Label(FakeCall1)
+Label(FakeCall2)
+//==================================================================================
+TornadoNoDelay:
+Cmp  [Esp], 008B57A9
+Jne  OffsetRect
+Add  Esp, 4
+Call OffsetRect
+Label(Tornado008b57ce)
+Label(Tornado008b57e4)
+db 53                                    // 008b57a9 - push ebx
+db 53                                    // 008b57aa - push ebx
+db 89 5d 64                              // 008b57ab - mov [ebp+64],ebx
+db 8d 45 64                              // 008b57ae - lea eax,[ebp+64]
+db 53                                    // 008b57b1 - push ebx
+db 38 5d 73                              // 008b57b2 - cmp [ebp+73],bl
+je Tornado008b57ce                       // 008b57b5 - je 008b57ce
+db 8b 0d 74 5a db 00                     // 008b57b7 - mov ecx,[00db5a74] : 00000000
+db 6a 01                                 // 008b57bd - push 01
+db 53                                    // 008b57bf - push ebx
+db 6a 01                                 // 008b57c0 - push 01
+db 50                                    // 008b57c2 - push eax
+db 8d 45 20                              // 008b57c3 - lea eax,[ebp+20]
+db 50                                    // 008b57c6 - push eax
+call 005e5f81                            // 008b57c7 - call 005e5f81
+jmp Tornado008b57e4                      // 008b57cc - jmp 008b57e4
+Tornado008b57ce:
+db 8b 0d cc 1f db 00                     // 008b57ce - mov ecx,[00db1fcc] : 00000000
+db 53                                    // 008b57d4 - push ebx
+db 53                                    // 008b57d5 - push ebx
+db 53                                    // 008b57d6 - push ebx
+db 53                                    // 008b57d7 - push ebx
+db 6a 01                                 // 008b57d8 - push 01
+db 50                                    // 008b57da - push eax
+db 8d 45 20                              // 008b57db - lea eax,[ebp+20]
+db 50                                    // 008b57de - push eax
+call 00604468                            // 008b57df - call 00604468
+Tornado008b57e4:
+db 8b 45 64                              // 008b57e4 - mov eax,[ebp+64]
+db 89 45 68                              // 008b57e7 - mov [ebp+68],eax
+db 39 5d 68                              // 008b57ea - cmp [ebp+68],ebx
+je 008b5830                              // 008b57ed - je 008b5830
+db 8b 45 68                              // 008b57ef - mov eax,[ebp+68]
+db 8b 88 84 01 00 00                     // 008b57f2 - mov ecx,[eax+00000184]
+//----------------------------------------------------------------------------------
+db 50                                    // 008b5832 - push eax
+db 8b cf                                 // 008b5833 - mov ecx,edi
+call FakeCall1                           // 008b5835 - call 0054854f
+jmp 008B583A
+//==================================================================================
+FakeCall1:
+Label(Tornado0054859c)
+Label(Tornado00548594)
+db 6a 1c                                 // 0054854f - push 1c
+db b8 c9 7b a2 00                        // 00548551 - mov eax,00a27bc9
+call 009d83a9                            // 00548556 - call 009d83a9
+db 8b f1                                 // 0054855b - mov esi,ecx
+db 8b 4e 10                              // 0054855d - mov ecx,[esi+10]
+db 83 65 f0 00                           // 00548560 - and dword ptr [ebp-10],00
+db 85 c9                                 // 00548564 - test ecx,ecx
+je Tornado0054859c                       // 00548566 - je 0054859c
+db 8b 01                                 // 00548568 - mov eax,[ecx]
+db ff 50 14                              // 0054856a - call dword ptr [eax+14]
+db 85 c0                                 // 0054856d - test eax,eax
+je Tornado0054859c                       // 0054856f - je 0054859c
+db 8b 0d 94 d9 da 00                     // 00548571 - mov ecx,[00dad994] : 00000000
+db 85 c9                                 // 00548577 - test ecx,ecx
+je Tornado0054859c                       // 00548579 - je 0054859c
+db 8d 45 e8                              // 0054857b - lea eax,[ebp-18]
+db 50                                    // 0054857e - push eax
+call 00547c56                            // 0054857f - call 00547c56
+db 8b 45 ec                              // 00548584 - mov eax,[ebp-14]
+db 85 c0                                 // 00548587 - test eax,eax
+je Tornado00548594                       // 00548589 - je 00548594
+db 8b 80 10 01 00 00                     // 0054858b - mov eax,[eax+00000110]
+db 89 45 f0                              // 00548591 - mov [ebp-10],eax
+Tornado00548594:
+db 8d 4d e8                              // 00548594 - lea ecx,[ebp-18]
+call 0046c318                            // 00548597 - call 0046c318
+Tornado0054859c:
+db 8b 5e 14                              // 0054859c - mov ebx,[esi+14]
+db 89 5d ec                              // 0054859f - mov [ebp-14],ebx
+db 85 db                                 // 005485a2 - test ebx,ebx
+je 005487d5                              // 005485a4 - je 005487d5
+db 8b be d0 00 00 00                     // 005485aa - mov edi,[esi+000000d0]
+db 85 ff                                 // 005485b0 - test edi,edi
+je 005485cc                              // 005485b2 - je 005485cc
+call 0091c58d                            // 005485b4 - call 0091c58d
+db 3b f8                                 // 005485b9 - cmp edi,eax
+jg 005487d5                              // 005485bb - jg 005487d5
+db 85 ff                                 // 005485c1 - test edi,edi
+je 005485cc                              // 005485c3 - je 005485cc
+db 8b ce                                 // 005485c5 - mov ecx,esi
+call FakeCall2                           // 005485c7 - call 00547f3d
+jmp 005485CC
+//==================================================================================
+FakeCall2:
+db 6a 54                                 // 00547f3d - push 54
+db b8 83 7b a2 00                        // 00547f3f - mov eax,00a27b83
+call 009d83a9                            // 00547f44 - call 009d83a9
+db 8b f1                                 // 00547f49 - mov esi,ecx
+db 33 db                                 // 00547f4b - xor ebx,ebx
+db 39 9e d0 00 00 00                     // 00547f4d - cmp [esi+000000d0],ebx
+je 0054844a                              // 00547f53 - je 0054844a
+db 8b 86 c8 00 00 00                     // 00547f59 - mov eax,[esi+000000c8]
+db bf 68 bf da 00                        // 00547f5f - mov edi,00dabf68
+db 3d 09 e3 50 00                        // 00547f64 - cmp eax,0050e309
+jne 0054830d
+db 39 5e 18                              // 00547f6f - cmp [esi+18],ebx
+db 0f 94 c1                              // 00547f72 - sete cl
+db 84 c9                                 // 00547f75 - test cl,cl
+db 0f 94 c1                              // 00547f77 - sete cl
+db 84 c9                                 // 00547f7a - test cl,cl
+je 0054830d
+jmp 00547f82
+//==================================================================================
+00DBAFDC:
+DD TornadoNoDelay
+[DISABLE]
+00DBAFDC:
+DD OffsetRect
+
+Dealloc(TornadoNoDelay)

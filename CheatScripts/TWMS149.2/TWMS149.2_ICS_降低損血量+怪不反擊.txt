@@ -1,0 +1,36 @@
+// TWMS149.2 ICS ­°§C·l¦å¶q
+// Auther: Inndy
+// UpdateTime: 2012-10-19
+[ENABLE]
+Alloc(RHNFB, 128)
+Label(Normal)
+Label(ReduceHurts)
+Label(NoFightBack)
+
+RHNFB:
+Cmp  [Esp], 0091D018 // 6a 64 99 59 f7 f9 83 f8 ?? 0f 85 ?? 00 00 00 8b ce
+Je   ReduceHurts
+Cmp  [Esp+58], 0061120A // [1/2] // 8B CE E8 ?? ?? ?? FF 83 F8 FF 0F 8F ?? ?? 00 00 8B CE
+Je   NoFightBack
+Jmp  Normal
+
+NoFightBack:
+Mov  [Esp+58], 00611404
+Jmp  Normal
+
+ReduceHurts:
+Mov  Eax, [Ebp+58]
+Shr  Eax, 2 // ·l¦å¶q / 4
+Sub  [Ebp+58], Eax
+Jmp  Normal
+
+Normal:
+Jmp  008F384B
+
+00C7FF4C:
+DD   RHNFB
+[DISABLE]
+00C7FF4C: // [1/1]
+DD   008F384B // 6a 08 b8 ?? ?? ?? 00 e8 ?? ?? ?? 00 8b 0d ?? ?? ?? 00 85 c9 74
+
+Dealloc(RHNFB)

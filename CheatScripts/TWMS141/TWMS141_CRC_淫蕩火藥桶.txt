@@ -1,0 +1,71 @@
+//v1.41 淫蕩火藥桶 by.aaaddress1
+[ENABLE]
+alloc(SetSkill1,16)
+alloc(SetSkill2,128)
+alloc(FullMapAttack,128)
+//-----------------------------------
+//全圖攻擊+腳下落物 (貌似有鎖率 加入此功能前請先測試)
+//005D1450: // E8 ?? ?? ?? FF 8B 86 ?? ?? 00 00 3B C3 74 ?? 2B 45 ?? 79
+//call FullMapAttack
+//原地卡炸藥桶
+0052E3C1: // 0F 85 ?? ?? 00 00 39 5E ?? 0F 94 C0 84 C0
+Jmp SetSkill2
+Nop
+//不限制間隔攻擊時間
+0052E8DA: // ?? ?? ?? ?? E8 ?? ?? ?? 00 8D 55 ?? 52 50 50 50 50 50 50
+dd 0
+//無限炸藥桶
+0052E883: // 83 3B 00 74 ?? E8 ?? ?? ?? 00
+db 90 90 90 90 90//jmp SetSkill1
+//-----------------------------------
+SetSkill1:
+call 00890d49
+jmp 0052e8a0
+//-----------------------------------
+SetSkill2:
+push edi
+lea ecx,[ebp-5C]
+call 00401626
+push edi
+mov edi,[00CBFF70]
+mov [edi+480], FFFFFFFF
+lea ecx,[ebp-4C]
+mov [ebp-04],0000000f
+call 00401626
+mov ecx,[esi+18]
+mov byte ptr [ebp-04],10
+lea eax,[ebp-1C]
+push eax
+jmp 0052E795 // 0052E33D
+//-----------------------------------
+FullMapAttack:
+push esi
+push edi
+mov edi,[00CBFF70]
+push [edi+5a18]
+mov esi,ecx
+lea ecx,[esi+0C]
+call 00425E1D // 00425E14
+push [edi+5a1c]
+mov ecx,esi
+call 00425E1D // 00425E14
+pop edi
+mov eax,esi
+pop esi
+ret 0004
+[DISABLE]
+005D1450:
+call 004302c3
+
+0052E3C1:
+DB 0f 85 a2 03 00 00
+
+0052E8DA:
+DD 80004003
+
+0052E883:
+DB 83 3B 00 74 18
+
+dealloc(SetSkill1)
+dealloc(SetSkill2)
+dealloc(FullMapAttack)

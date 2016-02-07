@@ -1,0 +1,57 @@
+//Ver1.31 S-Vac (CSVac)
+//Author: SmartFour44
+[Enable]
+alloc(MyX,4)
+alloc(MyY,4)
+alloc(MyXVac,128)
+alloc(MyYVac,128)
+label(XReturnBack)
+label(YReturnBack)
+
+007C3E08:
+jmp MyXVac
+nop
+
+MyXVac:
+mov ecx,[00ACF52C]
+mov ecx,[ecx+17A8]
+mov ecx,[ecx+194]
+cmp eax,ecx
+je XReturnBack
+mov ecx,[MyX]
+fstp qword ptr [ebp-0c]
+jmp 007C3E0E
+
+XReturnBack:
+mov ecx,[eax+0c]
+fstp qword ptr [ebp-0c]
+jmp 007C3E0E
+
+007C3B01:
+jmp MyYVac
+
+MyYVac:
+mov eax,[00ACF52C]
+mov eax,[eax+17A8]
+mov eax,[eax+194]
+cmp esi,eax
+je YReturnBack
+fstp st(0)
+mov eax,[MyY]
+jmp 007C3B06
+
+YReturnBack:
+fstp st(0)
+mov eax,[esi+10]
+jmp 007C3B06
+[Disable]
+007C3E08:
+mov ecx,[eax+0c]
+fstp qword ptr [ebp-0c]
+007C3B01:
+fstp st(0)
+mov eax,[esi+10]
+dealloc(MyX)
+dealloc(MyY)
+dealloc(MyXVac)
+dealloc(MyYVac)

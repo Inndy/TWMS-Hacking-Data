@@ -1,0 +1,65 @@
+// TWMS152.1 ICS 發送封包 / 讓180帳號開凱薩領套裝
+// 
+// 說明：用180的帳號開凱薩，打勾此數據，SendPacketSwitch改成不為0就會領取了
+// 
+// 領凱薩套裝
+// [Out]   8A8779 | 61 | 21 02 BA C9 01 00 01 00 00 00 CD 17 25 00 01 00 00 00 00 00 00 00 00 80 05 BB 46 E6 17 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 9D FF FF FF 9D FF FF FF 00 00 00 00 00 00 01
+// 領角色擴充
+// [Out]   8A8779 | 61 | 21 02 BB C9 01 00 01 00 00 00 B1 DB 23 00 01 00 00 00 C0 4E 00 00 00 80 05 BB 46 E6 17 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 9D FF FF FF 9D FF FF FF 00 00 00 00 00 00 01
+[ENABLE]
+Alloc(SendPacket, 256)
+Alloc(Hook,128)
+Alloc(SendPacketSwitch, 4)
+Alloc(Packet, 512)
+Alloc(Length, 4)
+RegisterSymbol(SendPacketSwitch)
+RegisterSymbol(Packet)
+RegisterSymbol(Length)
+
+Packet:
+// 凱薩套裝
+// DB 21 02 BA C9 01 00 01 00 00 00 CD 17 25 00 01 00 00 00 00 00 00 00 00 80 05 BB 46 E6 17 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 9D FF FF FF 9D FF FF FF 00 00 00 00 00 00 01
+// 角色擴充
+// DB 21 02 BB C9 01 00 01 00 00 00 B1 DB 23 00 01 00 00 00 C0 4E 00 00 00 80 05 BB 46 E6 17 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 9D FF FF FF 9D FF FF FF 00 00 00 00 00 00 01
+
+Length:
+DD #61
+
+SendPacketSwitch:
+DD 0
+
+SendPacket:
+Pushad
+Push 00
+Push [Length]
+Push Packet
+Push 00
+Push Esp
+Call 0042810A
+Add  Esp, 14
+Popad
+Ret
+
+Hook:
+cmp [esp],004010D1
+jne 0077B5B8
+cmp [SendPacketSwitch],0
+je 0077B5B8
+mov [SendPacketSwitch],0
+call SendPacket
+jmp 0077B5B8
+
+00f4ee24:
+dd Hook
+[DISABLE]
+00f4ee24:
+dd 0077B5B8
+
+Dealloc(SendPacket)
+Dealloc(Hook
+UnregisterSymbol(SendPacketSwitch)
+UnregisterSymbol(Packet)
+UnregisterSymbol(Length)
+Dealloc(SendPacketSwitch)
+Dealloc(Packet)
+Dealloc(Length)

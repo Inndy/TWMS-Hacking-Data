@@ -1,0 +1,10 @@
+Alloc(Hook, 32)
+
+Hook:
+Cmp [Esp], 00A605EC // [1/6] // 88 45 ?? 8B 06 8B CE FF 50
+Jne 00A87EFB // [ (1/7) / N] // 55 8B EC 51 51 8B 0D ?? ?? ?? ?? 56 8D 45 ?? 50 E8
+Mov [Esp], 00A66BBF // 往上數第二個Je To...
+Jmp 00A87EFB
+
+00FC67B0:
+DD Hook

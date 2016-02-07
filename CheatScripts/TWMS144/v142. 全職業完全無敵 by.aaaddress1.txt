@@ -1,0 +1,14 @@
+//v142. 全職業完全無敵 by.aaaddress1.
+alloc(HurtTimeControl,64)
+label(HurtTime)
+00A40094:
+dd HurtTimeControl
+HurtTimeControl:
+cmp dword ptr [esp+1C],00861BAF
+jne 055F0E6F//Ics Return
+mov [esp+1C],HurtTime
+jmp 055F0E6F//Ics Return
+
+HurtTime:
+mov [ebp+60],2710 //無敵時間
+jmp 00861BAF

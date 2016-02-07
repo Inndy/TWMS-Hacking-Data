@@ -1,0 +1,44 @@
+//全圖撿取物品  TWMSV142
+//auther:aaaddress1
+//可以撿取任何人/怪物所掉出的物品.
+[ENABLE]
+alloc(GetXY,128)
+alloc(SetXY,128)
+alloc(XY,20)
+
+GetXY:
+push esi
+push edi
+mov edi,[esp+0c]
+push [edi]
+pop [XY]
+push [edi+04]
+pop [XY+08]
+jmp 0043021D
+//=========================================================
+004D7666:
+call GetXY
+//=========================================================
+SetXY:
+push esi
+push edi
+push [XY]
+mov esi,ecx
+lea ecx,[esi+0c]
+call 00425D87
+push [XY+08]
+mov ecx,esi
+call 00425D87
+pop edi
+mov eax,esi
+pop esi
+ret 04
+
+004577AF:
+call SetXY
+
+[DISABLE]
+004577AF:  //SetXY
+call 00430217
+004D7666:  //GetXY
+call 00430217

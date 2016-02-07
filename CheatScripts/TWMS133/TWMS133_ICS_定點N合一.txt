@@ -1,0 +1,597 @@
+//v133 新無敵系列-ICS
+[enable]
+registersymbol(xuHook)
+alloc(xuHook, 1024)
+//====無敵
+label(Hook01)
+label(Hook02)
+label(Dull01)
+label(Dull02)
+label(Dull021)
+alloc(God_k,4)
+alloc(God_t0,4)
+alloc(God_t1,4)
+//====其他
+label(Hook04)
+label(Hook05)
+label(Hook07)
+label(Hook08)
+label(Dull04)
+label(Dull041)
+label(Dull0411)
+label(Dull0412)
+label(Dull0413)
+label(Dull0414)
+label(Dull05)
+label(Dull07)
+label(Dull08)
+//====定點生怪
+label(Hook09)
+alloc(Dull09,1024)
+label(Dull091)
+label(Dull092)
+label(Dull0921)
+label(Dull0922)
+label(Dull09221)
+label(Dull09222)
+label(Dull09223)
+label(Dull09224)
+label(Dull09225)
+label(Dull093)
+label(Hook10)
+label(Dull10)
+alloc(Dull11X,128)
+label(Dull11X1)
+label(Dull11XR)
+//=====
+alloc(xMobPX,4)
+alloc(xMobPY,4)
+alloc(xMobPIO,4)
+alloc(Red_Stop,4)
+//====控怪
+registersymbol(gwgs)
+alloc(gwgs,1024)
+registersymbol(zgkg)
+alloc(zgkg,4)
+alloc(CharX,4)
+label(zouguai)
+label(gwxret)
+label(gwxret1)
+label(gwxy)
+label(gwxz)
+label(gwxzj)
+label(gwxzk)
+label(gwxzl)
+//=====物品過濾
+label(Hook06)
+label(HookItem)
+label(HookItem1)
+label(HookItem2)
+//===========
+alloc(ItemFilter,128)
+alloc(IFTable,16024)
+alloc(ItemCounter,4)
+label(ifreject)
+label(Itemend)
+label(Itemskip)
+registersymbol(ItemFilter)
+registersymbol(ItemCounter)
+alloc(ItemKind,4)
+//==========
+God_k:  //1.完全無敵 0.N秒無敵
+dd 0
+God_t0:
+dd 0
+God_t1:  //無敵時間
+dd 4e20
+//===========
+ItemKind:  //0.過濾物品  非0.怪只掉錢
+dd 0
+zgkg:  //控制方向
+dd 4    //3為跟隨 , 1向左走 , 2向右走 ， 4 定點
+//==========
+xMobPIO:
+dd 0
+xMobPX:
+dd 0
+xMobPY:
+dd 0
+Red_Stop:
+dd 0
+//==========
+xuHook:
+  cmp dword ptr [esp+8c], 005a459c  //00582d8d  //定點生怪
+  je Hook09
+  cmp dword ptr [esp+40], 005aa741  //00588c39  //慢速控怪半套
+  je Hook10
+  cmp dword ptr [esp+64], 004c5838  //004b46ad  //物品過濾
+  je Hook06
+  cmp dword ptr [esp+48], 0077895a  //0071c88d  //顯示裝備潛藏能力(失效了!!)
+  je Hook08
+  cmp [Red_Stop],0  //遇紅點下列功能暫停
+  jg 0066b41d
+  //=====
+  //cmp dword ptr [esp+34], 005b5a2c  //0059573b  //怪物瞬移
+  //je Hook04
+  //cmp dword ptr [esp+34], 005a8f25  //0058748e  //怪不擊退
+  //je Hook05
+  //cmp dword ptr [esp+1c], 00839fac  //007c9612  //笨怪
+  //je Hook07
+  cmp dword ptr [esp+1c], 007e3488  //00779128  //完全無敵
+  je Hook02
+  cmp [God_k],2  //等於2則執行損血人物不退後
+  jne 0066b41d
+  cmp dword ptr [esp+1c], 007e3d75  //007799eb  //人物不退後
+  je Hook01
+  jmp 0066b41d
+
+Hook01:
+  mov [esp+1c],Dull01
+  jmp 0066b41d
+
+Hook02:
+  mov [esp+1c],Dull02
+  jmp 0066b41d
+Hook04:
+  mov [esp+34],Dull04
+  jmp 0066b41d
+Hook05:
+  mov [esp+34],Dull05
+  jmp 0066b41d
+Hook06:
+  mov [esp+64],HookItem
+  jmp 0066b41d
+Hook07:
+  mov [esp+1c],Dull07
+  jmp 0066b41d
+Hook08:
+  mov [esp+48],Dull08
+  jmp 0066b41d
+Hook09:
+  mov [esp+8c], Dull09
+  jmp 0066b41d
+
+Hook10:
+  mov [esp+40], Dull10
+  jmp 0066b41d
+
+//==================
+Dull09:
+db 8b f8                      //- mov edi,eax
+db 8d 8e 04 01 00 00          //- lea ecx,[esi+00000104]
+db 57                        //- push edi
+call 0059bad1
+db 8b ce                      //- mov ecx,esi
+call 00597343
+db ff 75 7c                  //- push [ebp+7c]
+db 83 c0 40                  //- add eax,40
+db ff 70 08                  //- push [eax+08]
+db 50                        //- push eax
+call 00404d6f
+db 59                        //- pop ecx
+db 59                        //- pop ecx
+db 50                        //- push eax
+db 8d 46 04                  //- lea eax,[esi+04]
+db 50                        //- push eax
+db 8b cf                      //- mov ecx,edi
+call 00838bad
+db 8d 8e ac 05 00 00          //- lea ecx,[esi+000005ac]
+call 0042152d
+db 8d 8e b8 05 00 00          //- lea ecx,[esi+000005b8]
+db 89 45 6c                  //- mov [ebp+6c],eax
+call 0042152d
+db ff 75 68                  //- push [ebp+68]
+db 89 45 54                  //- mov [ebp+54],eax
+db 83 c7 10                  //- add edi,10
+db 8b 07                      //- mov eax,[edi]
+db 8b ce                      //- mov ecx,esi
+db 89 45 60                  //- mov [ebp+60],eax
+call 00597bfc
+db 50                        //- push eax
+db 8b 45 60                  //- mov eax,[ebp+60]
+db 53                        //- push ebx
+db 53                        //- push ebx
+db ff 75 6c                  //- push [ebp+6c]
+db 8b cf                      //- mov ecx,edi
+db ff 75 54                  //- push [ebp+54]
+db 53                        //- push ebx
+cmp dword ptr [eax+74],00839d39
+//55 8b ec 53 8b 5d
+je Dull091
+call dword ptr [eax+74]
+jmp 005a460e
+
+Dull091:  //0083ecef
+  call Dull092
+  jmp 005a460e  //00582dfc
+Dull092:
+  cmp [Red_Stop],0
+  jg Dull093
+  cmp [00bc1014],0
+  je Dull093
+  cmp  [xMobPIO],1
+  je Dull0921
+  pushad
+  mov eax,[00bb72a8]
+  mov ebx,[eax+b18]
+  mov [xMobPX],ebx
+  mov ebx,[eax+b1c]
+  mov [xMobPY],ebx
+  popad
+  mov [xMobPIO],1
+  jmp Dull093
+Dull0921:
+  cmp dword ptr [esp+18],02
+  jne Dull093
+  push ecx
+  mov ecx,[xMobPX]
+  mov [esp+0c],ecx
+  mov eax,[xMobPY]
+  mov [esp+10],eax
+  push eax
+  mov ecx,[00bb6bd0]  //
+  call Dull0922
+  mov ecx,eax
+  mov [esp+20],ecx
+  pop ecx
+
+Dull093:
+  jmp 00839d39  //007c9316
+Dull0922:
+  push 14
+  mov eax,008da56e
+  call 008b88a9
+  xor esi,esi
+  mov [ebp-10],esi
+  mov [ebp-14],esi
+  mov [ebp-04],esi
+  cmp [ebp+08],esi
+  je 0042ad9d
+  lea eax,[ebp-18]
+  push eax
+  lea eax,[ebp+08]
+  push eax
+  add ecx,00000088
+  call 0042a470
+  test eax,eax
+  je Dull09221 
+  lea eax,[ebp-18]
+  jmp Dull09222
+Dull09221:
+  mov [ebp-1c],esi
+  lea eax,[ebp-20]
+  mov [ebp-10],00000001
+Dull09222:
+  test byte ptr [ebp-10],01
+  mov esi,[eax+04]
+  je Dull09223 
+  lea ecx,[ebp-20]
+  //call 004b0c0f
+  call Dull09224
+Dull09223:
+  or dword ptr [ebp-04],ff
+  lea ecx,[ebp-18]
+  //call 004b0c0f
+  call Dull09224
+  jmp 0042adc7
+Dull09224:  //0042a3eb
+  push esi
+  mov esi,ecx
+  cmp dword ptr [esi+04],00
+  je Dull09225
+  push 00
+  call 00429b50  //004b0657
+  and dword ptr [esi+04],00
+Dull09225:
+  pop esi
+  ret
+//==========
+Dull10:
+  pushad
+  mov ebx,[esi+108]
+  cmp ebx,0
+  je Dull11XR
+  sub ebx,c
+  cmp ebx,0
+  je Dull11XR
+  cmp [ebx+298],1
+  je Dull11X
+  cmp [ebx+298],3
+  je Dull11X
+  jmp Dull11XR
+
+Dull11X:
+  mov ecx,[00bb6c28]
+  mov ecx,[ecx+18]
+  mov [Red_Stop],ecx
+  cmp [Red_Stop],0  //紅點
+  jg Dull11XR
+  cmp [00bc1014],0  //控怪生怪開關
+  je Dull11X1
+  cmp [xMobPIO],1
+  je Dull11X1
+  mov [xMobPIO],1
+  mov ecx,[00bb72a8]
+  mov edx,[ecx+b18]
+  mov [xMobPX],edx
+  mov edx,[ecx+b1c]
+  mov [xMobPY],edx
+Dull11X1:
+  call gwgs
+  //mov [ebx+f4],ffffffff
+  jmp Dull11XR
+
+Dull11XR:
+  popad
+  jmp 005aa741
+//================
+gwgs:
+cmp [00bc1014],0
+je gwxret1
+cmp [ebx+00000298],1  //走怪
+je zouguai
+cmp [ebx+00000298],3  //跳怪
+je zouguai
+ret
+
+zouguai:
+cmp [zgkg],1
+je gwxz
+cmp [zgkg],2
+je gwxy
+cmp [zgkg],3
+je gwxzj
+cmp [zgkg],4
+je gwxzk
+cmp [zgkg],5
+je gwxzl
+gwxret:
+ret
+
+gwxret1:
+mov [zgkg],4
+mov [xMobPIO],0
+ret
+
+gwxz:
+mov [ebx+000000f4],FFFFFFFF
+ret
+
+gwxy:
+mov [ebx+000000f4],1
+ret
+
+gwxzj:
+push eax
+mov eax,[00bb72a8]
+mov eax,[eax+b18]
+//add eax,3c  //50  //離右 40
+//sub eax,64  //28  //離左 40
+cmp [ebx+00000694],eax
+pop eax
+jl gwxy
+jg gwxz
+ret
+
+gwxzk:
+push eax
+mov eax,[00bb72a8]
+mov eax,[eax+b18]
+mov [CharX],eax
+pop eax
+mov [zgkg],5
+ret
+
+gwxzl:
+push eax
+mov eax,[CharX]
+cmp [ebx+00000694],eax
+pop eax
+jl gwxy
+jg gwxz
+ret
+//==========
+//========
+Dull01:
+  mov [God_k],0  //改變 God_k 值好回復完全無敵 N 秒
+  jmp 007e460f  //0077a1b5
+//========
+Dull02:
+  mov ecx,[ebp+44]
+  inc [ebp+44]
+  //cmp dword ptr [ebp+44],07  //這列移到 Dull021
+  mov [ebp+ecx*4-64],eax
+  //==============
+  cmp [God_k],0  //小於0則正常
+  jl Dull021
+  cmp [God_k],1  //大於1則正常
+  jg Dull021
+  cmp [God_k],1  //1.完全無敵  0.N秒無敵
+  je 007e4f4f
+  push eax
+  call clock
+  cmp eax,[God_t0]
+  pop eax
+  jle 007e4f4f
+  push eax
+  push esi
+  call clock
+  mov esi,[God_t1]
+  add eax,esi
+  mov [God_t0],eax
+  pop esi
+  pop eax
+  mov [God_k],2  //改變 God_k 值好執行損血人物不退後
+Dull021:
+  cmp dword ptr [ebp+44],07
+  jmp 007e3496
+//=========怪物瞬移
+Dull04:
+  mov ebx,[ebp+14]
+  cmp dword ptr [esi+2c],00
+  jne Dull041
+  jmp 005b5b1e  //00595823
+Dull041:
+  mov edi,[esi+30]
+  mov al,[edi]
+  cmp al,0a
+  je 005b5b09
+  movzx ecx,al
+  xor eax,eax
+  inc eax
+  xor edx,edx
+  call 008bca70
+  mov eax,[ebp+20]
+  or [ecx],eax
+  or [ecx+04],edx
+  mov ecx,esi
+  //call 00597b0b
+  push [ecx+0000008c]
+  add ecx,00000084
+  mov eax,ecx
+  push ecx
+  cmp [00bc1018],0
+  je Dull0411
+  cmp [00bc101c],1
+  je Dull0412
+Dull0411:
+  call 00404d6f  //0040496d  //標註起來是瞬1
+Dull0412:
+  pop ecx
+  pop ecx
+  movsx ecx,word ptr [edi+10]
+  cmp eax,ecx
+  jl 005b5b1e
+  mov ecx,esi
+  push [ecx+0000008c]
+  add ecx,00000084
+  mov eax,ecx
+  push ecx
+  cmp [00bc1018],0
+  je Dull0413
+  cmp [00bc101c],0
+  jne Dull0414
+Dull0413:
+  call 00404d6f  //0040496d  //標註起來是瞬1,4
+Dull0414:
+  pop ecx
+  pop ecx
+  jmp 005b5a70
+//====怪不擊退
+Dull05:
+  cmp dword ptr [ebp+3c],01
+  jne 005a8f3b
+  mov ecx,edi
+  call 00598718
+  cmp [ebp+1c],eax
+  jmp 005a8f37
+//====笨怪
+Dull07:
+  xor edx,edx
+  mov ecx,0000ea60
+  //div ecx
+  lea ecx,[esi+000002b0]
+  //add edx,0002bf20
+  push edx
+  jmp 00839fc2
+//====顯示裝備隱藏潛力,v133 失效了
+Dull08:
+  mov esi,eax
+  cmp esi,edi
+  je 00778a50  //0071c987
+  mov ecx,[ebp+38]
+  mov eax,[ecx]
+  call dword ptr [eax+000000b8]
+  test eax,eax
+  jmp 00778973  //0071c8a6
+//=====物品過濾
+HookItem:
+  mov eax,[ebp-1c]
+  mov esi,[ebp-50]
+  mov [esi+1c],al
+  cmp eax,01
+  je HookItem1 
+  cmp eax,02
+  je HookItem1 
+  xor al,al
+  jmp HookItem2 
+HookItem1:
+  mov al,01
+HookItem2:
+  mov [esi+1d],al
+  mov [esi+20],edi
+  mov edi,[ebp+08]
+  mov ecx,edi
+  call 004085d3
+  movzx eax,al
+  mov ecx,edi
+  mov [esi+30],eax
+  call 0040862f
+//=============
+  cmp [ItemKind],0
+  je ItemFilter
+  mov ecx,edi     
+  mov [esi+34],00
+  jmp  004c5873
+  //====
+ItemFilter:
+        push ebx
+        push esi
+        mov [ItemCounter],eax
+        //mov [00bc100c],eax
+        xor ebx, ebx
+        mov esi,IFTable
+ifreject:
+        cmp eax,[esi]
+        je Itemskip
+        cmp [esi],ebx
+        je Itemend
+        add esi,4
+        jmp ifreject
+Itemskip:
+        mov eax,00
+Itemend:
+        pop esi
+        pop ebx
+        //====返回
+        mov ecx,edi     
+        mov [esi+34],eax 
+        jmp  004c5873
+
+IFTable:
+
+dd 00
+//==========
+00b9a07c:
+dd xuHook
+//==========
+[disable]
+00b9a07c:
+dd 0066b41d
+
+//=========
+dealloc(Red_Stop)
+dealloc(ItemFilter)
+dealloc(IFTable)
+dealloc(ItemCounter)
+unregistersymbol(ItemFilter)
+unregistersymbol(ItemCounter)
+dealloc(ItemKind)
+//=========
+unregistersymbol(gwgs)
+dealloc(gwgs)
+unregistersymbol(zgkg)
+dealloc(zgkg)
+dealloc(CharX)
+//=========
+dealloc(xMobPIO)
+dealloc(xMobPX)
+dealloc(xMobPY)
+dealloc(Dull09)
+dealloc(Dull11)
+//=========
+dealloc(God_k)
+dealloc(God_t0)
+dealloc(God_t1)
+unregistersymbol(xuHook)
+dealloc(xuHook)

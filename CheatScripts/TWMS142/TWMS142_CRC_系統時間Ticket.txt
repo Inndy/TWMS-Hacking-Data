@@ -1,0 +1,22 @@
+//1.42 時間系統Ticket BYaaaddress1
+[ENABLE]
+
+alloc(set,128)
+alloc(onoff,4)
+label(back)
+onoff:
+dd 00
+008B76B9:
+jmp set
+nop
+
+set:
+sub ecx,eax
+sub ecx,2710
+back:
+mov eax,ecx
+pop esi
+ret
+
+
+[DISABLE]

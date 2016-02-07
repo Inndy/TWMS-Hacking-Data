@@ -1,0 +1,78 @@
+// TWMS V1.42.1 CRC 人物快速移動
+
+[enable]
+alloc(SpeedUp,128)
+alloc(Speed,4)
+alloc(FakeTime,4)
+label(SpeedChk)
+label(Normal)
+label(HookTime)
+label(HookTime2)
+label(InitTime)
+
+Speed: // 移動速度
+dd 03
+
+SpeedUp:
+mov ecx,[ebp+5c]
+mov eax,[ecx]
+push esi
+mov esi,[Speed]
+
+SpeedChk:
+test esi,esi
+je Normal
+
+dec esi
+push esi
+push ecx
+push eax
+call dword ptr [eax]
+pop eax
+pop ecx
+pop esi
+jmp SpeedChk
+
+Normal:
+pop esi
+jmp 0086F2D9 // +5
+
+HookTime:
+cmp [FakeTime],0
+je InitTime
+
+HookTime2:
+mov eax,[FakeTime]
+add eax,1FE
+mov [FakeTime],eax
+jmp 00da13d8
+
+InitTime:
+mov [FakeTime],eax
+push eax
+lea eax,[HookTime2]
+sub eax,00EB6978    // 00EB6973+5
+mov [00EB6974],eax  // 00EB6973+1
+pop eax
+jmp 00da13d8
+
+0086F2D4:
+jmp SpeedUp
+
+00EB6973:
+jmp HookTime
+
+[disable]
+0086F2D4: // 8b 4d ? 8b 01 ff 10 8b 83
+mov ecx,[ebp+5c]
+mov eax,[ecx]
+
+00EB6973: // [4/4] 倒數第4個jmp // dd 1c 24 68 ? ? ? ? e9 ? ? ? ? 68 ? ? ? ? e9 ? ? ? ? db 45 ? 68 ? ? ? ? e9 ? ? ? ? dd 58 ? 68 ? ? ? ? e9 ? ? ? ? dd 40 ? 68 ? ? ? ? e9 ? ? ? ?
+jmp 00da13d8
+
+dealloc(SpeedUp)
+dealloc(Speed)
+dealloc(FakeTime)
+
+// 用搜尋 dd 1c 24 68 ? ? ? ? e9 ? ? ? ? 68 ? ? ? ? e9 ? ? ? ? db 45 ? 68 ? ? ? ? e9 ? ? ? ? dd 58 ? 68 ? ? ? ? e9 ? ? ? ? dd 40 ? 68 ? ? ? ? e9 ? ? ? ?
+// 之後選4筆結果中的第4筆...往下找...連續push和jmp的倒數第4個就是了...

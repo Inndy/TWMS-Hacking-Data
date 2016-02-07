@@ -1,0 +1,44 @@
+[ENABLE]
+Alloc(ICSEntry, 128)
+Label(DamageControl)
+Label(Back)
+
+ICSEntry:
+Cmp  [Esp], 00861B52 //ff 75 ?? 8b 10 ff 75 ?? 8b c8 57 57
+Jne  0083E84B //8b 81 00 3d 00 00 85 c0 74 05 83 c0 f4 eb 02 33 c0 85 c0 74 04 83 c0 10 c3 33 c0 c3 8b 81 ?? ?? 00 00 85 c0 74 05 83 c0 f4 eb 02 33 c0 85 c0 74 04 83 c0 10 c3 33 c0 c3 56
+Mov  [Esp], DamageControl
+Jmp  0083E84B
+
+DamageControl:
+Push Eax
+Mov  Eax, [Ebp+58]
+Test Eax, Eax
+Je   Back
+Mov  Eax, [00CC8F80]
+And  Eax, 3
+Add  Eax, 2
+Back:
+Mov  [Ebp+58], Eax
+Pop  Eax
+Push 00
+Mov  Edx, [Eax]
+Push 00
+Mov  Ecx, Eax
+Push Edi
+Push Edi
+Push 20
+Call dword ptr [Edx+58]
+Mov  Ecx, [Ebp+48]
+Push 05
+Lea  Eax, [Ebp+38]
+Push eax
+Mov  [Ebp+60], 2710
+Jmp  00861BAA // 設定閃爍時間位址+1
+
+00B5DECC:
+DD ICSEntry
+[DISABLE]
+00B5DECC:
+DD 0083E84B
+
+Dealloc(ICSEntry)

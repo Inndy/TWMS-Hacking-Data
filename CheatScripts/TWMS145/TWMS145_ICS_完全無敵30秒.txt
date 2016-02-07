@@ -1,0 +1,60 @@
+// TWMS V1.45.1
+// 1.完全無敵30秒
+// 2.完全無敵
+
+[enable]
+alloc(GodMode,128)
+alloc(Check1_OldTime,4)
+alloc(Check1_Switch,4)
+alloc(Check2_Switch,4)
+label(My_Jne)
+label(My_Ret)
+registersymbol(Check1_Switch)
+registersymbol(Check2_Switch)
+
+Check1_Switch: // 完全無敵30秒
+DD 00
+
+Check2_Switch: // 完全無敵
+DD 00
+
+GodMode:
+cmp [esp],0088944A // 下面ICS點的返回位置 [1/2] e8 ? ? ? ? 85 c0 0f 85 ? ? ? ? 8b 83 ? ? 00 00 83 e0 fe 83 f8 12
+jne My_Ret
+
+cmp [Check2_Switch],01
+je My_Jne
+
+cmp [Check1_Switch],00
+je My_Ret
+
+mov eax,[00d21b80] // 時間基址 008BA99F - A1 ?? ?? ?? ?? 8B 40 ?? C3
+mov eax,[eax+1c]
+cmp eax,[Check1_OldTime]
+jl My_Jne
+
+add eax,00007530 // 無敵時間30秒
+mov [Check1_OldTime],eax
+
+My_Ret: // 正常損血
+push 00897A72 // ICS: call dword ptr [eax+10]
+ret
+
+My_Jne: // 無敵
+mov [esp],0088b534 // ICS下面的JMP jne 0088b534
+push 00897A72
+ret
+
+00BB2924:
+DD GodMode
+
+[disable]
+00BB2924: // [1/1]
+DD 00897A72 // a1 ? ? ? ? 05 ? ? 00 00 c3 81 c1 70 ff ff ff
+
+dealloc(GodMode)
+dealloc(Check1_OldTime)
+dealloc(Check1_Switch)
+dealloc(Check2_Switch)
+unregistersymbol(Check1_Switch)
+unregistersymbol(Check2_Switch)

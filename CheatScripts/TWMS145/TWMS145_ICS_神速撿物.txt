@@ -1,0 +1,280 @@
+//TWMS145 ICS 神速撿物
+//Auther: Inndy
+
+/*
+
+CRC Version
+
+[ENABLE]
+Alloc(MultiPick, 128)
+Label(LoopPick)
+
+MultiPick:
+Mov  Eax, 0A
+LoopPick:
+Dec  Eax
+Push Eax
+Push [Esp+04]
+Mov  Ecx, [00D24C58]
+Call 004DA523
+Pop  Eax
+Test Eax, Eax
+Jne  LoopPick
+Add  Esp, 4
+Jmp  008968E4
+
+008968DF: // E8 ?? ?? ?? FF 8B 06 8D 4D ?? 51 8B CE FF 50 10 8B 4D F0 50
+Jmp  MultiPick
+[DISABLE]
+008968DF:
+Call 004DA523
+
+Dealloc(MultiPick)
+
+
+
+
+
+
+
+[ENABLE]
+Alloc(FixPacket, 128)
+Alloc(FixTime, 4)
+
+FixTime:
+DD   0
+
+FixPacket:
+Mov  [Esp], 009196E7
+Mov  Edi, [Esp+04]   // PacketStruct
+Mov  Edi, [Edi+04]   // PacketBuffer
+Mov  Eax, [Edi+03]   // Time
+Add  Eax, [FixTime]  // 修改包包時間，達成不斷
+Mov  [Edi+03], Eax   // 寫入包包時間
+Add  [FixTime],#90   // 增加假的時間，可以調整看看
+Jmp  004894F4
+
+009196D7:
+Call FixPacket
+[DISABLE]
+009196D7:
+DB E8 18 FE B6 FF
+
+Dealloc(FixPacket)
+Dealloc(FixTime)
+
+*/
+[ENABLE]
+Alloc(FakeTime, 4)
+RegisterSymbol(FakeTime)
+Alloc(SuperPickICS, 1024)
+Label(MultiPick)
+Label(LoopPick)
+
+Label(NoDelayPickICS)
+Label(NoDelayPick)
+Label(Dark004da678)
+Label(Dark004da68d)
+Label(Dark004da6ab)
+
+//For MyFakeCall
+Label(MyFakeCall)
+Label(Dark009195fd)
+Label(Dark0091961a)
+Label(Dark009196f9)
+Label(Dark00919652)
+
+SuperPickICS:
+Cmp  [Esp], 008968DC
+Jne  00495DF0
+Mov  [Esp], MultiPick
+Jmp  00495DF0
+
+MultiPick:
+Push Eax
+Mov  Ecx, Edi
+
+Mov  Eax, 0A
+LoopPick:
+Dec  Eax
+Push Eax
+Push [Esp+04]
+Mov  Ecx, [00D24C58]
+Call 004DA523
+Pop  Eax
+Test Eax, Eax
+Jne  LoopPick
+Add  Esp, 4
+Jmp  008968E4
+
+NoDelayPickICS:
+Cmp  [Esp], 004DA65C // 85 C0 75 18 83 4D
+Jne  PtInRect
+Mov  [Esp], NoDelayPick
+Jmp  PtInRect
+
+NoDelayPick:
+DB   85 c0                              //004DA65C - test eax,eax
+jne Dark004da678                        //004DA65E - jne 004da678
+DB   83 4d fc ff                        //004DA660 - or dword ptr [ebp-04],ff
+DB   8d 4d e4                           //004DA664 - lea ecx,[ebp-1c]
+call 004d931e                           //004DA667 - call 004d931e
+DB   83 7d f0 00                        //004DA66C - cmp dword ptr [ebp-10],00
+jne 004da59a                            //004DA670 - jne 004da59a
+jmp Dark004da6ab                        //004DA676 - jmp 004da6ab
+Dark004da678:
+DB   33 c0                              //004DA678 - xor eax,eax
+DB   39 46 30                           //004DA67A - cmp [esi+30],eax
+jne Dark004da68d                        //004DA67D - jne 004da68d
+DB   ff 76 34                           //004DA67F - push [esi+34]
+DB   8b 0d 98 cd d1 00                  //004DA682 - mov ecx,[00d1cd98] : 0FC428F4
+call 00584531                           //004DA688 - call 00584531
+Dark004da68d:
+DB   50                                 //004DA68D - push eax
+DB   ff 76 20                           //004DA68E - push [esi+20]
+DB   8b cf                              //004DA691 - mov ecx,edi
+DB   53                                 //004DA693 - push ebx
+call MyFakeCall                         //004DA694 - call 00919560
+DB   8b 45 08                           //004DA699 - mov eax,[ebp+08]
+DB   83 4d fc ff                        //004DA69C - or dword ptr [ebp-04],ff
+DB   8d 4d e4                           //004DA6A0 - lea ecx,[ebp-1c]
+DB   89 46 54                           //004DA6A3 - mov [esi+54],eax
+call 004d931e                           //004DA6A6 - call 004d931e
+Dark004da6ab:
+call 0096f891                           //004DA6AB - call 0096f891
+DB   c2 04 00                           //004DA6B0 - ret 0004
+
+MyFakeCall:
+DB   6a 14                              //919560 - push 14
+DB   b8 1a 7d a4 00                     //919562 - mov eax,00a47d1a
+call 0096f7b9                           //919567 - call 0096f7b9
+DB   8b f1                              //0091956C - mov esi,ecx
+DB   6a 00                              //0091956E - push 00
+DB   6a 1e                              //919570 - push 1e
+call 00480679                           //919572 - call 00480679
+DB   85 c0                              //919577 - test eax,eax
+je Dark009196f9                         //919579 - je 009196f9
+DB   8b 0d dc d0 d1 00                  //0091957F - mov ecx,[00d1d0dc] : 5572DC0C
+call 004c95eb                           //919585 - call 004c95eb
+DB   85 c0                              //0091958A - test eax,eax
+jne Dark009196f9                        //0091958C - jne 009196f9
+DB   8b 0d dc d0 d1 00                  //919592 - mov ecx,[00d1d0dc] : 5572DC0C
+call 004c95fe                           //919598 - call 004c95fe
+DB   85 c0                              //0091959D - test eax,eax
+jne Dark009196f9                        //0091959F - jne 009196f9
+DB   8b 0d dc d0 d1 00                  //009195A5 - mov ecx,[00d1d0dc] : 5572DC0C
+call 004c9611                           //009195AB - call 004c9611
+DB   85 c0                              //009195B0 - test eax,eax
+jne Dark009196f9                        //009195B2 - jne 009196f9
+DB   a1 dc d0 d1 00                     //009195B8 - mov eax,[00d1d0dc] : 5572DC0C
+DB   83 b8 74 40 00 00 00               //009195BD - cmp dword ptr [eax+00004074],00
+jne Dark009196f9                        //009195C4 - jne 009196f9
+DB   8d 8e a8 21 00 00                  //009195CA - lea ecx,[esi+000021a8]
+call 0066ab10                           //009195D0 - call 0066ab10
+DB   85 c0                              //009195D5 - test eax,eax
+je Dark0091961a                         //009195D7 - je 0091961a
+DB   8d 45 0c                           //009195D9 - lea eax,[ebp+0c]
+DB   68 f9 17 00 00                     //009195DC - push 000017f9
+DB   50                                 //91950 - push eax
+call 006d6804                           //919500 - call 006d6804
+DB   8b c8                              //91950000000 - mov ecx,eax
+call 004206ee                           //9195000000000 - call 004206ee
+DB   83 65 fc 00                        //009195EE - and dword ptr [ebp-04],00
+DB   6a 0b                              //009195F2 - push 0b
+DB   50                                 //009195F4 - push eax
+call 0048086c                           //009195F5 - call 0048086c
+DB   8b 45 0c                           //009195FA - mov eax,[ebp+0c]
+Dark009195fd:
+DB   83 4d fc ff                        //009195FD - or dword ptr [ebp-04],ff
+DB   59                                 //919601 - pop ecx
+DB   59                                 //919602 - pop ecx
+DB   85 c0                              //919603 - test eax,eax
+je Dark009196f9                         //919605 - je 009196f9
+DB   83 c0 f4                           //0091960B - add eax,f4
+DB   50                                 //0091960E - push eax
+call 0040dd88                           //0091960F - call 0040dd88
+DB   59                                 //919614 - pop ecx
+jmp Dark009196f9                        //919615 - jmp 009196f9
+Dark0091961a:
+DB   8b 0d dc d0 d1 00                  //0091961A - mov ecx,[00d1d0dc] : 5572DC0C
+call 0062755c                           //919620 - call 0062755c
+DB   85 c0                              //919625 - test eax,eax
+je Dark00919652                         //919627 - je 00919652
+DB   8d 45 08                           //919629 - lea eax,[ebp+08]
+DB   68 5c 1f 00 00                     //0091962C - push 00001f5c
+DB   50                                 //919631 - push eax
+call 006d6804                           //919632 - call 006d6804
+DB   8b c8                              //919637 - mov ecx,eax
+call 004206ee                           //919639 - call 004206ee
+DB   6a 0b                              //0091963E - push 0b
+DB   50                                 //919640 - push eax
+DB   c7 45 fc 01 00 00 00               //919641 - mov [ebp-04],00000001
+call 0048086c                           //919648 - call 0048086c
+DB   8b 45 08                           //0091964D - mov eax,[ebp+08]
+jmp Dark009195fd                        //919650 - jmp 009195fd
+Dark00919652:
+DB   ff 75 0c                           //919652 - push [ebp+0c]
+DB   8b 8e c4 48 00 00                  //919655 - mov ecx,[esi+000048c4]
+call 004db197                           //0091965B - call 004db197
+DB   68 5a 01 00 00                     //919660 - push 0000015a
+DB   8d 4d e0                           //919665 - lea ecx,[ebp-20]
+call 00615530                           //919668 - call 00615530
+DB   c7 45 fc 02 00 00 00               //0091966D - mov [ebp-04],00000002
+call 0042f508                           //919674 - call 0042f508
+DB   8a 80 a4 01 00 00                  //919679 - mov al,[eax+000001a4]
+DB   88 45 f0                           //0091967F - mov [ebp-10],al
+DB   ff 75 f0                           //919682 - push [ebp-10]
+DB   8d 4d e0                           //919685 - lea ecx,[ebp-20]
+call 00410ca5                           //919688 - call 00410ca5
+call 008ba99f                           //0091968D - call 008ba99f
+DB   50                                 //919692 - push eax
+DB   8d 4d e0                           //919693 - lea ecx,[ebp-20]
+call 00410cc3                           //919696 - call 00410cc3
+DB   8b 7d 08                           //0091969B - mov edi,[ebp+08]
+DB   0f b7 07                           //0091969E - movzx eax,word ptr [edi]
+DB   50                                 //009196A1 - push eax
+DB   8d 4d e0                           //009196A2 - lea ecx,[ebp-20]
+call 00427475                           //009196A5 - call 00427475
+DB   0f b7 47 04                        //009196AA - movzx eax,word ptr [edi+04]
+DB   50                                 //009196AE - push eax
+DB   8d 4d e0                           //009196AF - lea ecx,[ebp-20]
+call 00427475                           //009196B2 - call 00427475
+DB   ff 75 0c                           //009196B7 - push [ebp+0c]
+DB   8d 4d e0                           //009196BA - lea ecx,[ebp-20]
+call 00410cc3                           //009196BD - call 00410cc3
+DB   ff 75 10                           //009196C2 - push [ebp+10]
+DB   8d 4d e0                           //009196C5 - lea ecx,[ebp-20]
+call 00410cc3                           //009196C8 - call 00410cc3
+DB   8b 0d 0c d1 d1 00                  //009196CD - mov ecx,[00d1d10c] : 06535064
+DB   8d 45 e0                           //009196D3 - lea eax,[ebp-20]
+DB   50                                 //009196D6 - push eax
+Mov  Edi, [Esp]      // PacketStruct
+Mov  Edi, [Edi+04]   // PacketBuffer
+Mov  Eax, [Edi+03]   // Time
+Add  Eax, [FixTime]  // 修改包包時間，達成不斷
+Mov  [Edi+03], Eax   // 寫入包包時間
+Add  [FixTime],#90   // 增加假的時間，可以調整看看
+Push 009196E7
+Jmp  004894F4
+DB   83 4d fc ff                        //91960000000 - or dword ptr [ebp-04],ff
+DB   8d 4d e4                           //009196EB - lea ecx,[ebp-1c]
+DB   89 be a8 4c 00 00                  //009196EE - mov [esi+00004ca8],edi
+call 0042664d                           //009196F4 - call 0042664d
+Dark009196f9:
+call 0096f891                           //009196F9 - call 0096f891
+DB   c2 0c 00                           //009196FE - ret 000c
+
+
+00BB28F0:
+DD   SuperPickICS
+00D2A0BC:
+DD   NoDelayPickICS
+[DISABLE]
+00BB28F0:
+DD   00495DF0
+00D2A0BC:
+DD   PtInRect
+
+Dealloc(FakeTime)
+Dealloc(SuperPickICS)
+UnregisterSymbol(FakeTime)

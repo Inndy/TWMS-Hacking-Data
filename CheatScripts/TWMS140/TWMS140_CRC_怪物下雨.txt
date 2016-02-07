@@ -1,0 +1,20 @@
+/*
+// Raining Mobs
+// Updated by Ozko
+// gMS v99.1
+[Enable]
+006A4F66:
+db D9 C1
+
+[Disable]
+006A4F66: // D9 C0 D8 C9 D9 C0
+db D9 C0
+*/
+//TwMS v140.1 怪物下雨(怪物亂飛)
+[Enable]
+005DB4DD:
+db D9 C1
+
+[Disable]
+005DB4DD: // D9 C0 D8 C9 D9 C0
+db D9 C0

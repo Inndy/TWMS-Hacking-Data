@@ -1,0 +1,53 @@
+//退怪模式 TWMS138
+//原創 max大大
+//更新:冰Smith
+//Address:005C6354
+//AAttackDir:0怪不動 1怪退正常 2怪退遠 3怪反退到底 A怪退到底
+//EIP:AABack
+[ENABLE]
+registersymbol(AABack)
+registersymbol(AABackOnOff)
+registersymbol(AAttackDir)
+alloc(AABack, 128)
+alloc(AABackOnOff, 4)
+alloc(AAttackDir, 4)
+label(doAABackNormal)
+
+AABack:
+call 005bc298
+cmp [AABackOnOff],0
+jz doAABackNormal
+push eax
+mov eAx,[AAttackDir]
+mov [ebp+28],Eax
+//005CEA33 - 57                         - push edi	//Ebp+28?
+pop eax
+
+doAABackNormal:
+test Eax, Eax
+jmp 005C635B //add下一
+
+AABackOnOff:
+dd 1  // {0: 關閉 | 1: 開啟 }
+
+AAttackDir:
+dd 0 //遠攻者可改2
+    // 0: 怪不動
+    // 1: 怪退後一點點 (正常值)
+    // 2: 怪退後很多點
+    // 3: 怪反方向退到底
+    // A: 怪退到底
+
+005CE97C:
+JMP AABack
+
+[DISABLE]
+005CE97C:
+call 005bc298
+
+dealloc(AABack)
+dealloc(AABackOnOff)
+dealloc(AAttackDir)
+unregistersymbol(AABack)
+unregistersymbol(AABackOnOff)
+unregistersymbol(AAttackDir)

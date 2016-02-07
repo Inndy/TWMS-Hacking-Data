@@ -1,0 +1,20 @@
+// TWMS147.2 ICS §πΐ»¤£Εγ¥ά¶Λ®`
+// Auther: Inndy
+// UpdateTime: 2012-06-29
+// 00600F96 - call dword ptr [eax+50]
+[ENABLE]
+Alloc(Hook, 32)
+
+Hook:
+Cmp  [Ebp+04], 006022A2 // 8d 45 cc 50 8b cb e8 ?? ?? ff ff ff
+Jne  008C0670 // 6a 08 b8 ?? ?? ?? 00 e8 ?? ?? ?? 00 8b 0d ?? ?? ?? 00 85 c9 74
+Mov  [Ebp+20], 38FFFFFF
+Jmp  008C0670
+
+00C2F524:
+DD   Hook
+[DISABLE]
+00C2F524: // [1/1]
+DD   008C0670
+
+Dealloc(Hook)

@@ -1,0 +1,34 @@
+//V131¥l³êÃ~µL©µ¿ð
+//­ì§@:Yttuir
+//Address: 00647113
+//EIP:SumAtk
+//-----------------------------------------------
+[Enable]
+Registersymbol(SumAtk)
+Alloc(SumAtk,128)
+//--------------------------
+SumAtk:
+Push [Esi+000000C8]
+Push [Esi+000000C0]
+Call 0060E6C5
+Pop Ecx
+Pop Ecx
+Mov Ecx,Edi
+Sub Ecx,[Esi+00000134]
+jmp 0064721A
+
+Push Ebx
+Push Edi
+Mov Ecx,Esi
+Call 006456D0
+Jmp 00647223
+
+00647113:
+Jmp SumAtk
+Nop
+[Disable]
+00647113:
+Db 0F 8F 95 01 00 00
+
+Dealloc(SumAtk)
+Unregistersymbol(SumAtk)

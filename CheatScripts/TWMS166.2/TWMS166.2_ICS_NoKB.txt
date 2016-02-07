@@ -1,0 +1,10 @@
+// TWMS166.2 ICS NoKB
+// Auther: Inndy
+// UpdateTime: 2014-02-04
+// [c2 14 00] should be [c2 14 00]
+[ENABLE]
+012CE528:
+DD 00CD1FE9
+[DISABLE]
+012CE528: // [9/10]
+DD 00CD1FB0 // [2/3] 55 8B EC 56 FF 75 08 8B F1 8B 06 FF 90

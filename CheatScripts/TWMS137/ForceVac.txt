@@ -1,0 +1,57 @@
+long ForceVacAdr		= 0x005AF0A5//0F 8C ?? ?? ?? ?? 8B CB E8 ?? ?? ?? ?? 85 C0 75 ?? E8
+long ForceVacJmp		= 0x005AF0E7//8B 55 ?? 8B CB E8 ?? ?? ?? ?? 8B CB E8 ?? ?? ?? ?? 8B D0
+long ForceVacJe			= 0x005AF51F//jl
+long ForceVacAdr2		= 0x005AF08E//7C ?? FF 75 ?? 8B CB E8 ?? ?? ?? ?? 89 45 ?? EB ?? 89 75
+
+Push   Ecx
+Mov    Ecx, Dword ptr DS:[Ebp-10]
+Cmp    [MyCGKey], 0
+Je     Normal
+Cmp    Dword ptr DS:[Ecx+00000298], 6
+Jg     Normal
+Cmp    Dword ptr DS:[Ecx+00000298], 0
+Je     Normal
+Cmp    Dword ptr DS:[Ecx+08], 1
+Je     Normal
+Pop    Ecx
+Jmp    Start
+/*
+Cmp    [MyCGKey],0
+Je     Normal
+Push   Ecx
+
+Cmp    [Ecx+00000298], 6
+Pop    Ecx
+Jg     Normal
+Push   Ecx
+Mov    Ecx, Dword ptr DS:[Ebp-10]
+Cmp    [Ecx+00000298], 0
+Pop    Ecx
+Je     Normal
+Cmp    [Ecx+4], 4
+Push   Eax
+Mov    Eax, [00BBADD0]
+Mov    Eax, [Eax+0468]
+Mov    Eax, [MyAutoKey]
+Cmp    Eax, 0
+Pop    Eax
+Je     Normal
+//Cmp    [Ecx+04], 01
+//Je     test1
+Jmp    Start  
+*/
+Normal:
+Pop    Ecx
+Cmp    Dword ptr DS:[Ebp+08], Edi
+Jmp    L_je_forceVac
+
+Start:
+Push   ForceVacJmp
+Retn
+
+L_je_forceVac:
+Push   ForceVacJe
+Retn
+
+/*	test1:
+Mov    [VacIng],0  */

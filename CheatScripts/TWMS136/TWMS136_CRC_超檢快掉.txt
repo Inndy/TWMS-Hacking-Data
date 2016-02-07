@@ -1,0 +1,255 @@
+//TWMS V136超檢+快掉
+//超撿原創：草泥馬;快掉原創：eric09271
+[Enable]
+0046F56D:
+db 90 90
+004C181C:
+jmp 004c1834
+[Disable]
+0046F56D:
+db 75 35
+004C181C:
+db D9 E8 DD 5D F8 74 11
+
+
+
+
+
+
+
+
+
+[ENABLE]
+registersymbol(AwesomeMan)
+alloc(AwesomeMan,1024)
+registersymbol(MyAutoLR)
+alloc(MyAutoLR,1024)
+registersymbol(MyAutoLRKey)
+alloc(MyAutoLRKey,4)
+registersymbol(MyAutoLRKeyLR)
+alloc(MyAutoLRKeyLR,4)
+alloc(MyAutoLRXP,4)
+label(MyAutoLR00)
+label(MyAutoLR01)
+label(MyAutoLR02)
+label(MyAutoLRFix)
+
+00bc1418:
+DD AwesomeMan
+
+//-----------------------------------------------
+MyAutoLRKey:
+DD 1
+MyAutoLRKeyLR:
+DD 0
+MyAutoLRXP:
+DD 0
+//-----------------------------------------------
+
+AwesomeMan:
+cmp [esp],0084201A
+jne GetFocus
+mov [esp],MyAutoLR
+jmp GetFocus
+
+MyAutoLR:
+cmp [MyAutoLRKey],0
+je MyAutoLR00
+cmp [MyAutoLRKey],2
+je MyAutoLRFix
+push eax
+mov eax,[00bbad70]
+mov eax,[eax+1888]
+mov [MyAutoLRXP],eax
+pop eax
+mov [MyAutoLRKey],2
+MyAutoLRFix:
+add [MyAutoLRKeyLR],1
+cmp [MyAutoLRKeyLR],A
+jle MyAutoLR01
+cmp [MyAutoLRKeyLR],14
+jle MyAutoLR02
+
+
+push eax
+mov eax,[00bbad70]
+mov eax,[eax+1888]
+cmp [MyAutoLRXP],eax
+pop eax
+mov [MyAutoLRKeyLR],fffffffe
+jl MyAutoLR01
+mov [MyAutoLRKeyLR],2
+jmp MyAutoLR01
+
+
+MyAutoLR01:
+mov [ebp-8],ffffffff
+xor ecx,ecx
+xor eax,eax
+cmp [ebp-04],eax
+jmp 00842236
+MyAutoLR02:
+mov [ebp-8],1
+xor ecx,ecx
+xor eax,eax
+cmp [ebp-04],eax
+jmp 00842236
+
+MyAutoLR00:
+xor ecx,ecx
+xor eax,eax
+cmp [ebp-04],eax
+jmp 00842236
+
+[DISABLE]
+00bc1418:
+DD GetFocus
+unregistersymbol(AwesomeMan)
+dealloc(AwesomeMan)
+unregistersymbol(MyAutoLR)
+dealloc(MyAutoLR)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[ENABLE]
+registersymbol(AwesomeMan)
+alloc(AwesomeMan,1024)
+registersymbol(AttackVac)
+alloc(AttackVac,1024)
+
+00bc13e0:
+DD AwesomeMan
+
+AwesomeMan:
+cmp [esp],005AC4F3
+jne IntersectRect
+mov [esp],AttackVac
+jmp IntersectRect
+
+AttackVac:
+jmp 005AC4FF
+
+[DISABLE]
+00bc13e0:
+DD IntersectRect
+
+dealloc(AwesomeMan)
+unregistersymbol(AwesomeMan)
+dealloc(AttackVac)
+unregistersymbol(AttackVac)
+
+
+
+
+
+
+
+
+
+
+
+
+
+// TWMS 136 完全無敵 (ICS)
+
+[ENABLE]
+registersymbol(AwesomeMan)
+alloc(AwesomeMan,1024)
+registersymbol(Invincible)
+alloc(Invincible,1024)
+
+00BC13E4:
+DD AwesomeMan
+AwesomeMan:
+cmp [esp],005ABF7B
+jne IsRectEmpty
+mov [esp],Invincible
+jmp IsRectEmpty
+
+Invincible:
+test eax,eax
+jmp 005ABF7F
+
+[DISABLE]
+00BC13E4:
+DD IsRectEmpty
+
+dealloc(AwesomeMan)
+unregistersymbol(AwesomeMan)
+dealloc(Invincible)
+unregistersymbol(Invincible)
+
+
+
+
+
+
+
+
+
+
+
+// TWMS1.36.1 近戰不揮空 ICS
+// ICS 原創：冷羽楓痕
+// P.S. 沒有怪的地圖會沒效果
+[enable]
+alloc(CallCheck,256)
+alloc(NoEmptyAtk,256)
+label(Normal)
+
+00BC13E0:
+DD CallCheck
+
+CallCheck:
+cmp [esp],005AC4F3
+jne IntersectRect
+mov [esp],NoEmptyAtk
+jmp IntersectRect
+
+NoEmptyAtk:
+push eax
+mov eax,[esp+58]
+cmp eax,007E85E9
+jne Normal
+mov eax,[ebp]
+mov [eax+10],1
+
+Normal:
+pop eax
+jmp 005AC4F3
+
+[disable]
+00BC13E0:
+DD IntersectRect
+
+dealloc(CallCheck)
+dealloc(NoEmptyAtk)
+
+
+00647794 - 8b 44 24 04                - mov eax,[esp+04]
+eax = Level
+
+
+004A89DB:
+jmp GetExp
+GetExp:
+call 00404d61
+mov [NowEXP],eax
+jmp 004A89E0 
+
+
+004A8A05:
+db b8 77 77 77 77
+004A8A05: db e8 57 c3 f5 ff 
+領導力控制

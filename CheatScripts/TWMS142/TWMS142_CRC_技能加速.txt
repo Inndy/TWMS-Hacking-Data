@@ -1,0 +1,42 @@
+//TWMS142 技能加速
+//Auther: Inndy
+//不確定是否全職業
+//請確保MP再50%以上
+[ENABLE]
+Alloc(Switch,4)
+Alloc(FakeTime,4)
+Alloc(TimeSet,256)
+Alloc(FakeJmp,256)
+Label(Truetime)
+
+FakeJmp:
+Cmp  [Switch], 00
+Je   Truetime
+Mov  Eax, [FakeTime]
+Ret
+
+Truetime:
+Mov  Eax, [00CC4A38]
+Mov  Eax, [Eax+1C]
+Ret
+
+TimeSet:
+Mov  [Switch], 1
+Add  [FakeTime], bb8
+Call 00873112
+Mov  [Switch], 0
+Jmp  0087F8FB
+
+0087E2DE:
+jmp TimeSet
+
+00890C81:
+jmp FakeJmp
+[DISABLE]
+0087E2DE:
+call 00873112
+
+Dealloc(RealTime)
+Dealloc(FakeTime)
+Dealloc(TimeSet)
+Dealloc(Switch)

@@ -1,0 +1,50 @@
+[enable]
+registersymbol(Spawn)
+alloc(Spawn,256)
+alloc(Sonoff,4)
+alloc(rx,4)
+alloc(ry,4)
+label(S01)
+label(Spawn_ret)
+Spawn:
+cmp [Sonoff],01
+je S01
+pushad
+mov edx,[00acfb58]
+mov eax,[edx+00000b0c]        //X
+mov [rx],eax
+mov eax,[edx+00000b10]        //Y
+mov [ry],eax
+popad
+mov [Sonoff],00000001
+jmp Spawn_ret
+S01:
+mov [ecx+000002e0],00000006
+cmp [esp],0057A8CA
+jne Spawn_ret
+cmp dword ptr [esp+18],02
+jne Spawn_ret
+push ecx
+mov eax,[rx]
+mov [esp+0c],eax
+mov eax,[ry]
+mov [esp+10],eax
+push eax
+mov ecx,[00acf520]
+call 004b55fc
+mov ecx,eax
+mov [esp+20],ecx
+pop ecx
+Spawn_ret:
+push ebp
+mov ebp,esp
+push ebx
+push esi
+jmp 007C931B
+007C9316:
+jmp Spawn
+[disable]
+007C9316:
+db 55 8b ec 53 56
+unregistersymbol(Spawn)
+dealloc(Spawn)

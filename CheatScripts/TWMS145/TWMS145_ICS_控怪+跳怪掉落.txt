@@ -1,0 +1,189 @@
+// TWMS145 ICS ±±©Ç+ ¸õ©Ç±¼¸¨
+// Auther: Inndy
+//------------------------------------------------------------------
+// AOB??83 bb ?? 00 00 00 00 0f 84 ?? 00 00 00 8d
+// V137 00847A28 - 83 bb f4 00 00 00 00       - cmp dword ptr [ebx+000000f4],00
+// V138 00896978 - 83 bb f8 00 00 00 00       - cmp dword ptr [ebx+000000f8],00
+// V140 008B6960 - 83 bb fc 00 00 00 00       - cmp dword ptr [ebx+000000fc],00
+// V145 008E326C - 83 bb fc 00 00 00 00       - cmp dword ptr [ebx+000000fc],00
+//------------------------------------------------------------------
+// AOB??83 be ?? ?? 00 00 03 57 8b 3d ?? ?? ?? 00
+// V138 0089D627 - 83 be 98 02 00 00 03       - cmp dword ptr [esi+00000298],03
+// V140 008B98E4 - 83 be a0 02 00 00 03       - cmp dword ptr [esi+000002a0],03
+// V145 008E6272 - 83 be a0 02 00 00 03       - cmp dword ptr [esi+000002a0],03
+//
+// AOB??8b 83 ?? ?? 00 00 83 f8 01 0f 85 ?? ?? 00 00
+// V138 0089E802 - 8b 83 98 02 00 00          - mov eax,[ebx+00000298]
+// V140 008BAE82 - 8b 83 a0 02 00 00          - mov eax,[ebx+000002a0]
+// V145 008E781E - 8b 83 a0 02 00 00          - mov eax,[ebx+000002a0]
+//------------------------------------------------------------------
+// AOB??39 8e ?? ?? 00 00 7c
+// V138 0089B435 - 39 8e 94 06 00 00          - cmp [esi+00000694],ecx
+// V140 008B7AE0 - 39 8e 9c 06 00 00          - cmp [esi+0000069c],ecx
+// V145 008E445E - 39 8e 9c 06 00 00          - cmp [esi+0000069c],ecx
+//------------------------------------------------------------------
+[ENABLE]
+Alloc(JumpMobFall, 128)
+Alloc(MobLR, 512)
+Alloc(MobLRSwitch, 4)
+Alloc(MobGoX, 4)
+Alloc(JumpDown, 4)
+RegisterSymbol(MobLRSwitch)
+RegisterSymbol(MobGoX)
+RegisterSymbol(JumpDown)
+Label(ControlMob)
+Label(Back)
+Label(GoLeft)
+Label(GoRight)
+Label(GoMe)
+Label(GoMe_R)
+Label(GoMe_L)
+Label(GoPoint)
+Label(GoX)
+Label(GetX)
+
+JumpDown:
+DD   1 // ¸õ©Ç±¼¸¨¶}Ãö
+MobLRSwitch:
+DD   3 // 0Ãö1¥ª2¥k3¸òÀH4¨úÂI5©wÂI
+
+MobLR:
+Push Ebp
+Mov  Ebp, Esp
+Sub  Esp, 20
+Mov  Eax, [Ebp+08]
+Push Ebx
+Push Esi
+Mov  Esi, [00D215C0]
+Mov  Ebx, Ecx
+Push Edi
+//-----------------------------------
+Cmp  [Ebx+000002A0], 01
+Je   ControlMob
+Cmp  [Ebx+000002A0], 03
+Je   ControlMob
+Jmp  Back
+
+ControlMob:
+Cmp  [MobLRSwitch], 00
+Je   Back
+Cmp  [MobLRSwitch], 01
+Je   GoLeft
+Cmp  [MobLRSwitch], 02
+Je   GoRight
+Cmp  [MobLRSwitch], 05
+Je   GoX
+Mov  Edi, [00D1D0DC]
+Mov  Edi, [Edi+00005E0C]
+Cmp  [MobLRSwitch], 04
+Je   GetX
+Cmp  [MobLRSwitch], 03
+Je   GoMe
+Jmp  Back
+
+GoMe:
+Push Edi
+Mov  Edi, [00D1D0DC]
+Mov  Edi, [Edi+0494]
+And  Edi, 01
+Test Edi, Edi
+Je   GoMe_R
+Jne  GoMe_L
+Pop  Edi
+Jmp  Back
+
+GoMe_R:
+Pop  Edi
+Add  Edi, 64
+Jmp  GoPoint
+
+GoMe_L:
+Pop  Edi
+Sub  Edi, 64
+Jmp  GoPoint
+
+GoPoint:
+Cmp  [Ebx+0000069C], Edi
+Jl   GoRight
+Jg   GoLeft
+Jmp  Back
+
+GetX:
+Mov  [MobGoX], Edi
+Mov  [MobLRSwitch], 05
+Jmp  GoX
+
+GoX:
+Mov  Edi, [MobGoX]
+Sub  Edi, 2
+Cmp  [Ebx+0000069C], Edi
+Jl   GoRight
+Add  Edi, 4
+Cmp  [Ebx+0000069C], Edi
+Jg   GoLeft
+Jmp  GoMe
+
+
+GoRight:
+Mov  [Ebx+000000EC], 00000004
+Mov  [Ebx+000000FC], 00000001
+Jmp  Back
+
+GoLeft:
+Mov  [Ebx+000000EC], 00000005
+Mov  [Ebx+000000FC], FFFFFFFF
+Jmp  Back
+//-----------------------------------
+Back:
+Cmp  [JumpDown], 0
+Je   008E7801
+Lea  Edi,[Ebx+00000088]
+Fld  qword ptr [Edi]
+Fsub qword ptr [Eax]
+Fstp qword ptr [Ebp-18]
+Fldz
+Fcom qword ptr [Ebp-18]
+Fnstsw Ax
+Test Ah,44
+Jnp  008E7F31
+Mov  Eax,[Ebx+000002A0]
+Cmp  Eax,01
+Je   008E782D
+Fstp st(0)
+Cmp  Eax,03
+Jmp  008E7BCF // Jne To...
+
+JumpMobFall:
+Cmp  [JumpDown], 00
+Je   008E6268
+Push Ebp
+Mov  Ebp, Esp
+Sub  Esp, 0C
+Push Ebx
+Push Esi
+Mov  Esi, Ecx
+Cmp  dword ptr [Esi+000002A0], 03
+Push Edi
+Mov  Edi, [00D215C0]
+Jmp  008E6341 // Jne To...
+
+00BB5BC8:
+DD MobLR
+
+00BB5BCC:
+DD JumpMobFall
+[DISABLE]
+00BB5BC8:
+DD 008E77ED // 55 8B EC 83 EC ?? 8B 45 08 53 56 8B 35
+
+00BB5BCC:
+DD 008E6268 // 55 8B EC 83 EC ?? 53 56 8B F1 83 BE ?? ?? 00 00 03
+
+Dealloc(JumpMobFall)
+Dealloc(MobLR)
+Dealloc(MobLRSwitch)
+Dealloc(MobGoX)
+Dealloc(JumpDown)
+UnregisterSymbol(MobLRSwitch)
+UnregisterSymbol(MobGoX)
+UnregisterSymbol(JumpDown)

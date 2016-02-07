@@ -1,0 +1,26 @@
+008DAC54 - e8 be fd fe ff             - call 008caa17
+
+008CAA17 - 56                         - push esi		//Hotkey
+
+008CAA7B - ff 74 24 10                - push [esp+10]		//Hotkey
+008CAA7F - e8 ff ce c1 ff             - call 004e7983
+
+
+004E79B2 - 8b 7c 24 10                - mov edi,[esp+10]	//Hotkey
+
+
+004E79C3 - 74 46                      - je 004e7a0b
+004E79FC - 74 0d                      - je 004e7a0b
+
+
+004E7A0B - ff 74 24 14                - push [esp+14]
+004E7A0F - 8b ce                      - mov ecx,esi
+004E7A11 - 57                         - push edi		//Hotkey
+004E7A12 - e8 6f 4d 38 00             - call 0086c786
+
+
+0086CC1F - e8 ce e9 ff ff             - call 0086b5f2
+0086D779 - e8 74 de ff ff             - call 0086b5f2
+
+
+0086B600 - 8b 45 08                   - mov eax,[ebp+08]

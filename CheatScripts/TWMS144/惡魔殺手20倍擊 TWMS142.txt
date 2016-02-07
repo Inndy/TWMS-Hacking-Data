@@ -1,0 +1,16 @@
+
+//v1.42. ´cÅ]±þ¤âÅÜ§Î20­¿À» by.aaaddress1
+alloc(Nodelay,64)
+
+Nodelay:
+sub [ebp+08],#450
+mov eax,[ebp+08]
+mov [esi+00004CFC],eax
+jmp 0087689B
+
+0087688B:
+jmp Nodelay
+nop
+nop
+nop
+nop

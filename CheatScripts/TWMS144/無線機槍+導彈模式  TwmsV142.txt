@@ -1,0 +1,27 @@
+//無線機槍+導彈模式  TwmsV142
+//By 守護者+aaaddress1
+//感謝：小翊、頑皮鬼
+[enable]
+//導彈模式開機槍模式
+008767A8:
+mov eax, 00001384
+nop
+
+//開機槍模式
+0087662B:
+mov eax, 00001384
+nop
+
+//火焰無線模式
+0087FD2C:
+db eb 32
+
+[disable]
+008751A8:
+sub eax,[esi+00004cf8]
+
+0087502B:
+sub eax,[esi+00005a64]
+
+0087FD2C:
+jnge 0087FD60

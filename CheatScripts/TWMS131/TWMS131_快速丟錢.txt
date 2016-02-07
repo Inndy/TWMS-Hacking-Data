@@ -1,0 +1,48 @@
+//131.1快速丟錢
+
+//這是丟5萬的  
+
+
+[Enable]
+
+registersymbol(Amount)
+
+alloc(Amount,4)
+
+alloc(Mesars,32)
+
+Amount:
+
+add [eax],al
+
+add [eax],al
+
+Mesars:
+
+mov eax,c350 //錢的值(16進位)
+
+mov [esi+000000F4], eax
+
+jmp 007B94E1
+
+
+
+007B94DB:
+
+jmp Mesars
+
+nop
+
+[Disable]
+
+007B94DB:
+
+mov [esi+000000F4], eax
+
+
+
+unregistersymbol(Amount)
+
+dealloc(Amount,4)
+
+dealloc(Mesars,32)

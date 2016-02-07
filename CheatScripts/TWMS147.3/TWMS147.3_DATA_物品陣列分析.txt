@@ -1,0 +1,121 @@
+0099A1A0 - push ebp                                                             ; 取得物品數量CALL int __stdcall GetItemCount(int ItemId, int Const1, int Const2) // int Count = GetItemCount(Id, 1, 0);
+0099A1A1 - mov ebp,esp                                                          ; 
+0099A1A3 - push ecx                                                             ; 分配空間
+0099A1A4 - push ecx                                                             ; 分配空間
+0099A1A5 - mov ecx,[00dad720] : 00DBFA80                                        ; 
+0099A1AB - push ebx                                                             ; \
+0099A1AC - push esi                                                             ; |->保護暫存器
+0099A1AD - push edi                                                             ; /
+0099A1AE - lea eax,[ebp-08]                                                     ; 暫存空間內8Bytes結構體
+0099A1B1 - push eax                                                             ; 
+0099A1B2 - call 00422464                                                        ; 
+0099A1B7 - mov esi,[eax+04]                                                     ; 
+0099A1BA - lea ecx,[ebp-08]                                                     ; 
+0099A1BD - call 00421554                                                        ; 
+0099A1C2 - mov eax,[ebp+08]                                                     ; ItemID
+0099A1C5 - cdq                                                                  ; 
+0099A1C6 - mov ecx,000f4240                                                     ; 1000000
+0099A1CB - idiv ecx                                                             ; 除法, Eax = Type, Ecx = SubID
+0099A1CD - push [ebp+10]                                                        ; 0
+0099A1D0 - mov edi,[00dad724] : 00000000                                        ; 
+0099A1D6 - push [ebp+0c]                                                        ; 1
+0099A1D9 - mov ecx,esi                                                          ; 
+0099A1DB - push [ebp+08]                                                        ; ItemID
+0099A1DE - push eax                                                             ; ItemType
+0099A1DF - call 004cafdf                                                        ; 物品陣列在裡面
+0099A1E4 - mov ebx,eax                                                          ; ItemCount
+0099A1E6 - movzx eax,byte ptr [ebp+0c]                                          ; 
+0099A1EA - push eax                                                             ; 
+0099A1EB - push [ebp+08]                                                        ;
+0099A1EE - mov ecx,edi                                                          ;
+0099A1F0 - push esi                                                             ;
+0099A1F1 - call 00598217                                                        ;
+0099A1F6 - pop edi                                                              ; \
+0099A1F7 - pop esi                                                              ; |->還原暫存器、累加
+0099A1F8 - add eax,ebx                                                          ; |
+0099A1FA - pop ebx                                                              ; /
+0099A1FB - leave                                                                ;
+0099A1FC - ret 000c                                                             ;
+                                                                                ; 
+                                                                                ; 
+                                                                                ; 
+                                                                                ; 
+                                                                                ; 
+                                                                                ; 
+                                                                                ; 
+                                                                                ; 
+                                                                                ; 
+                                                                                ; ItemType, ItemID, 1, 0
+004CAFDF - 6A 14                      - push 14                                 ; 區域變數 * (5 + 7)
+004CAFE1 - B8 2F5AA100                - mov eax,00A15A2F                        ; SEH
+004CAFE6 - E8 9ED55000                - call 009D8589                           ; Set Ebp, Alloc Memory In Stack
+004CAFEB - 8B F9                      - mov edi,ecx                             ; 保存Ecx
+004CAFED - FF 75 08                   - push [ebp+08]                           ; Param1: ItemType
+004CAFF0 - 83 65 F0 00                - and dword ptr [ebp-10],00               ; 區域變數4 = 0; (用來計算數量的區域變數)
+004CAFF4 - E8 95B5F5FF                - call 0042658E                           ; 此CALL取得物品數量
+004CAFF9 - 33 DB                      - xor ebx,ebx                             ; 
+004CAFFB - 43                         - inc ebx                                 ; Ebx = 1;
+004CAFFC - 3B C3                      - cmp eax,ebx                             ; Cmp Eax, 01
+004CAFFE - 89 45 EC                   - mov [ebp-14],eax                        ; 保存返回值
+004CB001 - 7C 4E                      - jnge 004CB051                           ; 上面的CALL失敗時跳躍
+004CB003 - 6A 00                      - push 00                                 ; Param4
+004CB005 - 53                         - push ebx                                ; Param3: 01
+004CB006 - FF 75 08                   - push [ebp+08]                           ; Param2: ItemType
+004CB009 - 8D 45 E0                   - lea eax,[ebp-20]                        ; Buffer
+004CB00C - 50                         - push eax                                ; Param1: ptr: Ebp-20
+004CB00D - 8B CF                      - mov ecx,edi                             ; 還原Ecx
+004CB00F - E8 29C0F5FF                - call 0042703D                           ; 又一個他媽不知道蔥三小的CALL
+004CB014 - 8B 70 04                   - mov esi,[eax+04]                        ; 返回結構體取值, Esi指向結構體
+004CB017 - 8D 4D E0                   - lea ecx,[ebp-20]                        ; 區域變數8
+004CB01A - E8 DBB8F5FF                - call 004268FA                           ; 不知道幹三小
+004CB01F - 85 F6                      - test esi,esi                            ; Esi指向結構體
+004CB021 - 74 28                      - je 004CB04B                             ; 
+004CB023 - 80 7D 10 00                - cmp byte ptr [ebp+10],00                ; [Ebp+10] == 0, Cmp 0, 0
+004CB027 - 75 0B                      - jne 004CB034                            ; 必不跳
+004CB029 - 8B 06                      - mov eax,[esi]                           ; Esi指向結構體
+004CB02B - 8B CE                      - mov ecx,esi                             ; 
+004CB02D - FF 50 08                   - call dword ptr [eax+08]                 ; 
+004CB030 - 85 C0                      - test eax,eax                            ; 
+004CB032 - 75 17                      - jne 004CB04B                            ; 
+004CB034 - 8D 4E 0C                   - lea ecx,[esi+0C]                        ; Esi指向結構體
+004CB037 - E8 A3BDF5FF                - call 00426DDF                           ; 一堆複雜的計算, FUCK
+004CB03C - 3B 45 0C                   - cmp eax,[ebp+0C]                        ; ItemID 比對物品ID
+004CB03F - 75 0A                      - jne 004CB04B                            ; 
+004CB041 - 8B 06                      - mov eax,[esi]                           ; 
+004CB043 - 8B CE                      - mov ecx,esi                             ; 
+004CB045 - FF 50 4C                   - call dword ptr [eax+4C]                 ; 估計是取得某一格的物品有多少
+004CB048 - 01 45 F0                   - add [ebp-10],eax                        ; 區域變數4
+004CB04B - 43                         - inc ebx                                 ; 迴圈計數
+004CB04C - 3B 5D EC                   - cmp ebx,[ebp-14]                        ; 判斷迴圈是否跳出
+004CB04F - 7E B2                      - jle 004CB003                            ; 迴圈下一圈
+004CB051 - 83 7D 14 00                - cmp dword ptr [ebp+14],00               ; Call Source的Buffer (?)
+004CB055 - 75 4D                      - jne 004CB0A4                            ; 
+004CB057 - FF 75 0C                   - push [ebp+0C]                           ; ItemID
+004CB05A - 8B 0D 24D7DA00             - mov ecx,[00DAD724] : [0A607704]         ; 
+004CB060 - E8 BA7C0C00                - call 00592D1F                           ; 
+004CB065 - 85 C0                      - test eax,eax                            ; 
+004CB067 - 74 3B                      - je 004CB0A4                             ; 
+004CB069 - 6A 01                      - push 01                                 ; Param4
+004CB06B - 57                         - push edi                                ; Param3
+004CB06C - FF 75 0C                   - push [ebp+0C]                           ; Param2: ItemID
+004CB06F - 8D 45 E8                   - lea eax,[ebp-18]                        ; 
+004CB072 - 50                         - push eax                                ; Param1
+004CB073 - E8 CEF5FFFF                - call 004CA646                           ; 
+004CB078 - 83 C4 10                   - add esp,10                              ; __cdecl Restore Stack (4 Params)
+004CB07B - 8B 4D EC                   - mov ecx,[ebp-14]                        ; 
+004CB07E - 83 65 FC 00                - and dword ptr [ebp-04],00               ; 區域變數1
+004CB082 - 85 C9                      - test ecx,ecx                            ; 
+004CB084 - 74 12                      - je 004CB098                             ; 
+004CB086 - 80 7D 10 00                - cmp byte ptr [ebp+10],00                ; [Ebp+10] == Param3 == 1, Cmp 01, 00
+004CB08A - 75 09                      - jne 004CB095                            ; 必跳
+004CB08C - 8B 01                      - mov eax,[ecx]                           ; 
+004CB08E - FF 50 08                   - call dword ptr [eax+08]                 ; 
+004CB091 - 85 C0                      - test eax,eax                            ; 
+004CB093 - 75 03                      - jne 004CB098                            ; 
+004CB095 - FF 45 F0                   - inc [ebp-10]                            ; 區域變數4
+004CB098 - 83 4D FC FF                - or dword ptr [ebp-04],FF                ; 區域變數1
+004CB09C - 8D 4D E8                   - lea ecx,[ebp-18]                        ; 
+004CB09F - E8 56B8F5FF                - call 004268FA                           ; 
+004CB0A4 - 8B 45 F0                   - mov eax,[ebp-10]                        ; 區域變數4
+004CB0A7 - E8 B5D55000                - call 009D8661                           ; 
+004CB0AC - C2 1000                    - ret 0010                                ; 

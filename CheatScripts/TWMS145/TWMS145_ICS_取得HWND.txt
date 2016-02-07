@@ -1,0 +1,24 @@
+// TWMS145 ICS ¨ú±oHwnd
+// 0090B4B5 - FF 15 78A0D200             - call dword ptr [00D2A078]
+[ENABLE]
+Alloc(HwndHook, 128)
+Alloc(Hwnd, 4)
+RegisterSymbol(Hwnd)
+
+HwndHook:
+Cmp  [Esp], 0090B4BB
+Jne  CreateWindowExA
+Add  Esp, 4
+Call CreateWindowExA
+Mov  [Hwnd], Eax
+Jmp  0090B4BB
+
+00D2A078:
+DD   HwndHook
+[DISABLE]
+00D2A078:
+DD   CreateWindowExA
+
+Dealloc(HwndHook)
+Dealloc(Hwnd)
+UnregisterSymbol(Hwnd)

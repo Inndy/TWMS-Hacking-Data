@@ -1,0 +1,124 @@
+// 55 8B EC 51 51 8B 0D ?? ?? ?? 00 53 56 57
+// 第三個CALL
+void __declspec(naked) __stdcall (*ItemList)(int type, int DB01, int DB00);
+00A1B185 - 55                         - push ebp
+00A1B186 - 8b ec                      - mov ebp,esp
+00A1B188 - 51                         - push ecx
+00A1B189 - 51                         - push ecx
+00A1B18A - 8b 0d a0 d7 e8 00          - mov ecx,[00e8d7a0] : 00EA20C0
+00A1B190 - 53                         - push ebx
+00A1B191 - 56                         - push esi
+00A1B192 - 57                         - push edi
+00A1B193 - 8d 45 f8                   - lea eax,[ebp-08]
+00A1B196 - 50                         - push eax
+00A1B197 - e8 0f 7d a0 ff             - call 00422eab
+00A1B19C - 8b 70 04                   - mov esi,[eax+04]
+00A1B19F - 8d 4d f8                   - lea ecx,[ebp-08]
+00A1B1A2 - e8 df 6c a0 ff             - call 00421e86
+00A1B1A7 - 8b 45 08                   - mov eax,[ebp+08]
+00A1B1AA - 99                         - cdq
+00A1B1AB - b9 40 42 0f 00             - mov ecx,000f4240
+00A1B1B0 - f7 f9                      - idiv ecx
+00A1B1B2 - ff 75 10                   - push [ebp+10]
+00A1B1B5 - 8b 3d a4 d7 e8 00          - mov edi,[00e8d7a4] : 00000000
+00A1B1BB - ff 75 0c                   - push [ebp+0c]
+00A1B1BE - 8b ce                      - mov ecx,esi
+00A1B1C0 - ff 75 08                   - push [ebp+08]
+00A1B1C3 - 50                         - push eax
+00AAAAAA - AA AA AA AA                - AAAAAAAAAAAAA
+00A1B1C9 - 8b d8                      - mov ebx,eax
+00A1B1CB - 0f b6 45 0c                - movzx eax,byte ptr [ebp+0c]
+00A1B1CF - 50                         - push eax
+00A1B1D0 - ff 75 08                   - push [ebp+08]
+00A1B1D3 - 8b cf                      - mov ecx,edi
+00A1B1D5 - 56                         - push esi
+00A1B1D6 - e8 4b 18 ba ff             - call 005bca26
+00A1B1DB - 5f                         - pop edi
+00A1B1DC - 5e                         - pop esi
+00A1B1DD - 03 c3                      - add eax,ebx
+00A1B1DF - 5b                         - pop ebx
+00A1B1E0 - c9                         - leave
+00A1B1E1 - c2 0c 00                   - ret 000c
+
+
+
+
+
+
+
+FakeCall:
+004DBA67 - 6a 14                      - push 14
+004DBA69 - b8 cf c0 a9 00             - mov eax,00a9c0cf
+004DBA6E - e8 96 06 58 00             - call 00a5c109
+004DBA73 - 8b f9                      - mov edi,ecx
+004DBA75 - ff 75 08                   - push [ebp+08]
+004DBA78 - 83 65 f0 00                - and dword ptr [ebp-10],00
+004DBA7C - e8 b7 c6 f4 ff             - call 00428138
+004DBA81 - 33 db                      - xor ebx,ebx
+004DBA83 - 43                         - inc ebx
+004DBA84 - 3b c3                      - cmp eax,ebx
+004DBA86 - 89 45 ec                   - mov [ebp-14],eax
+004DBA89 - 7c 4e                      - jnge 004dbad9
+004DBA8B - 6a 00                      - push 00
+004DBA8D - 53                         - push ebx
+004DBA8E - ff 75 08                   - push [ebp+08]
+004DBA91 - 8d 45 e0                   - lea eax,[ebp-20]
+004DBA94 - 50                         - push eax
+004DBA95 - 8b cf                      - mov ecx,edi
+004DBA97 - e8 91 d1 f4 ff             - call 00428c2d
+004DBA9C - 8b 70 04                   - mov esi,[eax+04]
+004DBA9F - 8d 4d e0                   - lea ecx,[ebp-20]
+004DBAA2 - e8 64 ca f4 ff             - call 0042850b
+004DBAA7 - 85 f6                      - test esi,esi
+004DBAA9 - 74 28                      - je 004dbad3
+004DBAAB - 80 7d 10 00                - cmp byte ptr [ebp+10],00
+004DBAAF - 75 0b                      - jne 004dbabc
+004DBAB1 - 8b 06                      - mov eax,[esi]
+004DBAB3 - 8b ce                      - mov ecx,esi
+004DBAB5 - ff 50 08                   - call dword ptr [eax+08]
+004DBAB8 - 85 c0                      - test eax,eax
+004DBABA - 75 17                      - jne 004dbad3
+004DBABC - 8d 4e 0c                   - lea ecx,[esi+0c]
+004DBABF - e8 0b cf f4 ff             - call 004289cf
+// 004DBAC4 - 3b 45 0c                   - cmp eax,[ebp+0c]
+// 004DBAC7 - 75 0a                      - jne 004dbad3
+// 在這裡保存ID (Eax)
+004DBAC9 - 8b 06                      - mov eax,[esi]
+004DBACB - 8b ce                      - mov ecx,esi
+004DBACD - ff 50 4c                   - call dword ptr [eax+4c]
+// 在這裡保存數量 (Eax)
+004DBAD0 - 01 45 f0                   - add [ebp-10],eax
+004DBAD3 - 43                         - inc ebx
+004DBAD4 - 3b 5d ec                   - cmp ebx,[ebp-14]
+004DBAD7 - 7e b2                      - jle 004dba8b
+004DBAD9 - 83 7d 14 00                - cmp dword ptr [ebp+14],00
+004DBADD - 75 4d                      - jne 004dbb2c
+004DBADF - ff 75 0c                   - push [ebp+0c]
+004DBAE2 - 8b 0d a4 d7 e8 00          - mov ecx,[00e8d7a4] : 00000000
+004DBAE8 - e8 87 b3 0d 00             - call 005b6e74
+004DBAED - 85 c0                      - test eax,eax
+004DBAEF - 74 3b                      - je 004dbb2c
+004DBAF1 - 6a 01                      - push 01
+004DBAF3 - 57                         - push edi
+004DBAF4 - ff 75 0c                   - push [ebp+0c]
+004DBAF7 - 8d 45 e8                   - lea eax,[ebp-18]
+004DBAFA - 50                         - push eax
+004DBAFB - e8 55 f5 ff ff             - call 004db055
+004DBB00 - 83 c4 10                   - add esp,10
+004DBB03 - 8b 4d ec                   - mov ecx,[ebp-14]
+004DBB06 - 83 65 fc 00                - and dword ptr [ebp-04],00
+004DBB0A - 85 c9                      - test ecx,ecx
+004DBB0C - 74 12                      - je 004dbb20
+004DBB0E - 80 7d 10 00                - cmp byte ptr [ebp+10],00
+004DBB12 - 75 09                      - jne 004dbb1d
+004DBB14 - 8b 01                      - mov eax,[ecx]
+004DBB16 - ff 50 08                   - call dword ptr [eax+08]
+004DBB19 - 85 c0                      - test eax,eax
+004DBB1B - 75 03                      - jne 004dbb20
+004DBB1D - ff 45 f0                   - inc [ebp-10]
+004DBB20 - 83 4d fc ff                - or dword ptr [ebp-04],ff
+004DBB24 - 8d 4d e8                   - lea ecx,[ebp-18]
+004DBB27 - e8 df c9 f4 ff             - call 0042850b
+004DBB2C - 8b 45 f0                   - mov eax,[ebp-10]
+004DBB2F - e8 ad 06 58 00             - call 00a5c1e1
+004DBB34 - c2 10 00                   - ret 0010

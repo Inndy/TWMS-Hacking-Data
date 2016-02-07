@@ -1,0 +1,19 @@
+// TWMS149.1 ICS Àþ¶¡¶°º¡
+// Auther: Inndy
+// UpdateTime: 2012-09-22
+[ENABLE]
+Alloc(Full, 64)
+
+Full:
+Cmp  [Esp], 00937B26 // 8B ?? ?? ?? 00 00 2B 08 83 F9 FA
+Jne  004A357B
+And  [Esi+000070EC], 00 // 2B ?? ?? ?? 00 00 6A 1E 59
+Jmp  004A357B
+
+00C7FD18:
+DD   Full
+[DISABLE]
+00C7FD18: // [4/5]
+DD   004A357B // [3/12] 55 8b ec 51 51 8d 45 f8 50 81 c1 ?? ?? 00 00
+
+Dealloc(Full)

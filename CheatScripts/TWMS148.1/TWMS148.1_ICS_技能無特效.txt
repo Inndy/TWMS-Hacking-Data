@@ -1,0 +1,26 @@
+//Twms1481
+//ICS_No Skill Effects (for NDFA)
+//ICS:Zelda911 2012-08-24
+[Enable]
+Alloc(CheckESP,64)
+Label(NoSkillEffects)
+
+00B2728C:
+DD CheckESP
+
+CheckESP:
+Cmp [Esp+08],0060B421
+Jne VariantClear
+Mov [Esp+08],NoSkillEffects
+Jmp VariantClear
+
+NoSkillEffects:
+pop ecx
+pop ecx
+jmp 0060b5e6
+
+[Disable]
+00B2728C:
+DD VariantClear
+
+DeAlloc(CheckESP)

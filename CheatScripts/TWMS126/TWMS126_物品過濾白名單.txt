@@ -1,0 +1,179 @@
+[ENABLE]
+alloc(ItemFilter,256)
+alloc(IFTable,400) //可容納255項物品，不包含結束代碼
+alloc(EQUIP,4)
+alloc(EUQIP,4)
+alloc(COSUME,4)
+alloc(COSUME,4)
+alloc(,4)
+alloc(,4)
+alloc(,4)
+alloc(,4)
+label(ifreject)
+label(GoBack)
+label(SkipItem)
+
+
+ItemFilter:
+        push ebx
+        push esi
+        xor ebx, ebx
+        mov esi,IFTable
+ifreject:
+        cmp eax,[esi]
+        je SkipItem
+        cmp [esi],ebx
+        je GoBack
+        add esi,4
+        jmp ifreject
+SkipItem:
+        mov eax,00
+GoBack:
+        pop esi
+        pop ebx
+        mov ecx,edi
+        mov [esi+34],eax
+        jmp 004c67aa
+
+IFTable:
+DD 1F95F1 // 迴旋鏢
+DD 1F95F2 // 黑色利刃
+DD 1F95F3 // 雪花鏢
+DD 1F95F4 // 梅鏢
+DD 1F95F5 // 雷鏢
+DD 1F95F6 // 日鏢
+DD 1F95F7 // 月牙鏢
+DD 1F95F8 // 雪球
+DD 1F95F9 // 陀螺
+DD 1F95FA // 冰柱
+DD 1F95FB // 楓葉鏢
+DD 1F95FC // 紙飛機
+DD 1F95FD // 橘子
+DD 1F72CB // 冰晶箭矢
+DD 1F72CA // 鋼鐵弩箭
+DD 1F72C9 // 青銅弩箭
+DD 1F72C8 // 弩箭矢
+DD 1F6EE3 // 炎晶箭矢
+DD 1F6EE2 // 鋼鐵弓箭
+DD 1F6EE1 // 青銅弓箭
+DD 1F47D4 // 萬能療傷藥
+DD 1E8481 // 橘色藥水
+DD 1E8482 // 白色藥水
+DD 1E8483 // 藍色藥水
+DD 1E8484 // 特殊藥水
+DD 1E8485 // 超級藥水
+DD 1E8486 // 活力藥水
+DD 1E8488 // 橙色藥丸
+DD 1E8489 // 白色藥丸
+DD 1E848A // 藍色藥丸
+DD 1E848B // 活力藥丸
+DD 1E8868 // 西瓜
+DD 1E8869 // 棒冰棒
+DD 1E886A // 紅豆刨冰
+DD 1E8C50 // 敏捷藥水
+DD 1E8C51 // 速度藥水
+DD 1E8C52 // 魔力藥水
+DD 1E8C53 // 強效魔力水
+DD 1E8C54 // 攻擊藥水
+DD 1E8C55 // 命中藥水
+DD 1E8C56 // 攻擊藥丸
+DD 1E8C57 // 魔力藥丸
+DD 1E8C58 // 命中藥丸
+DD 1E8C59 // 敏捷藥丸
+DD 1E8C5A // 速度藥丸
+DD 1E8C5B // 疼痛舒緩劑
+DD 1EAB90 // 蘋果
+DD 1EAB91 // 烤肉
+DD 1EAB92 // 雞蛋
+DD 1EAB93 // 橘子
+DD 1EAB94 // 檸檬
+DD 1EAB95 // 蜂窩
+DD 1EAB96 // 蜂蜜
+DD 1EAF78 // 毒菇菇
+DD 1EB360 // 暴龍之血
+DD 1EB361 // 妖精的蜂蜜
+DD 1EB362 // 枯木樹液
+DD 1EB363 // 暴龍之肉
+DD 1ED2A0 // 莎拉
+DD 1ED2A1 // 炸雞
+DD 1ED2A2 // 蛋糕
+DD 1ED2A3 // 披薩
+DD 1ED2A4 // 漢堡
+DD 1ED2A5 // 熱狗
+DD 1ED2A6 // 熱狗堡
+DD 1ED2A7 // 魷魚乾
+DD 1ED2A8 // 香腸
+DD 1ED2A9 // 柳橙汁
+DD 1ED2AA // 葡萄汁
+DD 1ED2AC // 乳酪
+DD 1ED2AD // 馴鹿奶
+DD 1ED2AE // 清晨之露
+DD 1ED2AF // 黃昏之露
+DD 1ED2B0 // 超司蛋糕
+DD 1ED2B1 // 草莓鮮奶油蛋糕
+DD 1ED2B2 // 巧克力鮮奶油蛋糕
+DD 1ED2B3 // 巧克力蛋糕
+DD 1ED2B4 // 水果鮮奶油蛋糕
+DD 1ED2BC // 情人節巧克力
+DD 1EDA70 // 礦泉水
+DD 1EDA71 // 小豆粥
+DD 1EDA72 // 汽水
+DD 1EDA73 // 烤鰻魚
+DD 1EDA92 // 粽子
+DD 3F2BE0 // 愛情巧克力棒
+DD 3E6890 // 紅心巧克力
+DD 3E1A70 // 生命水
+DD 3D5B11 // 星石
+DD 3D5B10 // 黑水晶
+DD 3D5B0F // 鑽石
+DD 3D5B0E // 黃晶
+DD 3D5B0D // 藍寶石
+DD 3D5B0C // 蛋白石
+DD 3D5B0B // 祖母綠
+DD 3D5B0A // 海藍寶石
+DD 3D5B09 // 紫水晶
+DD 3D5B08 // 石榴石
+DD 3D5728 // 黑水晶母礦
+DD 3D5727 // 鑽石母礦
+DD 3D5726 // 黃晶母礦
+DD 3D5725 // 藍寶石母礦
+DD 3D5724 // 蛋白石母礦
+DD 3D5723 // 祖母綠母礦
+DD 3D5722 // 海藍石母礦
+DD 3D5721 // 紫水晶母礦
+DD 3D5720 // 石榴石母礦
+DD 3D33FF // 月石
+DD 3D33FE // 黃金
+DD 3D33FD // 紫礦石
+DD 3D33FC // 銀
+DD 3D33FB // 朱礦石
+DD 3D33F9 // 鋼鐵
+DD 3D33F8 // 青銅
+DD 3D3016 // 黃金母礦
+DD 3D3015 // 紫礦石母礦
+DD 3D3014 // 銀的母礦
+DD 3D3013 // 朱礦石母礦
+DD 3D3011 // 鋼鐵母礦
+DD 3D3010 // 青銅母礦
+DD 3D14BD // 柔軟的羽毛
+DD 3D14BC // 堅硬的羽毛
+DD 3D14BA // 冰塊
+DD 3D14B9 // 木材
+DD 3D14B8 // 螺絲釘
+DD 3D18A0 // 力量母礦
+DD 3D18A1 // 智慧母礦
+DD 3D18A2 // 敏捷母礦
+DD 3D18A3 // 幸運母礦
+DD 3D1C88 // 力量水晶
+DD 3D1C89 // 智慧水晶
+DD 3D1C8A // 敏捷水晶
+DD 3D1C8B // 幸運水晶
+DD 00  // 物品表結束碼
+
+004c67a5:
+jmp ItemFilter
+[DISABLE]
+004c67a5:
+db 8b cf 89 46 34
+dealloc(ItemFilter)
+dealloc(IFTable)

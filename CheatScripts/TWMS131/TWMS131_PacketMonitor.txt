@@ -1,0 +1,103 @@
+[enable]
+Registersymbol(PacketFix)
+Alloc(PacketFix, 512)
+Registersymbol(store)
+alloc(store,256)
+Registersymbol(data)
+alloc(data,512)
+Registersymbol(length)
+alloc(length,4)
+
+Label(normal)
+Label(cycle)
+Label(cycle2)
+Label(cycle3)
+
+0046CC51:
+jmp PacketFix
+nop
+nop
+
+PacketFix:
+cmp [esp],00500000
+jl normal
+cmp [esp],00560000
+jg normal
+/*push eax
+mov eax,[esp+8]
+mov eax,[eax+8]
+cmp eax,40
+pop eax
+jl normal
+
+push eax
+mov eax,[esp+8]
+mov eax,[eax+8]
+cmp eax,57
+pop eax
+jg normal*/
+
+push eax
+mov eax,[esp+8]
+cmp byte ptr[eax+8],8
+pop eax
+jne normal
+
+//mov eax,[esp]
+//mov [data+90],eax
+
+mov eax,[esp+4]
+mov eax,[eax+8]
+mov [length],eax
+
+push eax
+push ecx
+push esi
+mov esi,[esp+10]
+mov ecx,80
+//sub esi,50
+cycle:
+mov eax,[esi+ecx]
+mov [store+ecx],eax
+sub ecx,4
+cmp ecx,0
+jge cycle
+mov esi,[esp+10]
+mov esi,[esi+4]
+mov ecx,[length]
+dec ecx
+//sub esi,ecx
+cycle2:
+mov al,byte ptr[esi+ecx]
+mov byte ptr[data+ecx],al
+dec ecx
+cmp ecx,0
+jge cycle2
+mov ecx,[length]
+cycle3:
+inc ecx
+mov byte ptr[data+ecx],0
+cmp byte ptr[data+ecx+1],0
+jne cycle3
+pop esi
+pop ecx
+pop eax
+normal:
+db 6a 38
+mov eax,0086BCB7
+//以下兩行等於call 0083FB29
+push 0046CC5D
+jmp 0083FB29
+
+[disable]
+0046CC51:
+db 6A 38 B8 B7 BC 86 00
+
+Unregistersymbol(PacketFix)
+Dealloc(PacketFix)
+UnRegistersymbol(store)
+dealloc(store)
+unRegistersymbol(data)
+dealloc(data)
+unRegistersymbol(length)
+dealloc(length)

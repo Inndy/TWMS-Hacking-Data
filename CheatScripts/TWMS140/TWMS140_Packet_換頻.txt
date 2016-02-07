@@ -1,0 +1,39 @@
+// TWMS V1.40.1 Auto Change Channel 
+// Made by 冷羽楓痕
+
+[enable]
+Alloc(AutoCC, 128)
+Alloc(PacketStruct, 16)
+Alloc(PacketData, 7)
+Alloc(Channel, 1)
+CreateThread(AutoCC)
+
+PacketStruct:     // 封包結構
+DD 00             // 00
+DD PacketData     // 封包資料位址
+DD #07            // 封包長度
+DD 00             // 00
+
+PacketData:       // 換頻封包資料
+DB 36 00 00 00 00 00 00
+
+Channel:          // 目標頻道
+DB #06
+
+AutoCC:
+mov ax,[Channel]
+mov [PacketData+02],ax
+mov eax,[00cc2798]
+mov eax,[eax+1c]
+mov [PacketData+03],eax
+mov ecx,[00cbdd04]
+push PacketStruct
+push 00401005      // 假的返回位址 (因為有檢查返回位址)
+push 004861a1      // 送封包
+ret
+
+[disable]
+Dealloc(AutoCC)
+Dealloc(PacketStruct)
+Dealloc(PacketData)
+Dealloc(Channel)

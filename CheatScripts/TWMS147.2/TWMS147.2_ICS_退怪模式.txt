@@ -1,0 +1,66 @@
+//TWMS1.47.2 退怪模式
+//Address:00601A7E
+//AAttackDir:0怪不動 1怪退正常 2怪退遠 3怪反退到底 A怪退到底 C怪物跳躍
+//EIP:AABack
+//e8 ?? ?? ?? ?? 8b 55 40 8b cb
+[ENABLE]
+registersymbol(AABack)
+registersymbol(AABackOnOff)
+registersymbol(AAttackDir)
+alloc(AABack, 128)
+alloc(AABackOnOff, 4)
+alloc(AAttackDir, 4)
+label(doAABackNormal)
+alloc(ICSEntry, 128)
+
+ICSEntry:
+Cmp  [Esp+34], 00601A83
+Jne  00700511
+Mov  [Esp+34], AABack
+Jmp  00700511
+
+AABack:
+//call 005ef24d
+cmp [AABackOnOff],0
+jz doAABackNormal
+push eax
+mov eax,[AAttackDir]
+mov [ebp+3c],eax
+pop eax
+
+doAABackNormal:
+mov edx,[ebp+40]
+jmp 00601A86
+
+AABackOnOff:
+dd 1  // {0: 關閉 | 1: 開啟 }
+
+AAttackDir:
+dd a //遠攻者可改2
+    // 0: 怪不動
+    // 1: 怪退後一點點 (正常值)
+    // 2: 怪退後很多點
+    // 3: 怪反方向退到底
+    // A(以上): 怪退到底
+    // C: 怪物跳躍
+
+//00601A7E:
+//JMP AABack
+
+00D927C4:
+DD   ICSEntry
+[DISABLE]
+//00601A7E:
+//call 005ef24d
+//mov edx,[ebp+40]
+
+00D927C4:
+DD   00700511
+
+dealloc(ICSEntry)
+dealloc(AABack)
+dealloc(AABackOnOff)
+dealloc(AAttackDir)
+unregistersymbol(AABack)
+unregistersymbol(AABackOnOff)
+unregistersymbol(AAttackDir)

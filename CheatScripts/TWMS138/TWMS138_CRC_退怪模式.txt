@@ -1,0 +1,60 @@
+00a1c224:
+DD Hook
+Cmp [Esp+54], 005C6359
+
+00923BD5 - ff 15 24 c2 a1 00          - call dword ptr [00a1c224] : 0547096B
+
+
+//退怪模式 TWMS138
+//原創 max大大
+//更新:冰Smith
+//Address:005C6354
+//AAttackDir:0怪不動 1怪退正常 2怪退遠 3怪反退到底 A怪退到底
+//EIP:AABack
+[ENABLE]
+registersymbol(AABack)
+registersymbol(AABackOnOff)
+registersymbol(AAttackDir)
+alloc(AABack, 128)
+alloc(AABackOnOff, 4)
+alloc(AAttackDir, 4)
+label(doAABackNormal)
+
+AABack:
+call 005b49a0 //add
+cmp [AABackOnOff],0
+jz doAABackNormal
+push eax
+mov eAx,[AAttackDir]
+mov [ebp+64],eAx //005c63f7
+pop eax
+
+doAABackNormal:
+test eAx,eAx
+jmp 005C635B //add下一
+
+AABackOnOff:
+dd 1  // {0: 關閉 | 1: 開啟 }
+
+AAttackDir:
+dd 0 //遠攻者可改2
+    // 0: 怪不動
+    // 1: 怪退後一點點 (正常值)
+    // 2: 怪退後很多點
+    // 3: 怪反方向退到底
+    // A: 怪退到底
+
+005C6354:
+JMP AABack
+
+[DISABLE]
+005C6354:
+call 005b49a0
+test eAx,eAx
+
+dealloc(AABack)
+dealloc(AABackOnOff)
+dealloc(AAttackDir)
+unregistersymbol(AABack)
+unregistersymbol(AABackOnOff)
+unregistersymbol(AAttackDir)

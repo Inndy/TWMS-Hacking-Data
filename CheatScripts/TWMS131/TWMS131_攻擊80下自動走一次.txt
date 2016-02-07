@@ -1,0 +1,132 @@
+//Twms V131.1 攻擊80下自動走一次 
+[Enable]
+registersymbol(AutoLR)
+alloc(AutoLR, 2560)
+alloc(LRKEY,4)
+alloc(BeginX,4)
+alloc(CurrentX,4)
+alloc(moveLeftOverflow,4)
+alloc(TargetDistance,4)
+alloc(TargetAttachCounter,4)
+alloc(isStopAttack,4)
+registerSymbol(LRKEY)
+registerSymbol(BeginX)
+registerSymbol(CurrentX)
+label(AutoLRstart)
+label(doMoveLeft)
+label(doMoveRight)
+label(doMoveExit)
+label(getBeginX)
+label(getBeginXExit)
+label(moveLeftCondition)
+label(moveRightCondition)
+label(startMoveLeftRight)
+
+LRKEY:
+dd 0
+BeginX:
+dd 0
+TargetDistance:
+dd 20
+TargetAttachCounter:
+dd 80
+moveLeftOverflow:
+dd 0
+isStopAttack:
+dd 0
+
+00AD4980:
+DD AutoLR
+
+AutoLR:
+cmp [esp],007D05A7
+jne GetFocus
+mov [esp],AutoLRstart
+jmp GetFocus
+
+AutoLRstart:
+call getBeginX
+push eax
+mov eax, [00ACF52C]
+mov eax, [eax+3A1C]
+cmp eax, [TargetAttachCounter]
+pop eax
+jl doMoveExit
+mov [isStopAttack],1
+cmp [moveLeftOverflow],1
+je moveRightCondition
+mov [LRKEY],1
+
+moveLeftCondition:
+push eax
+mov eax,[BeginX]
+sub eax,[CurrentX]
+cmp eax,[TargetDistance]
+pop eax
+jl startMoveLeftRight
+mov [moveLeftOverflow],1
+mov [LRKEY],2
+jmp doMoveExit
+
+moveRightCondition:
+push eax
+mov eax,[BeginX]
+sub eax,[CurrentX]
+cmp eax,0 
+pop eax
+jg startMoveLeftRight
+mov [moveLeftOverflow],0
+mov [LRKEY],0
+push eax
+mov eax, [00ACF52C]
+mov [eax+3A1C],0
+pop eax
+mov [isStopAttack],0
+jmp doMoveExit
+
+startMoveLeftRight:
+cmp [LRKEY],1
+jl doMoveExit
+je doMoveLeft
+jg doMoveRight
+
+doMoveLeft:
+mov [ebp-8],ffffffff
+jmp doMoveExit
+
+doMoveRight:
+mov [ebp-8],1
+jmp doMoveExit
+
+doMoveExit:
+xor eax,eax
+xor esi,esi
+cmp [ebp-04],esi
+lea ecx,[edi+00000234]
+jmp 007D07C9
+
+getBeginX:
+push eax
+mov eax, [00acf52c]
+mov eax, [eax+44c4]
+mov [CurrentX], eax
+cmp [BeginX],0
+jne getBeginXExit
+mov eax, [00acf52c]
+mov eax, [eax+44c4]
+mov [BeginX], eax
+getBeginXExit:
+pop eax
+ret
+
+[Disable]
+00AD4980:
+DD GetFocus
+unregistersymbol(AutoLR)
+dealloc(AutoLR)
+unregistersymbol(LRKEY)
+dealloc(LRKEY)
+unregistersymbol(BeginX)
+dealloc(BeginX)
+unregistersymbol(CurrentX)
+dealloc(CurrentX)

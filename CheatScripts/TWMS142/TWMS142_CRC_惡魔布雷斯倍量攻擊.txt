@@ -1,0 +1,42 @@
+//v142.惡魔布雷斯限定倍量攻擊 By.aaaddress1.
+[ENABLE]
+alloc(SetSkill,128)
+alloc(Count,8)
+label(ZeroAttack)
+label(Nodelay)
+
+SetSkill:
+push edx
+mov edx,[00cc4a38]
+mov edx,[edx+1c]
+cmp [Count],edx
+jg ZeroAttack
+mov eax,[ebx+00005A60]
+mov [ebp+68],eax
+add [ebp+68],1f4   //內定值時間符合正確時間戳記
+mov eax,[ebp+68]
+sub eax,[ebx+00004CEC]
+inc [Count+04]
+cmp [Count+04],03  //無延遲一次幾下
+jl Nodelay
+mov [Count+04],00
+mov [Count],edx
+add [Count],3e8    //無延遲間隔秒數
+Nodelay:
+pop edx
+jmp 00870B64
+
+ZeroAttack:
+pop edx
+jmp 00870B68
+
+0081B957:
+jmp 0081BCB1
+nop
+00870B47:
+jmp SetSkill
+nop
+nop
+nop
+nop
+[DISABLE]

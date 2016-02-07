@@ -1,0 +1,88 @@
+// TWMS145 ICS 可變速怪物瞬移
+// Auther: 冷羽楓痕
+// ICS: Inndy
+// 180不要找我（茶
+[ENABLE]
+Alloc(MobFast, 512)
+Label(My005F16EF)
+Label(My005F1705)
+
+MobFast:
+push ebp
+mov ebp,esp
+sub esp,3C
+push ebx
+push esi
+push edi
+mov ebx,ecx
+lea eax,[ebp-3C]
+push eax
+lea eax,[ebp-34]
+push eax
+lea eax,[ebp-0C]
+push eax
+lea esi,[ebx+28]
+fld qword ptr [esi]
+lea eax,[ebx+000000EC]
+push eax
+fstp qword ptr [ebp-14]
+fld qword ptr [ebx+30]
+lea eax,[ebp-04]
+push eax
+fstp qword ptr [ebp-1C]
+fld qword ptr [ebx+38]
+lea eax,[ebp-2C]
+push eax
+fstp qword ptr [ebp-24]
+fld qword ptr [ebx+40]
+lea eax,[ebp-24]
+push eax
+fstp qword ptr [ebp-2C]
+fld qword ptr [ebx+68]
+lea eax,[ebp-1C]
+push eax
+fstp qword ptr [ebp-34]
+fld qword ptr [ebx+70]
+xor edi,edi
+lea eax,[ebp-14]
+fstp qword ptr [ebp-3C]
+push eax
+lea ecx,[ebx+000001D8]
+mov [ebp-0C],edi
+mov [ebp-08],edi
+mov [ebp-04],edi
+call My005F16EF
+jmp 008E042D
+
+My005F16EF:
+push ebp
+mov ebp,esp
+sub esp,28
+push esi
+mov esi,ecx
+cmp dword ptr [esi+2C],00
+jne My005F1705
+xor eax,eax
+jmp 005F1A09
+My005F1705:
+push ebx
+push edi
+push [esi+00000080]
+lea eax,[esi+78]
+push eax
+call 00404ED8
+pop ecx
+pop ecx
+mov ecx,esi
+mov edi,eax
+call 005CE940
+mov eax, 3ff
+jmp 005F1721
+
+00BB5BF4:
+DD  MobFast
+[DISABLE]
+00BB5BF4:
+DD  008E03BF
+
+Dealloc(MobFast)

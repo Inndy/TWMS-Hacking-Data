@@ -1,0 +1,15 @@
+//v1.4.7.2 »·¤}¤£´§ªÅ by.zengen.
+//ICS by aaaddress1.
+alloc(IcsNoShakeWeapon,32)
+
+IcsNoShakeWeapon:
+                  // 008E493E or 008EBDC1
+cmp dword ptr [esp], xxxxxxxx // [-3 or -4] // ff 70 04 8d 85 ?? ?? ff ff 50 8b 8d ?? ?? ff ff 83 c1 04 8b 85 ?? ?? ff ff 8b 40 04 ff 50 10 ff 30 8b 8d ?? ?? ff ff 81 c1 ?? ?? 00 00
+jne 005E2400 // +3 // c2 08 00 55 8b ec ?? ?? 8d 45 f8 50 81
+add esp,04
+pop eax
+sub ecx,04
+jmp 008EBCEF // 8b 85 ?? ?? ff ff 89 85 ?? ?? ff ff 81 bd ?? ?? ff ff ?? ?? ?? 01 74 02
+
+00BC44D4: // [4/5]
+dd IcsNoShakeWeapon

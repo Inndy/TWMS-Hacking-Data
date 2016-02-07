@@ -1,0 +1,30 @@
+//v1.42.技能源頭探測 for twms.
+//by.aaaddress1
+//此數據可以快速挖到各個職業
+//技能控制位置的"頭".
+//
+//使用方法:
+//開啟數據後,對你想偵測之職業
+//施放任何一項技能,即可看到該技能
+//之控制源頭.(get值Hex=Adr)
+[ENABLE]
+alloc(skillset,128)
+registersymbol(get)
+alloc(get,4)
+0084469C:
+jmp skillset
+
+skillset:
+neg eax
+sbb eax,eax
+inc eax
+push [esp]
+pop [get]
+ret
+[DISABLE]
+0084469C:
+DB f7 d8 1b c0 40
+
+dealloc(skillset)
+unregistersymbol(get)
+dealloc(get)

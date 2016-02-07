@@ -1,0 +1,40 @@
+//008223AE - 74 7b                      - je 0082242b //Nop±¼¡A¦a¹p¨g±¼
+[ENABLE]
+Alloc(FastBomb_ICS, 32)
+Alloc(FastBomb_Main, 64)
+
+FastBomb_ICS:
+Cmp [Esp], 00822365
+Jne 008934DA
+Mov [Esp], FastBomb_Main
+Jmp 008934DA
+
+FastBomb_Main:
+DB   85 c0                              //00822365 - test eax,eax
+DB   74 02                              //00822367 - je 0082236b
+DB   33 db                              //00822369 - xor ebx,ebx
+DB   33 ff                              //0082236B - xor edi,edi
+DB   39 be a0 57 00 00                  //0082236D - cmp [esi+000057a0],edi
+DB   75 1a                              //00822373 - jne 0082238f
+DB   3b df                              //00822375 - cmp ebx,edi
+DB   74 16                              //00822377 - je 0082238f
+call 0086fa12                           //00822379 - call 0086fa12
+DB   2d e8 03 00 00                     //0082237E - sub eax,000003e8
+DB   89 86 9c 57 00 00                  //00822383 - mov [esi+0000579c],eax
+DB   89 9e a0 57 00 00                  //00822389 - mov [esi+000057a0],ebx
+DB   3b 9e a0 57 00 00                  //0082238F - cmp ebx,[esi+000057a0]
+DB   74 11                              //00822395 - je 008223a8
+call 0086fa12                           //00822397 - call 0086fa12
+DB   89 86 9c 57 00 00                  //0082239C - mov [esi+0000579c],eax
+DB   89 9e a0 57 00 00                  //008223A2 - mov [esi+000057a0],ebx
+DB   39 be a0 57 00 00                  //008223A8 - cmp [esi+000057a0],edi
+Jmp 008223B0
+
+00B30FE4:
+DD FastBomb_ICS 
+[DISABLE]
+00B30FE4:
+DD 008934DA
+
+DeAlloc(FastBomb_ICS)
+DeAlloc(FastBomb_Main)

@@ -1,0 +1,35 @@
+//v1.42. 惡魔變形倍量攻擊 by.aaaddress1
+//P.s. 攻擊時間間隔建議不低於500(系統偵測以500豪秒為一個單位偵測).
+[ENABLE]
+alloc(Nodelay,128)
+alloc(TimeTicket,08)
+Nodelay:
+call 0065136E
+mov ecx,[ebp+08]
+sub ecx,[esi+00004CFC]
+add eax,2710               //時間提速10秒
+push edx
+mov edx,[00cc4a38]
+mov edx,[edx+1c]
+cmp [TimeTicket],edx
+pop edx
+jg 008768C2
+inc [TimeTicket+04]
+cmp [TimeTicket+04],0A     //每次進行十倍攻擊
+jl 00876863
+push edx
+mov edx,[00cc4a38]
+push [edx+1c]
+pop [TimeTicket]
+pop edx
+mov [TimeTicket+04],00
+add [TimeTicket],1f4       //目前為正常間隔時間=500ms
+jmp 00876863
+00876851:
+jmp Nodelay
+
+[DISABLE]
+00876851:
+call 0065136E
+mov ecx,[ebp+08]
+sub ecx,[esi+00004CFC]

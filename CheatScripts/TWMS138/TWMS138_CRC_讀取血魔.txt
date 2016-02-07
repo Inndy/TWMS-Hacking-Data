@@ -1,0 +1,230 @@
+//TWMS137 CRC 讀取血魔
+//出處:s18leoare (至少我拿到的來源)
+//更新:Inndy
+//改寫 By Inndy
+
+//00B2643C -> 0x0079EEFE
+[ENABLE]
+alloc(GetHPMP,128)
+label(MM)
+label(NM)
+label(MH)
+label(NH)
+alloc(MAXMP,4)
+alloc(NOWMP,4)
+alloc(MAXHP,4)
+alloc(NOWHP,4)
+registersymbol(MAXMP)
+registersymbol(NOWMP)
+registersymbol(MAXHP)
+registersymbol(NOWHP)
+
+GetHPMP:
+call 00923b93
+pop ebp
+
+cmp [esp],0079F056 //ff 76 ?? 8b d8 8d 46 ?? 50 e8 ?? ?? ?? ff ff b7
+je MM
+cmp [esp],0079F064 //ff b7 ?? ?? 00 00 81 c7 ?? ?? 00 00 57 89 45 ?? e8 ?? ?? ?? ff ff 76 ?? 8b f8
+je NM
+cmp [esp],0079F079 //ff 76 ?? 8b f8 8d 46 ?? 50 e8 ?? ?? ?? ff 83 c4 20 ff 75
+je MH
+cmp [esp],0079F087 //83 c4 20 ff 75 ?? 8b ce
+je NH
+ret
+
+MM:
+mov [MAXMP],eax
+ret
+
+NM:
+mov [NOWMP],eax
+ret
+
+MH:
+mov [MAXHP],eax
+ret
+
+NH:
+mov [NOWHP],eax
+ret
+
+00404E79:
+jmp GetHPMP
+[DISABLE]
+00404E79:
+call 00923b93
+
+dealloc(GetHPMP)
+dealloc(MAXMP)
+dealloc(NOWMP)
+dealloc(MAXHP)
+dealloc(NOWHP)
+unregistersymbol(MAXMP)
+unregistersymbol(NOWMP)
+unregistersymbol(MAXHP)
+unregistersymbol(NOWHP)
+
+
+/*
+0079EEFE - 6a 20                      - push 20
+0079EF00 - b8 a4 f4 9c 00             - mov eax,009cf4a4
+0079EF05 - e8 7f 4b 18 00             - call 00923a89
+0079EF0A - 89 4d f0                   - mov [ebp-10],ecx
+0079EF0D - 8b 3d 40 9f c8 00          - mov edi,[00c89f40]
+0079EF13 - 8d 45 dc                   - lea eax,[ebp-24]
+0079EF16 - 50                         - push eax
+0079EF17 - 8b cf                      - mov ecx,edi
+0079EF19 - e8 7a 1e c8 ff             - call 00420d98
+0079EF1E - 33 c9                      - xor ecx,ecx
+0079EF20 - 33 db                      - xor ebx,ebx
+0079EF22 - 39 58 04                   - cmp [eax+04],ebx
+0079EF25 - 0f 94 c1                   - sete cl
+0079EF28 - 8b f1                      - mov esi,ecx
+0079EF2A - 8d 4d dc                   - lea ecx,[ebp-24]
+0079EF2D - e8 15 1b c8 ff             - call 00420a47
+0079EF32 - 3b f3                      - cmp esi,ebx
+0079EF34 - 0f 85 9d 01 00 00          - jne 0079f0d7
+0079EF3A - 8d 45 d4                   - lea eax,[ebp-2c]
+0079EF3D - 50                         - push eax
+0079EF3E - 8b cf                      - mov ecx,edi
+0079EF40 - e8 53 1e c8 ff             - call 00420d98
+0079EF45 - 8b 70 04                   - mov esi,[eax+04]
+0079EF48 - 8d 4d d4                   - lea ecx,[ebp-2c]
+0079EF4B - e8 f7 1a c8 ff             - call 00420a47
+0079EF50 - e8 5a cb c8 ff             - call 0042baaf
+0079EF55 - 3b c3                      - cmp eax,ebx
+0079EF57 - 74 5b                      - je 0079efb4
+0079EF59 - 83 b8 a8 01 00 00 16       - cmp dword ptr [eax+000001a8],16
+0079EF60 - 75 52                      - jne 0079efb4
+0079EF62 - 51                         - push ecx
+0079EF63 - 8b cc                      - mov ecx,esp
+0079EF65 - 89 65 e0                   - mov [ebp-20],esp
+0079EF68 - 6a ff                      - push ff
+0079EF6A - 8d 46 04                   - lea eax,[esi+04]
+0079EF6D - 50                         - push eax
+0079EF6E - 89 19                      - mov [ecx],ebx
+0079EF70 - e8 78 20 c8 ff             - call 00420fed
+0079EF75 - ff 76 27                   - push [esi+27]
+0079EF78 - 89 5d fc                   - mov [ebp-04],ebx
+0079EF7B - 8d 5e 23                   - lea ebx,[esi+23]
+0079EF7E - 53                         - push ebx
+0079EF7F - e8 a3 0a cc ff             - call 0045fa27
+0079EF84 - ff 76 27                   - push [esi+27]
+0079EF87 - 0f b7 c0                   - movzx eax,ax
+0079EF8A - 53                         - push ebx
+0079EF8B - 89 45 e8                   - mov [ebp-18],eax
+0079EF8E - e8 94 0a cc ff             - call 0045fa27
+0079EF93 - 0f bf 4d e8                - movsx ecx,word ptr [ebp-18]
+0079EF97 - 0f b7 c0                   - movzx eax,ax
+0079EF9A - 98                         - cwde
+0079EF9B - 83 c4 10                   - add esp,10
+0079EF9E - 99                         - cdq
+0079EF9F - 51                         - push ecx
+0079EFA0 - b9 e8 03 00 00             - mov ecx,000003e8
+0079EFA5 - f7 f9                      - idiv ecx
+0079EFA7 - 48                         - dec eax
+0079EFA8 - f7 d8                      - neg eax
+0079EFAA - 1b c0                      - sbb eax,eax
+0079EFAC - 83 e0 50                   - and eax,50
+0079EFAF - 83 c0 78                   - add eax,78
+0079EFB2 - eb 3f                      - jmp 0079eff3
+0079EFB4 - 51                         - push ecx
+0079EFB5 - 8b cc                      - mov ecx,esp
+0079EFB7 - 89 65 e0                   - mov [ebp-20],esp
+0079EFBA - 6a ff                      - push ff
+0079EFBC - 8d 46 04                   - lea eax,[esi+04]
+0079EFBF - 50                         - push eax
+0079EFC0 - 89 19                      - mov [ecx],ebx
+0079EFC2 - e8 26 20 c8 ff             - call 00420fed
+0079EFC7 - ff 76 27                   - push [esi+27]
+0079EFCA - 8d 46 23                   - lea eax,[esi+23]
+0079EFCD - 50                         - push eax
+0079EFCE - c7 45 fc 01 00 00 00       - mov [ebp-04],00000001
+0079EFD5 - e8 4d 0a cc ff             - call 0045fa27
+0079EFDA - ff 76 1f                   - push [esi+1f]
+0079EFDD - 0f b7 d8                   - movzx ebx,ax
+0079EFE0 - 8d 46 1d                   - lea eax,[esi+1d]
+0079EFE3 - 50                         - push eax
+0079EFE4 - e8 aa 09 cc ff             - call 0045f993
+0079EFE9 - 0f bf cb                   - movsx ecx,bx
+0079EFEC - 83 c4 10                   - add esp,10
+0079EFEF - 51                         - push ecx
+0079EFF0 - 0f b6 c0                   - movzx eax,al
+0079EFF3 - 8b 4d f0                   - mov ecx,[ebp-10]
+0079EFF6 - 83 4d fc ff                - or dword ptr [ebp-04],ff
+0079EFFA - 50                         - push eax
+0079EFFB - e8 d0 e1 ff ff             - call 0079d1d0
+0079F000 - ff 76 1f                   - push [esi+1f]
+0079F003 - 8d 5e 1d                   - lea ebx,[esi+1d]
+0079F006 - 53                         - push ebx
+0079F007 - e8 87 09 cc ff             - call 0045f993
+0079F00C - 59                         - pop ecx
+0079F00D - 59                         - pop ecx
+0079F00E - 3c 32                      - cmp al,32
+0079F010 - 76 06                      - jna 0079f018
+0079F012 - 83 65 ec 00                - and dword ptr [ebp-14],00
+0079F016 - eb 0a                      - jmp 0079f022
+0079F018 - 8b ce                      - mov ecx,esi
+0079F01A - e8 d0 1e d1 ff             - call 004b0eef
+0079F01F - 89 45 ec                   - mov [ebp-14],eax
+0079F022 - ff 76 1f                   - push [esi+1f]
+0079F025 - 53                         - push ebx
+0079F026 - e8 68 09 cc ff             - call 0045f993
+0079F02B - 0f b6 c0                   - movzx eax,al
+0079F02E - 50                         - push eax
+0079F02F - e8 2c 56 ed ff             - call 00674660
+0079F034 - 33 c9                      - xor ecx,ecx
+0079F036 - 41                         - inc ecx
+0079F037 - 83 c4 0c                   - add esp,0c
+0079F03A - 3b c1                      - cmp eax,ecx
+0079F03C - 89 45 e8                   - mov [ebp-18],eax
+0079F03F - 7f 03                      - jg 0079f044
+0079F041 - 89 4d e8                   - mov [ebp-18],ecx
+0079F044 - ff b7 24 21 00 00          - push [edi+00002124]
+0079F04A - 8d 87 1c 21 00 00          - lea eax,[edi+0000211c]
+0079F050 - 50                         - push eax
+0079F051 - e8 f1 5d c6 ff             - call 00404e47
+0079F056 - ff 76 6b                   - push [esi+6b]
+0079F059 - 8b d8                      - mov ebx,eax
+0079F05B - 8d 46 63                   - lea eax,[esi+63]
+0079F05E - 50                         - push eax
+0079F05F - e8 e3 5d c6 ff             - call 00404e47
+0079F064 - ff b7 18 21 00 00          - push [edi+00002118]
+0079F06A - 81 c7 10 21 00 00          - add edi,00002110
+0079F070 - 57                         - push edi
+0079F071 - 89 45 e4                   - mov [ebp-1c],eax
+0079F074 - e8 ce 5d c6 ff             - call 00404e47
+0079F079 - ff 76 53                   - push [esi+53]
+0079F07C - 8b f8                      - mov edi,eax
+0079F07E - 8d 46 4b                   - lea eax,[esi+4b]
+0079F081 - 50                         - push eax
+0079F082 - e8 c0 5d c6 ff             - call 00404e47
+0079F087 - 83 c4 20                   - add esp,20
+0079F08A - ff 75 ec                   - push [ebp-14]
+0079F08D - 8b ce                      - mov ecx,esi
+0079F08F - ff 75 e8                   - push [ebp-18]
+0079F092 - 89 45 e0                   - mov [ebp-20],eax
+0079F095 - e8 40 1e d1 ff             - call 004b0eda
+0079F09A - 50                         - push eax
+0079F09B - 53                         - push ebx
+0079F09C - ff 75 e4                   - push [ebp-1c]
+0079F09F - 57                         - push edi
+0079F0A0 - 8b 7d f0                   - mov edi,[ebp-10]
+0079F0A3 - ff 75 e0                   - push [ebp-20]
+0079F0A6 - 8b cf                      - mov ecx,edi
+0079F0A8 - e8 19 e5 ff ff             - call 0079d5c6
+0079F0AD - 8d b7 ec 17 00 00          - lea esi,[edi+000017ec]
+0079F0B3 - 8b ce                      - mov ecx,esi
+0079F0B5 - e8 79 b6 ff ff             - call 0079a733
+0079F0BA - 85 c0                      - test eax,eax
+0079F0BC - 75 07                      - jne 0079f0c5
+0079F0BE - 8b ce                      - mov ecx,esi
+0079F0C0 - e8 06 f2 ff ff             - call 0079e2cb
+0079F0C5 - a1 d4 ea c8 00             - mov eax,[00c8ead4]
+0079F0CA - ff b0 44 01 00 00          - push [eax+00000144]
+0079F0D0 - 8b cf                      - mov ecx,edi
+0079F0D2 - e8 d4 ae ff ff             - call 00799fab
+0079F0D7 - e8 85 4a 18 00             - call 00923b61
+0079F0DC - c2 04 00                   - ret 0004
+*/

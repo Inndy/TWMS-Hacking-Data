@@ -1,0 +1,93 @@
+紅點 00bb9dc8 18
+怪物數量 00bb9dcc  24
+人物x y  00bb9dd0  4EEC 4EF0  
+攻不停  00bb9dd0  4438  放不停4448
+停止呼吸 00bb9dd0  0468
+狂狼連擊數 00bb9dd0  5020
+人物動作 00bb9dd0  046c
+攻擊無延遲 00bb9dd0 0470 Vakue:-1 or FFFFFFFF
+CharPID   00bb9dd0  ??
+滑鼠  00bba234  ??
+時間  00BBA238 1c
+奇幻村00BB5620  4634
+
+
+//-----------
+// 人物資訊
+//-----------
+
+人物HP/MP警告: 
+=> Base Address: 0x00bb9dc4
+=> HP Offset: 0x90
+=> MP Offset: 0x94
+
+人物HP/MP值:
+=> Base Address 0x00bba0b0
+=> HP Offset: 0x17d0
+=> MP Offset: 0x17d4
+
+=> Base Address: 0x00bb9d70
+人物座標:
+=> X Offset: 0x1888
+=> Y Offset: 0x188c
+地圖NPC數量:
+=> Offset: 0x18c0
+地圖大小:
+=> Left Offset: 0x1c
+=> Top Offset: 0x20
+=> Right Offset: 0x24
+=> Buttom Offset: 0x28
+
+=> Base Address: 0x00bb9dd0
+人物動作:
+=> Offset: 0x46c
+=> 向右走: 0x02
+=> 向左走: 0x03
+=> 面向右: 0x04
+=> 面向左: 0x05
+=> 向右跳: 0x06
+=> 向左跳: 0x07
+=> 向右攻: 0x08
+=> 向左攻: 0x09
+=> 向右趴: 0x0a
+=> 向左趴: 0x0b
+=> 爬繩  : 0x0f
+=> 向右坐: 0x14
+=> 向左坐: 0x15
+人物攻擊次數:
+=> Offset: 0x4438
+人物輔助技能施放次數:
+=> Offset: 0x4448
+人物Combo次數:
+=> Offset: 0x5020
+
+人物所在分流:
+=> Address: 0x00BB5620
+=> Offset: 0x2058
+
+人物所在頻道:
+=> Address: 0x00bc5188
+
+//-----------
+// 地圖資訊
+//-----------
+
+人物紅點數量:
+=> Base Address: 0x00bb9dc8
+=> Offset: 0x2c
+
+地上物品數量:
+=> Base Address: 0x00bbc600
+=> Offset: 0x40
+
+地圖編號:
+=> Base Address: 0x00bba448
+=> Offset: 0xca4
+
+//-----------
+// 其它資訊
+//-----------
+
+鍵盤熱鍵碼:
+=> Base Address: 0x00bba088
+=> Offset: 0x46

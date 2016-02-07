@@ -1,0 +1,52 @@
+//TWMS133 ICS 疾風2合一
+//更新:Inndy
+[enable]
+alloc(TheMulti,128)
+label(Next1)
+label(Back)
+alloc(Main,128)
+label(StupidMob)
+label(MyGod)
+//--------------------
+00B9A07C:
+DD TheMulti
+//--------------------
+TheMulti:
+
+cmp [esp+1c],007E3D75
+jne Next1
+mov [esp+1c],MyGod
+
+Next1:
+cmp [esp+1c],00839FAC
+jne Back
+mov [esp+1c],StupidMob
+
+Back:
+jmp 0066B43D
+//--------------------
+Main:
+//----------
+StupidMob:
+Xor Edx,Edx
+Mov Ecx,0000EA60
+Lea Ecx,[Esi+000002B0]
+Push Edx
+Call 00420f21
+Mov Ebx,[Ebp+0C]
+Lea Edi,[Esi+000002A0]
+Cmp [Edi],Ebx
+Je 00839fdf
+Jmp 00839FD4
+//----------
+MyGod:
+lea ecx,[esi+0000327C]
+push FFFF8AD0
+jmp 007E461A
+
+[disable]
+00B9A07C:
+DD 0066B43D
+
+dealloc(TheMulti)
+dealloc(Main)

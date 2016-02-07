@@ -1,0 +1,21 @@
+[ENABLE]
+//TWMS138 武器速度值
+//Auther: Aaaddress1
+//Update: Inndy
+alloc(SpeedUpAttack,64)
+00450DAA:
+Jmp SpeedUpAttack
+nop
+nop
+nop
+
+SpeedUpAttack:
+mov [ebp+70],A763FFFF	//武器速度，我忘記怎改了 :))
+mov eax,[ebp+70]
+Jmp 00450E3B
+
+[DISABLE]
+00450DAA:
+db 85 c0 0f 84 86 00 00 00
+
+dealloc(SpeedUpAttack)

@@ -1,0 +1,84 @@
+[enable]
+Registersymbol(PacketFix)
+Alloc(PacketFix, 512)
+Registersymbol(store)//封包資料
+alloc(store,256)
+Registersymbol(data)//封包Byte - 主要
+alloc(data,512)
+Registersymbol(length)
+alloc(length,4)
+Label(normal)
+Label(cycle)
+Label(cycle2)
+Label(cycle3)
+
+00478431: //6A 38 B8 ?? ?? ?? ?? E8 ?? ?? ?? ?? 89 4D ?? A1 ?? ?? ?? ?? 05 ?? ?? ?? 00
+jmp PacketFix
+nop
+nop
+
+PacketFix:
+cmp [esp],00500000 //抓ADDRESS 起始點  //使用這個在得把Jl  jg前面//拿掉
+jl normal
+cmp [esp],00560000 //抓ADDRESS 終點
+jg normal
+
+//push eax    //要用JL JG 請把這刪了
+//mov eax,[esp+8]   //要用JL JG 請把這刪了
+//cmp byte ptr[eax+8],7//抓任意位置封包 但限制byte數  //要用JL JG 請把這刪了
+//pop eax    //要用JL JG 請把這刪了
+//jne normal //要用JL JG 請把這刪了
+
+mov eax,[esp+4]
+mov eax,[eax+8]
+mov [length],eax
+
+push eax
+push ecx
+push esi
+mov esi,[esp+10]
+mov ecx,80
+
+cycle:
+mov eax,[esi+ecx]
+mov [store+ecx],eax
+sub ecx,4
+cmp ecx,0
+jge cycle
+mov esi,[esp+10]
+mov esi,[esi+4]
+mov ecx,[length]
+dec ecx
+
+cycle2:
+mov al,byte ptr[esi+ecx]
+mov byte ptr[data+ecx],al
+dec ecx
+cmp ecx,0
+jge cycle2
+mov ecx,[length]
+cycle3:
+inc ecx
+mov byte ptr[data+ecx],0
+cmp byte ptr[data+ecx+1],0
+jne cycle3
+pop esi
+pop ecx
+pop eax
+normal:
+db 6a 38
+mov eax,008E782D //6A 0A 6A 04 8D 85 ?? ?? ?? ?? 50 E8 ?? ?? ?? ??
+jmp 00478438
+
+[disable]
+00478431:
+db 6a 38 b8 E5 85 8E 00
+
+Unregistersymbol(PacketFix)
+Dealloc(PacketFix)
+UnRegistersymbol(store)
+dealloc(store)
+unRegistersymbol(data)
+dealloc(data)
+unRegistersymbol(length)
+dealloc(length)

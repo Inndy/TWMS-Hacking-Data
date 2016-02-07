@@ -1,0 +1,77 @@
+//v128 移動加速-ICS
+[enable]
+registersymbol(xHookMyMv)
+alloc(xHookMyMv,256)
+label(xMyMove)
+//========
+Label(xkreturn)
+Label(xknormal)
+Registersymbol(xkspeed)
+Alloc(xkspeed, 4)
+Registersymbol(xkspeedup)
+Alloc(xkspeedup, 128)
+//========
+xkspeed:
+dd 2 //數值越大速度越快 (0為正常)
+//========
+00ceeec4:
+dd xHookMyMv
+//========
+xHookMyMv:
+  cmp [esp+58],00836681
+  jne timeGetTime
+  mov [esp+58],xMyMove
+  jmp timeGetTime
+xMyMove:
+db 8b 0d 78 99 ce 00          //- mov ecx,[00ce9978]
+call 0043aee3
+db 8b 8e 10 3c 00 00          //- mov ecx,[esi+00003c10]
+db 85 c9                      //- test ecx,ecx
+db 74 0b                      //- je 008366a1
+db 8b 01                      //- mov eax,[ecx]
+call xkspeedup
+  jmp 0083669a
+xkspeedup:
+db 6a 74                      //- push 74
+db b8 80 94 92 00             //- mov eax,00929480
+call 0086e5d5
+db 8b d9                      //- mov ebx,ecx
+db 89 5d d0                   //- mov [ebp-30],ebx
+db 8b 4b 08                   //- mov ecx,[ebx+08]
+db 85 c9                      //- test ecx,ecx
+db 74 04                      //- je 007c7fbe
+db 8b 01                      //- mov eax,[ecx]
+  push esi
+  mov esi,[xkspeed]
+xkreturn:
+/*
+  //====紅點偵測,不要的請自刪
+push edx
+mov edx, [00ce9fe0] 
+mov edx,[edx+c48]
+cmp edx,2c2ac340  
+pop edx
+  jg xknormal
+  //====
+*/
+  cmp esi,0
+  je xknormal
+  dec esi
+  push eax
+  push ecx
+  call dword ptr [eax]
+  pop ecx
+  pop eax
+  jmp xkreturn
+xknormal:
+  pop esi
+  call dword ptr [eax]
+  mov eax,[ebx+30]
+  jmp 007C7fc1
+//========
+[disable]
+00ceeec4:
+dd timeGetTime
+
+unregistersymbol(xHookMyMv)
+dealloc(xHookMyMv)

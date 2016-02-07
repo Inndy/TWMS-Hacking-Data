@@ -1,0 +1,55 @@
+[enable]
+RegisterSymbol(NoReaction)
+Alloc(NoReaction, 64)
+RegisterSymbol(TMDMove)
+Alloc(TMDMove, 128)
+Label(NoReactionStart)
+Label(Fake1)
+Label(Fake2)
+
+NoReaction:
+cmp [esp+14], 00601A9B
+jne  008F7580
+mov [esp+14], NoReactionStart
+jmp 008F7580
+
+NoReactionStart:
+xor edx,edx
+jmp 00601AA7
+
+TMDMove:
+cmp [esp],0094B8CC
+jne 005FA699
+add esp,04
+call 005FA699
+test eax,eax
+je Fake1
+mov eax,[esi+18]
+cmp eax,ebx
+je Fake1
+lea edi,[eax-04]
+jmp Fake2
+
+Fake1:
+xor edi,edi
+jmp Fake2
+
+Fake2:
+cmp edi,ebx
+je 0094B8FB
+mov ecx,edi
+jmp 0094B8E9
+
+
+00C2F4E4:
+dd NoReaction
+
+00BC4A44:
+dd TMDMove
+
+[disable]
+00C2F4E4:
+dd 008F7580
+
+00BC4A44:
+dd 005FA699

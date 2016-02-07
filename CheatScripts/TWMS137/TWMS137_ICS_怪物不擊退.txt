@@ -1,0 +1,28 @@
+[Enable]
+registersymbol(CheckESP)
+alloc(CheckESP,256)
+Label(HookESP)
+Label(HookFun)
+00BBB594:
+DD CheckESP
+
+CheckESP:
+CMP DWORD PTR DS:[ESP+34],005B0F9C
+JE HookESP
+JMP 00675C15
+HookESP:
+MOV DWORD PTR DS:[ESP+34],HookFun
+JMP 00675C15
+
+HookFun:
+CMP DWORD PTR SS:[EBP+3C],1
+JNZ 005B0FB2
+MOV ECX,EDI
+CALL 005A02F7
+JMP 005B0FAE
+
+[Disable]
+00BBB594:
+DB 15 5C 67 00
+unregistersymbol(CheckESP)
+dealloc(CheckESP)

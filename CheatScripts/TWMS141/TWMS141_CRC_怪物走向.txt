@@ -1,0 +1,112 @@
+//怪物走向  TwmsV141
+//------------------------------------------------------------------
+// AOB：	83 bb ?? 00 00 00 00 0f 84 ?? 00 00 00 8d
+// V137 00847A28 - 83 bb f4 00 00 00 00       - cmp dword ptr [ebx+000000f4],00
+// V138 00896978 - 83 bb f8 00 00 00 00       - cmp dword ptr [ebx+000000f8],00
+// V140 008B6960 - 83 bb fc 00 00 00 00       - cmp dword ptr [ebx+000000fc],00
+// V141 008B80AC - 83 bb fc 00 00 00 00       - cmp dword ptr [ebx+000000fc],00
+//------------------------------------------------------------------
+// AOB：	83 be ?? ?? 00 00 03 57 8b 3d ?? ?? ?? 00
+// V138 0089D627 - 83 be 98 02 00 00 03       - cmp dword ptr [esi+00000298],03
+// V140 008B98E4 - 83 be a0 02 00 00 03       - cmp dword ptr [esi+000002a0],03
+// V141 008BB030 - 83 be a0 02 00 00 03       - cmp dword ptr [esi+000002a0],03
+// 
+// AOB：	8b 83 ?? ?? 00 00 83 f8 01 0f 85 ?? 01 00 00
+// V138 0089E802 - 8b 83 98 02 00 00          - mov eax,[ebx+00000298]
+// V140 008BAE82 - 8b 83 a0 02 00 00          - mov eax,[ebx+000002a0]
+// V141 008BC5CE - 8b 83 a0 02 00 00          - mov eax,[ebx+000002a0]
+//------------------------------------------------------------------
+// AOB：	39 8e ?? ?? 00 00 7c
+// V138 0089B435 - 39 8e 94 06 00 00          - cmp [esi+00000694],ecx
+// V140 008B7AE0 - 39 8e 9c 06 00 00          - cmp [esi+0000069c],ecx
+// V141 008B922C - 39 8e 9c 06 00 00          - cmp [esi+0000069c],ecx
+//------------------------------------------------------------------
+[ENABLE]
+Registersymbol(XD)
+alloc(XD,1024)
+Label(XD)
+alloc(XD1,64)
+alloc(XD2,64)
+alloc(XD3,64)
+alloc(XD4,64)
+Registersymbol(XD)
+Registersymbol(XD1)
+Registersymbol(XD2)
+Registersymbol(XD3)
+Registersymbol(XD4)
+Registersymbol(Off)
+alloc(Off,64)
+Registersymbol(Key)
+Alloc(Key, 4)
+
+Off:  //開關
+DD 1
+Key:  //1:左 2:右 3:跟隨
+DD 3
+
+XD:
+cmp dword ptr [Off],00
+je XD1
+cmp dword ptr [ebx+000002A0],01
+je XD2
+cmp dword ptr [ebx+000002A0],03
+je XD2
+jmp XD1
+
+XD2:
+push eax
+cmp dword ptr [Key],01
+je XD3
+cmp dword ptr [Key],02
+je XD4
+
+mov eax,[00CBFF70]
+mov eax,[eax+5A18]
+sub eax,32
+cmp [ebx+0000069C],eax
+jnge XD4
+add eax,64
+cmp [ebx+0000069C],eax
+jg XD3
+pop eax
+jmp XD1
+
+XD3:
+pop eax
+mov [ebx+000000FC],FFFFFFFF
+jmp XD1
+
+XD4:
+pop eax
+mov [ebx+000000FC],00000001
+jmp XD1
+
+XD1:
+fcom qword ptr [ebp-18]
+fnstsw ax
+push 008BC5C5
+ret
+
+008BC5C0:  // DC 55 ?? DF E0 F6 C4 ?? 0F 8B ?? ?? 00 00 8B 83
+jmp XD
+
+[DISABLE]
+
+008BC5C0:
+DB DC 55 E8 DF E0
+
+
+Dealloc(XD)
+Dealloc(XD1)
+Dealloc(XD2)
+Dealloc(XD3)
+Dealloc(XD4)
+Unregistersymbol(XD)
+Unregistersymbol(XD1)
+Unregistersymbol(XD2)
+Unregistersymbol(XD3)
+Unregistersymbol(XD4)
+Unregistersymbol(Off)
+Dealloc(Off)
+Unregistersymbol(Key)
+Dealloc(Key)

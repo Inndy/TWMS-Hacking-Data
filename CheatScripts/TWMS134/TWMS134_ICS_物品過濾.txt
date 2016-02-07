@@ -1,0 +1,74 @@
+[ENABLE]
+alloc(ItemICSHook,32)
+
+alloc(ItemFilterHeader,128)
+label(MyItemFilter)
+label(ItemFilter)
+label(ExitFilter)
+
+alloc(BlockList,256)
+
+alloc(LastItem,4)
+registersymbol(LastItem)
+////////////////////////////
+BlockList:
+dd 1E8482
+dd 0 //物品過濾結束
+////////////////////////////
+00b9d07c:
+dd ItemICSHook
+
+ItemICSHook:
+  cmp [esp+64],004C5847
+  jne 0066B70E
+  mov [esp+64],ItemFilterHeader
+  jmp 0066B70E
+  db 90 90 90 90 90
+
+ItemFilterHeader:
+  mov eax,[ebp-1c]
+  mov esi,[ebp-50]
+  mov [esi+1c],al
+  cmp eax,01
+  db 74 09
+  cmp eax,02
+  db 74 04
+  xor al,al
+  db eb 02
+ MyItemFilter:
+  mov al,01
+  mov [esi+1d],al
+  mov [esi+20],edi
+  mov edi,[ebp+08]
+  mov ecx,edi
+  call 004085d3
+  movzx eax,al
+  mov ecx,edi
+  mov [esi+30],eax
+  call 0040862f
+  mov [LastItem],eax
+  call ItemFilter
+  mov ecx,edi
+  mov [esi+34],eax
+  jmp 004C5882
+
+ ItemFilter:
+  mov ecx,BlockList
+  cmp [ecx],0
+  db 74 09 //je ExitFilter
+  cmp eax,[ecx]
+  add ecx,4
+  jne ItemFilter+5
+  xor eax,eax
+
+ ExitFilter:
+  ret
+
+[DISABLE]
+00b9d07c:
+dd 0066B70E
+dealloc(ItemICSHook)
+dealloc(ItemFilterHeader)
+dealloc(BlockList)
+dealloc(LastItem)
+unregistersymbol(LastItem)

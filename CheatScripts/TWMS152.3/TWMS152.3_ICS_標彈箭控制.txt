@@ -1,0 +1,24 @@
+// TWMS152.3 ICS 標彈箭控制
+//
+// 無形之箭  	0099D0BA - 89 85 9c fe ff ff - mov [ebp-00000164],eax
+// 無限標箭彈	0099D0D1 - 89 85 dc fd ff ff - mov [ebp-00000224],eax
+// 雙倍標箭彈	0099D0E8 - 89 85 e0 fd ff ff - mov [ebp-00000220],eax
+[ENABLE]
+Alloc(UnlimitedWeapon, 128)
+Label(Return)
+
+UnlimitedWeapon:
+Cmp  [Esp+10], 0099D223 // 85 C0 74 ?? 81 7d ?? ?? ?? ?? 00 74 ?? 81 7d ?? ?? ?? ?? 00 74 ?? 83
+Jne  Return
+Mov  [Ebp-00000224], 1 // 無限標箭彈
+Mov  [Ebp-00000220], 1 // 雙倍標箭彈
+Return:
+Jmp  004F09CE
+
+00D33638:
+DD  UnlimitedWeapon
+[DISABLE]
+00D33638: // [1/1]
+DD  004F09CE // b9 ?? ?? ?? 00 e9 ?? ?? ?? ff ff 74 24 04
+
+Dealloc(UnlimitedWeapon)

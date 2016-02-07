@@ -1,0 +1,8 @@
+//TwMS v140.1_CRC_§πΐ»¤£Εγ¶Λ®`
+//Update:Onion
+[Enable]
+005CF94C:
+DB 90 90 90 90 90
+[Disable]
+005CF94C:
+Call 00404E51 

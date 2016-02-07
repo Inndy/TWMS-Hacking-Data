@@ -1,0 +1,23 @@
+^_^ ＊堅持　︿︿: 144
+
+跟怪物過濾 005DB07C 很接近..
+跟全圖打 005E2C7B 也不遠..
+跟重生點吸怪 005E0C6E 也有點近..
+
+
+push 0 // 攻擊剩餘時間
+lea ecx,[esi+000002b8] // Dull Point
+call 004263D6
+
+//V144 封包無敵,不取得傷害
+//From GMS Packets God Mode
+//Credit:Cam1596 for his script!
+//This Make you not Receive Dommage!
+[enable]
+0087F83D:
+db 0F 85
+
+[disable]
+0087F83D:
+db 0F 84
+^_^ ＊堅持　︿︿: 144

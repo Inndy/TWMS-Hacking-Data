@@ -1,0 +1,30 @@
+//v1.44.1 終極攻擊100% by.aaaddress1
+alloc(OverAttack,128)
+0085B567:
+jmp OverAttack
+
+OverAttack:
+mov eax,[ebp+10]
+mov edi,[ebp-0C]
+mov ecx,[ebp-10]
+mov [edi+00004F14],eax
+mov [edi+00004F18],esi
+mov [edi+00004F1C],ecx
+mov [edi+00004F20],00  //多久後怪物受到終極攻擊
+pop edi
+pop esi
+pop ebx
+leave
+ret 10
+
+
+alloc(SetHook,128) //ics
+0CD9824:
+dd SetHook
+
+SetHook:
+cmp [esp+1c],0085B55E
+jne 006CC237
+mov [esp+1c],0085B579
+jmp 006CC237
+

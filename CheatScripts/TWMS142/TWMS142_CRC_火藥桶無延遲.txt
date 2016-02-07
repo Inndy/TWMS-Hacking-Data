@@ -1,0 +1,113 @@
+alloc(Fuckyou,256)
+label(start)
+alloc(v1,4)
+alloc(v2,4)
+alloc(v3,4)
+alloc(v4,4)
+alloc(v5,4)
+alloc(v6,4)
+registersymbol(v1)
+registersymbol(v2)
+registersymbol(v3)
+registersymbol(v4)
+registersymbol(v5)
+registersymbol(v6)
+v5:
+dd 0
+Fuckyou:
+push [ebp+10]
+lea eax,[ebp+1C]
+push [ebp+0C]
+push eax
+call dword ptr [00CCC9F4]
+mov ecx,[00CC44FC]
+mov [v1],ebx
+lea eax,[ebp+60]
+mov [v2],eax
+lea eax,[ebp+1c]
+mov [v3],eax
+mov eax,ebp
+add eax,60
+mov [v4],eax
+start:
+pushad
+push 0
+push 0
+push 0
+push 0
+push 0
+push 0
+push 0
+push 01
+push [v2]
+push [v3]
+mov ebx,[v1]
+mov [v4],ebx
+call 005D2AD3
+mov [v6],eax
+popad
+inc [v5]
+cmp [v5],c8
+jl start
+jmp 00838D5E
+
+00838D2F:
+jmp Fuckyou
+
+00838D96:
+je 00838DAC
+00838D8B:
+nop
+nop
+00838D80:
+nop
+nop
+00838D78:
+nop
+nop
+
+005D2B23:
+nop
+nop
+nop
+nop
+nop
+nop
+
+Alloc(CharActSet, 64)
+Label(SetR)
+Label(SetL)
+
+CharActSet:
+Cmp Eax, 8 // ¦V¥k
+Je SetR
+Cmp Eax, 9 // ¦V¥ª
+Je SetL
+mov [esi+000003EC],eax
+Jmp 0045663A+6
+SetR:
+Mov Eax, 4
+mov [esi+000003EC],eax
+Jmp 0045663A+6
+SetL:
+Mov Eax, 5
+mov [esi+000003EC],eax
+Jmp 0045663A+6
+
+0045663A:
+jmp CharActSet
+nop
+
+Alloc(SkillSet, 64)
+
+SkillSet:
+mov [esi+00000480],eax
+Cmp Eax, 0000012B
+Jne 00846DEB+6
+Or  Eax, FFFFFFFF
+mov [esi+00000480],eax
+Jmp 00846DEB+6
+
+00846DEB:
+Jmp SkillSet
+Nop

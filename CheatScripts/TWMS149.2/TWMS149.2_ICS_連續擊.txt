@@ -1,0 +1,39 @@
+// TWMS149.2 ICS ≥sƒÚ¿ª
+// Auther: Inndy
+// UpdateTime: 2012-10-18
+[ENABLE]
+Alloc(R2_ICSEntry, 64)
+Alloc(R2, 128)
+Alloc(R2KEY, 4)
+Label(R2_Return)
+Label(NormalR2)
+//-----------------------------------------------
+R2KEY:
+DD 0
+//-----------------------------------------------
+R2_ICSEntry:
+Cmp  [Esp], 008D6609	// 39 9E ?? ?? 00 00 74 ?? 51 8B C4 89 65 ?? 57
+Jne  008C351B
+Call R2
+Jmp  008C351B
+//-----------------------------------------------
+R2:
+Cmp  [R2KEY],00
+Jne  R2_Return
+Mov  Edi,FFFFFFFF
+R2_Return:
+Inc  [R2KEY]
+And  [R2KEY], 3
+Mov  [Esi+000004A0],Edi
+Ret
+//-----------------------------------------------
+00C7FEB4:
+DD R2_ICSEntry
+[DISABLE]
+00C7FEB4:   // [4/5]
+DD 008C351B // 55 8B EC 83 EC ?? 53 56 33 F6
+
+DeAlloc(R2_ICSEntry)
+DeAlloc(R2)
+DeAlloc(R2KEY)
+DeAlloc(NextTime)

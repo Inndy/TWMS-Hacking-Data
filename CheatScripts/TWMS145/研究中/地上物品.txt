@@ -1,0 +1,25 @@
+地上物品編號
+[[[[00D24C58]+30]+04]+34]
+
+0050C9E8 - 8B 0D 584CD200             - mov ecx,[00D24C58]
+004DDAA7 - 8B 4D D8                   - mov ecx,[ebp-28]
+004DB210 - 8B F1                      - mov esi,ecx
+004DB21D - 8D 4E 20                   - lea ecx,[esi+20]
+004DB000 - 8B F1                      - mov esi,ecx
+004DB00C - 8B 4E 10                   - mov ecx,[esi+10]
+
+
+004D9A9A - 89 47 04                   - mov [edi+04],eax
+
+
+
+
+地上物品XY
+004DD68A - 8B 4D E8                   - mov ecx,[ebp-18]
+004DD6A4 - E8 F492F5FF                - call 0043699D
+004369B2 - 8B D9                      - mov ebx,ecx
+004369BA - 53                         - push ebx
+004369BB - FF 90 A0000000             - call dword ptr [eax+000000A0] // [Eax+A0] = [Shape2D.dll+1A8A0] = Shape2D.dll+14FB0
+51415057 - 8B 45 08                   - mov eax,[ebp+08]
+5141505D - 8B 48 20                   - mov ecx,[eax+20]
+51415060 - 8B 50 1C                   - mov edx,[eax+1C]

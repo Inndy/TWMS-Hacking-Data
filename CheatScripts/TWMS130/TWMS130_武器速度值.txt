@@ -1,0 +1,19 @@
+[ENABLE]
+//v1.30.1 ªZ¾¹³t«×­È
+//auther:aaaddress1
+alloc(SpeedUpAttack,128)
+00443A95:
+Jmp SpeedUpAttack
+nop
+nop
+nop
+
+SpeedUpAttack:
+mov [ebp+6c],A763FFFF
+mov eax,[ebp+6c]
+Jmp 00443B25
+
+[DISABLE]
+00443A95:
+test eax,eax
+je 00443b22

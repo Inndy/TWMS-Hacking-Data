@@ -1,0 +1,64 @@
+// TWMS147.2 CRC 龍捲風加速
+[Enable]
+// 龍捲風無延遲
+// By Aaaddress1
+Alloc(NoDelayICS, 64)
+Label(NoDelay)
+
+NoDelayICS:
+Cmp [Esp+54], 008B580F
+Jne 0051A625
+Mov [Esp+54], NoDelay
+Jmp 0051A625
+
+NoDelay:
+Mov Eax,[Ebp+68]
+Jmp 008B5832
+
+00BBA208:
+DD NoDelayICS
+//-----------------------------------------------------
+// 清除技能動作
+008C4B7E:
+DB 90 90 90 90 90 90
+//-----------------------------------------------------
+// 龍捲風無限隻數
+// By Aaaddress1
+005486F4:
+mov eax, 7FFFFFFF
+jmp 0054870C
+db 90 90 90 90 90
+//-----------------------------------------------------
+// 修改人物動作
+// By Aaaddress1
+alloc(ControlHumanSide,32)
+
+ControlHumanSide:
+mov eax,[ecx+000000DC]
+and eax, 8
+test eax,eax
+je 00942959
+xor [ecx+000000DC],C
+mov eax,[ecx+000000DC]
+ret
+
+00C334AC:
+dd ControlHumanSide
+//-----------------------------------------------------
+[Disable]
+00BBA208:
+DD 0051A625
+
+DeAlloc(NoDelayICS)
+
+
+008C4B7E:
+db 89 86 9c 04 00 00
+
+005486F4:
+db DB FF 75 F0 8B 4D EC 8B BE EC 00 00 00 50 FF B6 CC 00 00 00 E8 A7 F3 16 00
+
+00C334AC:
+dd 00942959
+
+dealloc(ControlHumanSide)

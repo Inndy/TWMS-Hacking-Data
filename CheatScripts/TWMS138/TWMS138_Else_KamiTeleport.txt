@@ -1,0 +1,36 @@
+Kami-X		00c8a248	48C0
+Kami-Y		00c8a248	48C4
+SwitchAOB	C7 ?? ?? ?? ?? ?? 01 00 00 00 0F ?? ?? 89
+Switch		00c8a248	48B8
+Switch2		00c8a248	48BC
+
+
+0082A53F - c7 83 b8 48 00 00 01 00 00 00 - mov [ebx+000048b8],00000001	//Switch1
+0082A549 - 0f 95 c0                      - setnc al
+0082A54C - 89 83 bc 48 00 00             - mov [ebx+000048bc],eax	//Switch2
+0082A552 - 8b 45 54                      - mov eax,[ebp+54]
+0082A555 - 89 83 c0 48 00 00             - mov [ebx+000048c0],eax	//X
+0082A55B - 8b 45 58                      - mov eax,[ebp+58]
+0082A55E - 89 83 c4 48 00 00             - mov [ebx+000048c4],eax	//Y
+0082A564 - 8b 45 d4                      - mov eax,[ebp-2c]
+
+
+0F 84 ? ? ? ? 8B 8E ? ? ? ? 2B C8
+
+
+00850521 - ff 15 f4 c2 a1 00          - call dword ptr [00a1c2f4] : 05560A87
+00850527 - 8d 45 44                   - lea eax,[ebp+44]
+0085052A - 50                         - push eax
+0085052B - 8d 45 28                   - lea eax,[ebp+28]
+0085052E - 50                         - push eax
+0085052F - 50                         - push eax
+00850530 - ff 15 a0 c2 a1 00          - call dword ptr [00a1c2a0] : 05500000
+
+
+00850AF3 - e8 62 c7 ff ff             - call 0084d25a
+[ENABLE]
+0084D275:
+db 85
+[DISABLE]
+0084D275:
+db 84

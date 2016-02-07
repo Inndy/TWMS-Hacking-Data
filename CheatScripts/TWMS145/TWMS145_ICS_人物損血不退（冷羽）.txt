@@ -1,0 +1,37 @@
+// TWMS V1.45.1
+// 6.人物不後退 Ret 008D32C3
+
+[Enable]
+alloc(Check6, 256)
+alloc(Check6_Switch, 04)
+label(My_Ret)
+registersymbol(Check6_Switch)
+
+Check6_Switch:
+DD 00
+
+Check6:
+cmp dword ptr [esp],008DF41D // (1)
+jne My_Ret
+cmp [Check6_Switch],01
+jne My_Ret
+
+mov [ebp+18],00000000 // Y
+mov [ebp+14],00000000 // X
+
+My_Ret:
+push 008DF4A5 // (2) call 008DF4A5 - 53 55 8b 6c 24 0c 56 33 c0 57 8b f1 83 fd 0d
+ret
+
+00BB62EC:
+DD Check6
+
+[Disable]
+00BB62EC: // (3) [9/10] Search 008DF4A5
+DD 008DF4A5
+
+// 008DF417 - (1) [2/2] ff 90 ? ? ? ? 0f bf 45 ? 89 45 ? 0f bf 45 ? db 45 ? 83 ec ? 89 45 ? 8d 4e ? dd 5c 24 ? db 45 ? dd 1c 24 e8 
+
+dealloc(Check6)
+dealloc(Check6_Switch)
+unregistersymbol(Check6_Switch)

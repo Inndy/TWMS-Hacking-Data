@@ -1,0 +1,38 @@
+
+
+[enable]
+Registersymbol(Nodelay)
+Alloc(Nodelay, 128)
+Registersymbol(AttackTimes)
+Alloc(AttackTimes, 4)
+Label(Refresh)
+//------------------------------------------------------------------
+Nodelay:
+inc [AttackTimes]
+cmp [AttackTimes],2
+jle 007A50F0
+call 008688c0
+cmp [AttackTimes],3
+jg Refresh
+jmp 007A50F0
+//------------------------------------------------------------------
+Refresh:
+mov [AttackTimes],0
+jmp 007A50F0
+//------------------------------------------------------------------
+007A50EB://無延遲 // E8 ?? ?? ?? 00 83 C4 0C E8 ?? ?? ?? 00 C3
+jmp Nodelay
+//------------------------------------------------------------------
+007A4D2C://瞬間集氣 // E8 ?? ?? ?? 00 2B 87 ?? ?? 00 00 6A 1E 59
+db 90 90 90 90 90
+//------------------------------------------------------------------
+[disable]
+Unregistersymbol(Nodelay)
+dealloc(Nodelay)
+Unregistersymbol(AttackTimes)
+dealloc(AttackTimes)
+007A50EB:
+call 008688c0
+
+007A4D2C:
+call 007ce02f

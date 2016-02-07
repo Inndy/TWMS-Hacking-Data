@@ -1,0 +1,19 @@
+004C5833 - e8 39 f7 ff ff             - call 004c4f71		// ICS在這下面
+004C5838 - 8b 45 e4                   - mov eax,[ebp-1c]
+004C583B - 8b 75 b0                   - mov esi,[ebp-50]
+004C583E - 88 46 1c                   - mov [esi+1c],al
+004C5841 - 83 f8 01                   - cmp eax,01
+004C5844 - 74 09                      - je 004c584f
+004C5846 - 83 f8 02                   - cmp eax,02
+004C5849 - 74 04                      - je 004c584f
+004C584B - 32 c0                      - xor al,al
+004C584D - eb 02                      - jmp 004c5851
+004C584F - b0 01                      - mov al,01
+004C5851 - 88 46 1d                   - mov [esi+1d],al
+004C5854 - 89 7e 20                   - mov [esi+20],edi
+004C5857 - 8b 7d 08                   - mov edi,[ebp+08]
+004C585A - 8b cf                      - mov ecx,edi
+004C585C - e8 72 2d f4 ff             - call 004085d3
+004C5861 - 0f b6 c0                   - movzx eax,al
+004C5864 - 8b cf                      - mov ecx,edi
+004C5866 - 89 46 30                   - mov [esi+30],eax	//物品過濾

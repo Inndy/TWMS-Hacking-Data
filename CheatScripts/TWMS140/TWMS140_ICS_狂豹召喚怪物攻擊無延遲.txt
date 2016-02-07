@@ -1,0 +1,95 @@
+// TWMS V1.40.1 ICS ¨g°\Ây¤H¥l³ê©Çª«§ðÀ»µL©µ¿ð (·|Â_½u)
+// ­ì³Ð: §N¦Ð·¬²ª
+
+[enable]
+alloc(CheckRet1,256)
+label(NoDelay1)
+label(CheckRet2)
+label(SetRet21)
+label(SetRet22)
+label(NoDelay21)
+label(NoDelay22)
+label(NoDelay23)
+label(NoMobDmg)
+
+CheckRet1:
+cmp [esp],005CFC7D
+jne 008B34DE
+mov [esp],NoDelay1
+jmp 008B34DE
+
+NoDelay1:
+test eax,eax
+je 005cfe56
+mov ecx,esi
+call 005bcdb7
+test eax,eax
+je 005cfd85
+mov eax,[esi]
+push 01
+lea ecx,[ebp-58]
+push ecx
+mov ecx,esi
+call dword ptr [eax+08]
+mov eax,[esi+000004b0]
+mov ecx,[ebp-1c]
+sub ecx,eax
+cmp ecx,000007d0
+//jl 005cfd85
+jmp 005CFCB8
+
+CheckRet2:
+cmp [esp],005C8610
+je SetRet21
+cmp [esp],005C8657
+je SetRet22
+cmp [esp],005CFD2A
+jne 008B3672
+mov [esp],NoMobDmg
+jmp 008B3672
+
+SetRet21:
+mov [esp],NoDelay21
+jmp 008B3672
+
+SetRet22:
+mov [esp],NoDelay22
+jmp 008B3672
+
+NoDelay21:
+test eax,eax
+jne 005c892c
+mov ecx,esi
+call 005bc4dc
+test eax,eax
+je NoDelay23 // 005c865f
+jmp 005C8623
+
+NoDelay22:
+test eax,eax
+jne 005c892c
+
+NoDelay23:
+call 0088f5fd
+lea edx,[esi+000004ac]
+jmp 005C8693
+
+NoMobDmg:
+test eax,eax
+je 005CFD6B // je 005cfd5b
+jmp 005CFD2E
+
+00B5E374:
+dd CheckRet1
+
+00B5E39C:
+dd CheckRet2
+
+[disable]
+00B5E374:
+dd 008B34DE
+
+00B5E39C:
+dd 008B3672
+
+dealloc(CheckRet1)

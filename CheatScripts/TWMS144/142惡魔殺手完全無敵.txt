@@ -1,0 +1,13 @@
+//v1.42 惡魔殺手完全無敵 By.aaaddress1.
+//前置:三轉 - 力量防禦點數至少1點.
+//效果:撞怪完全Miss,並且持續恢復HP與DF
+// (恢復量視點幾點而定)
+alloc(NoHurt,128)
+0086122D:
+jmp NoHurt
+
+NoHurt:
+mov eax,64
+mov ecx,eax
+mov eax,[ebp-74]
+jmp 00861232

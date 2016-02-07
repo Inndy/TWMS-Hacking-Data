@@ -1,0 +1,44 @@
+//v.1.4.5. CrackShield Ãdª«ª±®a by.aaaddress1.
+alloc(SetXY,128)
+alloc(Offset,08)
+alloc(OnOff,04)
+label(NextStep00)
+
+
+Offset:
+dd #00
+dd #00
+
+SetXY:
+cmp [esp],0077B3D5 //or 0077B292
+je 00495DF0
+push ebp
+mov ebp,esp
+push ecx
+push ecx
+lea eax,[ebp-08]
+push eax
+add ecx,000020F0
+call 00431EBF
+mov ecx,[00D1CDA4]
+mov [ecx+20c4],00
+mov ecx,ebp
+sub ecx,08
+Push ecx
+Mov  Ecx,[0D24C58]
+Call 004DA523
+inc [Offset+00]
+cmp [Offset+00],#350
+jl NextStep00
+mov [Offset+00],#-350
+NextStep00:
+mov ecx,[Offset+00]
+mov eax,[Offset+04]
+add [ebp-08],ecx
+add [ebp-04],eax
+mov ecx,[ebp-08]
+mov eax,[ebp+08]
+jmp 00495E0A
+
+00BB28E0+10:
+dd SetXY

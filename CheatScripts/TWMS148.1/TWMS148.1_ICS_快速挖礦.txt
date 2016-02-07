@@ -1,0 +1,199 @@
+// TWMS148.1 ICS 挖礦/製作 四合一懶人包
+// Auther: Inndy
+// 快速挖礦 + 挖礦無間隔 + 快速製作
+
+
+
+[ENABLE]
+// 快速挖礦
+Alloc(Mining, 512)
+
+Mining:
+Cmp  [Esp], 0092894A
+Jne  008F0861
+Add  Esp, 04
+Call 008F0861
+Push Eax
+Call 0046A237
+Pop  Ecx
+Test Eax, Eax
+Jne  0092895D
+Push [Ebp+5C]
+Mov  Ecx, Ebx
+Push 009289CE // Call 008F6983
+Label(Mining008f6a87)
+Label(Mining008f6a7a)
+Label(Mining008f6a7d)
+Label(Mining008f6a86)
+Label(Mining008f6a7d)
+Label(Mining008f6a22)
+Label(Mining008f6a30)
+Label(Mining008f6a7d)
+Label(Mining008f6a70)
+Label(Mining008f6a4a)
+Label(Mining008f6a7e)
+Label(Mining008f6a7d)
+Label(Mining008f6a86)
+Label(Mining008f6a7d)
+
+
+
+db 55                                    // 008f6983 - push ebp
+db 8b ec                                 // 008f6984 - mov ebp,esp
+db 83 ec 18                              // 008f6986 - sub esp,18
+db 53                                    // 008f6989 - push ebx
+db 56                                    // 008f698a - push esi
+db 8b f1                                 // 008f698b - mov esi,ecx
+db 33 db                                 // 008f698d - xor ebx,ebx
+db 39 9e 8c 72 00 00                     // 008f698f - cmp [esi+0000728c],ebx
+je Mining008f6a87                        // 008f6995 - je 008f6a87
+db 8b 0d 8c 98 e0 00                     // 008f699b - mov ecx,[00e0988c] : 2580D07C
+db 57                                    // 008f69a1 - push edi
+db 8d 45 e8                              // 008f69a2 - lea eax,[ebp-18]
+db 50                                    // 008f69a5 - push eax
+call 0068efa4                            // 008f69a6 - call 0068efa4
+db 8d 45 e8                              // 008f69ab - lea eax,[ebp-18]
+db 50                                    // 008f69ae - push eax
+db ff 15 14 73 b2 00                     // 008f69af - call dword ptr [00b27314] : 0598062B
+db 85 c0                                 // 008f69b5 - test eax,eax
+jne Mining008f6a7a                       // 008f69b7 - jne 008f6a7a
+db 8d 45 f8                              // 008f69bd - lea eax,[ebp-08]
+db 50                                    // 008f69c0 - push eax
+db 8d 8e 4c 23 00 00                     // 008f69c1 - lea ecx,[esi+0000234c]
+call 00431874                            // 008f69c7 - call 00431874
+db ff 70 04                              // 008f69cc - push [eax+04]
+db ff 30                                 // 008f69cf - push [eax]
+db 8d 45 e8                              // 008f69d1 - lea eax,[ebp-18]
+db 50                                    // 008f69d4 - push eax
+db ff 15 10 73 b2 00                     // 008f69d5 - call dword ptr [00b27310] : 059804F2
+db 85 c0                                 // 008f69db - test eax,eax
+je Mining008f6a7a                        // 008f69dd - je 008f6a7a
+db 8b 0d 8c 98 e0 00                     // 008f69e3 - mov ecx,[00e0988c] : 2580D07C
+db 53                                    // 008f69e9 - push ebx
+call 0068e097                            // 008f69ea - call 0068e097
+db 33 ff                                 // 008f69ef - xor edi,edi
+db 47                                    // 008f69f1 - inc edi
+db 85 c0                                 // 008f69f2 - test eax,eax
+je Mining008f6a7d                        // 008f69f4 - je 008f6a7d
+db 39 be 8c 72 00 00                     // 008f69fa - cmp [esi+0000728c],edi
+jne Mining008f6a86                       // 008f6a00 - jne 008f6a86
+db 39 9e 90 72 00 00                     // 008f6a06 - cmp [esi+00007290],ebx
+jle Mining008f6a7d                       // 008f6a0c - jle 008f6a7d
+db 8b 86 9c 72 00 00                     // 008f6a0e - mov eax,[esi+0000729c]
+db 3d 15 01 00 00                        // 008f6a14 - cmp eax,00000115
+jnge Mining008f6a22                      // 008f6a19 - jnge 008f6a22
+db 3d 16 01 00 00                        // 008f6a1b - cmp eax,00000116
+jle Mining008f6a30                       // 008f6a20 - jle 008f6a30
+Mining008f6a22:
+db 3d b3 01 00 00                        // 008f6a22 - cmp eax,000001b3
+jnge Mining008f6a7d                      // 008f6a27 - jnge 008f6a7d
+db 3d b6 01 00 00                        // 008f6a29 - cmp eax,000001b6
+jg Mining008f6a7d                        // 008f6a2e - jg 008f6a7d
+Mining008f6a30:
+db 8b 86 94 72 00 00                     // 008f6a30 - mov eax,[esi+00007294]
+db 3b c3                                 // 008f6a36 - cmp eax,ebx
+jle Mining008f6a70                       // 008f6a38 - jle 008f6a70
+db 39 45 08                              // 008f6a3a - cmp [ebp+08],eax
+//jnge Mining008f6a70                      // 008f6a3d - jnge 008f6a70
+db 39 9e 98 72 00 00                     // 008f6a3f - cmp [esi+00007298],ebx
+//jg Mining008f6a4a                        // 008f6a45 - jg 008f6a4a
+jmp Mining008f6a4a
+db 53                                    // 008f6a47 - push ebx
+jmp Mining008f6a7e                       // 008f6a48 - jmp 008f6a7e
+Mining008f6a4a:
+db 8b 0d 8c 98 e0 00                     // 008f6a4a - mov ecx,[00e0988c] : 2580D07C
+call 006902a5                            // 008f6a50 - call 006902a5
+db 85 c0                                 // 008f6a55 - test eax,eax
+je Mining008f6a7d                        // 008f6a57 - je 008f6a7d
+db ff 8e 98 72 00 00                     // 008f6a59 - dec [esi+00007298]
+db a1 8c 98 e0 00                        // 008f6a5f - mov eax,[00e0988c] : 2580D07C
+db 8b 40 5c                              // 008f6a64 - mov eax,[eax+5c]
+db 03 45 08                              // 008f6a67 - add eax,[ebp+08]
+db 89 86 94 72 00 00                     // 008f6a6a - mov [esi+00007294],eax
+Mining008f6a70:
+db 39 9e 94 72 00 00                     // 008f6a70 - cmp [esi+00007294],ebx
+jg Mining008f6a86                        // 008f6a76 - jg 008f6a86
+jmp Mining008f6a7d                       // 008f6a78 - jmp 008f6a7d
+Mining008f6a7a:
+db 33 ff                                 // 008f6a7a - xor edi,edi
+db 47                                    // 008f6a7c - inc edi
+Mining008f6a7d:
+db 57                                    // 008f6a7d - push edi
+Mining008f6a7e:
+db 57                                    // 008f6a7e - push edi
+db 8b ce                                 // 008f6a7f - mov ecx,esi
+call 008ed0b6                            // 008f6a81 - call 008ed0b6
+Mining008f6a86:
+db 5f                                    // 008f6a86 - pop edi
+Mining008f6a87:
+db 5e                                    // 008f6a87 - pop esi
+db 5b                                    // 008f6a88 - pop ebx
+db c9                                    // 008f6a89 - leave
+db c2 04 00                              // 008f6a8a - ret 0004
+
+00C7779C:
+DD Mining
+//===================================
+// 挖礦無間隔
+Alloc(MiningNoInterval, 128)
+
+MiningNoInterval:
+push [ebp+0c]
+push 009270de
+push esi
+push edi
+mov esi,ecx
+mov ecx,[00e01440]
+push 00
+call 0048aba4
+mov ecx,[esp+0c]
+call 00408b5e
+mov ecx,[esp+0c]
+mov edi,eax
+call 00408b5e
+jmp 008FF629
+
+0092717E:
+DD MiningNoInterval
+//===================================
+// 快速製作
+Alloc(UltraMaking, 64)
+
+UltraMaking:
+push 18
+mov eax,00ab921e
+call 00a0c6f9
+mov esi,ecx
+mov ecx,[esi+00000114]
+call 0045c0bf
+lea ecx,[esi+00000118]
+call 004404a9
+mov eax,[esi+000000a0]
+xor ebx,ebx
+sub eax,ebx
+je 007D5BBC
+jmp 007D5A35
+
+00C6241C:
+DD UltraMaking
+
+
+
+[DISABLE]
+// 快速挖礦
+00C7779C:
+DD 008F0861
+
+Dealloc(Mining)
+//===================================
+// 挖礦無間隔
+0092717E:
+DD 00926F3A
+
+Dealloc(MiningNoInterval)
+//===================================
+// 快速製作
+00C6241C:
+DD 007D5A01
+
+Dealloc(UltraMaking)

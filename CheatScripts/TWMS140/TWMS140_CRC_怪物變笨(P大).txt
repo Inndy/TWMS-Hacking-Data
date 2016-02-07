@@ -1,0 +1,7 @@
+//P€j©Ηͺ«Εά²Β  TWMSv140
+[enable]
+008B85BF:
+db 90 90
+[disable]
+008B85BF:
+jne 008b8615

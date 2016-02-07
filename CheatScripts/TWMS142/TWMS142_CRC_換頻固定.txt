@@ -1,0 +1,50 @@
+[ENABLE]
+Alloc(SpawnControl,128)
+Alloc(MapID,4)
+Alloc(SpawnXY,8)
+Label(rtnSPC)
+Label(rtnNormal)
+//MapIDPoint
+//8b 0d ?? ?? ?? 00 85 c9 74 05 e8 ?? ?? ?? ?? 83 3d
+//89 86 ?? ?? 00 00 e8 ?? ?? ?? ?? 8b 3d ?? ?? ?? 00 8b cf
+
+
+SpawnXY:
+readmem([00CBFF70]+5A18,8)
+//8b 0d ?? ?? ?? ?? e8 ?? ?? ?? ?? 8b ?? ?? 83 4d
+//8b 0d ?? ?? ?? ?? 83 c4 ?? 50 e8 ?? ?? ?? ?? e9
+//8b 0d ?? ?? ?? ?? 83 65 ?? ?? 83 65
+//89 8e ?? ?? 00 00 8b 40 04 89 86 ?? ?? 00 00 8b 06
+
+MapID:
+readmem([00CC7B68]+0C38,4)
+
+SpawnControl:
+  push esi
+  mov esi,[00CC7B68]
+  mov esi,[esi+0C38]
+  cmp [MapID],esi
+  jnz rtnNormal
+
+  mov ecx,[SpawnXY]
+  mov [ebp-24],ecx
+  mov eax,[SpawnXY+4]
+  mov [ebp-20],eax
+rtnNormal:
+  pop esi
+  lea eax,[ecx+00004CFC] //
+  jmp rtnSPC
+
+00852856:
+//8d 83 ?? ?? 00 00 83 38 00 74 15
+  jmp SpawnControl
+  db 90
+  rtnSPC:
+
+[DISABLE]
+00852856:
+  db 8d 83 fc 4c 00 00
+
+dealloc(SpawnControl)
+dealloc(MapID)
+dealloc(SpawnXY)

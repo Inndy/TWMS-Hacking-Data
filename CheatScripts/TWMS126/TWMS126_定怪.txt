@@ -1,0 +1,6 @@
+[enable]
+007EF206:
+jmp 007ef21b
+[disable]
+007ef206:
+je 007ef21b

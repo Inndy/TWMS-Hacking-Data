@@ -1,0 +1,12 @@
+//Twms V1.31.1 ¶aπp≥t√z
+[ENABLE]
+Alloc(code, 128)
+code:
+call 007a2beb
+sub eax,0
+jmp 00646FF0
+00646FEB:
+jmp code
+[DISABLE]
+00646FEB:
+call 007a2beb

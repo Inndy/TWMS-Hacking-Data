@@ -1,0 +1,62 @@
+// TWMS V1.45.1
+// 3.無限標箭彈 ICS點: call dword ptr [eax+4c]
+// 5.雙倍標箭彈 ICS Ret: 0042F520
+
+[enable]
+alloc(Check3, 256)
+alloc(Check3_Switch, 04)
+alloc(Check5_Switch, 04)
+label(My_Call1)
+label(My_Call2)
+label(My_Ret)
+registersymbol(Check3_Switch)
+registersymbol(Check5_Switch)
+
+Check3_Switch: // 無限標箭彈
+DD 00
+
+Check5_Switch: // 雙倍標箭彈
+DD 00
+
+Check3:
+cmp [esp+0c],0087F97A // 往下找第三個CALL // [2/2] e8 ? ? ? ? f7 d8 1b c0 f7 d8 89 85 ? ? ? ? 8b 8d ? ? ? ? e8 ? ? ? ? f7 d8 1b c0 f7 d8 89
+jne My_Ret
+
+cmp [Check3_Switch],01
+je My_Call1
+cmp [Check5_Switch],01
+je My_Call2
+
+push 0050C513 // ICS Ret
+ret
+
+My_Call1:
+mov [ebp-00000214],1
+cmp [Check5_Switch],01
+je My_Call2
+push 0050C513 // ICS Ret
+ret
+
+My_Call2:
+mov [ebp-00000210],1
+
+My_Ret:
+push 0050C513 // ICS Ret
+ret
+
+00B46298:
+DD Check3
+
+[disable]
+00B46298: // [1/50] Search 0050C513
+DD 0050C513 // ICS Ret - b9 ? ? ? 00 e9 ? ? ? ? ff 74 24 04 e8 ? ? ? ? c2 08 00
+
+dealloc(Check3)
+dealloc(Check3_Switch)
+dealloc(Check5_Switch)
+unregistersymbol(Check3_Switch)
+unregistersymbol(Check5_Switch)
+
+// 無形之箭   [ebp-00000154]
+// 無限標箭彈 [ebp-00000214]
+// 雙倍標箭彈 [ebp-00000210]

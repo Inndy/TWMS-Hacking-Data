@@ -1,0 +1,21 @@
+// TWMS149.2 ICS ¥þ¹Ï¼²À»
+// UpdateTime: 2012-10-18
+
+[ENABLE]
+Alloc(FullMapHit, 64)
+
+FullMapHit:
+Cmp [Esp], 00612CCB  // 83 4d fc ff 8d 4d f0 85 c0
+Jne IntersectRect
+Xor Eax, Eax
+Inc Eax, Eax
+Ret 000C
+
+00E198D0:
+DD FullMapHit
+
+[DISABLE]
+00E198D0:
+DD IntersectRect
+
+DeAlloc(FullMapHit)

@@ -1,0 +1,18 @@
+//TWMSv158.4技能動畫消除
+//更新 放棄
+//原創 Onion 
+[enable]
+alloc(NoSkillAnimation,128)
+NoSkillAnimation:
+Cmp [Esp], 00A2D932//1//
+Jne 00A548A9//2//
+Mov [Esp], 00A33CF5//3//
+Jmp 00A548A9//2//
+
+00F69D08://4//
+DD NoSkillAnimation
+
+[disable]
+00F69D08://4//
+DD 00A548A9//2//
+dealloc(NoSkillAnimation)

@@ -1,0 +1,43 @@
+[ENABLE]
+alloc(CheckEsp,64)
+label(GodMiss)
+
+00B5DF2C:
+dd CheckEsp
+
+CheckEsp:
+cmp [esp],00860B16 //ff ?? 50 50 e8 ?? ?? ?? ?? ff b3
+jne 00842B8E
+mov [esp],GodMiss
+jmp 00842B8E
+
+GodMiss:
+push eax
+call 0065041a
+push [ebx+000003cc]
+mov [ebp-1c],eax
+mov [ebp-18],edi
+mov [ebp-44],edi
+mov [ebp-48],edi
+mov [ebp-10],edi
+mov [ebp-5c],edi
+mov [ebp-58],edi
+mov [ebp-3c],edi
+mov [ebp-64],edi
+mov [ebp-60],edi
+mov [ebp-40],edi
+call 00458a8c
+push [ebx+000003d0]
+mov [ebp+3c],eax
+call 00458a8c
+add esp,0c
+mov [ebp-24],eax
+cmp [ebp+6c],edi
+JMP 0086278E
+
+JMP 00860B65
+[DISABLE]
+00B5DF2C:
+dd 00842B8E
+
+dealloc(CheckEsp)

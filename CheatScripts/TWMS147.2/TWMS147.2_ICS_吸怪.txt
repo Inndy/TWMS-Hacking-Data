@@ -1,0 +1,122 @@
+[Enable]
+Alloc(MobVac, 1024)
+Alloc(VacXY, 8)
+Alloc(LimitY, 4)
+Label(ForceVac)
+Label(StartVac)
+Label(EndVac)
+Label(NormalVal)
+Label(ContinueVac)
+
+VacXY:
+ReadMem([[00DAD994]+2260]+214, 8)
+
+LimitY: // 0м░дгннию
+DD   #500
+
+MobVac:
+Cmp  [Esp], 00602F39 //EB ?? 8B CE E8 ?? ?? ?? FF 83 E0 01 53 83 C8 1A
+Jne  00942959
+Add  Esp, 4
+
+mov eax, [ecx+000000dc]
+
+push eax
+mov ecx,esi
+call 005FD7C0
+and edi,[ebp-24]
+cmp edi,ffffffff
+jne StartVac
+mov ecx,esi
+call 005E15B9
+cmp eax,edi
+jle 00602F69
+cmp [ebp-14],ebx
+je StartVac
+cmp [esi+000004a8],ebx
+jne StartVac
+mov ecx,esi
+call 005E15E3
+test eax,eax
+jne StartVac
+mov ecx,esi
+call 005E158F
+cmp eax, 03
+je ForceVac
+mov ecx,esi
+call 005E158F
+cmp eax, 04
+jne StartVac
+jmp ForceVac
+
+ForceVac:
+cmp [esi+000003fc],ebx
+jne StartVac
+push 64
+push ebx
+push ebx
+push ebx
+push ebx
+push ebx
+push ebx
+push ebx
+push ebx
+push ffffffff
+mov ecx,esi
+call 005FF2C1
+jmp StartVac
+
+StartVac:
+pushad
+mov ebx,esi
+mov eax,[ebx+00000114] // 8B 83 ?? ?? 00 00 3B C6 74 ?? 83 C0 F4 89 45 F0
+sub eax, 0c
+mov ebx, eax
+
+Cmp  [LimitY], 0
+Je   ContinueVac
+Mov  Eax, [Ebx+000006A0]
+Sub  Eax, [VacXY+04]
+Cmp  Eax, 0
+Jge  NormalVal
+Neg  Eax
+NormalVal:
+Cmp  Eax, [LimitY]
+Jg   EndVac
+ContinueVac:
+
+Cmp  [Ebx+04], 1
+Je   EndVac
+Mov  [Ebx+04], 1
+Mov  Eax, [VacXY]
+Mov  [Ebx+0000069C], Eax
+Mov  word ptr [Ebx+00000238], Ax
+Mov  Eax, [VacXY+04]
+Mov  [Ebx+000006A0], Eax
+Mov  word ptr [Ebx+0000023A], Ax
+Mov  Eax, Ebx
+add eax, 10
+mov ecx,eax
+mov edi,[eax]
+push 0
+push 0
+push 0
+push 0
+push [VacXY+4]
+push [VacXY]
+push 1
+call dword ptr [edi+00000084] // ff ?? ?? 00 00 00 8b ?? ?? ?? 00 00 83 ?? ?? ?? 00 00 00 74
+EndVac:
+popad
+
+jmp 00602FAF
+
+00C32C84:
+DD MobVac
+
+[Disable]
+00C32C84: //[5/10]
+dd 00942959 // 8b 81 dc 00 00 00 c3
+
+DeAlloc(MobVac)
+DeAlloc(VacXY)

@@ -1,0 +1,21 @@
+/*
+// Slow Mobs
+// Credits to David
+// Updated by Ozko
+// gMS v99.1
+[Enable]
+006A541B:
+db B8 00 00 00 00
+
+[Disable]
+006A541B: // B8 ? ? ? ? 39 ? ? 7C ? 85 ? 75 ? 39
+db B8 E8 03 00 00
+*/
+
+[Enable]
+005DB964:
+db B8 00 00 00 00
+
+[Disable]
+005DB964: // B8 ? ? ? ? 39 ? ? 7C ? 85 ? 75 ? 39
+db B8 E8 03 00 00

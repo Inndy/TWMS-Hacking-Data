@@ -1,0 +1,74 @@
+[Enable]
+Alloc(Hook,256)
+Hook:
+Label(HSCRCBypass)
+Label(BackToOP)
+Label(MSCRCBypass)
+Label(BackToMS)
+Label(MSCRCCrack)
+Label(BackToCrack)
+
+HSCRCBypass:
+Mov Eax,Fs:[20]
+Cmp Eax,[Esp+0C]
+Jne BackToOP
+Mov Fs:[34], 57
+Xor Eax, Eax
+Ret 000C
+
+BackToOP:
+Push Ebp
+Mov Ebp, Esp
+Jmp OpenProcess+5
+
+MSCRCBypass:
+Push Esi
+Xor Eax,[Esi+Ecx*4]
+Cmp Esi,00401000
+Jnge BackToMS
+Cmp Esi,00BFC000
+Jg BackToMS
+Sub Esi,00401000
+Push Ebx
+Mov Ebx,[00400B80]
+Xor Ebx,FAFA1234
+Add Esi,Ebx
+Pop Ebx
+
+BackToMS:
+Xor Eax,[Esi+Ecx*4]
+And Eax,000000FF
+Pop Esi
+Push 00816D8D
+Ret
+
+MSCRCCrack:
+Cmp Edx,00816D85
+Jnge BackToCrack
+Cmp Edx,00816D8D
+Jg BackToCrack
+Sub Edx,00401000
+Push Ebx
+Mov Ebx,[00400B80]
+Xor Ebx,FAFA1234
+Add Edx,Ebx
+Pop Ebx
+Push [Edx]
+
+BackToCrack:
+Push 00DBD2BB
+Ret
+
+OpenProcess:
+        Jmp    HSCRCBypass
+00816D88:
+        Jmp    MSCRCBypass
+00DC3DFA:
+        Jmp    MSCRCCrack
+004E62A9:
+        Nop
+        Nop
+        Nop
+        Nop
+        Nop
+[Disable]

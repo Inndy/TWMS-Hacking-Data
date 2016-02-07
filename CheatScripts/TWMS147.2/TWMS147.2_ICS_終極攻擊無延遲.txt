@@ -1,0 +1,23 @@
+// TWMS147.2 ICS ²×·¥§ðÀ»µL©µ¿ð
+[ENABLE]
+alloc(NDFA,512)
+Label(Main)
+
+NDFA:
+Cmp  [Esp+1C], 008FFBB2
+Jne  xxxxxxxx
+Mov  [Esp+1C], Main
+Jmp  xxxxxxxx
+
+Main:
+Xor Edi, Edi
+MOV [ESI+541C], #1300002
+JMP 008ffbcc
+
+00aeb098:
+DD xxxxxxxx
+[DISABLE]
+dealloc(NDFA)
+
+00aeb098:
+DD xxxxxxxx

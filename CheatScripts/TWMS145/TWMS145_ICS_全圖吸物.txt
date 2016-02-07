@@ -1,0 +1,30 @@
+[Enable]
+alloc(ItemVac,64)
+label(SetItemXY)
+
+00D2A0BC:
+DD ItemVac
+
+ItemVac:
+cmp [esp],004DA65C
+je SetItemXY
+cmp [esp],004D9904
+jne PtInRect
+mov [esp],004D9908    // "Add2+04" - 不斷線
+jmp PtInRect
+
+SetItemXY:
+push eax
+mov eax,[esp+0C]      // [esp+0C]: 地上物品X
+mov [ebx],eax            // [edi+00]: 封包物品X (人物X)
+mov eax,[esp+10]      // [esp+10]: 地上物品Y
+mov [ebx+04],eax      // [edi+04]: 封包物品Y (人物Y)
+pop eax
+mov [esp],004DA678    // Add1+02 "jne 004DA678"- 可撿物
+jmp PtInRect
+
+[disable]
+00D2A0BC:
+DD PtInRect
+
+Dealloc(ItemVac)

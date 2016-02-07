@@ -1,0 +1,21 @@
+//TWMS133 ICS 完全無敵
+//改寫 By Inndy
+[ENABLE]
+alloc(GodMode,64)
+
+00BBD234:
+DD GodMode
+
+GodMode:
+cmp [esp],005ABB3A
+jne IsRectEmpty
+add esp,4
+call IsRectEmpty
+test eax,eax
+jmp 005ABB3E
+
+[DISABLE]
+00BBD234:
+DD IsRectEmpty
+
+dealloc(GodMode)

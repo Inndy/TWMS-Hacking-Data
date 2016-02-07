@@ -1,0 +1,90 @@
+[Enable]
+registersymbol(gwgs)
+alloc(gwgs,512)
+registersymbol(zgkzkg)
+alloc(zgkzkg,4)
+registersymbol(zgkzkg)
+alloc(zgkzkg,4)
+label(tiaoguai)
+label(zouguai)
+label(guaiwugensui)
+label(gwxy)
+label(gwxz)
+label(gwxzj)
+label(ksxz)
+label(ksxy)
+
+zgkzkg:   //©Çª«¤è ¦V 1¥ª 2¥k 3¸òÀH
+dd 3
+
+
+gwgs:
+db dc 6d e4 83 c4 10
+pushad
+call guaiwugensui
+popad
+jmp 007F7BDF
+
+guaiwugensui:
+cmp [ebx+000002e0],1
+je zouguai
+cmp [ebx+000002e0],3
+je tiaoguai
+ret
+
+zouguai:
+cmp [zgkzkg],1
+je gwxz
+cmp [zgkzkg],2
+je gwxy
+cmp [zgkzkg],3
+je gwxzj
+ret
+
+tiaoguai:
+cmp [zgkzkg],1
+je gwxz
+cmp [zgkzkg],2
+je gwxy
+cmp [zgkzkg],3
+je gwxzj
+ret
+
+gwxz:
+cmp eax,01
+mov [ebx+000001e8],FFFFFFFF       
+cmp [ebx+000001e8],FFFFFFFF
+jg  ksxz
+ret
+
+ksxz:
+mov [ebx+000001d0],2
+ret
+
+gwxy:
+cmp eax,01
+mov [ebx+000001e8],1
+cmp [ebx+000001e8],1
+jg ksxy
+ret
+
+ksxy:
+mov [ebx+000001d0],4
+ret
+
+gwxzj:
+push eax
+mov eax,[00cde80c]   //8b 0d ?? ?? ?? 00 ff 75 f8 e8
+mov eax,[eax+000044b4] //89 8e ?? ?? 00 00 8b 40 04 89 86 ?? ?? 00
+//sub eax,28
+cmp [ebx+00000278],eax //c7 86 ?? 02 00 00 02 00 00 00
+pop eax
+jl gwxy
+jg gwxz
+ret
+
+007F7BD9:
+JMP gwgs
+[disable]
+007F7BD9:
+DB dc 6d e4 83 c4 10 dd 55 e4

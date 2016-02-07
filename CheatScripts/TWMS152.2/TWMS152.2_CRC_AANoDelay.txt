@@ -1,0 +1,45 @@
+// TWMS152.2 CRC AANoDelay
+// By.aaaddress1.
+[ENABLE]
+Alloc(Hook,16)
+
+Hook:
+mov [ebp-58],01
+jmp 009af6ab
+
+009AECFC: // E9 ?? ?? 00 00 81 BD ?? ?? FF FF 91 A1 12 00 74 0B
+jmp Hook
+[DISABLE]
+009AECFC:
+jmp 009af6ab
+
+Dealloc(Hook)
+
+
+
+
+// TWMS152.2 CRC AANoDelay
+// By.aaaddress1.
+[ENABLE]
+009AD121:
+xor eax,eax
+inc eax
+db 90 90 90
+[DISABLE]
+009AD121:
+db 8B 85 2C DB FF FF
+
+
+
+// TWMS152.2 CRC AANoDelay
+// origin: aaaddress1
+[ENABLE]
+009AD0F8: // 74 20 8B 85 ?? ?? FF FF 8B 8D
+DB 90 90
+009AD10C:
+DB 90 90
+[DISABLE]
+009AD0F8:
+DB 74 20
+009AD10C:
+DB 75 0C

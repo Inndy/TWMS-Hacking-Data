@@ -1,0 +1,88 @@
+//滑鼠趕路SS F4熱鍵版 TWMS V131
+[enable]
+registersymbol(MouseRushStart)
+alloc(MouseRushStart, 512)
+registersymbol(HotKey)
+alloc(HotKey, 128)
+alloc(RushSW, 4)
+alloc(x,4)
+alloc(y,4)
+label(dotele)
+label(RetMSRush)
+label(normal)
+
+RushSW:
+        dd      0              // 初始是關閉mouse 趕路
+
+MouseRushStart:
+push edx
+mov edx,[00ACF52C]
+cmp    [00ACF52C],0
+je      RetMSRush
+cmp    [00ACF52C],0
+je      RetMSRush
+cmp    [RushSW], 0
+je      RetMSRush
+mov    ebx, [00ACF52C]
+mov    ebx, [ebx+17a8]
+cmp    esi, ebx
+jne    RetMSRush
+mov    eax, [00acf93c]//8B 0D ?? ?? ?? ?? 57 E8 ?? ?? ?? ?? 8D 45 ??
+mov    eax, [eax+978]
+mov    ebx, [eax+8c]
+mov    eax, [eax+88]
+mov    [edi-4], ebx
+
+mov [x],ebx
+mov [y],eax
+cmp [edx+00000454],a
+je dotele
+cmp [edx+00000454],b
+je dotele
+jmp RetMSRush
+dotele:
+push ecx
+mov ecx,[x]
+mov [edx+00002cf8],ecx // 89 83 ?? ?? ?? ?? 8B 45 ?? 89 83 ?? ?? ?? ?? 89
+mov ecx,[y]
+mov [edx+00002cfc],ecx
+mov [edx+00000454],13
+pop ecx
+mov  [RushSW], 0
+RetMSRush:
+pop edx
+        mov        [edi],eax
+        mov        ebx,[ebp+14]
+        jmp        007C75B9
+
+007C75B4: // 89 07 8B 5D ?? 85 DB 74 ??
+        jmp MouseRushStart
+
+HotKey:
+cmp eax,3e0000  //熱鍵 F4
+
+jne normal
+not [RushSW]
+
+normal:
+mov ecx,[00ACADF0]//8B 0D ?? ?? ?? ?? 8B F8 C1 EF ??
+jmp 00784FC0
+
+00784FBA://8B 0D ?? ?? ?? ?? 8B F8 C1 EF ??
+jmp HotKey
+nop
+
+[disable]
+007C75B4:// 89 07 8B 5D ?? 85 DB 74 ??
+db 89 07 8b 5d 14
+
+00784FBA:
+mov ecx,[00ACADF0]
+
+unregistersymbol(MouseRushStart)
+dealloc(MouseRushStart)
+dealloc(RushSW)
+unregistersymbol(HotKey)
+dealloc(HotKey)
+dealloc(X)
+dealloc(Y)

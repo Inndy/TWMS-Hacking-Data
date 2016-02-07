@@ -1,0 +1,36 @@
+//00cca624	5C or 58 or 54
+[ENABLE]
+Alloc(GodTime, 4)
+Alloc(HitTime, 4)
+Alloc(OhMyGod, 128)
+Label(Invisible)
+
+GodTime:
+DD 7530 //30 Sec.
+
+OhMyGod:
+Call    004263A1
+Push    Ecx
+Mov     Ecx, Dword Ptr [00CC2798]
+Mov     Ecx, Dword Ptr [Ecx+0000001C]
+Cmp     Ecx, [HitTime]
+Jl      Invisible
+Mov     Eax, Dword Ptr [Ebi+0000047C]
+And     Eax, FFFFFFFE
+Add     Ecx, [GodTime]
+Mov     [HitTime], Ecx
+Pop     Eax
+Jmp     0085F34E
+Invisible:
+Pop     Ecx
+Jmp     008611A2
+
+0085F338:
+Jmp     OhMyGod
+[DISABLE]
+0085F338:
+Call    004263A1
+
+DeAlloc(OhMyGod)
+DeAlloc(GodTime)
+DeAlloc(HitTime)

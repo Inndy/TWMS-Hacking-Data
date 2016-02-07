@@ -1,0 +1,63 @@
+//無延遲 ICS TWMS158.3
+[ENABLE]
+Registersymbol(GND_Key)
+Alloc(GND_Key,4)
+Alloc(GND_ICS,512)
+Label(GND)
+
+GND_Key:
+DD 01
+
+GND_ICS:
+CMP  [GND_Key],01
+JNE  00A56B7C
+CMP  [ESP],00A7A10E
+JNE  00A56B7C
+MOV  [ESP],GND
+JMP  00A56B7C
+
+GND:
+push eax
+call 004867EE
+pop ecx
+test eax,eax
+jne 00A7A119
+and dword ptr [ebp-000029EC],00
+mov eax,[ebp-000029EC]
+mov [ebp-40],eax
+cmp dword ptr [ebp+10],00
+jne 00A7A14D
+mov eax,[ebp-60]
+mov [ebp-00000084],eax
+mov ecx,[ebp-2C]
+call 004763AF
+mov [ebp-00000BF8],eax
+mov ecx,[ebp-2C]
+call 00469D55
+mov [ebp-0000022C],eax
+mov ecx,[ebp-0000022C]
+call 00750383
+neg eax
+sbb eax,eax
+neg eax
+mov [ebp-000001F0],eax
+mov ecx,[ebp-0000022C]
+call 00797A79
+test eax,eax
+jne 00A7A1A1
+and dword ptr [ebp-000029F0],00
+mov eax,[ebp-000029F0]
+mov [ebp-00000228],eax
+cmp dword ptr [ebp-000001DC],00
+je 00A7A1F5
+mov eax,[ebp-000029E0]
+mov ecx,[ebp-000001DC]
+cmp ecx,[eax+00007F2C]
+je 00A7A1F5
+jmp 00A7A1E9
+
+00F69D4C:
+DD GND_ICS
+[DISABLE]
+00F69D4C:
+DD 00A56B7C

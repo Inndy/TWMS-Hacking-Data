@@ -1,0 +1,18 @@
+// TWMS150.2 怪物不放輔助
+[enable]
+Alloc(MobSkillHook,32)
+
+00DFCA4C:
+DD MobSkillHook
+
+MobSkillHook:
+cmp [esp+3C],00607E4B
+jne 0072C5C5
+mov [esp+3C],00607E8D
+jmp 0072C5C5
+
+[disable]
+00DFCA4C:
+DD 0072C5C5
+
+DeAlloc(MobSkillHook)

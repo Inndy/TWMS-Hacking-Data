@@ -1,0 +1,24 @@
+//TWMS147.3 ICS ¥þ¹Ï¼²À»
+//Update:Onion
+
+[ENABLE]
+Alloc(FullMapHit, 64)
+
+FullMapHit:
+Cmp [Esp], 00604070  //83 4d fc ff 8d 4d f0 85 c0
+Jne IntersectRect
+Add Esp, 04
+Call IntersectRect
+
+or dword ptr [ebp-04],FF
+lea ecx,[ebp-10]
+test eax,eax
+Jmp 006040A5
+
+00DBB030:
+DD FullMapHit
+
+[DISABLE]
+00DBB050:
+DD IntersectRect
+DeAlloc(FullMapHit)

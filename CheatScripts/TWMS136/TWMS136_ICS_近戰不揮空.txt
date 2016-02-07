@@ -1,0 +1,39 @@
+//TWMS1.36.1 近戰不揮空 ICS
+[enable]
+alloc(CallCheck,256)
+alloc(NoEmptyAtk,256)
+
+00BC138C:
+DD CallCheck
+
+CallCheck:
+cmp [esp],007E85BA
+jne OffsetRect
+mov [esp],NoEmptyAtk
+jmp OffsetRect
+
+NoEmptyAtk:
+push [ebp-000001a0]
+push 00
+push 00
+push 00
+push 00
+push 00
+push 00
+push [ebp-00000188]
+lea eax,[ebp-00000184]
+push eax
+lea eax,[ebp-68]
+push eax
+call 004301a2
+mov ecx,eax
+call 005ac393
+mov [ebp-7c],eax
+jmp 007E85F6
+
+[disable]
+00BC138C:
+DD OffsetRect
+
+dealloc(CallCheck)
+dealloc(NoEmptyAtk)

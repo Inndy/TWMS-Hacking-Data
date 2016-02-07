@@ -1,0 +1,9 @@
+//TWMS126 連撞時間
+//更新：Silent
+[Enable]
+007AF36E:
+db 05 00 00 00 00
+
+[Disable]
+007AF36E:
+db 05 e8 03 00 00

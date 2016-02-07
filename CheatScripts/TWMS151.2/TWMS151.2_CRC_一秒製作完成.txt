@@ -1,0 +1,9 @@
+// 151.2 CRC 一秒製作完成
+// Auther: Inndy
+// [00CDACA4] = 0x00803F4B
+[ENABLE]
+00804104: // 7C 07 8B CE E8 ?? ?? FF FF 8B CE
+DB 90 90
+[DISABLE]
+00804104:
+DB 7C 07

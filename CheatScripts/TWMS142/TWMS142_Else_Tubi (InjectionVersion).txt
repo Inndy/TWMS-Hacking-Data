@@ -1,0 +1,12 @@
+Alloc(FuckingTubi, 256)
+RegisterSymbol(FuckingTubi)
+CreateThread(FuckingTubi)
+
+FuckingTubi:
+Push 03
+Call dword ptr [00CCC894] // Sleep
+Mov  Eax, [00CBFC60]
+Test Eax, Eax
+Je   FuckingTubi
+And  [Eax+20A4], 00
+Jmp  FuckingTubi

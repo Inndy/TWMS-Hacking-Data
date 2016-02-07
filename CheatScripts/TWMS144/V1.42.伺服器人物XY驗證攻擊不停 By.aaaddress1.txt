@@ -1,0 +1,46 @@
+//V1.42.伺服器人物XY驗證攻擊不停 By.aaaddress1
+alloc(ChangX,128)
+alloc(IncCount,04)
+ChangX:
+push esi
+push edi
+inc [IncCount]
+cmp dword ptr [IncCount],0A
+jle BackToSetNewX
+mov [IncCount],00
+BackToSetNewX:
+mov edi,[esp+0C]
+mov esi,[IncCount]
+add [edi],esi
+push [edi]
+jmp 0043021F
+
+004577AF:
+call ChangX
+
+//v142.人物攻擊方向固定 By.aaaddress1
+alloc(AttackSide,64)
+alloc(SideChoise,04)
+
+SideChoise://01:向左,00:向右
+dd 00
+
+AttackSide:
+mov eax,[SideChoise]
+mov [esi+000003EC],eax
+jmp 00456640
+
+0045663A:
+jmp AttackSide
+nop
+
+//v.142. 完美控制技能施放方向 By.aaaddress1
+alloc(SkillSide,32)
+
+0042EA2D:
+jmp SkillSide
+nop
+
+SkillSide:
+mov eax,01//01:左,00:右
+jmp 0042EA33

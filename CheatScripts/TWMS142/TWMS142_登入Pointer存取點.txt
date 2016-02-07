@@ -1,0 +1,69 @@
+//Page Base
+00485233 - 8B 40 04  - mov eax,[eax+04]
+008CCD9A - A1 7C91CC00 - mov eax,[00CC917C]
+008CCDC6 - A1 7C91CC00 - mov eax,[00CC917C]
+008E37F1 - 8B 35 7C91CC00  - mov esi,[00CC917C]
+008E327A - 39 1D 7C91CC00  - cmp [00CC917C],ebx
+00682FC5 - A1 7C91CC00 - mov eax,[00CC917C]
+00682FD1 - 89 3D 7C91CC00  - mov [00CC917C],edi
+0042EBFF - 8B 35 7C91CC00  - mov esi,[00CC917C]
+008CCD70 - A1 7C91CC00 - mov eax,[00CC917C]
+
+//Page Offset
+00586742 - 83 BF 8C010000 02 - cmp dword ptr [edi+0000018C],02
+0058678E - 83 BF 8C010000 02 - cmp dword ptr [edi+0000018C],02
+00586818 - 8B 87 8C010000    - mov eax,[edi+0000018C]
+0059846D - 83 B8 8C010000 01 - cmp dword ptr [eax+0000018C],01
+005984E7 - 83 B8 8C010000 01 - cmp dword ptr [eax+0000018C],01
+00584A4D - 8B 86 8C010000    - mov eax,[esi+0000018C]
+00584A64 - 89 96 8C010000    - mov [esi+0000018C],edx
+00585F41 - FF B7 8C010000    - push [edi+0000018C]
+005841D9 - 8B 96 8C010000    - mov edx,[esi+0000018C]
+00584280 - 8B 86 8C010000    - mov eax,[esi+0000018C]
+005845AF - FF B6 8C010000    - push [esi+0000018C]
+0057E85E - 8B 8A 8C010000    - mov ecx,[edx+0000018C]
+0058247C - 8B 87 8C010000    - mov eax,[edi+0000018C]
+
+//Server Base
+005857CD - 8B 0D B487CC00    - mov ecx,[00CC87B4]
+0059852F - 89 0D B487CC00    - mov [00CC87B4],ecx
+0058457E - A1 B487CC00       - mov eax,[00CC87B4]
+0058296F - 8B 0D B487CC00    - mov ecx,[00CC87B4]
+0058297E - A1 B487CC00       - mov eax,[00CC87B4]
+0059941C - 83 25 B487CC00 00 - and dword ptr [00CC87B4],00
+
+//Server Offset
+0059B1B8 - 89 BE A0000000    - mov [esi+000000A0],edi
+00598993 - FF B6 9C000000    - push [esi+0000009C]
+0059D308 - 89 9F A0000000    - mov [edi+000000A0],ebx
+
+//Channel Base
+0059B1CC - 8B 0D B887CC00    - mov ecx,[00CC87B8]
+00598552 - 89 0D B887CC00    - mov [00CC87B8],ecx
+0059B233 - A1 B887CC00       - mov eax,[00CC87B8]
+0058724B - A1 B887CC00       - mov eax,[00CC87B8]
+00587383 - A1 B887CC00       - mov eax,[00CC87B8]
+0058298F - 8B 0D B887CC00    - mov ecx,[00CC87B8]
+0058299E - A1 B887CC00       - mov eax,[00CC87B8]
+00598E77 - 83 25 B887CC00 00 - and dword ptr [00CC87B8],00
+
+//Channel Offset
+00598EC6 - 39 01             - cmp [ecx],eax
+00598ED2 - 89 01             - mov [ecx],eax
+00599694 - FF B7 F4000000    - push [edi+000000F4]
+
+//Character Base
+00485233 - 8B 40 04          - mov eax,[eax+04]
+008CCD9A - A1 7C91CC00       - mov eax,[00CC917C]
+008CCDC6 - A1 7C91CC00       - mov eax,[00CC917C]
+008E37F1 - 8B 35 7C91CC00    - mov esi,[00CC917C]
+
+//Character Offset
+0058674B - 8B 87 BC010000    - mov eax,[edi+000001BC]
+00586797 - 8B 87 BC010000    - mov eax,[edi+000001BC]
+00586804 - 8B 87 BC010000    - mov eax,[edi+000001BC]
+00587E73 - 39 9A BC010000    - cmp [edx+000001BC],ebx
+0058BFF3 - 8B 81 BC010000    - mov eax,[ecx+000001BC]
+0058B4DA - 89 B9 BC010000    - mov [ecx+000001BC],edi
+0057EB98 - FF B1 BC010000    - push [ecx+000001BC]
+005867E2 - FF B7 BC010000    - push [edi+000001BC]

@@ -1,0 +1,9 @@
+//TWMS133 CRC 狂狼原地攻擊
+//更新:Inndy
+[Enable]
+007C59A3:
+db 00
+
+[Disable]
+007C59A3:
+db 01

@@ -1,0 +1,48 @@
+//人物吸物  Twms140
+//更新:裕兒
+[Enable]
+Registersymbol(iXY)
+Alloc(GetPlz, 100)
+Alloc(UsePlz, 100)
+Alloc(iXY, 8)
+Label(GetRet)
+Label(UseRet)
+
+004D3A7C:
+   Db 90 90
+004D47C1:
+   Db EB 18
+008B378D:
+   Db EB 0A
+004D47AB:
+   Jmp GetPlz
+   GetRet:
+008EEFCA:
+  Jmp UsePlz
+  UseRet:
+
+GetPlz:
+Call   00430680
+Mov    Ecx, [Eax]
+Mov    [iXY], Ecx
+Mov    Ecx, [Eax+04]
+Mov    [iXY+04], Ecx
+Jmp    GetRet
+
+UsePlz:
+Call   004126C1
+Mov    Edi, iXY
+Jmp    UseRet+3
+
+[disable]
+
+004D3A7C:
+    je 004D3A85
+004D47C1:
+    jne 004D47DB
+008B378D:
+    je 008B3799
+004D47AB:
+    call 00430680
+008EEFCA:
+    call 004126C1

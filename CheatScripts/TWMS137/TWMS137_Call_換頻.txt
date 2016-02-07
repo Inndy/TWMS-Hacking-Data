@@ -1,0 +1,14 @@
+AOB:6a 0c b8 ?? ?? ?? 00 e8 ?? ?? ?? 00 8b 0d ?? ?? ?? 00 33 ff
+
+void ChangeChannel(long Channel)
+{
+    DWORD ChangeChannel_Call = 0x004DCC47;
+    __asm
+    {
+        Pushad
+        Push 0
+        Push [Channel]
+        Call dword ptr [ChangeChannel_Call]
+        Popad
+    }
+}

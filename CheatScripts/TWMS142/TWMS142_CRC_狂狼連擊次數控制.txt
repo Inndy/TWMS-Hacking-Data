@@ -1,0 +1,27 @@
+//v1.42. 狂郎職業瞬間集氣連擊次數 by.aaaddress1
+alloc(Hit,128) 
+
+00871085: //3B C6 7E ?? 39 B3
+jmp Hit
+
+Hit:
+mov [ebx+00005b78],3e8//次數
+mov ecx,[ebx+00005b7c]
+jmp 008710B8 // {cmp ecx,[ebp+XX]}
+
+/*
+00871085 - 3b c6                      - cmp eax,esi
+00871087 - 7e 3b                      - jle 008710c4
+00871089 - 39 b3 78 5b 00 00          - cmp [ebx+00005b78],esi**
+0087108F - 7e 33                      - jle 008710c4
+00871091 - 8b 0d 60 fc cb 00          - mov ecx,[00cbfc60]
+00871097 - 81 c1 bc 20 00 00          - add ecx,000020bc
+0087109D - e8 01 f8 dc ff             - call 006408a3
+008710A2 - 8b 8b 7c 5b 00 00          - mov ecx,[ebx+00005b7c]**
+008710A8 - f7 d8                      - neg eax
+008710AA - 1b c0                      - sbb eax,eax
+008710AC - 25 b8 0b 00 00             - and eax,00000bb8
+008710B1 - 05 88 13 00 00             - add eax,00001388
+008710B6 - 03 c8                      - add ecx,eax
+008710B8 - 3b 4d 68                   - cmp ecx,[ebp+68]**
+*/

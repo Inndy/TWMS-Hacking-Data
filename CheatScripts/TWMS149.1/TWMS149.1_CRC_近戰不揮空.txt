@@ -1,0 +1,7 @@
+// TWMS149.1 CRC 近戰不揮空
+[Enable]
+0091F941:
+DB 74
+[Disable]
+0091F941:
+DB 75

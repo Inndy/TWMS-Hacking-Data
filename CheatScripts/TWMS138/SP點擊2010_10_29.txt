@@ -1,0 +1,18 @@
+===========SPÂIÀ»«Ê¥]==============================
+008E8370 - 68 F4010000                - push 000001F4
+008E8375 - E8 4000B9FF                - call 004783BA
+008E837A - 85 C0                      - test eax,eax
+008E837C - 74 4E                      - je 008E83CC
+008E837E - 68 88000000                - push 00000088//
+008E8383 - 8D 4D E4                   - lea ecx,[ebp-1C]//
+008E8386 - E8 E0CFD0FF                - call 005F536B//
+008E838B - 83 65 FC 00                - and dword ptr [ebp-04],00//
+008E838F - E8 7E76F8FF                - call 0086FA12
+008E8394 - 50                         - push eax
+008E8395 - 8D 4D E4                   - lea ecx,[ebp-1C]
+008E8398 - E8 D8A2B2FF                - call 00412675
+008E839D - FF 75 08                   - push [ebp+08]
+008E83A0 - 8D 4D E4                   - lea ecx,[ebp-1C]
+008E83A3 - E8 CDA2B2FF                - call 00412675
+008E83A8 - 8B 0D 7CA2C800             - mov ecx,[00C8A27C] : [0031348C]
+==============================================

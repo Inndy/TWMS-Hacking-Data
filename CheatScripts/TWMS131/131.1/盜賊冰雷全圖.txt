@@ -1,0 +1,28 @@
+[ENABLE]
+registersymbol(badegg)
+alloc(badegg,256)
+label(do1)
+label(do2)
+badegg:
+do1:
+push esi
+push edi
+mov edi,[esp+c]
+mov eax,FFFFFFFF
+mov [edi],eax
+mov [edi+4],eax
+do2:
+mov eax,55555
+mov [edi+8],eax
+mov [edi+c],eax
+mov eax,edi
+pop edi
+pop esi
+ret
+0040563D:
+jmp badegg
+[DISABLE]
+0040563D:
+db 56 8b 74 24 0c
+unregistersymbol(badegg)
+dealloc(badegg)

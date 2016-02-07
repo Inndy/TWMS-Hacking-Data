@@ -1,0 +1,46 @@
+// TWMS V1.40.1 無限重機槍(支援導彈罐模式)、解除角色移動等限制
+
+[enable]
+alloc(Limit,64)
+label(NoLimit)
+label(Normal)
+
+Limit:
+cmp [esp+08],0086AAD9 // 攻擊判斷 - 85 c0 0f 84 ? ? ? ? 8b 86 ? ? ? ? 2d 5c c0 17 02
+je Normal
+
+cmp eax,0217c05c // 重機槍
+je NoLimit
+cmp eax,0217E775 // 重機槍 (導彈罐模式)
+je NoLimit
+
+Normal:
+call 0064f96c
+jmp 0083E38E
+
+NoLimit:
+xor eax,eax
+jmp 0083E38E
+
+0083E389: // 解除角色移動等限制
+jmp Limit
+
+008751B3: // 無限重機槍
+jmp 00875212 
+
+00875036: // 無限重機槍 (導彈罐模式)
+jmp 00875212
+nop
+
+
+[disable]
+0083E389: // e8 ? ? ? ? 59 85 c0 75 ? 8b ce e8 ? ? ? ? 85 c0 74 ?
+call 0064f96c
+
+008751B3: // 8b 45 ? 2b 86 ? ? 00 00 3d 88 13 00 00 7c ?
+jnge 00875212
+
+00875036: // 8b 45 ? 2b 86 ? ? 00 00 3d 88 13 00 00 0f 8c ? ? ? ?
+jl 00875212
+
+dealloc(Limit)

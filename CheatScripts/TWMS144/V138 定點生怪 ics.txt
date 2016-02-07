@@ -1,0 +1,116 @@
+
+//V138 定點生怪 ics
+[enable]
+registersymbol(xuHook)
+alloc(xuHook, 512)
+//====定點生怪
+label(Hook09)
+alloc(Dull09,512)
+label(Dull092)
+label(Dull0921)
+label(Dull093)
+alloc(xMobPX,4)
+alloc(xMobPY,4)
+alloc(xMobPIO,4)
+//==========
+xMobPIO:
+dd 0
+xMobPX:
+dd 0
+xMobPY:
+dd 0
+//======
+xuHook:
+  cmp dword ptr [esp+8c], 005c1f51
+  je Hook09
+  jmp 0069C088
+Hook09:
+  mov [esp+8c], Dull09
+  jmp 0069C088
+//==================
+Dull09:
+db 8b f8                      //- mov edi,eax
+db 8d 8e 0c 01 00 00          //- lea ecx,[esi+0000010c]
+db 57                        //- push edi
+call 005b8dca
+db ff 75 7c                  //- push [ebp+7c]
+db 8b ce                      //- mov ecx,esi
+call 005b403b
+db 8b c8                  //- mov ecx,eax
+call 005b46e4
+db 50                        //- push eax
+db 8d 46 04                  //- lea eax,[esi+04]
+db 50                        //- push eax
+db 8b cf                      //- mov ecx,edi
+call 0089af7b
+db 8d 8e d0 05 00 00          //- lea ecx,[esi+000005d0]
+call 00423250
+db 8d 8e dc 05 00 00          //- lea ecx,[esi+000005dc]
+db 89 45 6c                  //- mov [ebp+6c],eax
+call 00423250
+db ff 75 68                  //- push [ebp+68]
+db 89 45 54                  //- mov [ebp+54],eax
+db 83 c7 10                  //- add edi,10
+db 8b 07                      //- mov eax,[edi]
+db 8b ce                      //- mov ecx,esi
+db 89 45 60                  //- mov [ebp+60],eax
+call 005b49f4
+db 50                        //- push eax
+db 8b 45 60                  //- mov eax,[ebp+60]
+db 53                        //- push ebx
+db 53                        //- push ebx
+db ff 75 6c                  //- push [ebp+6c]
+db 8b cf                      //- mov ecx,edi
+db ff 75 54                  //- push [ebp+54]
+db 53                        //- push ebx
+cmp dword ptr [eax+7c],0089c0fe
+jne 005c1fb9
+call Dull092
+jmp 005c1fbc
+
+
+Dull092:
+  cmp  [xMobPIO],1
+  je Dull0921
+  pushad
+  mov eax,[00c8efe0]
+  mov ebx,[eax+b18]
+  mov [xMobPX],ebx
+  mov ebx,[eax+b1c]
+  mov [xMobPY],ebx
+  popad
+  mov [xMobPIO],1
+  jmp Dull093
+Dull0921:
+  cmp dword ptr [esp+18],02
+  jne Dull093
+  push ecx
+  mov ecx,[xMobPX]
+  mov [esp+0c],ecx
+  mov eax,[xMobPY]
+  mov [esp+10],eax
+  push eax
+  mov ecx,[00c8e730]
+  call 0042d006
+  mov ecx,eax
+  mov [esp+20],ecx
+  pop ecx
+  xor eax,eax
+  xor edx,edx
+  
+Dull093:
+  jmp 0089c0fe
+//==========
+00c71084:
+dd xuHook
+//==========
+[disable]
+00c71084:
+dd 0069C088
+//=========
+dealloc(xMobPIO)
+dealloc(xMobPX)
+dealloc(xMobPY)
+dealloc(Dull09)
+unregistersymbol(xuHook)
+dealloc(xuHook)

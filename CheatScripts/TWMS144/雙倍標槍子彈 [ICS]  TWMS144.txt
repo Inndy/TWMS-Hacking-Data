@@ -1,0 +1,12 @@
+//Âù­¿¼Ðºj¤l¼u [ICS]  TWMS144
+//by aaaddress1
+alloc(DoubleAttack,128)
+
+00B1fa80:
+dd DoubleAttack
+
+DoubleAttack:
+cmp [esp+c],00874418
+jne 0050AB90
+mov [ebp-00000210],01
+jmp 0050AB90

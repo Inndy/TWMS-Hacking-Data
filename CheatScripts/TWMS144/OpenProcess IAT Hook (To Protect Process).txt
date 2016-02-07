@@ -1,0 +1,29 @@
+// OpenProcess IAT Hook (To Protect Process)
+// Win XP Sp1.2. Test ok
+// write to any process to Spy OpenProcess API
+// Script By aaaddress1.
+[enable]
+alloc(OpenProcessHook,2048) 
+registersymbol(OpenProcessHook) 
+alloc(ProtectHwnd,64)
+registersymbol(ProtectHwnd)
+
+OpenProcessHook: 
+mov edi,edi 
+push ebp 
+mov ebp,esp 
+push ecx
+mov ecx,[ProtectHwnd]
+cmp [ebp+10],ecx  //Check Pid
+pop ecx
+jne OpenProcess+5
+mov [ebp+10],00000000
+jmp OpenProcess+5 
+
+OpenProcess: 
+jmp OpenProcessHook
+[disable] 
+OpenProcess: 
+mov edi,edi 
+push ebp 
+mov ebp,esp 

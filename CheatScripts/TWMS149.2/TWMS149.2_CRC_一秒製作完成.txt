@@ -1,0 +1,8 @@
+// TWMS149.2 CRC 一秒製作完成
+// Auther: Inndy
+[ENABLE]
+007D8702: // 7C 07 8B CE E8 ?? ?? FF FF 8B CE
+DB 90 90
+[DISABLE]
+007D8702:
+DB 7C 07

@@ -1,0 +1,75 @@
+// TWMS V147.4 怪不反擊
+[Enable]
+0060281A: // 75 ?? 8B CE E8 ?? ?? FF FF 8B CE E8 ?? ?? FE FF
+// (DIRECT) // [2/2] // 8B 45 ?? 83 C0 F3 83
+jmp 00602A2A // (REF) // 74 ?? 8B CE E8 ?? ?? FE FF 85 C0 75 ?? 57
+DB 90 90 90 90
+ 
+[Disable]
+0060281A:
+DB 75 0E 8B CE E8 7F 8C FF FF
+
+
+
+
+// TWMS V147.4 範圍外怪不反擊
+// 0060291D - ff 90 a8 00 00 00          - call dword ptr [eax+000000a8]
+// FF 90 ?? 00 00 00 85 C0 74 ?? 8D 4E 04
+[Enable]
+00602A09: // [2/2] // 75 ?? 6A 64 53 53 53 53 53 6A 01
+db 74
+
+[Disable]
+00602A09:
+db 75
+
+
+
+
+KiKi = 怪物 ID 的 esi, 也就是全圖區段的 esi 範圍..
+此範圍是所有的玩家共用, 其 esi 是怪物資料區.
+也就是所謂的 KiKi esi 資料區, 其轉換式為下.
+mov eax, [esi+00000114] // esi = KiKi
+lea eax, [eax-0c] // eax = Monster esi
+
+Monster esi = 怪控區段的 esi, 也就是我們常用怪控方向的 esi 範圍.
+此範圍為玩家所有, 只有玩家能控制此區段的怪物, 別人控制不到.
+也就是我們所謂的怪物控制資料區, 其轉換式為下.
+mov eax, esi // esi = Monster esi
+mov eax, [eax+18]
+sub eax, 4 // eax = KiKi esi
+
+
+[Enable]
+alloc(Stupid, 256)
+alloc(Stupid_Switch, 04)
+label(My_Ret)
+registersymbol(Stupid_Switch)
+
+Stupid_Switch:
+DD 00
+
+Stupid:
+cmp dword ptr [esp+48],0094BE09 // 3b c7 75 ? 33 c0 eb ? 83 be ? ? ? ? 06
+jne My_Ret
+
+push esi
+mov esi, [esi+18]
+sub esi, 4
+mov [esi+000003f8], 0
+pop esi
+
+My_Ret:
+push 00942AF8
+ret
+
+00C32C94:
+DD Stupid
+
+[Disable]
+00C32C94: // [5/10]
+DD 00942AF8 // 83 b9 ? ? 00 00 00 74 ? d9 ee
+
+dealloc(Stupid)
+dealloc(Stupid_Switch)
+unregistersymbol(Stupid_Switch)

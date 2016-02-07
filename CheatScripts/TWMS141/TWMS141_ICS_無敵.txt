@@ -1,0 +1,43 @@
+//v.140. 人物不退+5次MISS [ICS] by.aaaddress1
+[ENABLE]
+alloc(Set,128)
+label(set1)
+label(normal)
+label(keepzerohurt)
+alloc(times,4)
+Set:
+cmp [esp],00861C25	//ff 75 ?? 8b 10 ff 75 ?? 8b c8 57 57
+jne 0083E91E		//8b 81 00 3d 00 00 85 c0 74 05 83 c0 f4 eb 02 33 c0 85 c0 74 04 83 c0 10 c3 33 c0 c3 8b 81 ?? ?? 00 00 85 c0 74 05 83 c0 f4 eb 02 33 c0 85 c0 74 04 83 c0 10 c3 33 c0 c3 56
+mov [esp],set1
+jmp 0083E91E
+set1:
+inc [times]
+cmp [times],4 //MISS 次數-1
+jl keepzerohurt
+mov [times],0
+jmp normal
+keepzerohurt:
+mov [ebp+58],0
+normal:
+push 00       //人物不退
+mov edx,[eax]
+push 00       //人物不退
+mov ecx,eax
+push edi
+push edi
+push 20
+call dword ptr [edx+58]
+mov ecx,[ebp+48]
+push 05
+lea eax,[ebp+38]
+push eax
+mov [ebp+60],2710  //無敵時間(目前10秒)
+jmp 00861C7D
+00B5DEDC:
+dd Set
+[DISABLE]
+00B5DEDC:
+dd 0083E91E
+
+dealloc(Set)
+dealloc(times)

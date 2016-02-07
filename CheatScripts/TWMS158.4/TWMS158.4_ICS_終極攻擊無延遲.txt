@@ -1,0 +1,56 @@
+//TwMS TwMS v158.4_ICS_終極攻擊無延遲
+//更新時間:2013-07-20
+//更新: 乂Boyue乂
+//原創: 未知 有知道的麻煩私信 將改正
+
+[ENABLE]
+alloc(NDFA,128)
+alloc(NDFA2,128)
+alloc(ICS,128)
+registersymbol(SkillID)
+alloc(SkillID,16)
+RegisterSymbol(NDFAOnOff)
+Alloc(NDFAOnOff, 04)
+
+NDFAOnOff:
+DD 00
+
+ICS:
+Cmp [NDFAOnOff], 01
+Jne InterlockedDecrement
+cmp [esp+1c], 00AAD5E3
+jne InterlockedDecrement
+MOV [esp+1c],NDFA
+jmp InterlockedDecrement
+
+NDFA:
+cmp [SkillID],0
+je NDFA2
+Xor Edi,Edi
+PUSH EAX
+MOV EAX,[SkillID]
+MOV [ESI+00007F58],EAX
+POP EAX
+jmp 00AAD5F1
+
+NDFA2:
+push eax
+mov eax,[esi+00007F58]
+pop eax
+cmp eax,0
+je 00AAD5E3
+push eax
+mov eax,[esi+00007F58]
+mov [SkillID],eax
+pop eax
+jmp 00AAD5E3
+
+00D4709C:
+DD ICS
+
+[DISABLE]
+00D4709C:
+DD InterlockedDecrement
+
+dealloc(NDFA)
+UnRegisterSymbol(NDFAOnOff)

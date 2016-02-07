@@ -1,0 +1,63 @@
+//TWMS137 CRC 讀取血魔
+//出處:s18leoare (至少我拿到的來源)
+//更新:Inndy
+//改寫 By Inndy
+[ENABLE]
+alloc(GetHPMP,128)
+label(MM)
+label(NM)
+label(MH)
+label(NH)
+alloc(MAXMP,4)
+alloc(NOWMP,4)
+alloc(MAXHP,4)
+alloc(NOWHP,4)
+registersymbol(MAXMP)
+registersymbol(NOWMP)
+registersymbol(MAXHP)
+registersymbol(NOWHP)
+
+GetHPMP:
+call 008cd643
+pop ebp
+
+cmp [esp],0075F352
+je MM
+cmp [esp],0075F360
+je NM
+cmp [esp],0075F375
+je MH
+cmp [esp],0075F383
+je NH
+ret
+
+MM:
+mov [MAXMP],eax
+ret
+
+NM:
+mov [NOWMP],eax
+ret
+
+MH:
+mov [MAXHP],eax
+ret
+
+NH:
+mov [NOWHP],eax
+ret
+
+00404DAF:
+jmp GetHPMP
+[DISABLE]
+00404DAF:
+call 008cd643
+dealloc(GetHPMP)
+dealloc(MAXMP)
+dealloc(NOWMP)
+dealloc(MAXHP)
+dealloc(NOWHP)
+unregistersymbol(MAXMP)
+unregistersymbol(NOWMP)
+unregistersymbol(MAXHP)
+unregistersymbol(NOWHP)

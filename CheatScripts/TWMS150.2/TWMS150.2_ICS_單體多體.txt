@@ -1,0 +1,88 @@
+//自動轉換攻擊模式
+//自動調整單體或多體攻擊
+[Enable]
+alloc(HookK01,512)
+label(DullK01)
+label(DullK02)
+label(DullK03)
+label(xDukSubPro)
+label(xDukSubPro1)
+label(xDukSubPro2)
+alloc(xDukCnt,4)
+alloc(xDukCnt1,4)
+alloc(xDukCnt2,4)
+//============
+xDukCnt:  //0.正常模式 1.限定全圖
+dd 1
+xDukCnt1:  //計值用,勿改
+dd 0
+xDukCnt2:  //計值用,勿改
+dd 0
+//============
+HookK01:
+  cmp [esp],00615fB8
+  jne IntersectRect
+  mov [esp],DullK01
+  jmp IntersectRect
+//============
+DullK01:
+  add eax,[xDukCnt]
+  test eax,eax
+  je 00615FBC
+  mov eax,[ebp+0c]
+  mov ecx,[ebp-10]
+  call xDukSubPro
+
+DullK02:
+  mov [eax+ecx*4],ebx
+  inc ecx
+  inc [xDukCnt2]
+  push eax
+  mov eax,[xDukCnt2]
+  cmp eax,[xDukCnt1]
+  pop eax
+  jge DullK03
+  cmp ecx,[ebp+10]
+  jl DullK02
+
+DullK03:
+  mov [xDukCnt2],0
+  mov [ebp-10],ecx
+  jmp 00615FD0
+
+xDukSubPro:
+  pushad
+  //====取得怪物數量
+  mov eax,[00E1CABC]
+  mov eax,[eax+24]
+  sub eax,1  //扣除角色
+  //====
+  cmp eax,[ebp+10]
+  mov [xDukCnt1],1
+  jge xDukSubPro2
+  cmp eax,1
+  jge xDukSubPro1
+  mov eax,1
+
+xDukSubPro1:
+  mov ecx,eax
+  mov eax,[ebp+10]
+  xor edx,edx
+  div ecx
+  mov [xDukCnt1],eax
+  
+xDukSubPro2:
+  popad
+  ret
+//============
+00e25e88:
+dd HookK01
+//============
+[Disable]
+00e25e88:
+dd IntersectRect
+//============
+dealloc(xDukCnt2)
+dealloc(xDukCnt1)
+dealloc(xDukCnt)
+dealloc(HookK01

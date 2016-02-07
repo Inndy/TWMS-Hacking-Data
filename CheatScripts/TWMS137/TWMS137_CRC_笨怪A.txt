@@ -1,0 +1,12 @@
+[ENABLE]
+0084D380:
+db 90 90
+0084D388:
+db 90 90 90 90 90 90
+[DISABLE]
+0084D380:
+//div ecx
+db f7 f1
+0084D388:
+//add edx,0002bf20
+db 81 c2 20 bf 02 00

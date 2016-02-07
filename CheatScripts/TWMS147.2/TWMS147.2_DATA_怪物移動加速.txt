@@ -1,0 +1,186 @@
+[00C32478] == 009444A9
+
+009444A9 - 55                         - push ebp
+009444AA - 8b ec                      - mov ebp,esp
+009444AC - 83 ec 38                   - sub esp,38
+009444AF - 56                         - push esi
+009444B0 - 8b f1                      - mov esi,ecx
+009444B2 - 8d 4e 10                   - lea ecx,[esi+10]
+009444B5 - 8b 01                      - mov eax,[ecx]
+009444B7 - 57                         - push edi
+009444B8 - ff 50 20                   - call dword ptr [eax+20]
+009444BB - 33 ff                      - xor edi,edi
+009444BD - 85 c0                      - test eax,eax
+009444BF - 74 17                      - je 009444d8
+009444C1 - e8 c7 80 fd ff             - call 0091c58d
+009444C6 - 8b 8e 2c 01 00 00          - mov ecx,[esi+0000012c]
+009444CC - 2b c8                      - sub ecx,eax
+009444CE - 85 c9                      - test ecx,ecx
+009444D0 - 7f 06                      - jg 009444d8
+009444D2 - 89 be 18 01 00 00          - mov [esi+00000118],edi
+009444D8 - 8b 86 18 01 00 00          - mov eax,[esi+00000118]
+009444DE - 89 86 20 01 00 00          - mov [esi+00000120],eax
+009444E4 - 39 be 04 01 00 00          - cmp [esi+00000104],edi
+009444EA - 74 07                      - je 009444f3
+009444EC - 8b ce                      - mov ecx,esi
+009444EE - e8 8a ff ff ff             - call 0094447d
+009444F3 - 39 be 30 01 00 00          - cmp [esi+00000130],edi
+009444F9 - 74 07                      - je 00944502
+009444FB - 8b ce                      - mov ecx,esi
+009444FD - e8 19 dc ff ff             - call 0094211b
+00944502 - 39 be 0c 01 00 00          - cmp [esi+0000010c],edi
+00944508 - 74 07                      - je 00944511
+0094450A - 8b ce                      - mov ecx,esi
+0094450C - e8 c9 fb ff ff             - call 009440da
+00944511 - 39 be 14 01 00 00          - cmp [esi+00000114],edi
+00944517 - 74 07                      - je 00944520
+00944519 - 8b ce                      - mov ecx,esi
+0094451B - e8 2a ff ff ff             - call 0094444a
+00944520 - 8b ce                      - mov ecx,esi
+00944522 - e8 4e d5 ff ff             - call 00941a75
+00944527 - ff 75 08                   - push [ebp+08]
+0094452A - 8b ce                      - mov ecx,esi
+0094452C - 85 c0                      - test eax,eax
+0094452E - 0f 84 c6 00 00 00          - je 009445fa
+00944534 - dd 86 88 00 00 00          - fld qword ptr [esi+00000088]
+0094453A - dd 5d e8                   - fstp qword ptr [ebp-18]
+0094453D - dd 86 90 00 00 00          - fld qword ptr [esi+00000090]
+00944543 - dd 5d f0                   - fstp qword ptr [ebp-10]
+00944546 - e8 5d ef ff ff             - call 009434a8
+0094454B - 8b 06                      - mov eax,[esi]
+0094454D - 57                         - push edi
+0094454E - 8d 4d 08                   - lea ecx,[ebp+08]
+00944551 - 51                         - push ecx
+00944552 - 8d 4d e8                   - lea ecx,[ebp-18]
+00944555 - 51                         - push ecx
+00944556 - 8b ce                      - mov ecx,esi
+00944558 - ff 50 04                   - call dword ptr [eax+04]
+0094455B - 85 c0                      - test eax,eax
+0094455D - 0f 84 4e 01 00 00          - je 009446b1
+00944563 - 39 7d 08                   - cmp [ebp+08],edi
+00944566 - 0f 8e 45 01 00 00          - jng 009446b1
+0094456C - db 45 08                   - fild dword ptr [ebp+08]
+0094456F - 8b ce                      - mov ecx,esi
+00944571 - dc 35 10 1d bb 00          - fdiv qword ptr [00bb1d10] : 0000
+00944577 - dd 5d f8                   - fstp qword ptr [ebp-08]
+0094457A - e8 f6 d4 ff ff             - call 00941a75
+0094457F - 57                         - push edi
+00944580 - 8d 4d 08                   - lea ecx,[ebp+08]
+00944583 - 85 c0                      - test eax,eax
+00944585 - 8b 06                      - mov eax,[esi]
+00944587 - 51                         - push ecx
+00944588 - 74 32                      - je 009445bc
+0094458A - dd 86 88 00 00 00          - fld qword ptr [esi+00000088]
+00944590 - 8d 4d e8                   - lea ecx,[ebp-18]
+00944593 - dd 5d e8                   - fstp qword ptr [ebp-18]
+00944596 - 51                         - push ecx
+00944597 - dd 86 90 00 00 00          - fld qword ptr [esi+00000090]
+0094459D - 8b ce                      - mov ecx,esi
+0094459F - dd 5d f0                   - fstp qword ptr [ebp-10]
+009445A2 - dd 45 f0                   - fld qword ptr <div ebp-10=""></div>
+009445A5 - dc 4d f8                   - fmul qword ptr [ebp-08] // Skip This
+009445A8 - dc 86 88 00 00 00          - fadd qword ptr [esi+00000088]
+009445AE - dd 9e 88 00 00 00          - fstp qword ptr [esi+00000088]
+009445B4 - ff 50 04                   - call dword ptr [eax+04]
+009445B7 - e9 f5 00 00 00             - jmp 009446b1
+009445BC - dd 46 28                   - fld qword ptr [esi+28]
+009445BF - 8d 4d c8                   - lea ecx,[ebp-38]
+009445C2 - dd 5d c8                   - fstp qword ptr [ebp-38]
+009445C5 - 51                         - push ecx
+009445C6 - dd 46 30                   - fld qword ptr [esi+30]
+009445C9 - 8b ce                      - mov ecx,esi
+009445CB - dd 5d d0                   - fstp qword ptr [ebp-30]
+009445CE - dd 46 38                   - fld qword ptr [esi+38]
+009445D1 - dd 5d d8                   - fstp qword ptr [ebp-28]
+009445D4 - dd 46 40                   - fld qword ptr [esi+40]
+009445D7 - dd 5d e0                   - fstp qword ptr [ebp-20]
+009445DA - dd 45 d8                   - fld qword ptr [ebp-28]
+009445DD - dc 4d f8                   - fmul qword ptr [ebp-08]
+009445E0 - dc 46 28                   - fadd qword ptr [esi+28]
+009445E3 - dd 5e 28                   - fstp qword ptr [esi+28]
+009445E6 - dd 45 e0                   - fld qword ptr [ebp-20]
+009445E9 - dc 4d f8                   - fmul qword ptr [ebp-08]
+009445EC - dc 46 30                   - fadd qword ptr [esi+30]
+009445EF - dd 5e 30                   - fstp qword ptr [esi+30]
+009445F2 - ff 50 08                   - call dword ptr [eax+08]
+009445F5 - e9 b7 00 00 00             - jmp 009446b1
+009445FA - dd 46 28                   - fld qword ptr [esi+28]
+009445FD - dd 5d c8                   - fstp qword ptr [ebp-38]
+00944600 - dd 46 30                   - fld qword ptr [esi+30]
+00944603 - dd 5d d0                   - fstp qword ptr [ebp-30]
+00944606 - dd 46 38                   - fld qword ptr [esi+38]
+00944609 - dd 5d d8                   - fstp qword ptr [ebp-28]
+0094460C - dd 46 40                   - fld qword ptr [esi+40]
+0094460F - dd 5d e0                   - fstp qword ptr [ebp-20]
+00944612 - e8 fa f4 ff ff             - call 00943b11
+00944617 - 8b 06                      - mov eax,[esi]
+00944619 - 8b ce                      - mov ecx,esi
+0094461B - ff 50 18                   - call dword ptr [eax+18]
+0094461E - 8b 06                      - mov eax,[esi]
+00944620 - 6a 01                      - push 01
+00944622 - 8d 4d 08                   - lea ecx,[ebp+08]
+00944625 - 51                         - push ecx
+00944626 - 8d 4d c8                   - lea ecx,[ebp-38]
+00944629 - 51                         - push ecx
+0094462A - 8b ce                      - mov ecx,esi
+0094462C - ff 50 08                   - call dword ptr [eax+08]
+0094462F - 85 c0                      - test eax,eax
+00944631 - 74 77                      - je 009446aa
+00944633 - 39 7d 08                   - cmp [ebp+08],edi
+00944636 - 7e 72                      - jle 009446aa
+00944638 - db 45 08                   - fild dword ptr [ebp+08]
+0094463B - 8b ce                      - mov ecx,esi
+0094463D - dc 35 10 1d bb 00          - fdiv qword ptr [00bb1d10] : 0000
+00944643 - dd 5d f8                   - fstp qword ptr [ebp-08]
+00944646 - e8 2a d4 ff ff             - call 00941a75
+0094464B - 85 c0                      - test eax,eax
+0094464D - 74 15                      - je 00944664
+0094464F - 8b ce                      - mov ecx,esi
+00944651 - e8 1f d4 ff ff             - call 00941a75
+00944656 - 39 78 5c                   - cmp [eax+5c],edi
+00944659 - 75 09                      - jne 00944664
+0094465B - 33 d2                      - xor edx,edx
+0094465D - 8b ce                      - mov ecx,esi
+0094465F - e8 0e e1 ff ff             - call 00942772
+00944664 - 8b ce                      - mov ecx,esi
+00944666 - e8 0a d4 ff ff             - call 00941a75
+0094466B - 8d 4d 08                   - lea ecx,[ebp+08]
+0094466E - 85 c0                      - test eax,eax
+00944670 - 74 2b                      - je 0094469d
+00944672 - 8d 86 88 00 00 00          - lea eax,[esi+00000088]
+00944678 - dd 00                      - fld qword ptr [eax]
+0094467A - 6a 01                      - push 01
+0094467C - dd 5d e8                   - fstp qword ptr [ebp-18]
+0094467F - 51                         - push ecx
+00944680 - dd 40 08                   - fld qword ptr [eax+08]
+00944683 - 8d 4d e8                   - lea ecx,[ebp-18]
+00944686 - dd 5d f0                   - fstp qword ptr [ebp-10]
+00944689 - 51                         - push ecx
+0094468A - dd 45 f0                   - fld qword ptr [ebp-10]
+0094468D - 8b ce                      - mov ecx,esi
+0094468F - dc 4d f8                   - fmul qword ptr [ebp-08]
+00944692 - dc 00                      - fadd qword ptr [eax]
+00944694 - dd 18                      - fstp qword ptr [eax]
+00944696 - 8b 06                      - mov eax,[esi]
+00944698 - ff 50 04                   - call dword ptr [eax+04]
+0094469B - eb 0d                      - jmp 009446aa
+0094469D - 8b 06                      - mov eax,[esi]
+0094469F - 57                         - push edi
+009446A0 - 51                         - push ecx
+009446A1 - 8d 4d c8                   - lea ecx,[ebp-38]
+009446A4 - 51                         - push ecx
+009446A5 - 8b ce                      - mov ecx,esi
+009446A7 - ff 50 08                   - call dword ptr [eax+08]
+009446AA - 8b 06                      - mov eax,[esi]
+009446AC - 8b ce                      - mov ecx,esi
+009446AE - ff 50 1c                   - call dword ptr [eax+1c]
+009446B1 - ff 75 08                   - push [ebp+08]
+009446B4 - 8b 06                      - mov eax,[esi]
+009446B6 - 8b ce                      - mov ecx,esi
+009446B8 - ff 50 14                   - call dword ptr [eax+14]
+009446BB - 33 c0                      - xor eax,eax
+009446BD - 5f                         - pop edi
+009446BE - 40                         - inc eax
+009446BF - 5e                         - pop esi
+009446C0 - c9                         - leave
+009446C1 - c2 04 00                   - ret 0004

@@ -1,0 +1,47 @@
+//===========================
+//For TWMS v129
+//Author:The Evilest Mr.FortyFour
+//Update:Inndy
+//===========================
+[enable]
+registersymbol(MyTime)
+alloc(MyTime,4)
+registersymbol(MyNoBackICSCheck)
+alloc(MyNoBackICSCheck,28)
+registersymbol(MyNoBack)
+alloc(MyNoBack,20)
+alloc(OhMyGod,32)
+CreateThread(OhMyGod)
+
+OhMyGod:
+mov eax,0
+sub eax,[MyTime]
+mov [MyTime],eax
+ret
+
+00A85B6C:
+dd MyNoBackICSCheck
+
+MyTime:
+dd 00007530//µL¼Ä 30sec
+
+MyNoBackICSCheck:
+cmp [esp+1c],00763874
+jne 0062E765
+mov [esp+1c],MyNoBack
+jmp 0062E765
+
+MyNoBack:
+lea ecx,[ebx+00002bac]
+push [MyTime]
+jmp 00764036
+[Disable]
+00A85B6C:
+dd 0065DD71
+registersymbol(MyTime)
+dealloc(MyTime)
+registersymbol(MyNoBackICSCheck)
+dealloc(MyNoBackICSCheck)
+registersymbol(MyNoBack)
+dealloc(MyNoBack)
+dealloc(OhMyGod)

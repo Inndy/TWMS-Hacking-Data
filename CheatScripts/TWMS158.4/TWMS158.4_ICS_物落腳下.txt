@@ -1,0 +1,40 @@
+//TwMS v158.4_ICS_物落腳下
+//更新時間:2013-07-19
+//原創: 未知 有知道的麻煩私信 將改正
+
+[Enable]
+Alloc(ItemMove, 256)
+Alloc(SetItemVxyX,8)
+Label(ItemSet)
+Label(ItemSet1)
+
+ItemMove:
+Cmp [Esp],00A783EC
+Jge ItemSet1
+Jmp 006740A1
+
+ItemSet1:
+Cmp [Esp],00AB7783
+Jle ItemSet
+Jmp 006740A1
+
+ItemSet:
+Pushad
+Mov Esi,Ecx
+mov ebx,[011661F8]
+Push [ebx+127c]
+Lea Ecx,[Esi+00000730]
+Call 00622AE3
+Push [ebx+1280]
+Lea Ecx,[Esi+00000724]
+Call 00622AE3
+Popad
+Jmp 006740A1
+
+00EE02A8:
+DD ItemMove
+[Disable]
+00EE02A8:
+DD 006740A1
+
+DeAlloc(ItemMove)

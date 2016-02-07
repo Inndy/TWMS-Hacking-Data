@@ -1,0 +1,181 @@
+// TWMS147.2 ICS §ðÀ»¤£°±
+[ENABLE]
+Alloc(MyCSX, 512)
+Label(CSX_Lbl00945526)
+Label(CSX_Lbl009454f4)
+Label(CSX_Lbl009455c4)
+Label(CSX_Lbl009455f0)
+Label(CSX_Lbl00945561)
+Label(CSX_Lbl00945582)
+Label(CSX_Lbl009455a3)
+Label(CSX_Lbl009455c4)
+Label(CSX_Lbl009455cd)
+Label(CSX_Lbl009455d6)
+Label(CSX_Lbl009455e1)
+Label(CSX_Lbl009455ec)
+Label(CSX_Lbl009455ee)
+Label(AtkNoStop)
+Label(CSXReturn)
+
+
+MyCSX:
+db 55                                    // 009454d3 - push ebp
+db 8b ec                                 // 009454d4 - mov ebp,esp
+db 53                                    // 009454d6 - push ebx
+db 56                                    // 009454d7 - push esi
+db 8b 75 08                              // 009454d8 - mov esi,[ebp+08]
+db 33 db                                 // 009454db - xor ebx,ebx
+db 57                                    // 009454dd - push edi
+db 39 5e 14                              // 009454de - cmp [esi+14],ebx
+je CSX_Lbl00945526                       // 009454e1 - je CSX_Lbl00945526
+db 8b 46 14                              // 009454e3 - mov eax,[esi+14]
+db 3b c3                                 // 009454e6 - cmp eax,ebx
+jne CSX_Lbl009454f4                      // 009454e8 - jne CSX_Lbl009454f4
+db 68 03 40 00 80                        // 009454ea - push 80004003
+call 009d7880                            // 009454ef - call 009d7880
+CSX_Lbl009454f4:
+db 83 ec 10                              // 009454f4 - sub esp,10
+db 8b 08                                 // 009454f7 - mov ecx,[eax]
+db 8b fc                                 // 009454f9 - mov edi,esp
+db 53                                    // 009454fb - push ebx
+db 53                                    // 009454fc - push ebx
+db 53                                    // 009454fd - push ebx
+db 53                                    // 009454fe - push ebx
+db ff 75 18                              // 009454ff - push [ebp+18]
+db 8d 75 2c                              // 00945502 - lea esi,[ebp+2c]
+db ff 75 14                              // 00945505 - push [ebp+14]
+db a5                                    // 00945508 - movsd
+db ff 75 10                              // 00945509 - push [ebp+10]
+db a5                                    // 0094550c - movsd
+db ff 75 0c                              // 0094550d - push [ebp+0c]
+db a5                                    // 00945510 - movsd
+db 50                                    // 00945511 - push eax
+db a5                                    // 00945512 - movsd
+db ff 91 8c 00 00 00                     // 00945513 - call dword ptr [ecx+0000008c]
+db 3b c3                                 // 00945519 - cmp eax,ebx
+jnl CSX_Lbl009455c4                      // 0094551b - jnl CSX_Lbl009455c4
+jmp CSX_Lbl009455f0                      // 00945521 - jmp CSX_Lbl009455f0
+CSX_Lbl00945526:
+db 8b 0d 00 25 db 00                     // 00945526 - mov ecx,[00db2500] : 00000000
+call 009454ae                            // 0094552c - call 009454ae
+db 89 45 08                              // 00945531 - mov [ebp+08],eax
+db db 45 08                              // 00945534 - fild dword ptr [ebp+08]
+db 8b 7d 0c                              // 00945537 - mov edi,[ebp+0c]
+db dc 35 a8 87 bb 00                     // 0094553a - fdiv qword ptr [00bb87a8] : 0000
+db dd 5d 34                              // 00945540 - fstp qword ptr [ebp+34]
+db 3b fb                                 // 00945543 - cmp edi,ebx
+je CSX_Lbl00945561                       // 00945545 - je CSX_Lbl00945561
+db dd 46 3c                              // 00945547 - fld qword ptr [esi+3c]
+db 51                                    // 0094554a - push ecx
+db dc 66 1c                              // 0094554b - fsub qword ptr [esi+1c]
+db 51                                    // 0094554e - push ecx
+db dc 4d 34                              // 0094554f - fmul qword ptr [ebp+34]
+db dc 46 1c                              // 00945552 - fadd qword ptr [esi+1c]
+db dd 1c 24                              // 00945555 - fstp qword ptr [esp]
+call 004e4185                            // 00945558 - call 004e4185
+db 59                                    // 0094555d - pop ecx
+db 59                                    // 0094555e - pop ecx
+//====================================================================
+Push Eax
+Mov  Eax, [00DAD994]
+Cmp  Esi, [Eax+2260]
+Jne  CSXReturn
+Cmp  [Eax+5664], 14
+Jge  AtkNoStop
+Cmp  [Eax+5674], 05
+Jge  AtkNoStop
+Jmp  CSXReturn
+
+AtkNoStop:
+Add  [Esp], 0A
+
+CSXReturn:
+Pop eax
+//====================================================================
+db 89 07                                 // 0094555f - mov [edi],eax
+CSX_Lbl00945561:
+db 8b 7d 10                              // 00945561 - mov edi,[ebp+10]
+db 3b fb                                 // 00945564 - cmp edi,ebx
+je CSX_Lbl00945582                       // 00945566 - je CSX_Lbl00945582
+db dd 46 44                              // 00945568 - fld qword ptr [esi+44]
+db 51                                    // 0094556b - push ecx
+db dc 66 24                              // 0094556c - fsub qword ptr [esi+24]
+db 51                                    // 0094556f - push ecx
+db dc 4d 34                              // 00945570 - fmul qword ptr [ebp+34]
+db dc 46 24                              // 00945573 - fadd qword ptr [esi+24]
+db dd 1c 24                              // 00945576 - fstp qword ptr [esp]
+call 004e4185                            // 00945579 - call 004e4185
+db 59                                    // 0094557e - pop ecx
+db 59                                    // 0094557f - pop ecx
+db 89 07                                 // 00945580 - mov [edi],eax
+CSX_Lbl00945582:
+db 8b 7d 14                              // 00945582 - mov edi,[ebp+14]
+db 3b fb                                 // 00945585 - cmp edi,ebx
+je CSX_Lbl009455a3                       // 00945587 - je CSX_Lbl009455a3
+db dd 46 3c                              // 00945589 - fld qword ptr [esi+3c]
+db 51                                    // 0094558c - push ecx
+db dc 66 1c                              // 0094558d - fsub qword ptr [esi+1c]
+db 51                                    // 00945590 - push ecx
+db dc 4d 34                              // 00945591 - fmul qword ptr [ebp+34]
+db dc 46 1c                              // 00945594 - fadd qword ptr [esi+1c]
+db dd 1c 24                              // 00945597 - fstp qword ptr [esp]
+call 004e4185                            // 0094559a - call 004e4185
+db 59                                    // 0094559f - pop ecx
+db 59                                    // 009455a0 - pop ecx
+db 89 07                                 // 009455a1 - mov [edi],eax
+CSX_Lbl009455a3:
+db 8b 7d 18                              // 009455a3 - mov edi,[ebp+18]
+db 3b fb                                 // 009455a6 - cmp edi,ebx
+je CSX_Lbl009455c4                       // 009455a8 - je CSX_Lbl009455c4
+db dd 46 44                              // 009455aa - fld qword ptr [esi+44]
+db 51                                    // 009455ad - push ecx
+db dc 66 24                              // 009455ae - fsub qword ptr [esi+24]
+db 51                                    // 009455b1 - push ecx
+db dc 4d 34                              // 009455b2 - fmul qword ptr [ebp+34]
+db dc 46 24                              // 009455b5 - fadd qword ptr [esi+24]
+db dd 1c 24                              // 009455b8 - fstp qword ptr [esp]
+call 004e4185                            // 009455bb - call 004e4185
+db 59                                    // 009455c0 - pop ecx
+db 59                                    // 009455c1 - pop ecx
+db 89 07                                 // 009455c2 - mov [edi],eax
+CSX_Lbl009455c4:
+db 8b 45 1c                              // 009455c4 - mov eax,[ebp+1c]
+db 3b c3                                 // 009455c7 - cmp eax,ebx
+je CSX_Lbl009455cd                       // 009455c9 - je CSX_Lbl009455cd
+db 89 18                                 // 009455cb - mov [eax],ebx
+CSX_Lbl009455cd:
+db 8b 45 20                              // 009455cd - mov eax,[ebp+20]
+db 3b c3                                 // 009455d0 - cmp eax,ebx
+je CSX_Lbl009455d6                       // 009455d2 - je CSX_Lbl009455d6
+db 89 18                                 // 009455d4 - mov [eax],ebx
+CSX_Lbl009455d6:
+db 8b 45 24                              // 009455d6 - mov eax,[ebp+24]
+db d9 ee                                 // 009455d9 - fldz
+db 3b c3                                 // 009455db - cmp eax,ebx
+je CSX_Lbl009455e1                       // 009455dd - je CSX_Lbl009455e1
+db dd 10                                 // 009455df - fst qword ptr [eax]
+CSX_Lbl009455e1:
+db 8b 45 28                              // 009455e1 - mov eax,[ebp+28]
+db 3b c3                                 // 009455e4 - cmp eax,ebx
+je CSX_Lbl009455ec                       // 009455e6 - je CSX_Lbl009455ec
+db dd 18                                 // 009455e8 - fstp qword ptr [eax]
+jmp CSX_Lbl009455ee                      // 009455ea - jmp CSX_Lbl009455ee
+CSX_Lbl009455ec:
+db dd d8                                 // 009455ec - fstp st(0)
+CSX_Lbl009455ee:
+db 33 c0                                 // 009455ee - xor eax,eax
+CSX_Lbl009455f0:
+db 5f                                    // 009455f0 - pop edi
+db 5e                                    // 009455f1 - pop esi
+db 5b                                    // 009455f2 - pop ebx
+db 5d                                    // 009455f3 - pop ebp
+db c2 34 00                              // 009455f4 - ret 0034
+
+
+00C33568:
+DD    MyCSX
+[DISABLE]
+00C33568:
+DD    009454D3
+
+Dealloc(MyCSX)

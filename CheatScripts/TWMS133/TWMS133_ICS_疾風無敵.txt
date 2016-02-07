@@ -1,0 +1,28 @@
+//TWMS133 ICS ¯e­·30¬íµL¼Ä
+//ICS By Inndy
+[enable]
+alloc(MyNoBack,128)
+label(Back)
+alloc(Main,64)
+
+00B9A07C:
+DD MyNoBack
+
+MyNoBack:
+cmp [esp+1C],007E3D75
+jne Back
+mov [esp+1C],Main
+Back:
+jmp 0066B43D
+
+Main:
+lea ecx,[esi+0000327C]
+push FFFF8AD0
+jmp 007E461A
+
+[disable]
+00B9A07C:
+DD 0066B43D
+
+dealloc(MyNoBack)
+dealloc(Main)

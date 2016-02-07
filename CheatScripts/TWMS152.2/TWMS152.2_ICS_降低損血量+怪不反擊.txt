@@ -1,0 +1,36 @@
+// TWMS152.2 ICS 降低損血量+怪物不反擊
+// Auther: Inndy
+// UpdateTime: 2013-01-30
+[ENABLE]
+Alloc(RHNFB, 128)
+Label(Normal)
+Label(ReduceHurts)
+Label(NoFightBack)
+
+RHNFB:
+Cmp  [Esp], 009BB0A2 // [3/6] + 7 // 8b 03 8b cb ff 50 ?? 6a 64 99 59 f7 f9 83 f8
+Je   ReduceHurts
+Cmp  [Esp+58], 006503AE // [1/2] // 8B CE E8 ?? ?? ?? FF 83 F8 FF 0F 8F ?? ?? 00 00 8B CE
+Je   NoFightBack
+Jmp  Normal
+
+NoFightBack:
+Mov  [Esp+58], 00650673
+Jmp  Normal
+
+ReduceHurts:
+Mov  Eax, [Ebp+50]
+Shr  Eax, 2 // 損血量 / 4
+Sub  [Ebp+50], Eax
+Jmp  Normal
+
+Normal:
+Jmp  0097E796
+
+00DBCD1C:
+DD   RHNFB
+[DISABLE]
+00DBCD1C: // [1/1]
+DD   0097E796 // 6a 08 b8 ?? ?? ?? 00 e8 ?? ?? ?? 00 8b 0d ?? ?? ?? 00 85 c9 74
+
+Dealloc(RHNFB)

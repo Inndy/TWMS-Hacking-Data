@@ -1,0 +1,257 @@
+[ENABLE]
+//TWMS137 炎魔忍耐任務
+//Update: Yttuir
+/*
+AOB
+
+89 4d e8 8b 4d e4 8d 81
+
+or
+
+8d 81 ?? ?? 00 00 83 38 00 74 12
+*/
+Alloc(SpawnControl,512)
+Label(rtnSPC)
+Label(rtnStart00)
+Label(rtnStart01)
+Label(rtnStart02)
+Label(rtnStart03)
+Label(rtnStart04)
+Label(rtnStart05)
+Label(rtnStart06)
+Label(rtnStart07)
+Label(rtnStart08)
+Label(rtnStart09)
+Label(rtnStart10)
+Label(rtnStart11)
+Label(rtnStart12)
+Label(rtnStart13)
+Label(rtnStart14)
+Label(rtnStart15)
+Label(rtnStart16)
+Label(rtnStart17)
+Label(rtnStart18)
+Label(rtnStart19)
+Label(rtnStart20)
+Label(rtnStart21)
+Label(rtnStart22)
+Label(rtnStart23)
+Label(rtnStart24)
+Label(rtnStart25)
+Label(rtnStart26)
+Label(rtnStart27)
+Label(rtnStart)
+Label(rtnOne)
+Label(rtnTwo)
+Label(rtnNormal)
+
+SpawnControl:
+  push esi
+  mov esi,[00BD8D60]
+  mov esi,[esi+0CA4]
+
+  cmp esi,363D7F80 //自由市場入口
+  jz rtnStart00
+  cmp esi,0C939AC0 //冰原雪域
+  jz rtnStart01
+  cmp esi,0C93C1D0 //冰面I
+  jz rtnStart02
+  cmp esi,0C93E8E0 //冰面II
+  jz rtnStart03
+  cmp esi,0C940FF0 //結冰的平原I
+  jz rtnStart04
+  cmp esi,0C943700 //結冰的平原II
+  jz rtnStart05
+  cmp esi,0C943764 //冰雪峽谷I
+  jz rtnStart06
+  cmp esi,0C9437C8 //冰雪峽谷II
+  jz rtnStart07
+  cmp esi,0C94382C //尖銳的絕璧I
+  jz rtnStart08
+  cmp esi,0C943890 //尖銳的絕璧II
+  jz rtnStart09
+  cmp esi,0C9438F4 //尖銳的絕璧3
+  jz rtnStart10
+  cmp esi,0C943958 //尖銳的絕璧4
+  jz rtnStart11
+  cmp esi,0C9439BC //危險的絕璧
+  jz rtnStart12
+  cmp esi,0C943A20 //狼的領土1
+  jz rtnStart13
+  cmp esi,0C943A84 //狼的領土2
+  jz rtnStart14
+  cmp esi,0C943AE8 //狼的領土3
+  jz rtnStart15
+  cmp esi,0C943B4C //亡者之林I
+  jz rtnStart16
+  cmp esi,0C943BB0 //亡者之林II
+  jz rtnStart17
+  cmp esi,0C943C14 //亡者之林III
+  jz rtnStart18
+  cmp esi,0C943C78 //亡者之林IV
+  jz rtnStart19
+  cmp esi,0C943CDC //廢棄礦坑I
+  jz rtnStart20
+  cmp esi,0C943D40 //廢棄礦坑II
+  jz rtnStart21
+  cmp esi,0C943DA4 //廢棄礦坑III
+  jz rtnStart22
+  cmp esi,0C943E08 //廢棄礦坑IV
+  jz rtnStart23
+  cmp esi,0C943E6C //火山通道
+  jz rtnStart24
+  cmp esi,0C943ED0 //試煉洞窟I
+  jz rtnStart25
+  cmp esi,0C943F34 //試煉洞窟II
+  jz rtnStart26
+  cmp esi,0C943F98 //試煉洞窟III
+  jz rtnStart27
+  cmp esi,0C943FFC //通往殘暴炎魔之門
+  jz rtnStart
+  cmp esi,10B0C420 //火山的氣息<第1階段>
+  jz rtnOne
+  cmp esi,10B0C421 //火山的氣息<第2階段>
+  jz rtnTwo
+rtnNormal:
+  pop esi
+  lea eax,[ecx+00004658]
+  jmp rtnSPC
+
+rtnStart00:
+  mov [ebp-18], FFFFFFC5
+  mov ebx, FFFFFD96
+  jmp rtnNormal
+rtnStart01:
+  mov [ebp-18], 00000955
+  mov ebx, FFFFFFE6
+  jmp rtnNormal
+rtnStart02:
+  mov [ebp-18], 0000073F
+  mov ebx, FFFFFF32
+  jmp rtnNormal
+rtnStart03:
+  mov [ebp-18], 00000CEE
+  mov ebx, 00000022
+  jmp rtnNormal
+rtnStart04:
+  mov [ebp-18], 00000742
+  mov ebx, FFFFFFE6
+  jmp rtnNormal
+rtnStart05:
+  mov [ebp-18], 00000791
+  mov ebx, FFFFFD83
+  jmp rtnNormal
+rtnStart06:
+  mov [ebp-18], 0000022B
+  mov ebx, FFFFFAEF
+  jmp rtnNormal
+rtnStart07:
+  mov [ebp-18], FFFFFF91
+  mov ebx, FFFFF6F4
+  jmp rtnNormal
+rtnStart08:
+  mov [ebp-18], 000001B4
+  mov ebx, FFFFF9F1
+  jmp rtnNormal
+rtnStart09:
+  mov [ebp-18], FFFFFEC1
+  mov ebx, FFFFFB49
+  jmp rtnNormal
+rtnStart10:
+  mov [ebp-18], 00000146
+  mov ebx, FFFFFB10
+  jmp rtnNormal
+rtnStart11:
+  mov [ebp-18], 000001B6
+  mov ebx, FFFFFAAC
+  jmp rtnNormal
+rtnStart12:
+  mov [ebp-18], FFFFFE44
+  mov ebx, FFFFFA63
+  jmp rtnNormal
+rtnStart13:
+  mov [ebp-18], 000001CD
+  mov ebx, FFFFFA16
+  jmp rtnNormal
+rtnStart14:
+  mov [ebp-18], FFFFFE62
+  mov ebx, FFFFFA48
+  jmp rtnNormal
+rtnStart15:
+  mov [ebp-18], 000001E5
+  mov ebx, FFFFFA44
+  jmp rtnNormal
+rtnStart16:
+  mov [ebp-18], 00000B5C
+  mov ebx, 00000022
+  jmp rtnNormal
+rtnStart17:
+  mov [ebp-18], 00000842
+  mov ebx, 0000009A
+  jmp rtnNormal
+rtnStart18:
+  mov [ebp-18], 0000095A
+  mov ebx, 0000005E
+  jmp rtnNormal
+rtnStart19:
+  mov [ebp-18], 0000082F
+  mov ebx, 00000022
+  jmp rtnNormal
+rtnStart20:
+  mov [ebp-18], 00000424
+  mov ebx, 0000044A
+  jmp rtnNormal
+rtnStart21:
+  mov [ebp-18], 00000419
+  mov ebx, 0000044A
+  jmp rtnNormal
+rtnStart22:
+  mov [ebp-18], 00000105
+  mov ebx, 000000C6
+  jmp rtnNormal
+rtnStart23:
+  mov [ebp-18], 000000FA
+  mov ebx, 000000C6
+  jmp rtnNormal
+rtnStart24:
+  mov [ebp-18], 0000018A
+  mov ebx, 00000E63
+  jmp rtnNormal
+rtnStart25:
+  mov [ebp-18], 00000B0B
+  mov ebx, FFFFFDFF
+  jmp rtnNormal
+rtnStart26:
+  mov [ebp-18], 00000CBD
+  mov ebx, FFFFFEED
+  jmp rtnNormal
+rtnStart27:
+  mov [ebp-18], 00000EE5
+  mov ebx, FFFFFEF0
+  jmp rtnNormal
+
+rtnStart:
+  mov [ebp-18], FFFFFC07
+  mov ebx, FFFFFF2B
+  jmp rtnNormal
+rtnOne:
+  mov [ebp-18], 000015FF
+  mov ebx, FFFFFF26
+  jmp rtnNormal
+rtnTwo:
+  mov [ebp-18], 000017CE
+  mov ebx, FFFFFEEF
+  jmp rtnNormal
+
+007E26CD:
+  jmp SpawnControl
+  db 90
+  rtnSPC:
+
+[DISABLE]
+007E26CD:
+  db 8d 81 58 46 00 00
+
+dealloc(SpawnControl)
+dealloc(MapID)
+dealloc(SpawnXY)

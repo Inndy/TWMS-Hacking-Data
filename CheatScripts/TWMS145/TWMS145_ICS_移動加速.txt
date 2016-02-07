@@ -1,0 +1,75 @@
+// TWMS145 ICS 人物快速移動
+// Update: Inndy
+[enable]
+alloc(SpeedUp,128)
+alloc(Speed,4)
+alloc(FakeTime,4)
+label(SpeedChk)
+label(Normal)
+label(HookTime)
+label(HookTime2)
+label(InitTime)
+
+Speed: // 移動速度
+dd 0A
+
+SpeedUp:
+cmp [esp], 008984B6 // 8B 83 ?? 00 00 00 8B 4D ?? 83 C0
+jne 008E0059
+add esp, 4
+push esi
+mov esi,[Speed]
+
+SpeedChk:
+test esi,esi
+je Normal
+
+dec esi
+push esi
+push ecx
+push eax
+call dword ptr [eax]
+pop eax
+pop ecx
+pop esi
+jmp SpeedChk
+
+Normal:
+pop esi
+jmp 008984B6
+
+HookTime:
+cmp [FakeTime],0
+je InitTime
+
+HookTime2:
+mov eax,[FakeTime]
+add eax,1FE
+mov [FakeTime],eax
+jmp 00DFEC70
+
+InitTime:
+mov [FakeTime],eax
+push eax
+lea eax,[HookTime2]
+sub eax,00F1A07C    // 00F1A076+5
+mov [00F1A077],eax  // 00F1A076+1
+pop eax
+jmp 00DFEC70
+
+00BB624C:
+dd SpeedUp
+
+00F1A076:
+jmp HookTime
+
+[disable]
+00BB624C: // [9/10] // 008E0059
+dd 008E0059 // [2/2] // 53 56 57 8b f9 8d 77 ?? 8b 06
+
+00F1A076: // [4/4] 倒數第4個jmp // dd 1c 24 68 ? ? ? ? e9 ? ? ? ? 68 ? ? ? ? e9 ? ? ? ? db 45 ? 68 ? ? ? ? e9 ? ? ? ? dd 58 ? 68 ? ? ? ? e9 ? ? ? ? dd 40 ? 68 ? ? ? ? e9 ? ? ? ?
+jmp 00DFEC70
+
+dealloc(SpeedUp)
+dealloc(Speed)
+dealloc(FakeTime)

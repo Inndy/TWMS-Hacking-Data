@@ -1,0 +1,24 @@
+//TWMS144 無延遲撿物
+//Auther: Inndy
+[ENABLE]
+Alloc(PreHackPacket, 128)
+Alloc(FakeTime, 4)
+
+PreHackPacket:
+Mov Edi, [Esp+4]    // PacketStruct
+Mov Edi, [Edi+4]    // PacketBuffer
+Mov Eax, [Edi+3]    // Time
+Add Eax, [FakeTime] // 修改包包時間，達成不斷
+Mov [Edi+3], Eax    // 寫入包包時間
+Add [FakeTime],64   // 增加假的時間，可以調整看看
+Mov [Esp], 0090CB2D // 修改回跳點，跳過設定無法撿物
+Jmp 00488BE1        // 跳回發包
+
+0090CB1D:
+Call PreHackPacket
+[DISABLE]
+0090CB1D:
+Call 00488BE1
+
+Dealloc(PreHackPacket)
+Dealloc(FakeTime)

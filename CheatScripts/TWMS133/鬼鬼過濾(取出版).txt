@@ -1,0 +1,59 @@
+004C586E - e9 8d a7 68 04             - jmp 04b50000
+
+04B50000 - 83 3d 00 00 b6 04 01       - cmp dword ptr [04b60000],01
+04B50007 - 74 12                      - je 04b5001b
+04B50009 - 90                         - nop
+04B5000A - 90                         - nop
+04B5000B - 90                         - nop
+04B5000C - 90                         - nop
+04B5000D - 83 3d 00 00 b6 04 02       - cmp dword ptr [04b60000],02
+04B50014 - 74 29                      - je 04b5003f
+04B50016 - 90                         - nop
+04B50017 - 90                         - nop
+04B50018 - 90                         - nop
+04B50019 - 90                         - nop
+04B5001A - c3                         - ret
+04B5001B - 89 05 00 00 b7 04          - mov [04b70000],eax
+04B50021 - 53                         - push ebx
+04B50022 - 56                         - push esi
+04B50023 - 31 db                      - xor ebx,ebx
+04B50025 - be 00 00 b8 04             - mov esi,04b80000 : [ZtlTaskMemReallocImp+262C68]
+04B5002A - 3b 06                      - cmp eax,[esi]
+04B5002C - 74 35                      - je 04b50063
+04B5002E - 90                         - nop
+04B5002F - 90                         - nop
+04B50030 - 90                         - nop
+04B50031 - 90                         - nop
+04B50032 - 39 1e                      - cmp [esi],ebx
+04B50034 - 74 32                      - je 04b50068
+04B50036 - 90                         - nop
+04B50037 - 90                         - nop
+04B50038 - 90                         - nop
+04B50039 - 90                         - nop
+04B5003A - 83 c6 04                   - add esi,04
+04B5003D - eb eb                      - jmp 04b5002a
+04B5003F - 89 05 00 00 b7 04          - mov [04b70000],eax
+04B50045 - 53                         - push ebx
+04B50046 - 56                         - push esi
+04B50047 - 31 db                      - xor ebx,ebx
+04B50049 - be 00 00 b9 04             - mov esi,04b90000 : [ZtlTaskMemReallocImp+262C68]
+04B5004E - 3b 06                      - cmp eax,[esi]
+04B50050 - 75 11                      - jne 04b50063
+04B50052 - 90                         - nop
+04B50053 - 90                         - nop
+04B50054 - 90                         - nop
+04B50055 - 90                         - nop
+04B50056 - 39 1e                      - cmp [esi],ebx
+04B50058 - 75 0e                      - jne 04b50068
+04B5005A - 90                         - nop
+04B5005B - 90                         - nop
+04B5005C - 90                         - nop
+04B5005D - 90                         - nop
+04B5005E - 83 c6 04                   - add esi,04
+04B50061 - eb eb                      - jmp 04b5004e
+04B50063 - b8 00 00 00 00             - mov eax,00000000
+04B50068 - 5e                         - pop esi
+04B50069 - 5b                         - pop ebx
+04B5006A - 8b cf                      - mov ecx,edi
+04B5006C - 89 46 34                   - mov [esi+34],eax
+04B5006F - e9 ff 57 97 fb             - jmp 004c5873

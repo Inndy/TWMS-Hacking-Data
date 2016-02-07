@@ -1,0 +1,70 @@
+//TWMS 1.37.1 被無形怪撞擊1(全圖撞擊另外版本) {ICS}
+//原創:zgenden
+//修改:冰Smith
+//FF 15 ?? ?? ?? ?? FF 75 ?? 8D 45 ?? 50
+[ENABLE]
+registersymbol(Hit)
+alloc(Hit,1024)
+registersymbol(Invisible)
+alloc(Invisible,1024)
+
+
+00bdec8c:
+DD Hit
+
+
+Hit:
+cmp [esp],005B3E89
+jne SetRect
+mov [esp],Invisible
+jmp SetRect
+
+
+Invisible:
+jmp 005B3E9A //or dword ptr [ebp-04],ff
+
+
+[DISABLE]
+00bdec8c:
+DD SetRect
+dealloc(Hit)
+unregistersymbol(Hit)
+dealloc(Invisible)
+unregistersymbol(Invisible)
+
+
+//TWMS 1.37.1 被無形怪撞擊2(全圖撞擊另外版本) {ICS}
+//原創:冰Smith
+//FF 15 ?? ?? ?? ?? 83 4D ?? ?? 8D 4D ?? 85 C0
+[ENABLE]
+registersymbol(Hit2)
+alloc(Hit2,1024)
+registersymbol(Invisible2)
+alloc(Invisible2,1024)
+
+
+00bded28:
+DD Hit2
+
+
+Hit2:
+cmp [esp],005B3E9A
+jne IntersectRect
+mov [esp],Invisible2
+jmp IntersectRect
+
+
+Invisible2:
+or dword ptr [ebp-04],ff
+lea ecx,[ebp-10]
+test eax,eax
+jmp 005b3ecf
+
+
+[DISABLE]
+00bded28:
+DD IntersectRect
+dealloc(Hit2)
+unregistersymbol(Hit2)
+dealloc(Invisible2)
+unregistersymbol(Invisible2)

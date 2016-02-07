@@ -1,0 +1,124 @@
+//v138 熱鍵控制-ics
+[ENABLE]
+registersymbol(xHookHotKey)
+alloc(xHookHotKey,1024)
+label(xHotKey)
+label(xHotKey2)
+label(xHotKey3)
+label(xHotKey4)
+label(xHotKey5)
+label(xHotKey6)
+label(xHotKey7)
+label(xHotKey8)
+
+label(xHotKey9)
+label(xNormal)
+
+//-----------------------------------------------
+00c96924:
+DD xHookHotKey
+//-----------------------------------------------
+xHookHotKey:
+cmp [esp],004DF88A
+jne ImmGetContext
+mov [esp],xHotKey
+jmp ImmGetContext
+
+xHotKey:
+pushad
+cmp dword ptr [ebp+0c],003d0000 //按下 f3  完全無敵
+je xHotKey2
+cmp dword ptr [ebp+0c],003e0000 //按下 f4  58秒無敵
+je xHotKey3
+
+cmp dword ptr [ebp+0c],00440000 //按下 f10  動態數據
+je xHotKey4
+
+cmp dword ptr [ebp+0c],003c0000 //按下 f2  來回撿道具
+je xHotKey5
+
+
+cmp dword ptr [ebp+0c],003b0000 //按下 f1  暫關 大亂鬥定點
+je xHotKey6
+
+cmp dword ptr [ebp+0c],00400000 //按下 f6  笨怪
+je xHotKey7
+
+cmp dword ptr [ebp+0c],00410000 //按下 f7  笨怪關閉
+je xHotKey8
+
+cmp dword ptr [ebp+0c],003f0000 //按下 f5  移動加速
+je xHotKey9
+jmp xNormal
+
+
+xHotKey5:
+//add  [00BC6000],4      // 
+not [00C9C010]
+jmp xNormal
+
+xHotKey9:
+add [00C9C014],1  //走路加速
+and [00C9C014],1
+jmp xNormal
+
+xHotKey2:
+mov  [00C9C000],1      // 完全無敵
+jmp xNormal
+
+xHotKey3:
+mov  [00C9C000],0      // 58秒無敵
+jmp xNormal
+
+xHotKey6:
+mov [00C9C030],1  //大亂鬥定點 關閉
+jmp xNormal
+
+xHotKey7:
+mov  [00C9C034],1      // 笨怪
+jmp xNormal
+
+xHotKey8:
+mov  [00C9C034],0      // 笨怪關閉
+jmp xNormal
+
+xHotKey4:
+jmp xNormal
+//神聖之光30%  
+mov [00BE3FEC],1246D1D5
+mov [00BE3FF0],5892368E
+mov [00BE3FF4],1DD98F9C
+mov [00BE3FF8],4F8C4EBB
+mov [00BE3FFC],827D7A97
+mov [00BE4000],3A26888C
+mov [00BE4004],2514BA4A
+mov [00BE4008],5120FFAE
+mov [00BE400C],8E1ECA00
+
+//無形箭 137
+mov [00BE4010],77E898FC
+mov [00BE4014],EBBF44C7
+mov [00BE4018],7A29700E
+mov [00BE401C],D1BD6F9B
+mov [00BE4020],868223DA
+mov [00BE4024],39DAA8D6
+mov [00BE4028],79B7CD85
+mov [00BE402C],E3CAE22E
+mov [00BE4030],29E3B41A
+
+jmp xNormal  
+
+
+xNormal:
+popad
+push edi
+mov edi,[00c89f40]
+jmp 004DF89E
+
+//-----------------------------------------------
+[DISABLE]
+00c96924:
+DD ImmGetContext
+
+dealloc(xHookHotKey)
+unregistersymbol(xHookHotKey)

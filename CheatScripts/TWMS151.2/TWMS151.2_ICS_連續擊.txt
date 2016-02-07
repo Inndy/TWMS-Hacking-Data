@@ -1,0 +1,55 @@
+// TWMS151.2 ICS 連續擊
+// Auther: Inndy
+// UpdateTime: 2012-12-16
+[ENABLE]
+Alloc(R2_ICSEntry, 64)
+Alloc(R2, 128)
+Alloc(R2KEY, 4)
+Alloc(NextTime, 4)
+Label(R200)
+Label(R2_Return)
+Label(NormalR2)
+//-----------------------------------------------
+R2KEY:
+DD 0
+//-----------------------------------------------
+R2_ICSEntry:
+Cmp  [Esp], 0090F4C3	// 39 9E ?? ?? 00 00 74 ?? 51 8B C4 89 65 ?? 57
+Jne  008FA02B
+Call R2
+Jmp  008FA02B
+//-----------------------------------------------
+R2:
+Push Eax
+Call GetTickCount
+Cmp  [NextTime], Eax
+Jl   NormalR2
+Mov  [R2KEY], 0
+Mov  [NextTime], Eax
+Add  [NextTime], 1388	//5秒自動清除
+NormalR2:
+Pop  Eax
+Inc  [R2KEY]
+Cmp  [R2KEY],2
+Jl   R2_Return
+Cmp  [R2KEY],3
+Jg   R200
+Mov  Edi,ffffffff //2a or ffffffff
+Jmp  R2_Return
+//-----------------------------------------------
+R200:
+Mov  [R2KEY],0
+R2_Return:
+Mov  [Esi+000004B8],Edi
+Ret
+//-----------------------------------------------
+00CF1864:
+DD R2_ICSEntry
+[DISABLE]
+00CF1864:   // [4/5]
+DD 008FA02B // 55 8B EC 83 EC ?? 53 56 33 F6
+
+DeAlloc(R2_ICSEntry)
+DeAlloc(R2)
+DeAlloc(R2KEY)
+DeAlloc(NextTime)

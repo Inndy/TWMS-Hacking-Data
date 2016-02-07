@@ -1,0 +1,124 @@
+//149.1 ©wÂI¥Í©Ç
+[enable]
+alloc(xuHookGPH,4096)
+label(xuHookGPHR)
+label(xuGPH01)
+label(xuGPH011)
+label(xuGPH012)
+label(xuGPH02)
+label(xuGPH0A)
+label(xuGPH0AR)
+alloc(xMobPIO,4)
+alloc(xMobPX,4)
+alloc(xMobPY,4)
+//==========
+xMobPIO:
+dd 0
+xMobPX: 
+dd 0
+xMobPY: 
+dd 0
+//==========
+xuHookGPH:
+  cmp [esp],0060B267 
+  je xuGPH01
+  cmp [esp],0060B30C
+  je xuGPH02
+  jmp xuHookGPHR
+
+xuGPH01:
+
+  push eax
+  push ebx
+  cmp [xMobPIO],1
+  je xuGPH011
+  cmp [00E0BE9C],0
+  je xuGPH011
+ 
+  mov eax,[00e0be9c]
+  mov ebx,[eax+70e4]
+  mov [xMobPX],ebx
+  mov ebx,[eax+70e8]
+  mov [xMobPY],ebx
+  mov [xMobPIO],1
+xuGPH011:
+  pop ebx
+  pop eax
+  cmp [xMobPIO],1
+  jne xuHookGPHR
+  push eax
+  call xuGPH0A
+  cmp eax,1
+  pop eax
+  jne xuHookGPHR
+  push ecx
+
+mov ecx,[00e14118]
+mov ecx,[ecx+10c0]
+
+
+cmp ecx,0E4E4374  
+  mov [esp+0c],000240
+  mov [esp+10],FFFFFD14
+je xuGPH012
+
+
+
+  mov ecx,[xMobPX] 
+  mov [esp+0c],ecx
+  mov ecx,[xMobPY] 
+  mov [esp+10],ecx
+
+
+
+xuGPH012:
+  mov ecx,[esp+10] 
+  push ecx
+  mov ecx,[00e10438]
+  call 004313ce
+  mov [esp+20],0
+  pop ecx
+  jmp xuHookGPHR
+
+xuGPH02:
+  push eax
+  call xuGPH0A
+  cmp eax,1
+  pop eax
+  jne xuHookGPHR
+  
+  mov [ecx+298],06 
+  jmp xuHookGPHR
+
+xuGPH0A:  
+  push ecx
+  mov ecx,0
+  cmp esi,0
+  je xuGPH0AR
+  mov eax,[esi]
+  cmp eax,0
+  je xuGPH0AR
+  cmp [eax],0
+  je xuGPH0AR
+  cmp [eax],00610DB1
+  jne xuGPH0AR
+  mov ecx,1
+
+xuGPH0AR:
+  xor eax,eax
+  mov eax,ecx
+  pop ecx
+  ret
+
+xuHookGPHR:
+jmp 0097AF4E
+
+00C834E8:
+dd xuHookGPH
+[disable]
+00C834E8:
+dd 0097AF4E
+dealloc(xMobPIO)
+dealloc(xMobPX)
+dealloc(xMobPY)
+dealloc(xuHookGPH)

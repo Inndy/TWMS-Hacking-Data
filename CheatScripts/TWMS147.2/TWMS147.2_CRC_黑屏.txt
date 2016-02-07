@@ -1,0 +1,25 @@
+// 8b 75 08 74 23 8d 45 0c 50 e8 // -2
+// 
+// Gr2D_DX9.dll
+// 
+// 52206D01 - 85 f6                      - test esi,esi
+// 52206D03 - 8b 75 08                   - mov esi,[ebp+08]
+// 52206D06 - 74 23                      - je 52206d2b
+// 
+// 
+// Gr2D_DX8.dll
+// 
+// 5040678B - 85 f6                      - test esi,esi
+// 5040678D - 8b 75 08                   - mov esi,[ebp+08]
+// 50406790 - 74 23                      - je 504067b5
+// 
+[ENABLE]
+GR2D_DX8.dll+6790:
+db eb
+GR2D_DX9.DLL+6D06:
+db eb
+[DISABLE]
+GR2D_DX8.dll+6790:
+db 74
+GR2D_DX9.DLL+6D06:
+db 74

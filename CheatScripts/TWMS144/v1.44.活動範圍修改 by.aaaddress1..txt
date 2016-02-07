@@ -1,0 +1,46 @@
+﻿//v1.44.活動範圍修改 by.aaaddress1.
+//效果:可以讓怪物吸至指定xy,
+//並且人物只能在該(x,y)左右200範圍處移動.
+
+alloc(Vac,128)
+alloc(XY,08)
+label(SetHumanMapRang)
+label(SetMobMapRang)
+label(Return)
+
+XY:
+dd 00//吸怪的點的X
+dd 00//吸怪的點的Y
+
+Vac:
+mov esi,[00CF7DD8]
+cmp dword ptr [esp+08],0086f7a7 //人物活動範圍
+je SetHumanMapRang
+cmp dword ptr [esp+08],008D7EDB //怪物活動範圍
+je SetMobMapRang
+ret
+SetMobMapRang:
+push eax
+mov eax,[XY+00]
+mov [esi+1c],eax//設定怪物左牆
+mov [esi+24],eax//設定怪物右牆
+mov eax,[XY+04]
+mov [esi+28],eax//設定怪物上牆
+mov [esi+20],eax//設定怪物下牆
+pop eax
+jmp Return
+SetHumanMapRang:
+push eax
+mov eax,[XY+00]
+sub eax,00c8
+mov [esi+1c],eax//設定人物左牆
+add eax,00190
+mov [esi+24],eax//設定人物右牆
+pop eax
+Return:
+add esi,1C
+jmp 008D2DFA
+
+008D2DF1:
+jmp Vac
+nop

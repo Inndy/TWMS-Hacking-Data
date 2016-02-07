@@ -1,0 +1,45 @@
+[Enable]
+Alloc(Function,512)
+Registersymbol(Function)
+Alloc(CtrlTime,4)
+Registersymbol(CtrlTime)
+Label(Normal)
+Label(Main)
+
+00BBB594:
+Dd Function
+
+CtrlTime:
+Dd FFFF8AD0 // 30 Sec
+
+Function:
+//E8 ?? ?? ?? ?? 6A 64 33 D2 59 F7 F1 89 55
+Cmp [Esp+1C], 007F6227
+Jne 00675C15
+Mov [Esp+1C], Main
+Jmp 00675C15
+
+Main:
+Push 64
+Xor Edx,Edx
+Pop Ecx
+Div Ecx
+Mov [Ebp+3C], Edx
+Call 004297F5
+Test byte ptr [Eax+0000019C], 02
+Je Normal
+Jmp 007F623D
+//E8 ?? ?? ?? ?? 39 7D ?? 7F ?? 8D 8B ?? ?? ?? ?? 68 24 FA FF FF E8
+Normal:
+Lea Ecx, [Esi+00003280]
+Push [CtrlTime]
+Jmp 007F6ACC
+
+[Disable]
+00BBB594:
+Dd 00675C15
+
+DeAlloc(Function)
+UnRegistersymbol(Function)
+DeAlloc(CtrlTime)
+UnRegistersymbol(CtrlTime)

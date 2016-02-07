@@ -1,0 +1,42 @@
+// TWMS 147.4 ICS ´«ÀW©T©w
+
+[ENABLE]
+Alloc(SpawnXY,8)
+Alloc(MapID,4)
+Alloc(SetSpawn,256)
+Label(SetSpawnMain)
+
+MapID:
+ReadMem([00DB5AB0]+000010BC, 4)
+
+SpawnXY:
+ReadMem([00DB5AB0]+00000F90, 8)
+
+SetSpawn:
+Cmp  [esp+74],008D6F89 // 50 8D 8E ?? ?? 00 00 89 45 ?? E8 ?? ?? ? FF 3B F3
+Jne  GetProcessHeap
+Mov  [Esp+74],SetSpawnMain
+Jmp  GetProcessHeap
+
+SetSpawnMain:
+Push Eax
+Mov  Eax, [00db5ab0]
+Mov  Eax, [Eax+10BC]
+Cmp  Eax, [MapID]
+Pop  Eax
+Jne  008D6F89
+Push [SpawnX]
+Push [SpawnY]
+Pop  [Ebp-1C]
+Pop  [Ebp-20]
+Jmp  008D6F89
+
+00DBAED4:
+DD    SetSpawn
+[DISABLE]
+00DBAEB4: // FF 15 ?? ?? ?? 00 50 FF 15 ?? ?? ?? 00 89 30
+DD    GetProcessHeap
+
+DeAlloc(SetSpawn)
+DeAlloc(SpawnXY)
+DeAlloc(MapID)

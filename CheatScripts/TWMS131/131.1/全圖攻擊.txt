@@ -1,0 +1,21 @@
+[ENABLE]
+registersymbol(AwesomeMan)
+alloc(AwesomeMan,1024)
+registersymbol(AttackVac)
+alloc(AttackVac,1024)
+00AD4948:
+DD AwesomeMan
+AwesomeMan:
+cmp [esp],0058A56E
+jne IntersectRect 
+mov [esp],AttackVac
+jmp IntersectRect
+AttackVac:
+jmp 0058a57a
+[DISABLE]
+00AD4948:
+DD IntersectRect
+dealloc(AwesomeMan)
+unregistersymbol(AwesomeMan)
+dealloc(AttackVac)
+unregistersymbol(AttackVac)

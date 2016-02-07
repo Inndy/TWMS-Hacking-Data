@@ -1,0 +1,178 @@
+//=================================================
+// 角色顯式 for Twms137
+// 原作：未知
+// Address : 00847195
+// JmpAddr : CSEax
+// 
+// 功能: 
+// 0.關閉, 1.滑鼠趕路, 2.物品落腳下, 3.攻擊不停.
+// 
+// 使用方法:
+// 修改 CSEaxMode 的值即可.
+// 
+// 註: 滑鼠趕路, 物落腳下 請勿攻擊
+//=================================================
+[Enable]
+Registersymbol(CSEax)
+Alloc(CSEax, 256)
+Registersymbol(CSEaxMode)
+Alloc(CSEaxMode, 4)
+
+Label(NormalX)
+Label(NormalY)
+
+Label(MouserX)
+Label(MouserY)
+
+Label(UberX)
+Label(UberY)
+Label(CharX)
+Label(CharY)
+
+Label(CSXStart)
+Label(CSXReturn)
+//=================================================
+CSEaxMode:
+        Db      0
+//=================================================
+CSEax:
+       Cmp     [CSEaxMode], 1
+       Je      MouserX
+       Cmp     [CSEaxMode], 2
+       Je      UberX
+       Cmp     [CSEaxMode], 3
+       Je      CSXStart
+NormalX:
+       Mov     [Edi], Eax
+       Mov     Edi, [Ebp+10]
+       Cmp     Edi, Ebx
+       Jmp     0084719C
+NormalY:
+       Mov     [Edi], Eax
+       Mov     Edi, [Ebp+14]
+       Cmp     Edi, Ebx
+       Jmp     008471BD
+//=================================================
+// 滑鼠趕路 137
+//=================================================
+MouserX:
+       Push    Eax
+       Mov     Eax, [00BD86D8]  //Char PID
+       Mov     Eax, [Eax+1954]
+       Cmp     Esi, Eax
+       Pop     Eax
+       Jne     NormalX
+       Push    Eax
+       Mov     Eax, [00BD8B4C]  //滑鼠點擊
+       Mov     Eax, [Eax+978]
+       Mov     Eax, [Eax+8C]  //X
+       Mov     [Edi], Eax
+       Pop     Eax
+       Mov     Edi, [Ebp+10]
+       //Cmp     Edi, Ebx
+       Je      MouserY
+       Jmp     NormalX+5
+MouserY:
+       Push    Eax
+       Mov     Eax, [00BD86D8]  //Char PID
+       Mov     Eax, [Eax+1954]
+       Cmp     Esi, Eax
+       Pop     Eax
+       Jne     NormalY
+       Push    Eax
+       Mov     Eax, [00BD8B4C]  //滑鼠點擊
+       Mov     Eax, [Eax+978]
+       Mov     Eax, [Eax+88]  //Y
+       //Jmp     NormalY
+       Mov     [Edi], Eax
+       Pop     Eax
+       Mov     Edi,[Ebp+14]
+       Jmp     NormalY+5
+//=================================================
+// 物品落腳下 137
+//=================================================
+UberX:
+       Push    Eax
+       Mov     Eax, [00BD86D8]  //Char PID
+       Mov     Eax, [Eax+1954]
+       Cmp     Esi, Eax
+       Pop     Eax
+       Je      NormalX
+       Push    Eax
+       Mov     Eax, [00BD8678]  //X
+       Lea     Eax, [Eax+1888]
+       //Cmp     Edi, Eax
+       //Je      CharX
+       Mov     Eax, [Eax]
+       Mov     [Edi], Eax
+       Pop     Eax
+       Mov     Edi, [Ebp+10]  
+       Jne     UberY
+       Jmp     NormalX+5
+CharX:
+       Pop     Eax
+       Jmp     NormalX
+UberY:
+       Push    Eax
+       Mov     Eax, [00BD86D8]  //Char PID
+       Mov     Eax, [Eax+1954]
+       Cmp     Esi, Eax
+       Pop     Eax
+       Je      NormalY
+       Push    Eax
+       Mov     Eax, [00BD8678] //Y
+       Lea     Eax, [Eax+188C]
+       //Cmp     Edi, Eax
+       //Je      CharY
+       Mov     Eax, [Eax]
+       Mov     [Edi], Eax
+       Pop     Eax
+       Mov     Edi,[Ebp+14]
+       Jmp     NormalY+5
+CharY:
+       Pop     Eax
+       Jmp     NormalY
+//=================================================
+// 攻擊不停 137
+//=================================================
+CSXStart:
+       Push    Eax
+       Mov     Eax, [00BD86D8]
+       Mov     Eax, [Eax+4440] //主動技能次數
+       Cmp     Eax, 15 //放技能N次回原位
+       Pop     Eax
+       Jg      NormalX
+       Push    Eax
+       Mov     Eax, [00BD86D8]
+       Mov     Eax, [Eax+4440]
+       Cmp     Eax, 14 //放技能N次偏移
+       Pop     Eax
+       Jg      CSXReturn
+       Push    Eax
+       Mov     Eax, [00BD86D8]
+       Mov     Eax, [Eax+4450] //輔助技能次數
+       Cmp     Eax, 5
+       Pop     Eax
+       Jg      CSXReturn
+       Jmp     NormalX
+CSXReturn:
+       Push    Eax
+       Mov     Eax, [00BD86D8]
+       Mov     Eax, [Eax+1954] //Char PID
+       Cmp     Esi, Eax
+       Pop     Eax
+       Jne     NormalX
+       Add     Eax, 0A
+       Jmp     NormalX
+//=================================================
+00847195:
+       //Enter CRC Pointer
+       Jmp     CSEax
+[Disable]
+00847195:
+       //Return CRC Pointer
+       Db      89 07 8B 7D 10 3B FB
+Dealloc(CSEaxMode)
+Dealloc(CSEax)
+Unregistersymbol(CSEaxMode)
+Unregistersymbol(CSEax)

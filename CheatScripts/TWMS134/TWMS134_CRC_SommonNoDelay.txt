@@ -1,0 +1,85 @@
+//TWMS134召喚獸無延遲
+//原作：zgenden
+//更新：草泥馬
+//修改：草泥馬
+//00AB0BA5    FixTime  //0067C88E - E8 87381900  - call 0081011A
+//0084E24E    Fix      //0067C9BA
+[ENABLE]
+registersymbol(FixTime)
+alloc(FixTime,1024)
+registersymbol(FixTimeOF)
+alloc(FixTimeOF,4)
+registersymbol(Fix)
+alloc(Fix,1024)
+registersymbol(FixSSTime)
+alloc(FixSSTime,4)
+registersymbol(FixSSTime10C)
+alloc(FixSSTime10C,4)
+label(Fix00)
+label(Fix01)
+//-----------------------------------------------
+Fix:
+    push eax
+    mov eax,[esi+00000154]
+    cmp [FixSSTime10C],eax
+    pop eax
+    je Fix01
+    push eax
+    mov eax,[FixTimeOF]
+    cmp eax,[FixSSTime]
+    pop eax
+    je Fix00
+    push eax
+    mov eax,[esi+00000154]
+    mov [FixSSTime10C],eax
+    mov eax,[FixTimeOF]
+    mov [FixSSTime],eax
+    pop eax
+Fix01:
+    cmp dword ptr [esi+00000104],00
+    je Fix00
+    push [esi+000000D4]
+    push [esi+000000DC]  //007FCE73
+    call 00639157
+    pop ecx
+    pop ecx
+    mov ecx,ebx
+    sub ecx,[esi+00000154]
+    push ebx
+    mov ecx,esi
+    call 006726B8
+    jmp 0067CB4E
+Fix00:
+    mov eax,0217C05A
+    cmp [esi+000000D4],eax
+    jne 0067CB90
+    jg 0067CBFC
+    mov eax,[esi+000000e8]    //?
+    je 0067CAEC
+//-----------------------------------------------
+FixTimeOF:
+    dd 0
+FixSSTime:
+    dd 0
+FixSSTime10C:
+    dd 0
+FixTime:
+    add [FixTimeOF],2710  //05 10 27 00 00
+    mov eax,[FixTimeOF]
+    ret
+
+0081011A:
+jmp FixTime
+
+0067C9BA:
+jmp Fix
+[DISABLE]
+0081011A:
+DB a1 38 a2 bb 00 8b 40 1c c3
+//before DB a1 a0 09 ca 00 8b 40 18 c3
+0067C9BA:
+DB 0F 8F 3C 02 00 00 8b 86 e8 00 00 00
+dealloc(Fix)
+unregistersymbol(Fix)
+dealloc(FixTime)
+unregistersymbol(FixTime)

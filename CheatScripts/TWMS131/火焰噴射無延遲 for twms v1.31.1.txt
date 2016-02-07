@@ -1,0 +1,10 @@
+//auther:aaaddress1
+//¤õµK¼Q®gµL©µ¿ð for twms v1.31.1
+007878EC:
+mov ecx,0000012e
+nop
+nop
+nop
+nop
+nop
+nop

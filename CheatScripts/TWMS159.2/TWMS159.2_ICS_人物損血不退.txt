@@ -1,0 +1,10 @@
+// TWMS159.2 ICS 人物損血不退
+// Auther: Inndy
+// UpdateTime: 2013-08-12
+// [c2 14 00]應該等於[c2 14 00]
+[ENABLE]
+00FCB070:
+DD 00B33BA4
+[DISABLE]
+00FCB070: // [9/10]
+DD 00B33B6B // [2/3] 55 8B EC 56 FF 75 08 8B F1 8B 06 FF 90

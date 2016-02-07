@@ -1,0 +1,69 @@
+008CEAFD - 55                         - push ebp				//貌似是WindowMessage處理位址
+
+
+008CEB12 - 8B 45 70                   - mov eax,[ebp+70]		//Eax設定點
+......
+008CEB58 - 3D 01010000                - cmp eax,00000101
+008CEB5D - 0F86 DC000000              - jbe 008CEC3F			//跳轉點
+008CEB63 - 3D 02010000                - cmp eax,00000102
+008CEB68 - 0F84 A1000000              - je 008CEC0F
+008CEB6E - 3D 03010000                - cmp eax,00000103
+008CEB73 - 0F86 52030000              - jbe 008CEECB
+008CEB79 - 3D 05010000                - cmp eax,00000105
+008CEB7E - 0F86 BB000000              - jbe 008CEC3F			//跳轉點
+
+
+008CECB1 - FF 33                      - push [ebx]				//Hotkey
+008CECB3 - 50                         - push eax
+008CECB4 - E8 EEEEFFFF                - call 008CDBA7
+
+
+008CDD52 - FF 75 10                   - push [ebp+10]			//Hotkey
+008CDD55 - 8B 8E A4000000             - mov ecx,[esi+000000A4]
+008CDD5B - 8B 01                      - mov eax,[ecx]
+008CDD5D - 57                         - push edi
+008CDD5E - FF 10                      - call dword ptr [eax]
+
+
+004E7B61 - 55                         - push ebp				//設定EBP
+004E7B62 - 8B EC                      - mov ebp,esp
+......
+004E7C8C - E8 7E6D3800                - call 0086EA0F
+
+0086EA3C - 8B 75 0C                   - mov esi,[ebp+0C]		//Hotkey
+0086EA3F - 8D 4D E0                   - lea ecx,[ebp-20]
+0086EA42 - C1 EE 10                   - shr esi,10
+0086EA45 - 8D 7B 04                   - lea edi,[ebx+04]
+0086EA48 - 8B 07                      - mov eax,[edi]
+0086EA4A - 51                         - push ecx
+0086EA4B - 81 E6 FF000000             - and esi,000000FF		//Hotkey
+......
+0086EE0B - 8B 0D B847CC00             - mov ecx,[00CC47B8]		//Base
+0086EE11 - 6A 01                      - push 01
+0086EE13 - FF 75 EC                   - push [ebp-14]
+0086EE16 - E8 4562DDFF                - call 00645060
+
+00645060 - 6A 48                      - push 48
+00645062 - B8 B4BF9B00                - mov eax,009BBFB4
+00645067 - E8 5DE92F00                - call 009439C9
+0064506C - 8B D9                      - mov ebx,ecx
+0064506E - A1 70FFCB00                - mov eax,[00CBFF70]		//人物基址
+00645073 - 33 C9                      - xor ecx,ecx
+00645075 - 89 4D F0                   - mov [ebp-10],ecx
+00645078 - 3B C1                      - cmp eax,ecx
+0064507A - 0F84 2D030000              - je 006453AD
+00645080 - 8B 80 7C040000             - mov eax,[eax+0000047C]	//人物動作
+00645086 - 83 E0 FE                   - and eax,FE
+00645089 - 83 F8 12                   - cmp eax,12
+0064508C - 0F84 1B030000              - je 006453AD
+00645092 - 8B 45 08                   - mov eax,[ebp+08]
+00645095 - 83 F8 2A                   - cmp eax,2A
+00645098 - 75 0A                      - jne 006450A4
+0064509A - C7 45 08 36000000          - mov [ebp+08],00000036
+006450A1 - 8B 45 08                   - mov eax,[ebp+08]
+006450A4 - 39 43 48                   - cmp [ebx+48],eax		//Offset
+006450A7 - 75 0C                      - jne 006450B5
+006450A9 - 8B 55 0C                   - mov edx,[ebp+0C]
+006450AC - 3B 53 4C                   - cmp edx,[ebx+4C]
+006450AF - 0F84 00030000              - je 006453B5
+006450B5 - 89 43 48                   - mov [ebx+48],eax		//Offset

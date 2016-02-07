@@ -1,0 +1,32 @@
+//V137©ÇÀþ²¾4
+[Enable]
+registersymbol(CheckESP)
+alloc(CheckESP,256)
+Label(shunyi)
+
+00BBB594:
+DD CheckESP
+
+CheckESP:
+CMP DWORD PTR [ESP+34],005BDE9E
+JE shunyi
+JMP 00675C15
+
+shunyi:
+        push edx
+        mov eax,[esp+34]
+        add eax,84
+        mov edx,eax
+        mov eax,[esp+30]
+        movsx eax,word ptr [eax+10]
+        sub edx,eax
+        mov [esp+10],edx
+        mov [esp+24],edx
+        pop edx
+        jmp 00675C15
+
+[Disable]
+00BBB594:
+DB 15 5C 67 00
+unregistersymbol(CheckESP)
+dealloc(CheckESP)

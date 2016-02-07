@@ -1,0 +1,110 @@
+[Enable]
+RegisterSymbol(CheckESP)
+Alloc(CheckESP,512)
+RegisterSymbol(ItemList)
+Alloc(ItemList,204800)
+RegisterSymbol(LastItem)
+Alloc(LastItem,4)
+RegisterSymbol(FilterMode)
+Alloc(FilterMode,4)
+Label(HookESP)
+Label(HookFun)
+Label(HookOr1)
+Label(HookOr2)
+Label(BlackFilter)
+Label(WhiteFilter)
+Label(Skip)
+Label(End)
+
+FilterMode:
+//0-關閉  1-黑名單模式  2-白名單模式
+DD 1
+
+ItemList:
+//請在以下加入物品清單
+
+//請在以上加入物品清單
+DD 00
+
+CheckESP:
+CMP DWORD PTR DS:[ESP+64],004C953D
+JE HookESP
+JMP 00675C15
+HookESP:
+MOV DWORD PTR DS:[ESP+64],HookFun
+JMP 00675C15
+
+HookFun:
+MOV EAX,DWORD PTR SS:[EBP-1C]
+MOV ESI,DWORD PTR SS:[EBP-50]
+MOV BYTE PTR DS:[ESI+1C],AL
+CMP EAX,1
+JE HookOr1
+CMP EAX,2
+JE HookOr1
+XOR AL,AL
+JMP HookOr2
+HookOr1:
+MOV AL,1
+HookOr2:
+MOV BYTE PTR DS:[ESI+1D],AL
+MOV DWORD PTR DS:[ESI+20],EDI
+MOV EDI,DWORD PTR SS:[EBP+8]
+MOV ECX,EDI
+CALL 00408585
+MOVZX EAX,AL
+MOV ECX,EDI
+MOV DWORD PTR DS:[ESI+30],EAX
+CALL 004085E1
+PUSH ESI
+MOV ESI,ItemList
+CMP EAX,C350
+JE End
+MOV [LastItem], EAX
+CMP [FilterMode], 0
+JE End
+CMP [FilterMode], 1
+JE BlackFilter
+CMP [FilterMode], 2
+JE WhiteFilter
+
+
+BlackFilter:
+CMP DWORD PTR DS:[ESI],0
+Je End
+CMP DWORD PTR DS:[ESI],EAX
+Je Skip
+ADD ESI,4
+JMP BlackFilter
+
+WhiteFilter:
+CMP DWORD PTR DS:[ESI],0
+Je Skip
+CMP DWORD PTR DS:[ESI],EAX
+Je End
+ADD ESI,4
+JMP WhiteFilter
+
+Skip:
+XOR EAX,EAX
+End:
+POP ESI
+MOV ECX,EDI
+MOV [ESI+34],EAX
+JMP 004C9578
+
+00BBB594:
+DD CheckESP
+
+[Disable]
+00BBB594:
+DD 00675C15
+
+UnRegisterSymbol(CheckESP)
+DeAlloc(CheckESP)
+UnRegisterSymbol(ItemList)
+DeAlloc(ItemList)
+UnRegisterSymbol(FilterMode)
+DeAlloc(FilterMode)
+UnRegisterSymbol(LastItem)
+DeAlloc(LastItem)

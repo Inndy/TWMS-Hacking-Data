@@ -1,0 +1,32 @@
+[Pointer&Offset] For TWMS
+[VERSION] V126
+[UPDATE] 屌王
+[TIME] 2010.1.19
+
+人物動作　　　00CDE80C　450
+技能動作　　　00CDE80C　454
+人物節拍　　　00CDE80C　458
+停止呼吸　　　00CDE80C　44C
+角色X座標　　 00CDEE20　B00
+角色Y座標　　 00CDEE20　B04
+角色X座標　　 00CDE80C　44B4
+角色Y座標　　 00CDE80C　44B8
+紅點數量　　　00CDE804　18
+系統時間　　　00CDEC18　1C
+主動技次數　　00CDE80C　3A18
+輔助技次數　　00CDE80C　3A28
+//--------------------------------------------------
+左牆值　　　　00CDE800　offset   24
+上牆值　　　　00CDE800　offset   28
+右牆值　　　　00CDE800　offset   2C
+下牆值　　　　00CDE800　offset   30
+傳送點　　　　00CE0D84　offset   18
+怪物數量　　　00CDE808　offset   24
+怪物死亡　　　00CDE808　offset   38 
+怪物消失　　　00CDE808　offset   4C
+超撿　　　　　00CDA090　offset   2088
+頻道資訊　　　00CDA090　offset   2050
+地上物品數量　00CE0C80　offset   14
+地上物品數量　00CE9D90　offset   14
+滑鼠 X Y　　　00CDEC14　offset 978　offset　X 88　Y 8C
+CharPID　　　00CDE80C　offset 17F4

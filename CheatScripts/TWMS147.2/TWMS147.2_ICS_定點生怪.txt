@@ -1,0 +1,59 @@
+// TWMS147.2 ICS 定點生怪
+
+// ICS:
+// 005F0BF3 - ff 95 84 00 00 00 - call dword ptr [ebp+00000084]
+// 005F0BF9 - 8b 87 84 01 00 00 - mov eax,[edi+00000184]
+
+// CALL:
+// 009479C5 - 55    - push ebp
+// 009479C6 - 8b ec - mov ebp,esp
+// 009479C8 - 53    - push ebx
+// 009479C9 - 56    - push esi
+// 009479CA - 57    - push edi
+[ENABLE]
+Alloc(FixedPoint, 8)
+Alloc(FixedSpawn, 256)
+Label(SpawnRet)
+Label(Delay)
+Alloc(value, 4)
+FixedPoint:
+ReadMem([00DAD994]+65B4, 8)
+
+FixedSpawn:
+Cmp [Esp], 005F0BF9
+Jne SpawnRet
+Add [value],1
+Mov [Esp+18], 02
+Mov [Esp+04], 01
+Cmp [Esi+08],0
+Je  Delay
+Mov dword ptr [Esi+000002A0], 06
+Mov Eax, [FixedPoint]
+Mov [Esp+08], Eax
+Mov word ptr [Esi+00000238], Ax
+Mov Eax, [FixedPoint+04]
+Mov [Esp+0C], Eax
+Mov word ptr [Esi+0000023A], Ax
+Push Ecx
+Mov Ecx, [00DB1F28]	// \
+Push Eax			// |------> 8B 0D ?? ?? ?? 00 50 E8 ?? ?? FF FF 89 ?? ?? E8
+Call 0043107E		// /
+Mov [Esp+20], Eax	// 原 [Esp+1C]
+Pop Ecx
+
+SpawnRet:
+Jmp 009479C5
+
+Delay:
+Mov [Esp+04], 0
+Mov [Esi+08],1
+Jmp SpawnRet
+
+00C32C78:
+DD FixedSpawn
+[DISABLE]
+00C32C78:
+DD 009479C5
+
+Dealloc(FixedPoint)
+Dealloc(FixedSpawn)

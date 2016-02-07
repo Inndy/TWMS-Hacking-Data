@@ -1,0 +1,55 @@
+//------------------------------------------------------------------
+// Name：	No Empty Attack
+// Version:	TWMS140
+// Update:	Inndy
+// Address：	00862A52
+// EIP：	NoEmptyAtkICS
+// Aob：	ff 15 ?? ?? ?? 00 ff b5 ?? ?? ff ff 6a 00 6a 00 6a 00 6a 00 6a 00 6a 00
+//------------------------------------------------------------------
+[ENABLE]
+Alloc(NoEmptyAtkICS,512)
+
+NoEmptyAtkICS:
+Cmp  [Esp], 00862A58
+Jne  OffsetRect
+Add  Esp, 4
+Call OffsetRect
+
+Push [Ebp-000001a4]
+Push 00
+Push 00
+Push 00
+Push 00
+Push 00
+Push 00
+Push [Ebp-00000184]
+Lea  Eax,[Ebp-00000180]
+Push Eax
+Lea  Eax,[Ebp-68]
+Push Eax
+Call 00435ff9
+Mov  Ecx,Eax
+Call 005d1d9e
+Mov  [Ebp-78],Eax
+Test Eax, Eax
+Je   00862D4C //8b 85 ?? fe ff ff 89 85 ?? ?? ff ff 81 bd ?? ?? ff ff ?? ?? ?? ?? 74 02 eb 4c
+Jmp  00862A8A
+
+00CCA74C:
+DD NoEmptyAtkICS
+
+//以下註解取消為CRC數據
+/*
+00862A52:
+Nop
+Nop
+Call NoEmptyAtkICS
+*/
+[DISABLE]
+00CCA74C:
+DD OffsetRect
+
+00862A52:
+db ff 15 4c a7 cc 00
+
+DeAlloc(NoEmptyAtkICS)

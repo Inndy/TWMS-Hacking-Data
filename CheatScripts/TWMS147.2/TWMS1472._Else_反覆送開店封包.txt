@@ -1,0 +1,78 @@
+﻿// TWMS147.2 反覆送開店封包
+
+// Made by 冷羽楓痕
+// 說明: 送多次封包後，系統會將人物傳送至自由市場，出口會在勇士之村
+ 
+
+[Enable]
+Alloc(SendPacket, 128)
+Alloc(PacketStruct, 16)
+Alloc(PacketData, 13)
+Alloc(SendTime,04)
+Alloc(Switch, 04)
+Alloc(Message, 32)
+Alloc(Caption, 8)
+Label(Normal)
+Registersymbol(Switch)
+CreateThread(SendPacket)
+ 
+PacketStruct:       // 封包結構
+DD 00               // NULL
+DD PacketData       // 封包資料位址
+DD #13              // 封包長度
+DD 00               // NULL
+ 
+Switch:             // 開關 (若一直無法進自由，設0關閉吧)
+dd 01
+ 
+PacketData:         // 開店封包資料
+DB D4 00 06 04 00 00 00 01 00 20 6E 4E 00
+ 
+SendPacket:
+Cmp [Switch],00
+Je  Normal
+ 
+Mov Eax, [00DB5A90] // 地圖
+Mov Eax, [Eax+10BC]
+Cmp Eax, 363D7F80   // 自由市場入口地圖ID: 910000000
+Je  Normal
+ 
+Call 0091C58D       // 時間
+Cmp  Eax,[SendTime]
+Jl   SendPacket
+ 
+Add  Eax,64
+Mov  [SendTime],Eax
+Push PacketStruct
+Call 00425F2E
+Add  Esp, 4
+Jmp  SendPacket
+ 
+Normal:
+Push 00010040
+Push Caption
+Push Message
+Push 0
+Call MessageBoxA
+Ret
+
+Message:
+DB   b6 4b a4 df a4 70 b4 a3 a5 dc a1 47 a4 77 b8 67 a5 69 a5 48 c3 f6 b3 ac bc c6 be da 00
+
+Caption:
+DB   b4 a3 a5 dc 00
+
+[disable]
+
+Dealloc(SendPacket)
+Dealloc(PacketStruct)
+Dealloc(PacketData)
+Dealloc(SendTime)
+Dealloc(Switch)	
+ 
+// 地圖基址   - 8b 0d ?? ?? ?? 00 e8 ?? ?? ?? 00 e9 ?? ?? 00 00 8b ce e8 ?? ?? ?? ff 0f
+// 地圖ID偏移 - ff b6 ?? ?? 00 00 8d 86 ?? ?? 00 00 51 8b cc 89 65 fc
+// 時間基址   - A1 ?? ?? ?? ?? 8B 40 ?? C3
+//    !?      - 8b 0d ? ? ? ? 8d 45 ? 50 e8 ? ? ? ? 6a 01 8b ce
+// 送封包位址 - 6a 38 b8 ? ? ? ? e8 ? ? ? ? 89 4d ? a1 3c 00 40 00
+// 封包標頭   - 68 ?? 00 00 00 8D 4D ?? E8 ?? ?? ?? 00 6A ?? 8D 4D

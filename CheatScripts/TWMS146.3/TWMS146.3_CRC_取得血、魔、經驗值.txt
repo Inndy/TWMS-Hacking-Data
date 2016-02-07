@@ -1,0 +1,30 @@
+// TWMS146.3 ¨ú±o¦å¡BÅ]¡B¸gÅç­È
+// Auther: Inndy
+// ICS: [00BBCC08] = 007EB966, End At 007EBBA6
+// UpdateTime: 2012-06-20
+[ENABLE]
+Alloc(Params, 28)
+Alloc(Hook, 128)
+RegisterSymbol(Params)
+
+Hook:
+Add Esp, 04
+Pop [Params+00] // HpNow
+Pop [Params+04] // HpFull
+Pop [Params+08] // MpNow
+Pop [Params+0C] // MpFull
+Pop [Params+10] // ExpNow
+Pop [Params+14] // ExpFull
+Pop [Params+18] // Unknow
+Sub Esp, 20
+Jmp 007E7CBE
+
+007EBB22: // [5/5] E8 ?? ?? ?? FF 83 EC ?? 8B CC 89 65 ?? 68 00 01 00 00 68 ?? ?? ?? 00 E8
+Call Hook
+[DISABLE]
+007EBB22:
+db e8 97 c1 ff ff
+
+Dealloc(Params)
+Dealloc(Hook)
+UnregisterSymbol(Params)

@@ -1,0 +1,16 @@
+// TWMS151.2 CRC AANoDelay
+// By.aaaddress1.
+[ENABLE]
+Alloc(Hook,16)
+
+Hook:
+mov [ebp-58],01
+jmp 0095f907
+
+0095EF58: // E9 ?? ?? 00 00 81 BD ?? ?? FF FF 91 A1 12 00 74 0B
+jmp Hook
+[DISABLE]
+0095EF58:
+jmp 0095f907
+
+Dealloc(Hook)

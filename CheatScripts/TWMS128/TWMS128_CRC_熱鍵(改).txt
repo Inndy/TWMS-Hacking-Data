@@ -1,0 +1,121 @@
+//128-HotKey
+//F5=3f0000,F6=400000
+[enable]
+registersymbol(HotKey)
+alloc(HotKey,128)
+label(H0)
+label(H1)
+label(H2)
+label(H3)
+label(H4)
+label(HotRet)
+label(ShowText)
+label(text1)
+label(text2)
+label(text3)
+label(text4)
+label(text5)
+label(text6)
+label(text7)
+label(T2)
+label(T4)
+//----------------
+007B5ccb:
+jmp HotKey
+nop
+//------(按鍵)---------
+HotKey:
+cmp eax,3f0000  //F5
+je H1
+cmp eax,400000  //F6
+je H2
+cmp eax,410000  //F7
+je H0
+cmp eax,3b0000  //F1
+je H3
+cmp eax,3c0000  //F2
+je H4
+jmp HotRet
+//-------------------------
+H1:
+mov [400e84],8CA  //2250
+mov eax, text5
+call ShowText 
+jmp HotRet
+
+H2:
+mov [400e84],6D6  //1750
+mov eax, text6
+call ShowText 
+jmp HotRet
+
+H0:
+mov [400e84],4E2  //1250
+mov eax, text7
+call ShowText 
+jmp HotRet
+
+H3:
+xor [400e70],1    //F1
+cmp [400e70],1
+je T2
+
+mov eax, text2
+call ShowText
+jmp HotRet
+
+T2:
+mov eax, text1
+call ShowText 
+jmp HotRet
+
+
+H4:
+xor [400d00],1    //f2
+cmp [400d00],1
+je T4
+mov eax, text4
+call ShowText
+jmp HotRet
+
+T4:
+mov eax, text3
+call ShowText 
+jmp HotRet
+
+HotRet:
+mov ecx,[00ce5250]
+jmp 007B5cd1
+
+//-------------
+ShowText:
+  PUSHAD
+  push 00000000
+  push 00000000
+  push 00000000
+  push ffffffff
+  push 00000007	//顏色
+  push eax
+  mov ecx, [00ce9c90]
+  call 0073218f	   // 1.28
+  POPAD
+  ret
+
+  text1:
+db '===打魚自動掛機啟動(Start)===' 00
+  text2:
+db '===打魚自動掛機關閉(Close)===' 00
+  text3:
+db '===人物至商店啟動(若打魚中=>時間結束後去)===' 00
+  text4:
+db '===人物至商店關閉(出圖後續按F1可繼續掛機)===' 00
+  text5:
+db '分數=2250(60%卷軸)' 00
+  text6:
+db '分數=1750(召喚包)' 00
+  text7:
+db '分數=1250(10%卷軸)' 00
+
+[disable]
+//
+//

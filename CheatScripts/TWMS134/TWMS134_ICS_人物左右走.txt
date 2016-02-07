@@ -1,0 +1,76 @@
+//--------------------
+//Twms1.34.1¤Hª«¥ª¥k
+//§ó·s:Ö¶¾÷ÙT
+//-------------------------
+[ENABLE]
+registersymbol(AwesomeMan)
+alloc(AwesomeMan,1024)
+registersymbol(MyAuto)
+alloc(MyAuto,1024)
+registersymbol(MyAutoLR)
+alloc(MyAutoLR,1024)
+registersymbol(MyAutoLRKey)
+alloc(MyAutoLRKey,4)
+registersymbol(MyAutoLRKeyLR)
+alloc(MyAutoLRKeyLR,4)
+label(MyAutoLR00)
+label(MyAutoLR01)
+label(MyAutoLR02)
+
+00bc0418:
+DD AwesomeMan
+//-----------------------------------------------
+MyAutoLRKey:
+DD 1
+MyAutoLRKeyLR:
+DD 0
+//-----------------------------------------------
+AwesomeMan:
+cmp [esp],00841E1B
+jne GetFocus
+mov [esp],MyAutoLR
+jmp GetFocus
+MyAuto:
+cmp eax,edi
+jne MyAutoLR
+MyAutoLR:
+cmp [MyAutoLRKey],0
+je MyAutoLR00
+
+add [MyAutoLRKeyLR],1
+cmp [MyAutoLRKeyLR],A//¥ª¥k²¾°Ê¶ZÂ÷
+jle MyAutoLR01
+cmp [MyAutoLRKeyLR],14//¥ª¥k²¾°Ê¶ZÂ÷*2
+jle MyAutoLR02
+mov [MyAutoLRKeyLR],1
+jmp MyAutoLR01
+
+MyAutoLR01:
+mov [ebp-8],ffffffff
+xor ecx,ecx
+xor eax,eax
+cmp [ebp-04],eax
+jmp 00842037
+
+MyAutoLR02:
+mov [ebp-8],1
+xor ecx,ecx
+xor eax,eax
+cmp [ebp-04],eax
+jmp 00842037
+
+MyAutoLR00:
+xor ecx,ecx
+xor eax,eax
+cmp [ebp-04],eax
+jmp 00842037
+
+
+[DISABLE]
+00bc0418:
+DD GetFocus
+
+unregistersymbol(AwesomeMan)
+dealloc(AwesomeMan)
+unregistersymbol(MyAutoLR)
+dealloc(MyAutoLR)

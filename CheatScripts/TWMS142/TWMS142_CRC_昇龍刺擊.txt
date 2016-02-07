@@ -1,0 +1,49 @@
+//v1.4 昇龍刺擊位移函數 by.aaaddress1
+alloc(SetSkill,128)
+
+00868A59:
+jmp SetSkill
+
+SetSkill:
+push 000002D0 //720 這是技能發動後移動值的最大量
+push 1 //填入1則是在0.01秒內向右邊移動最大量的值
+push 00 // 若填入-1則是0.01秒內向左移動最大量的值
+mov ecx,[ebp-00001BCC]
+call 008488C9
+jmp 00868A6D
+
+
+
+
+//v1.42 昇龍刺擊半屏幕攻擊 by.aaaddress1
+00868266:
+jmp 00868A2B
+nop
+
+
+
+//v142 無延遲雙弓昇龍刺擊半屏打 by.aaaddress1
+//半成品 單秒內攻擊兩下會斷
+alloc(Skill,128)
+
+008693F2:
+jmp Skill
+Skill:
+mov eax,[ebp-00000CB0]
+mov [eax+40],0A //固定0x0a可以無延遲
+mov [Count],00
+jmp 008693F8
+
+//008693E4://mov eax,[ebp+08]_add eax,0000065C
+//jmp Skill//隨意更動可能會啟動最終攻擊
+
+00828881:
+nop
+nop
+nop
+nop
+nop
+nop
+00868266:
+jmp 00868A2B
+nop

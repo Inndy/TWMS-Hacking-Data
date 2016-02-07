@@ -1,0 +1,6 @@
+[ENABLE]
+AD9071:
+db 8f 15 92 54 53 99 d8 9b ca c4 36 b5 6f d6 01 29 4e 0d bc a5 9f e1 9d 96 a5 16 be
+[DISABLE]
+AD9071:
+db 8f 15 92 4e a2 8c bb 12 65 dc 75 a4 6f e5 8d 8d f0 77 20 84 bf 03 69 88 8f da 6d

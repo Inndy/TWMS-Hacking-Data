@@ -1,0 +1,28 @@
+// TWMS158.4 ICS 物品定位
+
+[ENABLE]
+Alloc(Staic_ICS,64)
+Alloc(WTF_RET,4)
+Label(Staic)
+
+WTF_RET:
+readmem(00D47288, 4)
+
+Staic_ICS:
+Cmp [Esp+08],0052C7C7
+Jne [WTF_RET] // VariantClear
+Mov [Esp+08],Staic
+Jmp [WTF_RET] // VariantClear
+
+Staic:
+pop ecx
+// cmp dword ptr [ebp-1C],02
+// je 008D0035
+jmp 0052C7D2
+
+00D47288:
+DD Staic_ICS
+
+[DISABLE]
+00D47288:
+DD VariantClear

@@ -1,0 +1,10 @@
+//v1.41. 狂郎職業瞬間集氣連擊次數 by.aaaddress1
+alloc(Hit,128) 
+
+00871158: //3B C6 7E ?? 39 B3
+jmp Hit
+
+Hit:
+mov [ebx+00005b78],3e8//次數
+mov ecx,[ebx+00005b7c]
+jmp 0087118B

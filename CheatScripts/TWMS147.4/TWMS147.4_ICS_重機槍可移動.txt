@@ -1,0 +1,59 @@
+// TWMS147.4 ICS 重機槍可移動
+[Enable]
+Alloc(Super_ICS,256)
+Alloc(Super_Hook,128)
+Alloc(Super2_Hook,128)
+Label(SuperAttack)
+Label(Superdolly)
+
+Super_ICS:
+cmp [esp+04], 008F4A3C // [3/6] // +2 // 8B CE E8 ?? ?? ?? FF 85 C0 0F 85 ?? ?? 00 00 39 9E ?? ?? 00 00 0F 85 ?? ?? 00 00
+je Super_Hook
+cmp [esp+04], 008BCF9C // [1/2] // 85 C0 75 ?? 8B 86 ?? ?? 00 00 85 C0 74
+je Super2_Hook
+jmp 008F783A
+
+
+Super_Hook: // 重機槍移動可攻擊 
+mov [esp+4],SuperAttack
+jmp 008F783A
+
+Super2_Hook: // 重機槍可移動
+mov [esp+4],Superdolly
+jmp 008F783A
+
+SuperAttack:
+db 85 c0                     // 008F4A3C - test eax,eax
+jne 008f5283                 // 008F4A3E - jne 008f5283
+db 39 9e ec 53 00 00         // 008F4A44 - cmp [esi+000053ec],ebx
+jne 008f5283                 // 008F4A4A - jne 008f5283
+db 8d be 90 00 00 00         // 008F4A50 - lea edi,[esi+00000090]
+db 8b cf                     // 008F4A56 - mov ecx,edi
+call 00420c7a                // 008F4A58 - call 00420c7a
+db 83 f8 ff                  // 008F4A5D - cmp eax,ff
+db 7f 0f                     // 008F4A60 - jg 008f4a71
+db 39 9e 18 23 00 00         // 008F4A62 - cmp [esi+00002318],ebx
+db 74 07                     // 008F4A68 - je 008f4a71
+db 8b cf                     // 008F4A6A - mov ecx,edi
+db e8 e9 61 b6 ff            // 008F4A6C - call 0045ac5a
+db 8b ce                     // 008F4A71 - mov ecx,esi
+call 008bcf1c                // 008F4A73 - call 008bcf1c
+db 85 c0                     // 008F4A78 - test eax,eax
+jne 008f4b26
+jmp 008F4A80
+
+Superdolly:
+test eax,eax
+jne 008bcff2
+// mov eax,[esi+000053fc] // 此行省略
+JMP 008BCFA6 // 跳下一行
+
+00C2F564:
+dd Super_ICS
+[Disable]
+00C2F564:   // [1/1]
+dd 008F783A // A1 ?? ?? ?? 00 05 ?? ?? 00 00 C3 81
+
+Dealloc(Super_ICS)
+Dealloc(Super_Hook)
+Dealloc(Super2_Hook)

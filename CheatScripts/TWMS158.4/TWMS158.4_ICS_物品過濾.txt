@@ -1,0 +1,89 @@
+//TwMS v158.4_ICS_物品過濾
+
+Registersymbol(ItemFilter)
+Registersymbol(ItemList)
+Alloc(ItemFilter,512)
+Alloc(ItemList,204800)
+Label(HookFun)
+Label(HookOr1)
+Label(HookOr2)
+Label(Filter)
+Label(Skip)
+Label(End)
+
+ItemList:
+DD 3D85F8//發條蟲
+DD 1EDE54//緩速藍寶殼
+DD 1EDE53//暈眩小碎石
+DD 3CF4AB//新奇驚奇券
+DD 1F72C8//弩箭矢
+DD 1F6EE0//箭矢
+DD 414EC1//銀寶箱
+DD 3FA133//魔法的羽毛筆
+DD 253B41//吃蟲寶石君
+DD 253B40//吃蟲桔小姐
+DD 3D82FC//火焰的鎦
+DD 3FA138//妖精的眼淚
+DD 253B4B//楓樹樹苗
+
+ItemFilter:
+Cmp [Esp+6C], 0052BD55
+Jne 007E6073
+Mov [Esp+6C], HookFun
+Jmp 007E6073
+
+HookFun:
+mov eax,[ebp+38]
+mov esi,[ebp+24]
+mov [esi+1C],al
+cmp eax,01
+Je HookOr1
+cmp eax,02
+Je HookOr1
+xor al,al
+Jmp HookOr2
+
+HookOr1:
+mov al,01
+
+HookOr2:
+mov [esi+1D],al
+mov eax,[ebp+6C]
+mov ecx,edi
+mov [esi+20],eax
+call 00409587
+movzx eax,al
+mov ecx,edi
+//Xor Eax, Eax   //過濾楓幣
+mov [esi+30],eax
+call 004095E2
+Push Esi
+Mov Esi,ItemList
+Filter:
+CMP EAX,C350
+JLE End
+Cmp [Esi],0
+Je End
+Cmp [Esi],Eax
+Je Skip
+Add Esi,4
+Jmp Filter
+Skip:
+Xor Eax,Eax
+End:
+Pop Esi
+Mov Ecx,Edi
+Mov [Esi+34],Eax
+Jmp 0052BD90
+
+0113A744:
+DD ItemFilter
+
+[Disable]
+0113A744:
+DD 007E6073 
+
+UnRegistersymbol(ItemFilter)
+DeAlloc(ItemFilter)
+UnRegistersymbol(ItemList)
+DeAlloc(ItemList)

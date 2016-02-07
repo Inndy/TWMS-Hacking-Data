@@ -1,0 +1,46 @@
+//TWMS137 ICS 疾風2合一
+//更新:Inndy
+[enable]
+alloc(ICSEntry,128)
+label(Next1)
+label(Back)
+alloc(CheatMain,128)
+label(StupidMob)
+label(MyGod)
+//--------------------
+00bbb594:
+DD ICSEntry
+//--------------------
+ICSEntry:
+
+cmp [esp+1c],007F6227
+jne Next1
+mov [esp+1c],MyGod
+
+Next1:
+cmp [esp+1c],0084D379
+jne Back
+mov [esp+1c],StupidMob
+
+Back:
+jmp 00675C15
+//--------------------
+CheatMain:
+//----------
+StupidMob:
+xor edx,edx
+mov ecx,0000ea60
+lea ecx,[esi+000002b0]
+jmp 0084D38E
+//----------
+MyGod:
+lea ecx,[esi+00003280]
+push FFFF8AD0
+jmp 007F6ACC
+
+[disable]
+00bbb594:
+DD 00675C15
+
+dealloc(ICSEntry)
+dealloc(CheatMain)

@@ -1,0 +1,38 @@
+//v1.42 精準光速神奴無延遲控制板 by.aaaddress1
+//Effort: 每秒三倍攻擊精準光速神孥射擊
+alloc(Skill,128)
+alloc(Count,8)
+label(ZeroAttack)
+label(Nodelay)
+
+00857AE1:
+jmp Skill
+nop
+
+Skill:
+mov [ebp-000000A4],eax
+mov eax,[ebp-000015B0]
+push [eax+00004CE4]
+mov ecx,[ebp-000015B0]
+add ecx,00000090
+call 00421107
+mov ecx,[ebp+08]
+call 0064E8CD
+push edx
+mov edx,[00cc4a38]
+mov edx,[edx+1c]
+cmp [Count],edx
+jg ZeroAttack
+cmp [Count+4],3
+jl Nodelay
+mov [Count+4],00
+mov [Count],edx
+add [Count],3e8
+Nodelay:
+pop edx
+inc [Count+4]
+jmp 00857F01
+
+ZeroAttack:
+pop edx
+jmp 00857ED1

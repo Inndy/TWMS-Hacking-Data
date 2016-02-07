@@ -1,0 +1,11 @@
+//TWMS140 ¸õ©Ç±¼¸¨
+[ENABLE]
+0089D635:
+db 90 e9
+008BAFC0:
+db 90 e9
+[DISABLE]
+0089D635:
+db 0f 85
+008BAFC0:
+db 0f 85

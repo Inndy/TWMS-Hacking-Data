@@ -1,0 +1,9 @@
+//TWMS 1.34¶W¯Å²Â©Ç
+[enable]
+005A9F06://83 F8 04 0F ?? ?? 00 00 00
+jmp 005a9fbf
+nop
+ 
+[disable]
+005A9F06:
+jne 005a9fbf

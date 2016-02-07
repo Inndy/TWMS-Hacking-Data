@@ -1,0 +1,27 @@
+// TwMS v158.4_ICS_技能連跳+不耗魔
+// Author: 微o戀 2013-1-25
+// ICS: Onion
+[Enable]
+GlobalAlloc(UltimateJmp, 64)
+GlobalAlloc(JmpRow, 04)
+Label(Exit)
+
+UltimateJmp:
+Cmp [JmpRow], 01
+Je  Exit
+Cmp [Esp+0C], 00AB1DCC
+Jne Exit
+// Mov [Ebp-60], 00AB1DF0
+Mov [Esp+0C], 00AB1DF0
+Exit:
+Mov Ecx, 0111CDDC
+Jmp 0042B719
+
+JmpRow:
+DB 01
+
+00ED1270:
+DD UltimateJmp
+[Disable]
+JmpRow:
+DD 00

@@ -1,0 +1,74 @@
+//v142.惡魔殺手復仇反盾. By.aaaddress1.
+//參考連撞(原創:zgenden , 更新:Smilelovefish)
+//
+//效果:
+//持續無延遲反盾,直到Hp低於[Hp損傷設定值],停止反盾後,
+//開始自動恢復Hp.
+//
+///備註:
+//三轉力量防禦至少1點
+//使用時必須開啟反盾技能(黑暗復仇).
+//
+// 攻擊威力=每次Hp損傷*4
+//
+[Enable]
+Alloc(SSTime, 32)
+Alloc(Time, 16)
+Alloc(PreHackPacket, 512)
+alloc(HurtHpControl,4)
+alloc(NoHurt,128)
+label(Hurt)
+label(SetTheSkillSub)
+Alloc(PreHackPacket, 128)
+alloc(OnOff,4)
+label(ReturnTheHurtSub)
+label(Attack)
+
+HurtHpControl: //Hp損傷設定值 ( *4=每次撞怪殺傷力)
+dd #200
+
+PreHackPacket:
+Mov Eax, [Eax+04]
+mov ecx,[00cc4800]
+mov ecx,[ecx+1814]
+cmp ecx,[HurtHpControl]
+jg Attack
+mov ecx,00
+mov [OnOff],00
+jmp ReturnTheHurtSub
+Attack:
+mov [OnOff],1
+Mov Ecx, [HurtHpControl]
+ReturnTheHurtSub:
+Mov [Eax+0C], Cx
+Mov Eax, [Esp+04]
+Mov Ecx, [00CBFFA4]
+Jmp 00486158
+
+NoHurt:
+cmp [OnOff],1
+je Hurt
+mov eax,64
+jmp SetTheSkillSub
+Hurt:
+mov eax,00
+SetTheSkillSub:
+mov ecx,eax
+mov eax,[ebp-74]
+jmp 00861232
+
+SSTime:
+Add [Time], 1388
+Mov Eax, [Time]
+Jmp 0086247F
+//-----------------
+0086265F:
+Call PreHackPacket
+0086122D:
+jmp NoHurt
+00861BA3:
+mov [ebp+60],64     //每次反盾間隔100毫秒
+0086247A:
+Jmp SSTime
+//-----------------
+[Disable]

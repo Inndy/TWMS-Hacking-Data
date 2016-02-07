@@ -1,0 +1,110 @@
+//TWMS145 ICS 定點生怪
+//原創：不知道，據說是浪漫高層找的
+//更新：Inndy
+[ENABLE]
+Alloc(myHook, 1024)
+Alloc(xMobPX, 4)
+Alloc(xMobPY, 4)
+Alloc(xMobPIO, 4)
+Label(Dull0121)
+Label(Dull013)
+Label(Dull0122)
+Label(Dull01221)
+Label(Dull01222)
+Label(Dull01223)
+Label(Dull01224)
+Label(Dull01225)
+
+myHook:
+    cmp [esp], 005DF75C	//8B 07 8B CF FF 90 ?? 00 00 00 50 8B CE
+    jne 008E4D39	//55 8B EC 53 8B 5D 10 56 57
+    cmp [xMobPIO],1
+    je Dull0121
+    pushad
+    mov eax,[00D1D0DC]
+    mov ebx,[eax+5E0C]
+    mov [xMobPX],ebx
+    mov ebx,[eax+5E10]
+    mov [xMobPY],ebx
+    popad
+    mov [xMobPIO],1
+    jmp Dull013
+Dull0121:
+    cmp dword ptr [esp+18],02
+    jne Dull013
+    push ecx
+    mov ecx,[xMobPX]
+    mov [esp+0c],ecx
+    mov eax,[xMobPY]
+    mov [esp+10],eax
+    push eax
+    mov ecx,[00D215C0]  // (地圖牆壁值) //a1 ?? ?? ?? 00 c3 8b c1 83 20 00 c3 8b c1
+    call Dull0122
+    mov ecx,eax
+    mov [esp+20],ecx
+    pop ecx
+
+Dull013:
+    jmp 008E4D39
+Dull0122: // 00430223 // 0043021A // 0042D006
+    //6A 14 B8 ?? ?? ?? ?? E8 ?? ?? ?? ?? 33 F6 89 75 ?? 89 75 ?? 89 75
+    push 14
+    mov eax,00993223
+    call 0096f7b9
+    xor esi,esi
+    mov [ebp-10],esi
+    mov [ebp-14],esi
+    mov [ebp-04],esi
+    cmp [ebp+08],esi
+    je 00430d08
+    lea eax,[ebp-18]
+    push eax
+    lea eax,[ebp+08]
+    push eax
+    add ecx,00000088
+    call 0043027a
+    test eax,eax
+    je Dull01221 
+    lea eax,[ebp-18]
+    jmp Dull01222
+Dull01221:
+    mov [ebp-1c],esi
+    lea eax,[ebp-20]
+    mov [ebp-10],00000001
+Dull01222:
+    test byte ptr [ebp-10],01
+    mov esi,[eax+04]
+    je 00430d26
+    lea ecx,[ebp-20]
+    //call 004301b9
+    call Dull01224
+Dull01223:
+    or dword ptr [ebp-04],ff
+    lea ecx,[ebp-18]
+    //call 004301b9
+    call Dull01224
+    mov eax,esi
+    call 0096f891
+    ret 4
+Dull01224:  //0042C5BA
+    push esi
+    mov esi,ecx
+    cmp dword ptr [esi+04],00
+    je Dull01225
+    push 00
+    call 0042f6e5 // 0042ed98 // 0042bc79  //004b0657
+    and dword ptr [esi+04],00
+Dull01225:
+    pop esi
+    ret
+
+00BB5AD0:
+DD myHook
+[DISABLE]
+00BB5AD0:
+DD 008E4D39
+
+DeAlloc(myHook)
+DeAlloc(xMobPX)
+DeAlloc(xMobPY)
+DeAlloc(xMobPIO)

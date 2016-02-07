@@ -1,0 +1,7 @@
+[enable]
+005A6194: 
+db 0f 85 
+
+[disable]
+005A6194: 
+db 0f 84

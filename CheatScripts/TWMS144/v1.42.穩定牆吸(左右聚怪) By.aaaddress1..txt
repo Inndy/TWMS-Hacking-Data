@@ -1,0 +1,24 @@
+//v1.42.Ã­©wÀð§l(¥ª¥k»E©Ç) By.aaaddress1.
+[ENABLE]
+alloc(WallVac01,128)
+label(WallVac02)
+
+WallVac01:
+mov eax,00 //»E©ÇX(¥ªÀð­È)
+cmp [esi+1C],eax
+jle WallVac02
+mov [esi+1C],eax
+WallVac02:
+mov eax,00 //»E©ÇX(¥kÀð­È)
+jmp 0092BB69
+
+0092BB55:
+jmp WallVac01
+nop
+
+[DISABLE]
+
+0092BB55:
+mov eax,[ebp+4c]
+add eax,1e
+cmp [esi+1c],eax

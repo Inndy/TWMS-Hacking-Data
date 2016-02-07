@@ -1,0 +1,20 @@
+// TWMS148.1 ICS §πΐ»¤£Εγ¥ά¶Λ®`
+// Auther: Inndy
+// UpdateTime: 2012-08-15
+// 0060DE88 - call dword ptr [eax+50]
+[ENABLE]
+Alloc(Hook, 32)
+
+Hook:
+Cmp  [Ebp+04], 0060E7B7 // 8d 45 cc 50 8b cb e8 ?? ?? ff ff ff
+Jne  008F0861 // 6a 08 b8 ?? ?? ?? 00 e8 ?? ?? ?? 00 8b 0d ?? ?? ?? 00 85 c9 74
+Mov  [Ebp+20], 38FFFFFF
+Jmp  008F0861
+
+00C7779C:
+DD   Hook
+[DISABLE]
+00C7779C: // [1/1]
+DD   008F0861
+
+Dealloc(Hook)

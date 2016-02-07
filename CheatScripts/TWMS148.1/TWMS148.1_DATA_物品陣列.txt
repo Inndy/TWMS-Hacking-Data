@@ -1,0 +1,76 @@
+[ENABLE]
+Alloc(MyTestProc, 512)
+Alloc(ItemList, 1024)
+RegisterSymbol(ItemList)
+Label(GetItemCount)
+Label(LoopGetItem)
+Label(EndLoop)
+Label(Failed)
+CreateThread(MyTestProc)
+
+MyTestProc:
+Push 2
+Call GetItemCount
+Ret
+
+GetItemCount: // 55 8B EC 51 51 8B 0D ?? ?? ?? 00 53 56 57
+Push Ebp
+Mov Ebp, Esp
+Sub Esp, 20
+
+Mov Ecx, [00E01440]
+Lea Eax, [Ebp-20]
+Push Eax
+Call 00422851
+Mov Esi, [Eax+04]
+Lea Ecx, [Ebp-20]
+Call 004218DE
+Mov Ecx, Esi
+//====================
+Mov  Edi, Ecx
+Push [Ebp+08]
+And  [Ebp-10], 0
+call 0042691F
+xor ebx,ebx
+inc ebx
+cmp eax,ebx
+mov [ebp-14],eax
+jl Failed
+
+LoopGetItem:
+push 00
+push ebx
+push [Ebp+08]
+lea eax,[ebp-20]
+push eax
+mov ecx,edi
+call 00427414
+mov esi,[eax+04]
+lea ecx,[ebp-20]
+call 00426D13
+test esi,esi
+je EndLoop
+mov eax,[esi]
+mov ecx,esi
+call dword ptr [eax+08]
+test eax,eax
+jne EndLoop
+lea ecx,[esi+0C]
+call 00427238 // ItemID
+Mov [ItemList+Ebx*8-8], Eax
+mov eax,[esi]
+mov ecx,esi
+call dword ptr [eax+4C] // ItemCount
+Mov [ItemList+Ebx*8-4], Eax
+EndLoop:
+inc ebx
+cmp ebx,[ebp-14]
+jle LoopGetItem
+
+Failed:
+Leave
+Ret  0004
+[DISABLE]
+Dealloc(MyTestProc)
+Dealloc(ItemList)
+UnregisterSymbol(ItemList)

@@ -1,0 +1,41 @@
+//TwMS v158.4_ICS_全職業全圖打
+[Enable]
+Alloc(qpgj, 512)
+Label(qpgjzctz)
+
+qpgj:
+Cmp [Esp+124], 0069FA36
+Jne 0056A76F
+Mov [Esp+124], qpgjzctz
+Jmp 0056A76F
+
+qpgjzctz:
+lea edi,[esi+00000728]
+push edi
+lea ecx,[esi+00000740]
+Add Esp, 04
+push esi
+mov esi,ecx
+mov eax,[011661F8]
+mov eax,[eax+0000127C]
+push eax
+lea ecx,[esi+0c]
+call 0042C1C1
+mov eax,[011661F8]
+mov eax,[eax+00001280]
+push eax
+mov ecx,esi
+call 0042C1C1
+mov eax,esi
+pop esi
+Jmp 0069FA48
+
+00ED1270:
+DD qpgj
+
+[Disable]
+
+00ED1270:
+DD 0056A76F
+
+DeAlloc(qpgj)

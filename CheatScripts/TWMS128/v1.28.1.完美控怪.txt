@@ -1,0 +1,24 @@
+//v1.28.1 §¹¬ü±±©Ç ,auther:aaaddress1
+[ENABLE]
+alloc(LR_SET,4)
+alloc(LR, 256)
+LR_SET:
+DD 3
+LR:
+cmp [LR_SET],2
+je 007FE19C
+cmp [LR_SET],1
+je 007FE195
+cmp [LR_SET],0
+je 007FE0FC
+push [edi+40]
+push eax
+pop ecx
+pop ecx
+fnstsw ax
+jmp 7FE11F
+007FE0D7: //, 39 9E 2C 07 00 00 0F 85 B2 00 00 00 39 9E 28 07
+jmp LR
+[DISABLE]
+007FE0D7:
+cmp [esi+0000072C],ebx

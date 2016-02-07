@@ -1,0 +1,148 @@
+// TWMS V1.42.1 CRC 打怪吸怪
+
+[enable]
+alloc(Vac, 512)
+alloc(VacXY, 8)
+alloc(RangeY, 4)
+alloc(VacTime, 4)
+label(ForceVac)
+label(InitMob)
+label(Normal)
+label(Normal2)
+label(FullMapVac)
+label(StartVac)
+label(OtherCheck)
+label(PassCheck)
+registersymbol(Vac)
+
+VacXY:
+readmem([00cc7b68]+b0c, 8)
+
+RangeY: // 吸怪範圍(上下各RangeY)
+dd #300
+
+VacTime: // 怪物出生到吸怪時間(毫秒)
+dd #300
+
+Vac:
+ForceVac:
+push eax
+push ecx
+mov ecx,[ebp-10]
+test ecx,ecx
+je Normal
+
+cmp dword ptr [ecx+000002a0],00
+je Normal
+cmp dword ptr [ecx+000002a0],06
+jg Normal
+
+mov eax,[VacXY+04]
+cmp eax,[ecx+6a0]
+jl OtherCheck
+
+sub eax,[ecx+6a0]
+cmp eax,[RangeY]
+jg Normal
+jmp PassCheck
+
+OtherCheck:
+mov eax,[ecx+6a0]
+sub eax,[VacXY+04]
+cmp eax,[RangeY]
+jg Normal
+
+PassCheck:
+
+cmp dword ptr [ecx+08],00
+je InitMob
+
+cmp dword ptr [ecx+08],01
+jne InitMob
+
+mov eax,[00cc4a38] //00890C81 - A1 ?? ?? ?? ?? 8B 40 ?? C3
+mov eax,[eax+1c]
+cmp dword ptr [ecx+04],eax
+jg Normal
+
+pop ecx
+pop eax
+jmp 005CDCA3
+
+InitMob:
+mov eax,[00cc4a38]
+mov eax,[eax+1c]
+add eax,[VacTime]
+mov [ecx+04],eax
+inc [ecx+08]
+
+Normal:
+pop ecx
+pop eax
+cmp edx,esi
+jl 005ce19d
+jmp 005CDCA3
+
+//--------------------------
+FullMapVac:
+cmp [ebp+04],005CF779 // 攻擊怪物呼叫 - 8b 45 0c 3d 0f 26 31 00 75 ?
+jne StartVac
+//je Normal2
+
+mov esi,[ebp-10]
+cmp dword ptr [esi+08],01
+jne Normal2
+cmp dword ptr [esi+08],02
+je Normal2
+StartVac:
+mov [esp+18],00
+
+push ecx
+mov ecx,[ebp-10]
+mov [ecx+8],2
+mov [ecx+000002a0],06 // 定怪
+mov eax,[VacXY+04]
+mov [esp+0c],eax //
+mov [ecx+6a0],eax
+mov esi,[VacXY]b
+mov [esp+08],esi //
+mov [ecx+69c],esi
+pop ecx
+
+Normal2:
+call dword ptr [edi]
+mov edi,[ebp+08]
+jmp 005CDEAF
+
+005CDC9B:
+jmp ForceVac
+
+005CDEAA:
+jmp FullMapVac
+
+008BD717:
+jmp 008BD72F
+
+005CFF2D:
+jmp 005CFF3F
+
+[disable]
+008BD717:
+mov eax,[esi+000002A0]
+005CFF2D:
+jne 005CFF3F
+005CDC9B: // 3b d6 0f 8c ? ? ? ? 8b cb
+cmp edx,esi
+jl 005ce19d
+
+005CDEAA: // ff 17 8b 7d ? 83 c7 f9
+call dword ptr [edi]
+mov edi,[ebp+08]
+
+dealloc(Vac)
+dealloc(RangeY)
+dealloc(VacTime)
+unregistersymbol(Vac)
+
+// 005D05B9 call dword ptr [eax+00000090] => eax+90: 00B5E384, [eax+90]: 008B34F0
+// 005CD175 call dword ptr [edi] => edi: 00B5E378, [edi]: 008B83BB

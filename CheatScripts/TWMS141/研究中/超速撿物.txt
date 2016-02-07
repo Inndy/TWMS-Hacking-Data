@@ -1,0 +1,24 @@
+//TWMS 141 超速撿物
+//原創：Inndy
+[ENABLE]
+0047D312:
+mov byte ptr [esi+000020A4],00
+call 00890D49
+dec eax
+mov dword ptr [esi+000020A8],eax
+//以上三行也可以改成以下這行
+//只是下面這行貌似會斷DC
+//and dword ptr [esi+000020A8],00
+
+xor eax,eax
+inc eax
+ret 8
+[DISABLE]
+0047D312:
+db 56
+db 8B F1
+db 83 BE A4 20 00 00 00
+db 75 35
+db 83 7C 24 0C 00
+db 75 18
+db 8B 86 B8 20 00 00

@@ -1,0 +1,35 @@
+// TWMS V1.40.1 ICS 人物全圖吸物
+// 原創: Cam1596
+// 出處: w8baby (GMS V0.98.1 Item Vac Script)
+// ICS : 冷羽楓痕
+
+[enable]
+alloc(ItemVac,64)
+label(SetItemXY)
+
+00CCA77C:
+dd ItemVac
+
+ItemVac:
+cmp [esp],004D47BF    // 85 c0 75 ? 83 4d fc ? 8d 4d ? e8 ? ? ? ? 83 7d ? 00 0f 85 ? ? ? ?
+je SetItemXY
+cmp [esp],004D3A7A    // 85 c0 74 ? 39 5d ? 75 ? eb ?
+jne PtInRect
+mov [esp],004D3A7E    // "004D3A7A+04" - 不斷線
+jmp PtInRect
+
+SetItemXY:
+push eax
+mov eax,[esp+0c]      // [esp+0c]: 地上物品X
+mov [edi],eax         // [edi+00]: 封包物品X (人物X)
+mov eax,[esp+10]      // [esp+10]: 地上物品Y
+mov [edi+04],eax      // [edi+04]: 封包物品Y (人物Y)
+pop eax
+mov [esp],004D47DB    // 004D47BF+02 jne "004d47db" - 可撿物
+jmp PtInRect
+
+[disable]
+00CCA77C:
+dd PtInRect
+
+dealloc(ItemVac)

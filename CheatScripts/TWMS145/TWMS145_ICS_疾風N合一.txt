@@ -1,0 +1,97 @@
+[ENABLE]
+Alloc(Blast, 4096)
+Alloc(MobKBSwitch, 4)
+RegisterSymbol(MobKBSwitch)
+Alloc(MobJumpSwitch, 4)
+RegisterSymbol(MobJumpSwitch)
+Label(BlastBack)
+Label(God)
+Label(GodMain)
+Label(Stupid)
+Label(StupidMain)
+Label(MobKB)
+Label(MobKBMain)
+Label(MobJump)
+Label(MobJumpMain)
+//------------------------------
+MobKBSwitch:
+DD   1      //0不控制 1不KB 2絕對KB
+MobJumpSwitch:
+DD   1      //0不控制 1不跳 2狂跳
+//------------------------------
+Blast:
+Cmp  [Esp+1C], 0088A360 // e8 ?? ?? ?? ff f6 80 ?? ?? 00 00 02 74 05
+Je   God
+Cmp  [Esp+1C], 008E4FAC // 33 d2 b9 60 ea 00 00 f7 f1
+Je   Stupid
+Cmp  [Esp+1C], 008E5F84 // 6a 05 33 d2 59 f7 f1 85 d2
+Je   MobJump
+Cmp  [Esp+34], 005E478E // 83 7D ?? 01 75 ?? 8B 4D ?? E8 ?? ?? ?? FF 39
+Je   MobKB
+
+BlastBack:
+Jmp  006D34B2
+//--------------------
+God:
+Mov  [Esp+1C], GodMain
+Jmp  BlastBack
+Stupid:
+Mov  [Esp+1C], StupidMain
+Jmp  BlastBack
+MobJump:
+Mov  [Esp+1C], MobJumpMain
+Jmp  BlastBack
+MobKB:
+Mov  [Esp+34], MobKBMain
+Jmp  BlastBack
+//------------------------------
+GodMain:
+Mov  Ecx, [Ebp+58]
+Test Ecx, Ecx
+Je   0088A8D5
+And  Ecx, F
+Inc  Ecx
+Mov  [Ebp+58], Ecx
+Mov  Ecx, [Ebp+4C]
+Push 05
+Lea  Eax, [Ebp+04]
+Push Eax
+Mov  [Ebp+60], #30000
+Jmp  0088A901
+//--------------------
+StupidMain:
+Xor  Edx, Edx
+Mov  Ecx, 0000EA60
+Lea  Ecx, [Esi+000002B8]
+Jmp  008E4FC1
+//--------------------
+MobJumpMain:
+Push 05
+Xor  Edx, Edx
+Pop  Ecx
+Div  Ecx
+Test Edx, Edx
+Cmp  [MobJumpSwitch], 1 //怪不跳
+Je   008E5F98           // Jne To...
+Cmp  [MobJumpSwitch], 2 //怪狂跳
+Je   008E5F8F           // Mov  Ecx, Esi
+Jmp  008E5F8B           // Test Edx, Edx
+//--------------------
+MobKBMain:
+Cmp  [MobKBSwitch], 01  //不KB
+Je   005E47A1           //Xor Edx, Edx
+Cmp  [MobKBSwitch], 02  //絕對KB
+Je   005E47A5
+Jmp  005E478E
+//------------------------------
+00D02D84:
+DD   Blast
+[DISABLE]
+00D02D84:
+DD   006D34B2
+
+Dealloc(Blast)
+Dealloc(MobKBSwitch)
+UnregisterSymbol(MobKBSwitch)
+Dealloc(MobJumpSwitch)
+UnregisterSymbol(MobJumpSwitch)

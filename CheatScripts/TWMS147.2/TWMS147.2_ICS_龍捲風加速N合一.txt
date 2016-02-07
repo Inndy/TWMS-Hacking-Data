@@ -1,0 +1,101 @@
+// TWMS147.2 ICS 龍捲風加速N合一
+// 此數據就跟Aaaddress1一樣淫蕩，請小心使用
+// 並且有請A_____Aaddress1把它改的更淫蕩（？
+// PS：配合全圖、攻擊不停風味更佳
+//======================================================================
+[Enable]
+// 龍捲風無延遲
+// By Aaaddress1
+Alloc(NoDelayICS, 64)
+Label(NoDelay)
+
+NoDelayICS:
+Cmp [Esp+54], 008B580F
+Jne 0051A625
+Mov [Esp+54], NoDelay
+Jmp 0051A625
+
+NoDelay:
+Mov Eax,[Ebp+68]
+Jmp 008B5832
+
+00BBA208:
+DD NoDelayICS
+//----------------------------------------------------------------------
+// 清除技能動作
+Alloc(NoSkillAction, 64)
+
+NoSkillAction:
+Cmp  [Esp], 008C4B89
+Jne  00891B32
+Or   [Esi+0000049C], FFFFFFFF
+Jmp  00891B32
+
+00C2F48C:
+DD NoSkillAction
+//----------------------------------------------------------------------
+// 龍捲風無限隻數
+// By Aaaddress1
+Alloc(UnlimitedAttacks, 512)
+
+UnlimitedAttacks:
+Cmp  [Esp], 005486CD
+Jne  008F7512
+Add  Esp, 04
+xor eax,eax
+cmp [esi+000000D0],eax
+jne 00548729
+cmp [ebp+08],eax
+je 00548729
+push eax
+lea eax,[ebp+08]
+push eax
+lea ecx,[esi+000000E4]
+call 0046B329
+test eax,eax
+jne 00548729
+mov eax, 7FFFFFFF
+jmp 0054870C
+
+00C2F4E8:
+DD   UnlimitedAttacks
+//----------------------------------------------------------------------
+// 修改人物動作
+// By Aaaddress1
+alloc(ControlHumanSide,32)
+
+ControlHumanSide:
+mov eax,[ecx+000000DC]
+and eax, FFFFFFFE
+cmp eax, 8
+jne 00942959
+xor [ecx+000000DC],C
+mov eax,[ecx+000000DC]
+ret
+
+00C334AC:
+dd ControlHumanSide
+//======================================================================
+[Disable]
+// 龍捲風無延遲
+00BBA208:
+DD   0051A625
+
+DeAlloc(NoDelayICS)
+//----------------------------------------------------------------------
+// 清除技能動作
+00C2F48C:
+DD   00891B32
+
+Dealloc(NoSkillAction)
+//----------------------------------------------------------------------
+00C2F4E8:
+DD   008F7512
+
+Dealloc(UnlimitedAttacks)
+//----------------------------------------------------------------------
+// 修改人物動作
+00C334AC:
+dd 00942959
+
+dealloc(ControlHumanSide)

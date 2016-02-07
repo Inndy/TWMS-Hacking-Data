@@ -1,0 +1,20 @@
+// TWMS152.1 ICS §πΐ»¤£Εγ¥ά¶Λ®`
+// Auther: Inndy
+// UpdateTime: 2013-01-20
+// 0064F5E6 - call dword ptr [eax+50]
+[ENABLE]
+Alloc(Hook, 32)
+
+Hook:
+Cmp  [Ebp+04], 006500EA // 8d 45 cc 50 8b cb e8 ?? ?? ff ff ff
+Jne  0097E778 // 6a 08 b8 ?? ?? ?? 00 e8 ?? ?? ?? 00 8b 0d ?? ?? ?? 00 85 c9 74
+Mov  [Ebp+20], 38FFFFFF
+Jmp  0097E778
+
+00DBCD5C:
+DD   Hook
+[DISABLE]
+00DBCD5C: // [1/1]
+DD   0097E778
+
+Dealloc(Hook)

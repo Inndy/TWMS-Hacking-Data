@@ -1,0 +1,35 @@
+// TWMS158.4 ICS 降低損血量+怪物不反擊
+// Auther: Inndy
+[ENABLE]
+Alloc(RHNFB, 128)
+Label(Normal)
+Label(ReduceHurts)
+Label(NoFightBack)
+// 00A9F3DE -> Exit Function
+RHNFB:
+Cmp  [Esp], 00A9DD25 // [2/2] // 6A 64 99 59 F7 F9 83 ?? ?? 75 ?? 81
+Je   ReduceHurts
+Cmp  [Esp+58], 0069EDF1 // [1/2] // 8B CE E8 ?? ?? ?? FF 83 F8 FF 0F 8F ?? ?? 00 00 8B CE
+Je   NoFightBack
+Jmp  Normal
+
+NoFightBack:
+Mov  [Esp+58], 0069F0D7 // [1/1] // 8D ?? ?? 89 ?? ?? ?? 00 00 83 F8
+Jmp  Normal
+
+ReduceHurts:
+Mov  Eax, [Ebp+54] // 39 ?? ?? 74 ?? 8D ?? ?? 8B 01 FF 50
+Shr  Eax, 2 // 損血量 / 4
+Sub  [Ebp+54], Eax
+Jmp  Normal
+
+Normal:
+Jmp  00A56B7C // 6A 08 B8 ?? ?? ?? ?? E8 ?? ?? ?? 00 8B 0D ?? ?? ?? ?? 85 C9 74
+
+00F69D4C:
+DD   RHNFB
+[DISABLE]
+00F69D4C: // [1/1]
+DD   00A56B7C // 6A 08 B8 ?? ?? ?? 00 E8 ?? ?? ?? 00 8B 0D ?? ?? ?? 00 85 C9 74
+
+Dealloc(RHNFB)

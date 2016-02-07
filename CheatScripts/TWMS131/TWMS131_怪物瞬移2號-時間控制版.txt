@@ -1,0 +1,66 @@
+[Enable]
+//TWMS v131.1怪物瞬移2號 - 時間控制版
+//加入時間控制By Inndy
+//有效減少斷線機率
+//Delay時間請自行修改
+Alloc(FastMonster,128)
+Alloc(Delay,4)
+RegisterSymbol(nextGo)
+RegisterSymbol(Switch)
+Label(nextGo)
+Label(Switch)
+Label(Mode0)
+Label(Mode1)
+Label(Faster)
+Label(Normal)
+
+Delay:
+DD 1388 //5秒 
+
+FastMonster:
+push eax
+Call 007A2BEB
+cmp [Switch],1
+jne Mode0
+je Mode1
+
+Mode0:
+cmp [nextGo],eax
+jg Faster
+mov [Switch],1
+add eax,[Delay]
+mov [nextGo],eax
+Jmp Normal
+
+Mode1:
+cmp [nextGo],eax
+jg Normal
+mov [Switch],0
+add eax,[Delay]
+mov [nextGo],eax
+Jmp Faster
+
+Normal:
+pop eax
+Call 0057644E
+ret
+
+Faster:
+pop eax
+ret
+
+nextGo:
+readmem([00ACF940]+1C,4)
+Switch:
+DD 0
+
+0059575D:
+Call FastMonster
+[Disable]
+0059575D:
+call 0057644e
+
+UnRegisterSymbol(nextGo)
+UnRegisterSymbol(Switch)
+DeAlloc(Delay)
+DeAlloc(FastMonster)

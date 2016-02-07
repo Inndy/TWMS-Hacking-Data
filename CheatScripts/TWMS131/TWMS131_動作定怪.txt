@@ -1,0 +1,9 @@
+//TWMS131_動作定怪
+//原創:aaaddress1
+//更新:Inndy
+[ENABLE]
+00588C4A:
+db 7e 54 //41 //AOB:53 8b ce e8 ?? ?? ?? ?? ff ?? ?? 8b ce e8 ?? ? ?? ?? ff
+[DISABLE]
+00588C4A:
+db 7e 05

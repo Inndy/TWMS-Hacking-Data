@@ -1,0 +1,121 @@
+// CRC MSCRCBypass TWMS148
+// (冷羽楓痕)
+// Update by Inndy
+
+[enable]
+alloc(MSCRC,256)
+alloc(FakeDump1,11)
+alloc(FakeDump2,13)
+label(MSCRC1)
+label(MSCRC2)
+label(OtherCheck)
+label(MSCRC1Ret)
+label(SetFakeCRCValue)
+label(SetCRCValue1)
+label(SetCRCValue2)
+label(SetCRCValue3)
+label(SetCRCValue4)
+label(SetCRCValue5)
+label(SetCRCValue6)
+// 8A 11 80 C2 01
+FakeDump1: //00A290B4-3 ~ 00A290B4+7 共11個bytes
+db 8B 5D 08 8A 11 80 C2 01 8B 4D 18
+
+//6A ?? B8 ?? ?? ?? 00 E8 ?? ?? ?? 00 89 4D ?? A1 ?? ?? ?? 00 05
+FakeDump2: //00495B26-3 ~ 00495B26+7 共13個bytes
+db 10 5E C3 6A 38 B8 2F F5 A3 00 E8 C7 6B
+
+MSCRC:
+MSCRC1: // 檢測MSCRC2位址 00A290B4 - 8a 11 80 c2 01 8b 4d 18
+cmp edx,00A290B1 // 009F5114-3
+jl OtherCheck
+cmp edx,00A290B8 // 009F5114+4
+jg OtherCheck
+
+sub edx,00A290B1 // 009F5114-3
+add edx,FakeDump1
+jmp MSCRC1Ret
+
+OtherCheck: // 檢測送出封包函式 00495B26 - 6a 38 b8 ? ? ? ? e8 ? ? ? ? 89 4d ? a1 3c 00 40 00
+cmp edx,00495B23 // 0049252A-3
+jl MSCRC1Ret
+cmp edx,00495B2C // 0049252A+6
+jg MSCRC1Ret
+
+sub edx,00495B23 // 0049252A-3
+add edx,FakeDump2
+
+MSCRC1Ret:
+//MSCRC1原本動作
+push [edx]
+jmp 00EE4A75
+
+MSCRC2:
+call SetFakeCRCValue
+//MSCRC2原本動作
+push 11198B5A
+jmp 00EE3F4A
+
+SetFakeCRCValue: // 更新: Hook該處，讀取[ebp+08]和[ebp+18]的值，其值每15秒變動一次，總共變動6次，之後的值都會重複
+mov eax,[ebp+08] // CRC計算起始位置
+mov edx,[ebp+18] // CRC值
+
+cmp eax,00401324
+je SetCRCValue1
+cmp eax,0050678C
+je SetCRCValue2
+cmp eax,0060BBF4
+je SetCRCValue3
+cmp eax,0071105C
+je SetCRCValue4
+cmp eax,008164C4
+je SetCRCValue5
+cmp eax,0091B92C
+je SetCRCValue6
+ret
+
+SetCRCValue1:
+mov [edx],E7297A8C
+ret
+
+SetCRCValue2:
+mov [edx],33218B78
+ret
+
+SetCRCValue3:
+mov [edx],95B27755
+ret
+
+SetCRCValue4:
+mov [edx],81F0E4E2
+ret
+
+SetCRCValue5:
+mov [edx],147D04DC
+ret
+
+SetCRCValue6:
+mov [edx],9BF78678
+ret
+
+00EE8630: // MSCRC1
+jmp MSCRC1
+nop
+nop
+
+01034594: // MSCRC2
+jmp MSCRC2
+
+[disable]
+00EE8630: // 更新: 搜尋 ff 32 e9，會有好幾個，任意選一個做Hook，觀看被執行到最多次那個就是了
+// [1/3] //e9 ?? ?? ?? ?? ff 32 e9
+//db FF 32 E9 07 FA FF FF 
+push [edx]
+jmp 00EE4A75
+
+01034594: // 更新: 搜尋 8a 11 80 c2 01 (00960394)，在搜尋到的位址底下有兩個JMP第二個就是了
+push 11198B5A
+
+dealloc(MSCRC)
+dealloc(FakeDump1)
+dealloc(FakeDump2)

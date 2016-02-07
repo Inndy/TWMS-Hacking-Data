@@ -1,0 +1,24 @@
+alloc(z,512)
+RegisterSymbol(z)
+alloc(LastGet,04)
+RegisterSymbol(LastGet)
+label(Back)
+z:
+cmp [esp],0045d488 //人物XY
+je Back
+cmp [esp],0060F572 //怪物XY
+je Back
+cmp [esp],0098C83A //滑鼠XY(GetFocus下)
+je Back
+cmp [esp],006097C2 //怪物死亡時XY
+je Back
+cmp [esp],004ED480 //物品XY
+je Back
+cmp [esp],004E8AED //其他玩家XY
+je Back
+cmp [esp],008E3C19 //"新"紅點的XY
+je Back
+push [esp]
+pop [LastGet]
+Back:
+ret 04

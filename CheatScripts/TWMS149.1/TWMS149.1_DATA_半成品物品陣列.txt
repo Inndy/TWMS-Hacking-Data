@@ -1,0 +1,153 @@
+long Doggy_00422828 = 0x00422828;
+long Doggy_004218b5 = 0x004218b5;
+long Doggy_005a274b = 0x005a274b;
+
+
+// 55 8B EC 51 51 8B 0D ?? ?? ?? 00 53 56 57
+DB   0x55                                                   //009D0F49 - push ebp
+DB   0x8b,0xec                                              //009D0F4A - mov ebp,esp
+DB   0x51                                                   //009D0F4C - push ecx
+DB   0x51                                                   //009D0F4D - push ecx
+DB   0x8b,0x0d,0x00,0xbc,0xe0,0x00                          //009D0F4E - mov ecx,[00e0bc00] : 00E1E508
+DB   0x53                                                   //009D0F54 - push ebx
+DB   0x56                                                   //009D0F55 - push esi
+DB   0x57                                                   //009D0F56 - push edi
+DB   0x8d,0x45,0xf8                                         //009D0F57 - lea eax,[ebp-08]
+DB   0x50                                                   //009D0F5A - push eax
+Call Doggy_00422828                                         //009D0F5B - call 00422828
+DB   0x8b,0x70,0x04                                         //009D0F60 - mov esi,[eax+04]
+DB   0x8d,0x4d,0xf8                                         //009D0F63 - lea ecx,[ebp-08]
+Call Doggy_004218b5                                         //009D0F66 - call 004218b5
+DB   0x8b,0x45,0x08                                         //009D0F6B - mov eax,[ebp+08]
+DB   0x99                                                   //009D0F6E - cdq
+DB   0xb9,0x40,0x42,0x0f,0x00                               //009D0F6F - mov ecx,000f4240
+DB   0xf7,0xf9                                              //009D0F74 - idiv ecx
+DB   0xff,0x75,0x10                                         //009D0F76 - push [ebp+10]
+DB   0x8b,0x3d,0x04,0xbc,0xe0,0x00                          //009D0F79 - mov edi,[00e0bc04] : 00000000
+DB   0xff,0x75,0x0c                                         //009D0F7F - push [ebp+0c]
+DB   0x8b,0xce                                              //009D0F82 - mov ecx,esi
+DB   0xff,0x75,0x08                                         //009D0F84 - push [ebp+08]
+DB   0x50                                                   //009D0F87 - push eax
+
+Call FakeCall
+
+DB   0x8b,0xd8                                              //009D0F8D - mov ebx,eax
+DB   0x0f,0xb6,0x45,0x0c                                    //009D0F8F - movzx eax,byte ptr [ebp+0c]
+DB   0x50                                                   //009D0F93 - push eax
+DB   0xff,0x75,0x08                                         //009D0F94 - push [ebp+08]
+DB   0x8b,0xcf                                              //009D0F97 - mov ecx,edi
+DB   0x56                                                   //009D0F99 - push esi
+Call Doggy_005a274b                                         //009D0F9A - call 005a274b
+DB   0x5f                                                   //009D0F9F - pop edi
+DB   0x5e                                                   //009D0FA0 - pop esi
+DB   0x03,0xc3                                              //009D0FA1 - add eax,ebx
+DB   0x5b                                                   //009D0FA3 - pop ebx
+DB   0xc9                                                   //009D0FA4 - leave
+DB   0xc2,0x0c,0x00                                         //009D0FA5 - ret 000c
+DB   0x6a,0x10                                              //009D0FA8 - push 10
+
+
+
+
+
+
+
+
+
+
+
+
+long Doggy_00a0f499 = 0x00a0f499;
+long Doggy_004268f6 = 0x004268f6;
+long Doggy_004273eb = 0x004273eb;
+long Doggy_00426cea = 0x00426cea;
+long Doggy_0042720f = 0x0042720f;
+long Doggy_0059cf3c = 0x0059cf3c;
+long Doggy_004cf9c9 = 0x004cf9c9;
+long Doggy_00a0f571 = 0x00a0f571;
+
+
+
+FakeCall:
+DB   0x6a,0x14                                              //004D034D - push 14
+DB   0xb8,0x1a,0xdc,0xa4,0x00                               //004D034F - mov eax,00a4dc1a
+Call Doggy_00a0f499                                         //004D0354 - call 00a0f499
+DB   0x8b,0xf9                                              //004D0359 - mov edi,ecx
+DB   0xff,0x75,0x08                                         //004D035B - push [ebp+08]
+DB   0x83,0x65,0xf0,0x00                                    //004D035E - and dword ptr [ebp-10],00
+Call Doggy_004268f6                                         //004D0362 - call 004268f6
+DB   0x33,0xdb                                              //004D0367 - xor ebx,ebx
+DB   0x43                                                   //004D0369 - inc ebx
+DB   0x3b,0xc3                                              //004D036A - cmp eax,ebx
+DB   0x89,0x45,0xec                                         //004D036C - mov [ebp-14],eax
+jnge Doggy004d03bf                                          //004D036F - jnge 004d03bf
+Doggy004d0371:
+DB   0x6a,0x00                                              //004D0371 - push 00
+DB   0x53                                                   //004D0373 - push ebx
+DB   0xff,0x75,0x08                                         //004D0374 - push [ebp+08]
+DB   0x8d,0x45,0xe0                                         //004D0377 - lea eax,[ebp-20]
+DB   0x50                                                   //004D037A - push eax
+DB   0x8b,0xcf                                              //004D037B - mov ecx,edi
+Call Doggy_004273eb                                         //004D037D - call 004273eb
+DB   0x8b,0x70,0x04                                         //004D0382 - mov esi,[eax+04]
+DB   0x8d,0x4d,0xe0                                         //004D0385 - lea ecx,[ebp-20]
+Call Doggy_00426cea                                         //004D0388 - call 00426cea
+DB   0x85,0xf6                                              //004D038D - test esi,esi
+je Doggy004d03b9                                            //004D038F - je 004d03b9
+DB   0x80,0x7d,0x10,0x00                                    //004D0391 - cmp byte ptr [ebp+10],00
+jne Doggy004d03a2                                           //004D0395 - jne 004d03a2
+DB   0x8b,0x06                                              //004D0397 - mov eax,[esi]
+DB   0x8b,0xce                                              //004D0399 - mov ecx,esi
+DB   0xff,0x50,0x08                                         //004D039B - call dword ptr [eax+08]
+DB   0x85,0xc0                                              //004D039E - test eax,eax
+jne Doggy004d03b9                                           //004D03A0 - jne 004d03b9
+Doggy004d03a2:
+DB   0x8d,0x4e,0x0c                                         //004D03A2 - lea ecx,[esi+0c]
+Call Doggy_0042720f                                         //004D03A5 - call 0042720f
+//DB   0x3b,0x45,0x0c                                         //004D03AA - cmp eax,[ebp+0c] // ItemID
+//jne Doggy004d03b9                                           //004D03AD - jne 004d03b9
+//在這裡保存ID (Eax)
+DB   0x8b,0x06                                              //004D03AF - mov eax,[esi]
+DB   0x8b,0xce                                              //004D03B1 - mov ecx,esi
+DB   0xff,0x50,0x4c                                         //004D03B3 - call dword ptr [eax+4c]
+DB   0x01,0x45,0xf0                                         //004D03B6 - add [ebp-10],eax // ItemCount
+//在這裡保存數量 (Eax)
+Doggy004d03b9:
+DB   0x43                                                   //004D03B9 - inc ebx
+DB   0x3b,0x5d,0xec                                         //004D03BA - cmp ebx,[ebp-14]
+jle Doggy004d0371                                           //004D03BD - jle 004d0371
+Doggy004d03bf:
+DB   0x83,0x7d,0x14,0x00                                    //004D03BF - cmp dword ptr [ebp+14],00
+jne Doggy004d0412                                           //004D03C3 - jne 004d0412
+DB   0xff,0x75,0x0c                                         //004D03C5 - push [ebp+0c]
+DB   0x8b,0x0d,0x04,0xbc,0xe0,0x00                          //004D03C8 - mov ecx,[00e0bc04] : 00000000
+Call Doggy_0059cf3c                                         //004D03CE - call 0059cf3c
+DB   0x85,0xc0                                              //004D03D3 - test eax,eax
+je Doggy004d0412                                            //004D03D5 - je 004d0412
+DB   0x6a,0x01                                              //004D03D7 - push 01
+DB   0x57                                                   //004D03D9 - push edi
+DB   0xff,0x75,0x0c                                         //004D03DA - push [ebp+0c]
+DB   0x8d,0x45,0xe8                                         //004D03DD - lea eax,[ebp-18]
+DB   0x50                                                   //004D03E0 - push eax
+Call Doggy_004cf9c9                                         //004D03E1 - call 004cf9c9
+DB   0x83,0xc4,0x10                                         //004D03E6 - add esp,10
+DB   0x8b,0x4d,0xec                                         //004D03E9 - mov ecx,[ebp-14]
+DB   0x83,0x65,0xfc,0x00                                    //004D03EC - and dword ptr [ebp-04],00
+DB   0x85,0xc9                                              //004D03F0 - test ecx,ecx
+je Doggy004d0406                                            //004D03F2 - je 004d0406
+DB   0x80,0x7d,0x10,0x00                                    //004D03F4 - cmp byte ptr [ebp+10],00
+jne Doggy004d0403                                           //004D03F8 - jne 004d0403
+DB   0x8b,0x01                                              //004D03FA - mov eax,[ecx]
+DB   0xff,0x50,0x08                                         //004D03FC - call dword ptr [eax+08]
+DB   0x85,0xc0                                              //004D03FF - test eax,eax
+jne Doggy004d0406                                           //004D0401 - jne 004d0406
+Doggy004d0403:
+DB   0xff,0x45,0xf0                                         //004D0403 - inc [ebp-10]
+Doggy004d0406:
+DB   0x83,0x4d,0xfc,0xff                                    //004D0406 - or dword ptr [ebp-04],ff
+DB   0x8d,0x4d,0xe8                                         //004D040A - lea ecx,[ebp-18]
+Call Doggy_00426cea                                         //004D040D - call 00426cea
+Doggy004d0412:
+DB   0x8b,0x45,0xf0                                         //004D0412 - mov eax,[ebp-10]
+Call Doggy_00a0f571                                         //004D0415 - call 00a0f571
+DB   0xc2,0x10,0x00                                         //004D041A - ret 0010

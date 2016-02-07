@@ -1,0 +1,153 @@
+//cC8298
+[enable]
+Registersymbol(Main)
+Alloc(Main, 512)
+Label(God)
+Label(GodMain)
+Label(MobControl)
+Label(MobControlMain)
+Label(MobControlLR)
+Label(MobControlL)
+Label(MobControlR)
+Label(MobControlReturn)
+Label(MobFast)
+Label(MobFastMain)
+Label(StupidMonster)
+Label(StupidMonsterMain)
+Alloc(x,4)
+
+Main:
+Cmp Dword Ptr [Esp+1c],008616DD //無敵e8 ?? ?? ?? ff f6 80 ?? ?? 00 00 02 74 05
+Je God
+Cmp Dword Ptr [Esp+40],005D1359 //怪物控制e8 ? ? ? ? 23 7d e0 83 ff ff 75 56
+Je MobControl
+Cmp Dword Ptr [Esp+34],005DCEBD //怪物瞬移e8 ? ? ? ? 8b 5d 14 e9 e0 00 00 00
+Je MobFast   
+Cmp Dword Ptr [Esp+1c],008B9D7A //笨怪e8 ? ? ? ? 33 d2 b9 60 ea 00 00
+Je StupidMonster       
+Jmp 006B3ADB
+
+God:
+Mov [Esp+1c],GodMain
+Jmp 006B3ADB
+
+MobControl:
+Mov [Esp+40],MobControlMain
+Jmp 006B3ADB
+
+MobFast:
+Mov [Esp+34], MobFastMain
+Jmp 006B3ADB
+
+StupidMonster:
+Mov [Esp+1c], StupidMonsterMain
+Jmp 006B3ADB
+
+GodMain:
+Lea  Ecx, [Ebx+00003CF8] //8d 8b ? ? 00 00 50 e8 ? ? ? ? e9
+Push FFFF8AD0
+Jmp  00861C66
+//-----------------------------------------------------------
+MobControlMain:
+Pushad
+Mov Eax,[00cc7b68]
+Mov Eax,[Eax+B0C]
+Mov [x],Eax
+Cmp Esi,0
+Je MobControlReturn
+Mov Eax,[Esi]
+Cmp Eax,0
+Je MobControlReturn
+Cmp [Eax],0
+Je MobControlReturn
+Cmp [Eax],005D07D4 //68 b4 00 00 00 b8 ? ? ? ? e8 ? ? ? ? 8b f1
+Jne MobControlReturn
+Mov Ebx,[Esi+110]
+Cmp Ebx,0
+Je MobControlReturn
+Sub Ebx,C
+Cmp Ebx,0
+Je MobControlReturn
+Cmp [Ebx+2A0],1
+Je MobControlLR
+Cmp [Ebx+2A0],3
+Je MobControlLR
+Jmp MobControlReturn
+
+MobControlLR:
+//Mov [Ebx+2A0],2 //怪物掉落
+Mov Eax,[Ebx+69C]
+Cmp Eax,[x]
+Jg MobControlL
+Jl MobControlR
+Jmp MobControlReturn
+
+MobControlL:
+Mov [Ebx+000000FC],FFFFFFFF
+Mov [Ebx+000000EC],5
+Jmp MobControlReturn
+
+MobControlR:
+Mov [Ebx+000000FC],1
+Mov [Ebx+000000EC],4
+Jmp MobControlReturn
+
+MobControlReturn:
+Popad
+Jmp 005D1359 //同位子
+//----------------------------------------------------------
+
+MobFastMain:
+mov ebx,[ebp+14]
+cmp dword ptr [esi+2c],00
+db 75 05 //jne +5
+jmp 005DCFAF
+mov edi,[esi+30]
+mov al,[edi]
+cmp al,0b
+je 005dcf9a
+movzx ecx,al
+xor eax,eax
+inc eax
+xor edx,edx
+call 00947e60
+mov ecx,[ebp+20]
+or [ecx],eax
+or [ecx+04],edx
+mov ecx,esi
+//call 005bcf2e
+push [ecx+0000008c]
+add ecx,00000084
+mov eax,ecx
+push ecx
+call 00404e5a //瞬4
+pop ecx
+pop ecx
+movsx ecx,word ptr [edi+10]
+cmp eax,ecx
+jl 005dcfaf
+mov ecx,esi
+push [ecx+0000008c]
+add ecx,00000084
+mov eax,ecx
+push ecx
+//call 00404e5a //瞬1
+pop ecx
+pop ecx
+jmp 005DCF10
+
+StupidMonsterMain:
+Xor  Edx, Edx
+Mov  Ecx, 0000ea60
+Lea  Ecx, [Esi+000002b8]
+Jmp  008B9D8F
+
+00ca593c:
+dd Main
+
+[DISABLE]
+00ca593c:
+DD 006B3ADB
+
+dealloc(Main)
+unregistersymbol(Main)

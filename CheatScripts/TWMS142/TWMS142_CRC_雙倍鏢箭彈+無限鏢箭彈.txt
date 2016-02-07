@@ -1,0 +1,17 @@
+//TWMS142 Âù­¿Ãð½b¼u+µL­­Ãð½b¼u
+[enable]
+00857305: // E8 ?? ?? ?? FF F7 D8 1B C0 F7 D8 89 85 ?? ?? FF FF 8B 8D ?? ?? FF FF E8 ?? ?? ?? FF F7 D8 1B C0 F7 D8 89 85 ?? ?? FF FF 81
+DB 90 90 90 90 90
+
+0085731C:
+Xor  Eax, Eax
+Inc  Eax
+Nop
+Nop
+
+[disable]
+00857305:
+Call 00687333
+
+0085731C:
+Call 00651003

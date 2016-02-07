@@ -1,0 +1,8 @@
+// 150.2 CRC 一秒製作完成
+// Auther: Inndy
+[ENABLE]
+007DB5DC: // 7C 07 8B CE E8 ?? ?? FF FF 8B CE
+DB 90 90
+[DISABLE]
+007DB5DC:
+DB 7C 07

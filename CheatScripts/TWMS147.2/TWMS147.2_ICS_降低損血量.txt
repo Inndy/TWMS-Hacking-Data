@@ -1,0 +1,20 @@
+// TWMS147.2 ICS ­°§C·l¦å¶q
+// Auther: Inndy
+[ENABLE]
+Alloc(ReduceHurts, 128)
+
+ReduceHurts:
+Cmp  [Esp], 008E9257
+Jne  008C0670
+Mov  Eax, [Ebp+58]
+Shr  Eax, 2 // ·l¦å¶q / 4
+Sub  [Ebp+58], Eax
+Jmp  008C0670
+
+00C2F524:
+DD   ReduceHurts
+[DISABLE]
+00C2F524:
+DD   008C0670
+
+Dealloc(ReduceHurts)

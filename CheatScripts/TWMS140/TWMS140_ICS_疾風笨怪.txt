@@ -1,0 +1,27 @@
+[ENABLE]
+Alloc(StupidMob, 128)
+Label(StupidMobICS)
+Label(StupidMobMain)
+StupidMob:
+Label(StupidMobICS)
+Label(StupidMobMain)
+
+StupidMobICS:
+Cmp  [Esp+1c], 008B9D7A
+Jne  006B3ADB
+Mov  [Esp+1c], StupidMobMain
+Jmp  006B3ADB
+
+StupidMobMain:
+Xor  Edx, Edx
+Mov  Ecx, 0000ea60
+Lea  Ecx, [Esi+000002b8]
+Jmp  008B9D8F
+
+00ca593c:
+DD StupidMobICS
+[DISABLE]
+00ca593c:
+DD 006B3ADB
+
+Dealloc(StupidMob)

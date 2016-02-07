@@ -1,0 +1,42 @@
+// TWMS158.4 ICS 無敵30秒
+// Auther: 冷羽楓痕
+//
+// 89 ?? ?? 8D ?? ?? E8 ?? ?? ?? FF E8 ?? ?? ?? 00 C3 55 83
+// 下面就是損血CALL的開頭
+[enable]
+alloc(GodMode,128)
+alloc(GodTime,4)
+label(Normal)
+label(God)
+
+GodMode:
+cmp [esp],00A9C558 // Call dword ptr [Eax+10] 下一行
+jne Normal
+
+mov eax,[011605F0] // 時間
+mov eax,[eax+1C]
+cmp eax,[GodTime]
+jl God
+
+add eax,00007530 // 無敵時間30秒
+mov [GodTime],eax
+Normal: // 正常損血
+
+// ICS: call dword ptr [eax+10]
+push 00AA271D
+ret
+
+God: // 無敵
+mov [esp],00A9F3DE // ICS下面的JMP jne 00896AB4
+push 00AA271D
+ret
+
+00F69D0C:
+DD GodMode
+
+[disable]
+00F69D0C: // [1/1]
+DD 00AA271D // A1 ?? ?? ?? ?? 05 ?? ?? 00 00 C3 81
+
+dealloc(GodMode)
+dealloc(GodTime)

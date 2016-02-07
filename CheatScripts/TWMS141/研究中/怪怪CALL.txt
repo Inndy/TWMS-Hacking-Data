@@ -1,0 +1,32 @@
+008CDBA7 - 6A 00                      - push 00
+008CDBA9 - B8 7429A100                - mov eax,00A12974 : [0824548B]
+008CDBAE - E8 165E0700                - call 009439C9	//碞琌硂皋钵CALL
+
+Push 0
+Eax = 00A12974
+Push {ReturnPoint}
+
+Push Eax
+Push fs:[00000000]
+Eax = Esp+0C		//Eax把计1
+Esp -= [Esp+0C]		//Esp搭奔把计1
+Push Ebx
+Push Esi
+Push Edi
+[Eax] = Ebp		//把计1 = Ebp
+Ebp = Eax		//Ebp把计1
+Eax = Ebp ^ B4AF6BCB
+Push Eax
+Push [Ebp-04]
+[Ebp-04] = FFFFFFFF
+Eax = Ebp-0C
+fs:[00000000] = Eax
+Ret
+
+把计1 = セEbp
+Ebp  把计1
+Esp -= 把计1 + 1C
+
+Push Ebp
+Sub Esp, 1C
+Sub Esp, 把计1

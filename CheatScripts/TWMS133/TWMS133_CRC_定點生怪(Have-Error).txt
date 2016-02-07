@@ -1,0 +1,64 @@
+//TWMS133 CRC ©wÂI¥Í©Ç
+[Enable]
+registersymbol(Spawn)
+alloc(Spawn,256)
+label(Exit)
+alloc(MyXY,8)
+alloc(SetXY,128)
+alloc(MapID,4)
+SetXY:
+mov [MapID],eax
+mov ecx,[esp+10]
+mov [MyXY],ecx
+mov ecx,[esp+0c]
+mov [MyXY+4],ecx
+mov eax,[MyXY+4]
+pop ecx
+push ecx
+push eax
+mov ecx,[00bb6bd0]
+call 0042AD65
+mov ecx,eax
+mov [esp+20],ecx
+pop ecx
+jmp Exit
+Spawn:
+cmp [ecx+460],0
+je Exit
+cmp [esp],0059BED7
+jne Exit
+cmp dword ptr [esp+18],02
+jne Exit
+mov [ecx+2A0],6
+push ecx
+mov eax,[00bb72a8]
+mov eax,[eax+ca4]
+cmp eax,[MapID]
+jne SetXY
+cmp [MyXY],0
+je SetXY
+mov eax,[MyXY]
+mov [esp+10],eax
+mov eax,[MyXY+4]
+mov [esp+0c],eax
+push eax
+mov ecx,[00bb6bd0]
+call 0042AD65
+mov ecx,eax
+mov [esp+20],ecx
+pop ecx
+Exit:
+push ebp
+mov ebp,esp
+push ebx
+mov ebx,[ebp+10]
+jmp 00839D40
+00839D39:
+jmp Spawn
+nop
+[Disable]
+00839D39:
+push ebp
+mov ebp,esp
+push ebx
+mov ebx,[ebp+10]

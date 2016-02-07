@@ -1,0 +1,31 @@
+//v150.2 防封KiKiTelePort瞬移 By.aaaddress1.
+//小號在半空中連續順移五分鐘測試未紅.
+alloc(KiKiTeleport,128)
+alloc(XY,08)
+alloc(Sw,04)
+registersymbol(Sw)
+
+XY:
+Readmem([00E20700]+F98, 08)
+
+Sw: //瞬移開關.
+dd 01
+
+KiKiTeleport:
+cmp [Sw],ebx
+je 0092F6AC
+mov [esi+5F70],ebx // Switch
+mov ebx,[ebp-10]
+sub ebx,03E8
+mov [esi+5F80],ebx // Y + 4
+mov ebx,[XY+00]
+mov [esi+5F78],ebx // X
+mov ebx,[XY+04]
+mov [esi+5F7C],ebx // Y
+xor ebx,ebx
+mov [Sw],ebx
+jmp 0092F3ED
+
+0092F3E1: // 39 9E ?? ?? 00 00 0F 84 ?? ?? 00 00 8B 86 ?? ?? 00 00 2B
+jmp KiKiTeleport
+nop

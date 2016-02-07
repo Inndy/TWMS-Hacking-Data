@@ -1,0 +1,52 @@
+[Enable]
+Alloc(MobFollowX, 4)
+Alloc(MobFollow, 128)
+Label(Control)
+Label(Return)
+Label(GoLeft)
+Label(GoRight)
+Label(GoStop)
+
+MobFollowX:
+ReadMem([00F6C8DC]+00007FB0, 4)
+
+MobFollow:
+Cmp  [Ecx+000002B8], 01
+Je   Control
+Cmp  [Ecx+000002B8], 03
+Je   Control
+Jmp  Return
+
+Control:
+Push Eax
+Mov  Eax, [MobFollowX]
+Cmp  [Ecx+000006B4], Eax
+Pop  Eax
+Jl   GoRight
+Jg   GoLeft
+Jmp  GoStop
+
+GoLeft:
+Mov  [Ecx+000000FC], FFFFFFFF
+Jmp  Return
+
+GoRight:
+Mov  [Ecx+000000FC], 00000001
+Jmp  Return
+
+GoStop:
+Mov  [Ecx+000000FC], 00000000
+Jmp  Return
+
+Return:
+Push 00A19746	// 55 8B EC 83 EC 0C 53 56 57 FF 75 08 8B F1 8B 06
+Ret
+
+00DC0778:
+dd MobFollow
+[Disable]
+00DC0778:
+dd 00A19746
+
+Dealloc(MobFollowX)
+Dealloc(MobFollow)

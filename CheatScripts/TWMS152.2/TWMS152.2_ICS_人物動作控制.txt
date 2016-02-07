@@ -1,0 +1,16 @@
+[ENABLE]
+// TWMS152.2 ICS 控制人物面向
+// Auther: aaaddress1
+// UpdateTime: 2013-01-30
+alloc(ControlHumanSide,32)
+
+ControlHumanSide:
+mov [ecx+000000DC],00 //動作
+mov eax,[ecx+000000DC]
+ret
+
+00DC0E80:
+dd ControlHumanSide
+[DISABLE]
+00DC0E80:
+dd 00A1023F

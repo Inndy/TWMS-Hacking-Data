@@ -1,0 +1,32 @@
+// TWMS147.2 ICS ½w­°
+// Auther: Inndy
+// 0094F936: // 7e 14 - jle 0094f94c
+// db 90 90
+[ENABLE]
+alloc(ICS, 32)
+alloc(MyWay, 128)
+
+ICS:
+cmp [esp], 0094F8C9 // 85 C0 74 ?? 8B CE E8 ?? ?? FF FF 8D 86
+jne 00942ADB
+mov [esp], MyWay
+jmp 00942ADB
+
+MyWay:
+// Je¸õ
+lea eax,[esi+000002b4]
+cmp [eax],1e
+db 7d 02
+db 89 18
+mov ecx, [eax]
+fldz
+jmp 0094F94c // Jle To...
+
+00C334C4:
+DD ICS
+[DISABLE]
+00C334C4: // [9/10]
+DD 00942ADB // 83 C1 F0 E9 ?? ?? FF FF 8B 44
+
+dealloc(ICS)
+dealloc(MyWay)

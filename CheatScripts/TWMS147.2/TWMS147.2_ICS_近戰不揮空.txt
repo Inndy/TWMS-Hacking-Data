@@ -1,0 +1,50 @@
+// TWMS 147.2 ICS 近戰不揮空
+
+[ENABLE]
+registersymbol(MYNA)
+alloc(MYNA,256)
+label(MYNA00)
+label(MYNA000)
+
+MYNA:
+cmp [esp],008EB8E6
+jne OffsetRect
+mov [esp],MYNA00
+jmp OffsetRect
+
+MYNA00:
+movzx eax,byte ptr [ebp-0000011D]
+test eax,eax
+je MYNA000
+jmp 008EB8F1
+
+MYNA000:
+push [ebp-000001B0]
+push 00
+push 00
+push 00
+push 00
+push 00
+push 00
+push [ebp-00000190]
+lea eax,[ebp-0000018C]
+push eax
+lea eax,[ebp-6C]
+push eax
+call 00437424
+mov ecx,eax
+call 00604468
+mov [ebp-0000214C],eax
+mov eax,[ebp-0000214C]
+mov [ebp-7C],eax
+jmp 008EB968
+
+00DBAFDC:
+DD MYNA
+
+[DISABLE]
+00DBAFDC:
+DD OffsetRect
+
+dealloc(MYNA)
+unregistersymbol(MYNA)

@@ -1,0 +1,24 @@
+//TwMS v142.1_ICS_全圖撞擊
+//數據改寫:Onion
+//惡魔殺手二轉技能測試OK
+[ENABLE]
+alloc(MYKB,512)
+
+00ccca48:
+DD MYKB
+
+MYKB:
+Cmp  [Esp], 005D269D //83 4d fc ff 8d 4d f0 85 c0
+Jne  IntersectRect
+Add  Esp, 4
+Call IntersectRect
+or dword ptr [ebp-04],ff
+lea ecx,[ebp-10]
+test eax,eax
+jmp 005d26d2
+
+[DISABLE]
+00ccca48:
+DD IntersectRect
+
+dealloc(MYKB)

@@ -1,0 +1,31 @@
+[ENABLE]
+Alloc(PreHackPacket, 128)
+Alloc(FakeTime, 4)
+
+PreHackPacket:
+Mov Edi, [Esp+4] // PacketStruct
+Mov Edi, [Edi+4] // PacketBuffer
+Mov Eax, [Edi+3] // Time
+Add Eax, [FakeTime]
+Mov [Edi+3], Eax
+Add [FakeTime],64 //100 = 0x64 // 200 = 0xC8 // 300 = 0x12C // 400 = 0x190
+Jmp 004861BC
+
+008F081E: // 撿物封包處理
+Call PreHackPacket
+//004D4A8E - 6a 28                      - push 28
+//004D4BED - e8 b5 ba 41 00             - call 008f06a7
+
+0047D264: // 無延遲撿物
+And [Ecx+000020A4], 00
+Ret 0004
+DB 90 90 90
+[DISABLE]
+008F081E:
+Call 004861BC
+
+0047D264:
+DB 8B 44 24 04 56 8B F1 89 86 A4 20 00 00 E8
+
+Dealloc(PreHackPacket)
+Dealloc(FakeTime)

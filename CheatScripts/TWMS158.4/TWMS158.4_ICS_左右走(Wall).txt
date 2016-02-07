@@ -1,0 +1,68 @@
+
+//TWMSv158.4牆值左右走
+//更新 放棄
+//原創 Onion
+[Enable]
+Alloc(AutoLRICS,512)
+Alloc(MyLR,4)
+Label(AutoLR)
+Label(GetWall)
+Label(GetChrX)
+Label(GoRight)
+Label(GoLeft)
+
+MyLR:
+DD 1 //開啟後向右走
+
+AutoLRICS:
+Cmp [Esp],00B111C2//1//
+Jne GetFocus
+Mov [Esp],AutoLR
+Jmp GetFocus
+
+AutoLR:
+Call GetWall
+Mov  [ebp-04],Eax
+Xor  Ecx,Ecx
+Xor  Eax,Eax
+Cmp  [ebp-04],Eax
+Jmp  00B1150E//2//
+
+GetWall:
+Call GetChrX
+Mov  Ecx,[01069EF8]
+Sub  Eax,[Ecx+1C]
+Cmp  Eax,04
+Jle  GoRight
+Call GetChrX
+Mov  Ecx,[Ecx+24]
+sub  Ecx,Eax
+cmp  Ecx,04
+Jle  GoLeft
+Mov  Eax,[MyLR]
+Ret
+
+GetChrX:
+Mov Eax,[0106FA8C]
+Mov Eax,[Eax+000010A0]
+Ret
+
+GoRight:
+Mov [MyLR],1
+Mov Eax,1
+Ret
+
+GoLeft:
+Mov [MyLR],FFFFFFFF
+Mov Eax,FFFFFFFF
+Ret
+
+0116FA88://3//
+DD AutoLRICS
+
+[Disable]
+0116FA88://3//
+DD GetFocus
+
+DeAlloc(MyLR)
+DeAlloc(AutoLRICS)

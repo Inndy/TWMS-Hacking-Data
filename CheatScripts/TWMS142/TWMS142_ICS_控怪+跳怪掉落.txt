@@ -1,0 +1,166 @@
+[ENABLE]
+Alloc(JumpMobFall, 128)
+Alloc(MobLR, 512)
+Alloc(MobLRSwitch, 4)
+Alloc(MobGoX, 4)
+Alloc(JumpDown, 4)
+RegisterSymbol(MobLRSwitch)
+RegisterSymbol(MobGoX)
+RegisterSymbol(JumpDown)
+Label(ControlMob)
+Label(Back)
+Label(GoLeft)
+Label(GoRight)
+Label(GoMe)
+Label(GoMe_R)
+Label(GoMe_L)
+Label(GoPoint)
+Label(GoX)
+Label(GetX)
+
+JumpDown:
+DD   1 // 跳怪掉落開關
+MobLRSwitch:
+DD   3 // 控怪開關，0關1左2右3跟隨4取點5定點
+
+MobLR:
+Push Ebp
+Mov  Ebp, Esp
+Sub  Esp, 20
+Mov  Eax, [Ebp+08]
+Push Ebx
+Push Esi
+Mov  Esi, [00CC4458]
+Mov  Ebx, Ecx
+Push Edi
+//-----------------------------------
+Cmp  [Ebx+000002A0], 01
+Je   ControlMob
+Cmp  [Ebx+000002A0], 03
+Je   ControlMob
+Jmp  Back
+
+ControlMob:
+Cmp  [MobLRSwitch], 00
+Je   Back
+Cmp  [MobLRSwitch], 01
+Je   GoLeft
+Cmp  [MobLRSwitch], 02
+Je   GoRight
+Cmp  [MobLRSwitch], 05
+Je   GoX
+Mov  Edi, [00CBFF70]
+Mov  Edi, [Edi+00005A18]
+Cmp  [MobLRSwitch], 04
+Je   GetX
+Cmp  [MobLRSwitch], 03
+Je   GoMe
+Jmp  Back
+
+GoMe:
+Push Edi
+Mov  Edi, [00CBFF70]
+Mov  Edi, [Edi+047C]
+And  Edi, 01
+Test Edi, Edi
+Je   GoMe_R
+Jne  GoMe_L
+Pop  Edi
+Jmp  Back
+
+GoMe_R:
+Pop  Edi
+Add  Edi, 64
+Jmp  GoPoint
+
+GoMe_L:
+Pop  Edi
+Sub  Edi, 64
+Jmp  GoPoint
+
+GoPoint:
+Cmp  [Ebx+0000069C], Edi
+Jl   GoRight
+Jg   GoLeft
+Jmp  Back
+
+GetX:
+Mov  [MobGoX], Edi
+Mov  [MobLRSwitch], 05
+Jmp  GoX
+
+GoX:
+Mov  Edi, [MobGoX]
+Sub  Edi, 2
+Cmp  [Ebx+0000069C], Edi
+Jl   GoRight
+Add  Edi, 4
+Cmp  [Ebx+0000069C], Edi
+Jg   GoLeft
+Mov  [Ebx+000002A0], 06
+Jmp  GoMe
+
+
+GoRight:
+Mov  [Ebx+000000EC], 00000004
+Mov  [Ebx+000000FC], 00000001
+Jmp  Back
+
+GoLeft:
+Mov  [Ebx+000000EC], 00000005
+Mov  [Ebx+000000FC], FFFFFFFF
+Jmp  Back
+//-----------------------------------
+Back:
+Cmp  [JumpDown], 0
+Je   008BC5B1
+Lea  Edi,[Ebx+00000088]
+Fld  qword ptr [Edi]
+Fsub qword ptr [Eax]
+Fstp qword ptr [Ebp-18]
+Fldz
+Fcom qword ptr [Ebp-18]
+Fnstsw Ax
+Test Ah,44
+Jnp  008BCC19
+Mov  Eax,[Ebx+000002A0]
+Cmp  Eax,01
+Je   008BC515
+Fstp st(0)
+Cmp  Eax,03
+Jmp  008BC8B7
+
+JumpMobFall:
+Cmp  [JumpDown], 00
+Je   008BAF5E
+Push Ebp
+Mov  Ebp, Esp
+Sub  Esp, 0C
+Push Ebx
+Push Esi
+Mov  Esi, Ecx
+Cmp  dword ptr [Esi+000002A0], 03
+Push Edi
+Mov  Edi, [00CC4458]
+Jmp  008BB037
+
+00B60BD0:
+DD MobLR
+
+00B60BD4:
+DD JumpMobFall
+[DISABLE]
+00B60BD0:
+DD 008BC4D5 // 55 8B EC 83 EC ?? 8B 45 08 53 56 8B 35
+
+00B60BD4:
+DD 008BAF5E // 55 8B EC 83 EC ?? 53 56 8B F1 83 BE ?? ?? 00 00 03
+
+Dealloc(JumpMobFall)
+Dealloc(MobLR)
+Dealloc(MobLRSwitch)
+Dealloc(MobGoX)
+Dealloc(JumpDown)
+UnregisterSymbol(MobLRSwitch)
+UnregisterSymbol(MobGoX)
+UnregisterSymbol(JumpDown)

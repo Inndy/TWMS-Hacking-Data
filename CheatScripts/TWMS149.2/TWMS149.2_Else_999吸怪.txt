@@ -1,0 +1,69 @@
+[enable]
+Registersymbol(VacMain)
+Alloc(VacMain, 64)
+Registersymbol(DoVac999)
+Alloc(DoVac999, 256)
+Registersymbol(VacToggle)
+Alloc(VacToggle,4)
+Alloc(ChrX,4)
+Alloc(ChrY,4)
+Label(VacTimer)
+Label(VacEnd)
+Label(NextMob)
+CreateThread(VacMain)
+
+VacMain:
+	mov eax,[00E14158]
+	push [eax+F98]
+	pop [ChrX]
+	push [eax+F9C]
+	pop [ChrY]
+	mov [VacToggle],1
+VacTimer:
+	push #4000
+	call Sleep
+	call DoVac999
+	cmp [VacToggle],00
+		jne VacTimer
+	ret
+
+DoVac999:
+	pushad
+	mov esi,[00E0BC40]
+	test esi,esi
+		je VacEnd
+	mov esi,[esi+4AD4]
+	test esi,esi
+		je VacEnd
+	mov esi,[esi+28]
+	test esi,esi
+		je VacEnd
+	sub esi,00000010
+NextMob:
+	mov eax,[esi+14]//eax=CMob
+	mov [eax+00000244],1//©w©Ç
+	pushad
+	mov eax,[eax+0000012C]
+	add eax,F4
+	add eax,10
+	mov ecx,eax
+	mov eax,[eax]
+	push 0
+	push 0
+	push 0
+	push 0
+	push [ChrY]
+	push [ChrX]
+	push 1
+	call dword ptr [eax+84]
+	popad
+	mov esi,[esi+04]
+	test esi,esi
+		jne NextMob
+VacEnd:
+	popad
+	ret
+
+[disable]
+VacToggle:
+dd 0

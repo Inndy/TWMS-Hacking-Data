@@ -1,0 +1,39 @@
+// TWMS148.1 ICS 無敵30秒
+// Auther: 冷羽楓痕
+// UpdateTime: 2012-08-15
+
+[enable]
+alloc(GodMode,128)
+alloc(GodTime,4)
+label(Normal)
+label(God)
+
+GodMode:
+cmp [esp],00917B75 // 下面ICS點的返回位置 [1/2] e8 ? ? ? ? 85 c0 0f 85 ? ? ? ? 8b 83 ? ? 00 00 83 e0 fe 83 f8 12 0f 84 ?? ?? 00 00 e8 ?? ?? ?? 00 8b ?? 8b ?? 8b ?? ff 50 10 8b c8 e8 ?? ?? ?? ff 85 c0 0f 85
+jne Normal
+
+mov eax,[00E06250] // 時間
+mov eax,[eax+1C]
+cmp eax,[GodTime]
+jl God
+
+add eax,00007530 // 無敵時間30秒
+mov [GodTime],eax
+Normal: // 正常損血
+push 00927EC5 // ICS: call dword ptr [eax+10]
+ret
+
+God: // 無敵
+mov [esp],00919F7C // ICS下面的JMP jne 00896AB4
+push 00927EC5
+ret
+
+00C7775C:
+DD GodMode
+
+[disable]
+00C7775C: // [1/1]
+DD 00927EC5 // a1 ? ? ? ? 05 ? ? 00 00 c3 81 c1 70 ff ff ff
+
+dealloc(GodMode)
+dealloc(GodTime)

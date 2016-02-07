@@ -1,0 +1,25 @@
+//超級撿物
+//太快會斷
+[ENABLE]
+alloc(Hook, 64)
+
+Hook:
+mov [ecx+000020a4],0
+mov [ecx+000020a8],0
+ret 0004
+
+0047D1EB: // 8B 44 24 04 56 8B F1 89 86 ?? ?? 00 00 E8 ?? ?? ?? 00
+jmp Hook
+[DISABLE]
+0047D1EB:
+db 8b 44 24 04 56
+
+dealloc(Hook)
+
+//物品定位
+[Enable]
+004D4B91:  //75 ?? 8b c3 2b 46 ?? 3d
+db 90 90
+[Disable]
+004D4B91:
+db 75 4e

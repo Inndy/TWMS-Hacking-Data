@@ -1,0 +1,52 @@
+// Ret Address Recorder
+[ENABLE]
+Alloc(HookProc, 128)
+Label(LoopSearch)
+Label(Return)
+Label(AddToList)
+Alloc(EspList, 2048)
+Alloc(Count, 4)
+RegisterSymbol(HookProc)
+RegisterSymbol(EspList)
+RegisterSymbol(Count)
+
+HookProc:
+Pushad
+Mov Eax, [Esp+20]
+Cmp Eax, 00401000 // [Esp] คUญญ
+Jl Return
+Cmp Eax, 7FFFFFFF // [Esp] คWญญ
+Jg Return
+Mov Ebx, EspList
+Mov Ecx, [Count]
+Test Ecx, Ecx
+Je AddToList
+Dec Ecx
+LoopSearch:
+Cmp [Ebx+Ecx*4], Eax
+Je Return
+Test Ecx, Ecx
+Je AddToList
+Dec Ecx
+Jmp LoopSearch
+AddToList:
+Mov Ecx, [Count]
+Mov [Ebx+Ecx*4], Eax
+Inc [Count]
+Return:
+Popad
+// Orginal Code Here Please
+
+// Jump Back Here Please
+
+// {Address}:
+// Jmp HookProc
+[DISABLE]
+// Restore Hook Here Please
+
+Dealloc(HookProc)
+Dealloc(EspList)
+Dealloc(Count)
+UnregisterSymbol(HookProc)
+UnregisterSymbol(EspList)
+UnregisterSymbol(Count)

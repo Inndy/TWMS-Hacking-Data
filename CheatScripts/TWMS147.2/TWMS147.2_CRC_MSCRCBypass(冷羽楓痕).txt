@@ -1,0 +1,118 @@
+// TWMS147.2 CRC MSCRCBypass(冷羽楓痕)
+// Update by Inndy
+
+[enable]
+alloc(MSCRC,256)
+alloc(FakeDump1,11)
+alloc(FakeDump2,13)
+label(MSCRC1)
+label(MSCRC2)
+label(OtherCheck)
+label(MSCRC1Ret)
+label(SetFakeCRCValue)
+label(SetCRCValue1)
+label(SetCRCValue2)
+label(SetCRCValue3)
+label(SetCRCValue4)
+label(SetCRCValue5)
+label(SetCRCValue6)
+// 8A 11 80 C2 01
+FakeDump1: // 009F4CA4-3 ~ 009F4CA4+7 共11個bytes
+db 8B 5D 08 8A 11 80 C2 01 8B 4D 18
+//6A ?? B8 ?? ?? ?? 00 E8 ?? ?? ?? 00 89 4D ?? A1 ?? ?? ?? 00 05
+//0048997F
+FakeDump2: // 004925CE-3 ~ 004925CE+9 共13個bytes
+db 10 5E C3 6A 38 B8 A1 AA A0 00 E8 CF 5D
+
+MSCRC:
+MSCRC1: // 檢測MSCRC2位址 009F4CA4 - 8a 11 80 c2 01 8b 4d 18
+cmp edx,009F4CA1 // 009F4CA4-3
+jl OtherCheck
+cmp edx,009F4CA8 // 009F4CA4+4
+jg OtherCheck
+
+sub edx,009F4CA1 // 009F4CA4-3
+add edx,FakeDump1
+jmp MSCRC1Ret
+
+OtherCheck: // 檢測送出封包函式 004925CE - 6a 38 b8 ? ? ? ? e8 ? ? ? ? 89 4d ? a1 3c 00 40 00
+cmp edx,004925CB // 004925CE-3
+jl MSCRC1Ret
+cmp edx,004925D4 // 004925CE+6
+jg MSCRC1Ret
+
+sub edx,004925CB // 004925CE-3
+add edx,FakeDump2
+
+MSCRC1Ret:
+//MSCRC1原本動作
+push [edx]
+jmp 00E90AE1
+
+MSCRC2:
+call SetFakeCRCValue
+//MSCRC2原本動作
+push 0CB58B21
+jmp 00E8FF6A
+
+SetFakeCRCValue: // 更新: Hook該處，讀取[ebp+08]和[ebp+18]的值，其值每15秒變動一次，總共變動6次，之後的值都會重複
+mov eax,[ebp+08] // CRC計算起始位置
+mov edx,[ebp+18] // CRC值
+cmp eax,00401324
+je SetCRCValue1
+cmp eax,004FDF43
+je SetCRCValue2
+cmp eax,005FAB62
+je SetCRCValue3
+cmp eax,006F7781
+je SetCRCValue4
+cmp eax,007F43A0
+je SetCRCValue5
+cmp eax,008F0FBF
+je SetCRCValue6
+ret
+
+SetCRCValue1:
+mov [edx],9CCB2FB5
+ret
+
+SetCRCValue2:
+mov [edx],4C6BFAAE
+ret
+
+SetCRCValue3:
+mov [edx],8AE1B69C
+ret
+
+SetCRCValue4:
+mov [edx],04B23A33
+ret
+
+SetCRCValue5:
+mov [edx],F1D56DA7
+ret
+
+SetCRCValue6:
+mov [edx],E852FF0F
+ret
+
+00E926CE: // MSCRC1
+jmp MSCRC1
+nop
+nop
+
+00FE0633: // MSCRC2
+jmp MSCRC2
+
+[disable]
+00E926CE: // 更新: 搜尋 ff 32 e9，會有好幾個，任意選一個做Hook，觀看被執行到最多次那個就是了
+          // [1/3] //e9 ?? ?? ?? ?? ff 32 e9
+db FF 32 E9 0C E4 FF FF        
+
+00FE0633: // 更新: 搜尋 8a 11 80 c2 01 (00960394)，在搜尋到的位址底下有兩個第二個就是了
+push 0CB58B21
+
+
+dealloc(MSCRC)
+dealloc(FakeDump1)
+dealloc(FakeDump2)

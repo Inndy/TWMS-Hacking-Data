@@ -1,0 +1,36 @@
+[ENABLE]
+Alloc(Hook, 256)
+Label(Hook2)
+Label(Hook21)
+
+Hook:
+Cmp  [Esp+0C], 008BA703
+Jne  0050563B
+Mov  [Esp+0C], Hook2
+Jmp  0050563B
+
+Hook2:
+xor  ebx,ebx
+inc  ebx
+test eax,eax
+je   Hook21
+cmp  [eax+000001AC],000003FC
+jne  Hook21
+mov  ecx,[esi+0000064C]
+push ebx
+mov  edi,ebx
+call 00425D87
+Hook21:
+mov  ecx,[esi+00000650]
+call 00426302
+test eax,eax
+jmp  008BAC11 // екил
+jmp  008BABFD // еkил
+
+00AF5E90:
+DD   Hook
+[DISABLE]
+00AF5E90:
+DD   0050563B
+
+Dealloc(Hook)

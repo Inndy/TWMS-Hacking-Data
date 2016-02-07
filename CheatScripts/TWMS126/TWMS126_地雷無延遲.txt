@@ -1,0 +1,19 @@
+//------------------------------------------------------------------
+//名稱：v126.地雷無延遲
+//原創：aaaddress1
+//------------------------------------------------------------------
+[ENABLE]
+//code from here to '[DISABLE]' will be used to enable the cheat
+
+0078D817:
+db 83 e8 00 90 90 90
+
+0078D810:
+db 90 90
+
+
+00CE929D:
+DB 90 D5 71 80 31 F2 24 8C 91 27 09 98 8F 1A 76 8C 13 0D C1 3A A0 07 06 56 A7 E4 11
+
+[DISABLE]
+//code from here till the end of the code will be used to disable the cheat

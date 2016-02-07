@@ -1,0 +1,25 @@
+//TwMS v158.4_ICS_超級定怪
+//更新時間:2013-07-19
+//更新:冰鑽
+//原創: Onion
+
+[Enable]
+Alloc(HookEsp, 128)
+Label(ICSRet)
+
+HookEsp:
+Cmp [Esp], 00AFE99A
+Jne ICSRet
+Push 00AFE9B1
+Pop [Esp]
+ICSRet:
+Push 00AFE9B9
+Ret
+
+00F6DC20:
+DD HookEsp
+
+[Disable]
+00F6DC20:
+DD 00AFE9B9
+DeAlloc(HookEsp)

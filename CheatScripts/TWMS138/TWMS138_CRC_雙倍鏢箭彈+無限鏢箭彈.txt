@@ -1,0 +1,45 @@
+[enable]
+registersymbol(DoubleFire)
+alloc(DoubleFire, 32)
+registersymbol(DbFireKey)
+alloc(DbFireKey, 4)
+alloc(NoDecKey, 4)
+label(NoDec)
+label(Normal)
+
+NoDecKey:
+dd 1
+
+DbFireKey:
+dd 1
+
+DoubleFire:
+cmp [NoDecKey],1
+je NoDec
+call 00675cd9
+NoDec:
+neg eax
+sbb eax,eax
+neg eax
+mov [ebp-00000204],eax
+mov ecx,[ebp-00000224]
+
+cmp [DbFireKey], 00
+je Normal
+xor eax,eax
+inc eax
+Normal:
+call 00643f0d
+jmp 008380BD
+
+008380A1:
+jmp DoubleFire
+[disable]
+008380A1:
+call 00675cd9
+
+unregistersymbol(DoubleFire)
+dealloc(DoubleFire)
+unregistersymbol(DbFireKey)
+dealloc(DbFireKey)
+dealloc(NoDecKey)

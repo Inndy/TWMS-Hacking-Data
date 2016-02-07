@@ -1,0 +1,68 @@
+[ENABLE]
+//日本武器庫
+Registersymbol(RedV)
+Alloc(RedV,4)
+Alloc(SpawnControl,512)
+Label(rtnSPC)
+Label(rtnStart00)
+Label(rtnStart01)
+Label(rtnStart02)
+Label(rtnStart03)
+Label(rtnStart04)
+Label(rtnNormal)
+
+SpawnControl:
+  mov [RedV],ebx
+  pushad
+  mov esi,[00A9CA88]
+  mov esi,[esi+0C48]
+
+  cmp esi,2FBEE680 //昭和村 基地前
+  jz rtnStart00
+  cmp esi,2FBEE681 //昭和村 停車場
+  jz rtnStart01
+  cmp esi,2FBEE682 //昭和村 金融中心
+  jz rtnStart02
+  cmp esi,2FBEE683 //昭和村 迎賓室
+  jz rtnStart03
+  cmp esi,2FBEE684 //昭和村 武器庫
+  jz rtnStart04
+rtnNormal:
+  popad
+  lea eax,[ebx+00004054]
+  jmp rtnSPC
+
+rtnStart00:
+  mov [ebp-1C],000000C7
+  mov [ebp-18],FFFFFFE7
+  jmp rtnNormal
+rtnStart01:
+  mov [ebp-1C],0000056A
+  mov [ebp-18],000000A1
+  jmp rtnNormal
+rtnStart02:
+  mov [ebp-1C],00000567
+  mov [ebp-18],000000A2
+  jmp rtnNormal
+rtnStart03:
+  mov [ebp-1C],000004A5
+  mov [ebp-18],000000A2
+  jmp rtnNormal
+rtnStart04:
+  mov [ebp-1C],000001C1
+  mov [ebp-18],000000A1
+  jmp rtnNormal
+
+00752ACB:
+//8d 83 ?? ?? 00 00 83 38 00 74 15
+  jmp SpawnControl
+  db 90
+  rtnSPC:
+
+[DISABLE]
+00752ACB:
+  db 8d 83 54 40 00 00
+
+dealloc(SpawnControl)
+dealloc(MapID)
+dealloc(SpawnXY)

@@ -1,0 +1,27 @@
+//V136 jDupleX §l¸õ©Ç
+//from ems v74.2 jDupleX - Follow
+[Enable]
+alloc(DupeX,128)
+
+0083D006:
+jmp DupeX
+db 90 90
+
+DupeX:
+push eax
+mov eax,[bbadd0]
+mov eax,[eax+3288]
+mov eax,[eax+A4]
+mov [edi+000000B0],eax
+pop eax
+mov [edi+00000298],06
+mov eax,[edi+00000298]
+push edi
+mov edi,[00bbad70]
+jmp 0083D0D5
+
+[Disable]
+dealloc(DupeX)
+
+0083D006:
+db 83 BE 98 02 00 00 03

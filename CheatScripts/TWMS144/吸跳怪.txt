@@ -1,0 +1,37 @@
+//v.131.1 ©wÂI§l¸õ©Ç(¨¾«Ê)
+//auther:aaaddress1
+[ENABLE]
+alloc(Vac,128)
+alloc(rec,50)
+label(Start_VacMob)
+007CA437:
+jmp Vac
+rec:
+dd 00
+Vac:
+cmp [rec],00
+jne Start_VacMob
+push eax
+push edx
+mov eax,[00acf52c]
+mov eax,[eax+17a8]
+sub eax,0c
+mov edx,[eax+1a0]
+mov [rec],edx
+mov edx,[eax+1a4]
+mov [rec+08],edx
+mov edx,[eax+1a8]
+mov [rec+10],edx
+pop edx
+pop eax
+Start_VacMob:
+push [rec]
+pop [esi+1a0]
+push [rec+08]
+pop [esi+1a4]
+push [rec+10]
+pop [esi+1a8]
+mov [esi+1e8],0
+cmp [esi+000001b0],ebx
+jmp 007CA44B
+[DISABLE]

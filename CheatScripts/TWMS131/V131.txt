@@ -1,0 +1,37 @@
+[ENABLE]
+alloc(LastEsp,4)
+alloc(RealLastEsp,4)
+registersymbol(RealLastEsp)
+alloc(GetAddressCall,64)
+alloc(GetAddressYeah,64)
+alloc(GetTrueFalse,64)
+007A2BEB:
+jmp GetAddressCall 
+GetAddressCall:
+mov eax,[esp]
+push eax
+call GetTrueFalse//條件式
+cmp eax,0//False
+pop eax
+je GetAddressYeah
+mov [LastEsp],eax
+mov eax,[ztltaskmemreallocimp+2e683e]
+mov eax,[eax+1c]
+ret
+GetAddressYeah:
+mov eax,[LastEsp]
+mov [RealLastEsp],eax
+mov eax,[ztltaskmemreallocimp+2e683e]
+mov eax,[eax+1c]
+ret
+GetTrueFalse:
+//Eax = 0 RealLastEsp會紀錄上一個的[esp]
+ret
+[DISABLE]
+007A2BEB:
+mov eax,[ztltaskmemreallocimp+2e683e]
+dealloc(LastEsp)
+dealloc(RealLastEsp)
+dealloc(GetAddressCall)
+dealloc(GetAddressYeah)
+dealloc(GetTrueFalse)

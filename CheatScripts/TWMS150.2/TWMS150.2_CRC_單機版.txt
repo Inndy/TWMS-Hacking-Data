@@ -1,0 +1,21 @@
+// TWMS150.2 CRC ³æ¾÷ª©
+[ENABLE]              
+alloc(scp,128)
+registersymbol(scp)
+
+scp:
+mov eax,ff
+push eax
+call 0094a8af
+jmp 005216fa
+
+
+005213C9: // 50 E8 ?? ?? ?? 00 E9 ?? ?? 00 00 8D 90 ?? ?? FF FF 83 FA
+jmp scp
+nop
+[DISABLE]
+005213C9:
+db 50 E8 E0 94 42 00
+
+dealloc(scp)
+unregistersymbol(scp)

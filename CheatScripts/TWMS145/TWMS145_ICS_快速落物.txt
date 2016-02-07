@@ -1,0 +1,26 @@
+// TWMS145 ICS 快速落物簡化版
+// ICS化：Inndy
+// 修改:冰Smith
+[ENABLE]
+Alloc(Staic_ICS, 64)
+Label(Staic)
+
+Staic_ICS:
+Cmp  [Esp+08], 004DD6B6
+Jne  VariantClear
+Mov  [Esp+08], Staic
+Jmp  VariantClear
+
+Staic:
+DB   59
+DB   83 7d e4 02
+Je   004dd747
+Jmp  004DD6C1
+
+00A7328C:
+DD   Staic_ICS
+[DISABLE]
+00A7328C:
+DD   VariantClear
+
+Dealloc(Staic_ICS)

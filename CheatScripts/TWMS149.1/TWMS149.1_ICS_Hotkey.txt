@@ -1,0 +1,38 @@
+// TWMS149.1 ICS Hotkey
+[ENABLE]
+Alloc(MyHotkey, 512)
+Label(HotkeyReturn)
+Label(SetTeleportXY)
+Label(Teleport)
+
+MyHotkey:
+Cmp  [Esp], 008EE83C // 0F B6 C0 C3 0F
+Jne  HotkeyReturn
+Cmp  [Esp+08], 006A2C20 // 85 C0 75 ?? 8B 4B ?? 89
+Jne  HotkeyReturn
+Cmp  [Ebp+0C], 1
+Jne  HotkeyReturn
+Movzx Eax, byte ptr [Ebp+08]
+Mov  [01E2FFEC], Eax
+Cmp  Eax, 40 // F6
+Je   SetTeleportXY
+Cmp  Eax, 41 // F7
+Je   Teleport
+Jmp  HotkeyReturn
+
+SetTeleportXY:
+Jmp  HotkeyReturn
+
+Teleport:
+Jmp  HotkeyReturn
+
+HotkeyReturn:
+Jmp  006F392F
+
+00C19078:
+DD   MyHotkey
+[DISABLE]
+00C19078:
+DD   006F392F // E8 ?? ?? ?? FF 33 C9 39 08 0F 95 C1 8A C1 C3 33 C0 C3 F6
+
+Dealloc(MyHotkey)

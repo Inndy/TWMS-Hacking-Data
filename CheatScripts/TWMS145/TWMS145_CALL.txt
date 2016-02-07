@@ -1,0 +1,47 @@
+丟錢
+間隔0xC8
+00934F1B - 68 C8000000                - push 000000C8
+
+Mov  Ecx, [00A70B44]
+Push #100
+Call 00934EC1
+
+
+
+
+送出表情
+Push FFFFFFFF
+Push 00000000
+Push 00000002 // 2號表情：笑臉
+Mov  Ecx, [00D1CDA4]
+Call 0093676D
+
+
+
+
+顯示文字
+Push 00000000
+Push 00000000
+Push 00000000
+Push FFFFFFFF
+Push 0000000D //00:白色 01:綠色 02:粉紅色 03:橘色 04:淺粉紅 05:淺綠 06:灰色 07:黃色 08:淺黃色 09:藍色 0A:灰白底黑字 0B:淺粉紅 0C:灰藍底藍字
+Push Text
+Mov  Ecx, [00D21948]
+Call 007E2D87
+
+
+
+
+撿取物品
+Push Point
+Mov  Ecx, [00D24C58]
+Call 004DA523
+
+
+
+
+取得目前XY
+Push MyXY
+Mov  Ecx, [00D1D0DC] // 人物Base
+Add  Ecx, 4
+Call dword ptr [00BB28F0] // 00495DF0

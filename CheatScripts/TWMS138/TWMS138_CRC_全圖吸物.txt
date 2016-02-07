@@ -1,0 +1,46 @@
+[ENABLE]
+alloc(GetXY,128)
+alloc(SetXY,128)
+alloc(XY,20)
+
+004530A2:
+/*
+00453085 - e8 a6 87 fd ff             - call 0042b830
+*/
+call SetXY
+004CF2E9:
+/*
+004CF2DC - ff 50 18                   - call dword ptr [eax+18]
+004CF2DF - 89 45 d0                   - mov [ebp-30],eax
+*/
+call GetXY
+
+GetXY:
+push esi
+push edi
+mov edi,[esp+0c]
+push [edi]
+pop [XY]
+push [edi+04]
+pop [XY+08]
+jmp 0042D0AC
+
+SetXY:
+push esi
+push edi
+push [XY]
+mov esi,ecx
+lea ecx,[esi+0c]
+call 00422cc3
+push [XY+08]
+mov ecx,esi
+call 00422cc3
+pop edi
+mov eax,esi
+pop esi
+ret 04
+[DISABLE]
+004530A2:
+call 0042d0a6
+004CF2E9:
+call 0042d0a6

@@ -1,0 +1,29 @@
+//TWMS137 重機槍可走動
+[ENABLE]
+Alloc(MCMove, 128)
+Label(MCMove2)
+Label(MCMove_Return)
+
+MCMove:
+cmp [esp], 0084CBAC	//137	//85 C0 0F 84 ? ? ? ? 8B 86 ? ? ? ? 2D ? ? ? ? 74
+je MCMove2
+xor eax,eax
+ret
+
+MCMove2:
+push esi
+mov esi,ecx
+add esi,1
+mov eax,[esi]
+sub esi,1
+jmp MCMove_Return
+
+0081FD2E: //56 8B ? 8B ? ? ? ? ? 85 ? 74 ? 50 E8 ? ? ? ? 59 85 ? 74 ? 8B ? E8 ? ? ? ? 85
+jmp MCMove
+db 90 90 90 90
+MCMove_Return:
+[DISABLE]
+0081FD2E:
+db 56 8b f1 8b 86 5c 48 00 00
+
+DeAlloc(MCMove)

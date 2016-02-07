@@ -1,0 +1,21 @@
+[ENABLE]
+//TWMS140 修改武器速度值
+//Auther: Aaaddress1
+//Update: Inndy
+alloc(SpeedUpAttack,64)
+
+SpeedUpAttack:
+Call 0044f2ea
+Add  Esp, 10
+Mov [Ebp+70], A763FFFF	//武器速度，我忘記怎改了 :))
+Mov Eax, [Ebp+70]
+Jmp 0045434A
+
+004542D2: // E8 ?? ?? FF FF 83 C4 10 85 C0 74 ?? 83 65 ?? 00 83 7D ?? 00 0F
+//第二組
+Jmp SpeedUpAttack
+[DISABLE]
+004542D2:
+db e8 13 b0 ff ff
+
+dealloc(SpeedUpAttack)

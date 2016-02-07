@@ -1,0 +1,312 @@
+//秒數無敵、Miss無敵、笨怪、物品過濾、怪物不急退、跳怪不跳
+[ENABLE]
+RegisterSymbol(Main)
+Alloc(Main, 4096)
+RegisterSymbol(Time)
+Alloc(Time, 4)
+RegisterSymbol(MissTime)
+Alloc(MissTime, 4)
+RegisterSymbol(MissTimeCmp)
+Alloc(MissTimeCmp, 4)
+RegisterSymbol(FilterMode)
+Alloc(FilterMode, 4)
+RegisterSymbol(LastItem)
+Alloc(LastItem, 4)
+RegisterSymbol(MonsterNoJump)
+Alloc(MonsterNoJump, 4)
+Label(Nohurt)
+Label(NohurtMain)
+Label(NohurtMainI)
+Label(NohurtMainII)
+Label(StupidMonster)
+Label(StupidMonsterMain)
+Label(MobNoKB)
+Label(MobNoKBMain)
+Label(ItemFilter)
+Label(ItemFilterMain)
+Label(ItemFilterOr1)
+Label(ItemFilterOr2)
+Label(ItemBlackFilter)
+Label(ItemWhiteFilter)
+Label(SkipItem)
+Label(EndFilter)
+Label(MobNoJump)
+Label(MobNoJumpMain)
+Label(MobFast)
+Label(MobFastMain)
+Alloc(ItemList, 32768)
+
+//==============
+Time:		//無敵時間
+DD FFFF8AD0	//30秒
+
+MissTime:	//迴避次數
+DD 3
+
+FilterMode:	//物品過濾模式
+DD 1		//0關 1黑名單模式 2白名單模式
+
+MonsterNoJump:	//怪物不跳
+DD 1
+//==============
+ItemList:
+//請在以下加入物品清單
+
+DD 1E8482 // 白色藥水 
+
+DD 1F6EE0 // 箭矢
+DD 1F72C8 // 弩箭矢
+DD 1F95F0 // 海星鏢
+
+DD 3D7E3C // 怪物卡
+DD 3D8834 // 紅茶茶包
+DD 3D8836 // 布塊
+
+DD 3FA129 // 英雄鑰匙
+DD 414EC5 // 神祕罐子
+DD 3D8892 // 切片蛋糕
+DD 3D87FF // 安迪的懷表
+DD 3D882E // 紅色內衣 
+
+DD 253F2F // 撲通撲通的心(右側用)
+DD 253F2C // 三角飯糰(左側用)
+DD 253B41 // 吃蟲寶石君
+DD 253B40 // 吃蟲桔小姐
+
+
+//童話村
+DD 3D09A9 // 倒米棒 
+DD 3D8838 // 填充棉花 
+DD 3D09AA // 老虎腳印 
+DD 3D09AB // 虎皮 
+
+
+//水世界
+DD 3D8839 // 溫暖氣泡
+DD 3D09A1 // 海馬的尾巴 
+
+
+//神木村
+DD 3D888F // 鑽石7卡片
+DD 3FA128 // 冰方塊
+
+//桃花仙境
+DD 3D0A15 // 頂針 
+DD 3D883B // 火焰秘笈 
+
+//請在以上加入物品清單
+DD 00
+//==============
+Main:
+Cmp [Esp+1c], 0086001E	//e8 ?? ?? ?? ff f6 80 ?? ?? 00 00 02 74 05
+Je Nohurt		//無敵
+Cmp [Esp+1c], 008B862E	//33 d2 b9 60 ea 00 00 f7 f1
+Je StupidMonster	//笨怪
+Cmp [Esp+1c], 008B95F6	//6a 05 33 d2 59 f7 f1 85 d2
+Je MobNoJump		//跳怪不跳
+Cmp [Esp+34], 005CF1EA	//8b 55 40 8b cb e8 ?? ?? ff ff 83 7d ?? 01 75 10 8b cf
+Je MobNoKB		//怪物不擊退
+//Cmp [Esp+34], 005DC13B	//8B 5D ?? E9 ?? ?? ?? ?? 8B 7E ?? 8A 07
+//Je MobFast		//怪物瞬移
+Cmp [Esp+64], 004D715E	//8b 45 ?? 8b 75 ?? 88 46 ?? 83 f8 01
+Je ItemFilter		//物品過濾
+
+Jmp 006B28D9
+//==============
+Nohurt:
+Mov [Esp+1c], NohurtMain
+Jmp 006B28D9
+
+StupidMonster:
+Mov [Esp+1c], StupidMonsterMain
+Jmp 006B28D9
+
+MobNoJump:
+Mov [Esp+1c], MobNoJumpMain
+Jmp 006B28D9
+
+MobNoKB:
+Mov [Esp+34], MobNoKBMain
+Jmp 006B28D9
+
+MobFast:
+Mov [Esp+34], MobFastMain
+Jmp 006B28D9
+
+ItemFilter:
+Mov [Esp+64], ItemFilterMain
+Jmp 006B28D9
+//-------------------------
+MobNoJumpMain:
+Cmp [MonsterNoJump], 0
+Je 008B95F6
+Jmp 008b960a
+//-------------------------
+StupidMonsterMain:
+Xor  Edx, Edx
+Mov  Ecx, 0000ea60
+Lea  Ecx, [Esi+000002b8]
+Jmp  008B8643
+//-------------------------
+NohurtMain:
+Call 0042ebce
+Test byte ptr [Eax+000001b4], 02
+Je   NohurtMainI
+Jmp  0086002A
+//==============
+NohurtMainI:
+Lea  Ecx, [Ebx+00003CF8]
+Push [Time]
+Push Eax
+Mov  Eax, [MissTime]
+Cmp  [MissTimeCmp], Eax
+Pop  Eax
+Jg   NohurtMainII
+Mov  [Ebp+58], 0
+inc  [MissTimeCmp]
+Jmp  008605A7
+//==============
+NohurtMainII:
+Mov  [MissTimeCmp], 0
+Jmp  008605A7
+//-------------------------
+MobNoKBMain:
+Mov  Edx, [Ebp+40]
+Mov  Ecx, Ebx
+Call 005bf796
+Mov  Ecx, Edi
+Call 005bcdda
+Xor  Edx, Edx
+Jmp  005cf20d
+//-------------------------
+ItemFilterMain:
+Mov  Eax, [Ebp-1c]
+Mov  Esi, [Ebp-50]
+Mov  [Esi+1c], Al
+Cmp  Eax, 01
+Je   ItemFilterOr1
+Cmp  Eax, 02
+Je   ItemFilterOr1
+Xor  Al, Al
+Jmp  ItemFilterOr2
+
+ItemFilterOr1:
+Mov  Al, 01
+ItemFilterOr2:
+Mov  [Esi+1d], Al
+Mov  [Esi+20], Edi
+Mov  Edi, [Ebp+08]
+Mov  Ecx, Edi
+Call 00408574
+Movzx Eax, Al
+Mov  Ecx, Edi
+Mov  [Esi+30], Eax
+Call 004085d0
+
+Push Esi
+Mov  Esi, ItemList
+Cmp  Eax, C350
+JLE  EndFilter
+Mov  [LastItem], Eax
+Cmp  [FilterMode], 0
+Je   EndFilter
+Cmp  [FilterMode], 1
+Je   ItemBlackFilter
+Cmp  [FilterMode], 2
+Je   ItemWhiteFilter
+
+
+ItemBlackFilter:
+Cmp  [Esi], 0
+Je   EndFilter
+Cmp  [Esi], Eax
+Je   SkipItem
+Add  Esi, 4
+Jmp  ItemBlackFilter
+
+ItemWhiteFilter:
+Cmp  [Esi], 0
+Je   SkipItem
+Cmp  [Esi], Eax
+Je   EndFilter
+Add  Esi, 4
+Jmp  ItemWhiteFilter
+
+SkipItem:
+Xor  Eax, Eax
+EndFilter:
+Pop  Esi
+Mov  Ecx, Edi
+Mov  [Esi+34], Eax
+Jmp  004D7199
+//-------------------------
+MobFastMain:
+mov ebx,[ebp+14]
+cmp dword ptr [esi+2c],00
+db 75 05 //jne +5
+jmp 005DC22D
+mov edi,[esi+30]
+mov al,[edi]
+cmp al,0b
+je 005dc218
+movzx ecx,al
+xor eax,eax
+inc eax
+xor edx,edx
+call 009464d0
+mov ecx,[ebp+20]
+or [ecx],eax
+or [ecx+04],edx
+mov ecx,esi
+
+push [ecx+0000008c]
+add ecx,00000084
+push ecx
+call 00404e51
+pop ecx
+pop ecx
+
+push [ecx+0000008c]
+add ecx,00000084
+push ecx
+call 00404e51  //標註起來是瞬1
+pop ecx
+pop ecx
+movsx ecx,word ptr [edi+10]
+cmp eax,ecx
+jl 005dc22d
+mov ecx,esi
+push esi
+push edi
+mov edi,edx
+mov esi,ecx
+lea edx,[esi+00000084]
+mov ecx,edi
+call 00408c26  //標註起來是瞬1,4  //標註起來直接斷線 
+mov [esi+0000008c],eax
+mov eax,edi
+pop edi
+pop esi
+jmp 005DC18E
+//-------------------------
+00CA36F4:
+dd Main
+[DISABLE]
+00CA36F4:
+DD 006B28D9
+//-------------------------
+DeAlloc(Main)
+UnRegisterSymbol(Main)
+DeAlloc(Time)
+UnRegisterSymbol(Time)
+DeAlloc(MissTime)
+UnRegisterSymbol(MissTime)
+DeAlloc(MissTimeCmp)
+UnRegisterSymbol(MissTimeCmp)
+DeAlloc(FilterMode)
+UnRegisterSymbol(FilterMode)
+DeAlloc(ItemList)
+UnRegisterSymbol(MonsterNoJump)
+DeAlloc(MonsterNoJump)
+UnRegisterSymbol(LastItem)
+DeAlloc(LastItem)

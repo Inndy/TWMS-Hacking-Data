@@ -1,0 +1,65 @@
+
+地圖基址 : 00cc79a0
+時間基址 : 00cc4b40
+!? : 00cbfde4
+送封包位址 : 00486121
+
+// TWMS V1.42 反覆送開店封包
+// Made by 冷羽楓痕
+// 說明: 送多次封包後，系統會將人物傳送至自由市場，出口會在勇士之村
+
+[enable]
+Alloc(SendPacket, 128)
+Alloc(PacketStruct, 16)
+Alloc(PacketData, 13)
+Alloc(SendTime,04)
+Alloc(Switch, 04)
+label(Normal)
+Registersymbol(Switch)
+CreateThread(SendPacket)
+
+PacketStruct: // 封包結構
+DD 00 // 00
+DD PacketData // 封包資料位址
+DD #13 // 封包長度
+DD 00 // 00
+
+Switch: // 開關 (若一直無法進自由，設0關閉吧)
+dd 00
+
+PacketData: // 開店封包資料
+DB C7 00 06 04 00 00 00 01 00 20 6E 4E 00
+
+SendPacket:
+cmp [Switch],00
+je Normal
+
+mov eax,[0CC7B68] // 地圖
+mov eax,[eax+C38]
+cmp eax,363D7F80 // 自由市場入口地圖ID: 910000000
+je Normal
+
+mov eax,[00CC4A38] // 時間
+mov eax,[eax+1c]
+cmp eax,[SendTime]
+jl SendPacket
+
+add eax,64
+mov [SendTime],eax
+mov ecx,[00CBFFA4] // !?
+push SendPacket
+push PacketStruct
+push 00401005 // 假的返回位址
+push 00486158 // 送封包
+ret
+
+Normal:
+ret
+
+[disable]
+
+// 地圖基址 - 8b 0d ?? ?? ?? 00 e8 ?? ?? ?? 00 e9 ?? ?? 00 00 8b ce e8 ?? ?? ?? ff 0f
+// 地圖ID偏移 - ff b6 ?? ?? 00 00 8d 86 ?? ?? 00 00 51 8b cc 89 65 fc
+// 時間基址 - A1 ?? ?? ?? ?? 8B 40 ?? C3
+// !? - 8B      8D   50 E8     6A  8B  E8     83    8D   E8     E8     C2   6A  B8     E8     6A
+// 送封包位址 - 6a 38 b8 ? ? ? ? e8 ? ? ? ? 89 4d ? a1 3c 00 40 00

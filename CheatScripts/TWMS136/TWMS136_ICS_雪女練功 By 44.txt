@@ -1,0 +1,179 @@
+//V136 雪女人物左右
+//左右連擊必須要施放可以搭配近戰不揮空的Skill
+//左右連擊內含NoDelaySkill
+//Make By Future Doraemon Four
+[Enable]
+registersymbol(MyAttackInterval)
+alloc(MyAttackInterval,4)
+
+registersymbol(MyLastAttack)
+alloc(MyLastAttack,4)
+
+registersymbol(NoDelayTimes)
+alloc(NoDelayTimes,4)
+
+registersymbol(MyWalk)
+alloc(MyWalk,4)
+
+registersymbol(MyAttacking)
+alloc(MyAttacking,4)
+
+registersymbol(ICSWalk)
+alloc(ICSWalk,64)
+
+registersymbol(LRWalk)
+alloc(LRWalk,128)
+
+registersymbol(GetMyCharX)
+alloc(GetMyCharX,32)
+
+registersymbol(GetMyWalkX)
+alloc(GetMyWalkX,256)
+label(WalkRight)
+label(WalkLeft)
+
+registersymbol(LeftRightAttacking)
+alloc(LeftRightAttacking,256)
+label(ChangeLR)
+
+registersymbol(NoDelaySkill)
+alloc(NoDelaySkill,256)
+label(ExitNoDelay)
+
+registersymbol(CleanTimes)
+alloc(CleanTimes,32)
+MyAttackInterval:
+dd 320//每800ms無延遲一次
+
+MyLastAttack:
+dd 0//如果此值遭到修改將造成錯亂
+
+NoDelayTimes:
+dd 0//如果此值錯亂會造成斷線
+
+MyWalk:
+dd 1//表示開啟後向右走
+
+MyAttacking:
+dd 0//表示開啟後自動向右攻擊 請勿Freeze此值
+
+00bc1418: //ok
+dd ICSWalk
+
+ICSWalk:
+cmp [esp],0084201A //ok
+jne GetFocus
+mov [esp],LRWalk
+jmp GetFocus
+
+LRWalk:
+call GetMyWalkX
+mov [ebp-08],eax
+call LeftRightAttacking//左右連擊 不需要可以//掉
+xor ecx,ecx
+xor eax,eax
+cmp [ebp-04],eax
+jmp 00842236 //ok
+
+GetMyCharX:
+mov eax,[00bbad70] //ok
+mov eax,[eax+1888] //ok
+ret
+
+GetMyWalkX:
+call GetMyCharX//得到角色X值
+mov ecx,[00bbad70] //ok
+sub eax,[ecx+1c]//角色X值 - 左牆X值  //ok
+cmp eax,50 //請注意 0x50不行請改大 
+jle WalkRight
+call GetMyCharX
+mov ecx,[ecx+24]
+sub ecx,eax
+//右牆X值 - 角色X值
+cmp ecx,50//請注意 0x50不行請改大 
+jle WalkLeft
+mov eax,[MyWalk]
+ret//不進行改變
+
+WalkRight:
+mov [MyWalk],1
+mov eax,1
+ret
+
+WalkLeft:
+mov [MyWalk],ffffffff
+mov eax,ffffffff
+ret
+
+LeftRightAttacking:
+mov eax,[00bbadd0] //人物動作 ok
+mov ecx,[MyAttacking]
+lea ecx,[ecx+4]
+mov [eax+46c],ecx //ok
+cmp [MyAttacking],0
+je ChangeLR
+sub [MyAttacking],2
+
+ChangeLR:
+inc [MyAttacking]
+call NoDelaySkill//無延遲技能 不需要請//掉
+ret
+
+NoDelaySkill:
+call 0081031B//獲取楓之谷時間 //ok
+sub eax,[MyAttackInterval]
+cmp eax,[MyLastAttack]
+jl ExitNoDelay
+call 0081031B //ok
+mov [MyLastAttack],eax
+mov eax,[00bbadd0] //無延遲 ok 
+cmp eax,0
+je ExitNoDelay
+cmp [eax+470],ffffffff
+je ExitNoDelay
+inc [NoDelayTimes]
+cmp [NoDelayTimes],3
+jge CleanTimes
+mov [eax+470],ffffffff
+
+ExitNoDelay:
+ret
+
+CleanTimes:
+mov [NoDelayTimes],0
+jmp ExitNoDelay
+
+[Disable]
+
+00bc1418:
+dd GetFocus
+
+unregistersymbol(NoDelayTimes)
+dealloc(NoDelayTimes)
+
+unregistersymbol(MyWalk)
+dealloc(MyWalk)
+
+unregistersymbol(MyAttacking)
+dealloc(MyAttacking)
+
+unregistersymbol(ICSWalk)
+dealloc(ICSWalk)
+
+unregistersymbol(LRWalk)
+dealloc(LRWalk)
+
+unregistersymbol(GetMyCharX)
+dealloc(GetMyCharX)
+
+unregistersymbol(GetMyWalkX)
+dealloc(GetMyWalkX)
+
+unregistersymbol(LeftRightAttacking)
+dealloc(LeftRightAttacking)
+
+unregistersymbol(NoDelaySkill)
+dealloc(NoDelaySkill)
+
+unregistersymbol(CleanTimes)
+dealloc(CleanTimes)

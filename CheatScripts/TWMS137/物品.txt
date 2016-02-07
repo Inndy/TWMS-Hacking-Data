@@ -1,0 +1,63 @@
+//TWMS137 ½æª««~¥Î
+int GetPositionByID(int ID)
+{
+	VMProtectBegin("GetPositionByID");
+	int i = 0;
+	long OutPosition = 0;
+	long ItemBase = *(long*)( *(long*)( *(long*)0x00BD89B4 + 0x98 ) + 0xDC );//0xBF194C//0x78//0xbc
+	if(ItemBase!=0)
+	{
+		int n = *(long*)(ItemBase-4);
+		for(;i<n;i++)
+		{          
+			long ItemAddr = ItemBase+i*0x50;
+			//Get ItemID
+			long GetItemID = 0x4215DA;//0x42a49e
+			long ItemID2 = 0;
+			__asm{
+				pushad
+				mov ecx,ItemAddr
+				call GetItemID
+				mov ItemID2,eax
+				popad
+			}
+			//WriteLog("%d=%X!=%X\n",i,ItemID2,ID);
+			if(ItemID2==ID)
+			{   
+				OutPosition = i;
+				break;
+			}
+		}
+		
+		if(i==n&&OutPosition==0)
+		{
+			return -1;
+		}
+	}
+
+	VMProtectEnd();
+	
+	return OutPosition;
+
+}
+//137
+int GetSellItemID(int SellPosition)
+{
+	VMProtectBegin("GetSellItemID");
+	int ItemID2 = 0;
+	long ItemBase = *(long*)(*(long*)(*(long*)0x00BD89B4+0x98)+0xEC);
+	if(ItemBase!=0)
+	{
+		long ItemAddr = ItemBase+SellPosition*0x50;//0x40
+		long GetItemID = 0x4215DA;//0x42a49e
+		__asm{
+			pushad
+			mov ecx,ItemAddr
+			call GetItemID
+			mov ItemID2,eax
+			popad
+		}
+	}
+	VMProtectEnd();
+	return ItemID2;
+}

@@ -1,0 +1,28 @@
+//V1.42.伺服器人物XY驗證攻擊不停 By.aaaddress1.
+alloc(FullScreenAttack,128)
+alloc(IncCount,08)
+label(X_Offset)
+label(BackToSetNewX)
+004577AF:
+call FullScreenAttack
+
+IncCount:
+dd 00
+
+X_Offset:
+inc [IncCount]
+cmp dword ptr [IncCount],0A
+jle BackToSetNewX
+mov [IncCount],00
+BackToSetNewX:
+ret
+
+FullScreenAttack:
+push esi
+push edi
+call X_Offset
+mov edi,[esp+0C]
+mov esi,[IncCount]
+add [edi],esi
+push [edi]
+jmp 0043021F

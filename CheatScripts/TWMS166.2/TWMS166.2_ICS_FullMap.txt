@@ -1,0 +1,58 @@
+[ENABLE]
+Alloc(FullMapHack, 128)
+GlobalAlloc(FullMapHack_Switch, 4)
+GlobalAlloc(FullMapHackXY, 8)
+Label(FullMap)
+Label(ExitFullMap)
+Label(SetXY)
+Label(Fix)
+
+FullMapHack:
+	Add  Esp, 04
+	Call VariantClear
+	Cmp  [Esp], 00729680 // 59 8D 45 ?? 50 8B CF E8 ?? ?? ?? FF 8B 86
+	Je   FullMap
+	Cmp  [Esp], 0072984F // 59 8D 45 ?? 50 8D 8E ?? ?? 00 00 E8 ?? ?? ?? FF 85 C0
+	Je   Fix
+	Ret
+
+FullMap:
+	Add  Esp, 04
+	DB   59,8D,45,A0,50,8B,CF
+	Push 0072968C // Return Address
+	DB   56,57,8B,7C,24,0C
+	
+	Cmp  [FullMapHack_Switch], 0
+	Je   ExitFullMap
+	Cmp  [FullMapHack_Switch], 2
+	Je   SetXY
+
+	Push [FullMapHackXY]
+	Pop  [Edi]
+	Push [FullMapHackXY+04]
+	Pop  [Edi+04]
+
+ExitFullMap:
+	Jmp  0043F273 // Push [Edi]
+
+SetXY:
+	Mov  Ecx, [01532780]
+	Add  Ecx, 04
+	Push FullMapHackXY
+	Mov  Eax, [Ecx]
+	Call [Eax+10]
+	Jmp  ExitFullMap
+
+Fix:
+	Add  Esp, 04
+	DB   59,8D,45,A0,50,8D,8E,DC,07,00,00
+	Call 006F57EA
+	Jmp  00729866
+
+00F982B0:
+DD FullMapHack
+[DISABLE]
+00F982B0:
+DD VariantClear
+
+Dealloc(FullMapHack)

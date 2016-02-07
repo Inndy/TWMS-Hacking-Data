@@ -1,0 +1,27 @@
+// TWMS148.1 EIP 人物飛天
+// Address = 00971FB0
+// EIP = Fly
+[ENABLE]
+Alloc(Fly, 64)
+RegisterSymbol(Fly)
+Label(NotFly)
+
+Fly:
+Cmp  [Ebp+04], 00974572
+Jne  NotFly
+Fldz
+Jmp  00971FBD
+NotFly:
+Fld  qword ptr [Ebp+0C]
+Fdiv qword ptr [Ebp+14]
+Jmp  00971FB6
+
+//00971FB0:
+Jmp  Fly
+Nop
+[DISABLE]
+00971FB0:
+DB   DD 45 0C DC 75 14
+
+Dealloc(Fly)
+UnregisterSymbol(Fly)

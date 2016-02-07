@@ -1,0 +1,14 @@
+//TWMS138 ¶W¯Å²Â©Ç
+[enable]
+005C7C24://0F ?? ?? 00 00 00 8b ce e8 ?? ?? ?? ff 85 c0 0f 85 ?? 00 00 00 33 ff
+jmp 005c7cdf
+nop
+
+
+/*
+005C7C24 - 0f 85 b5 00 00 00          - jne 005c7cdf
+*/
+ 
+[disable]
+005C7C24:
+jne 005c7cdf

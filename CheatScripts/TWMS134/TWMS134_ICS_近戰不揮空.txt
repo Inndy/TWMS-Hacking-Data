@@ -1,0 +1,52 @@
+//近戰不揮空ICS V134
+//-----------------------------------------------
+[ENABLE]
+registersymbol(MYNA)
+alloc(MYNA,1024)
+registersymbol(MYNA00)
+alloc(MYNA00,1024)
+//-----------------------------------------------
+00bc038c:
+DD MYNA
+//-----------------------------------------------
+MYNA:
+cmp [esp],007E83AE
+jne OffsetRect
+mov [esp],MYNA00
+jmp OffsetRect  
+//77D29011
+
+MYNA00:
+push [ebp-000001a0]
+push 00
+push 00
+push 00
+push 00
+push 00
+push 00
+push [ebp-00000188]
+lea eax,[ebp-00000184]
+push eax
+lea eax,[ebp-68]
+push eax
+call 004301b0
+mov ecx,eax
+call 005ac223
+mov [ebp-7c],eax
+
+cmp dword ptr [ebp-7c],00
+jne 007e871d
+
+cmp [ebp-000001a0],0040413a
+jmp 007e868a
+
+//-----------------------------------------------
+
+[DISABLE]
+00bc038c:
+DD OffsetRect
+
+dealloc(MYNA)
+unregistersymbol(MYNA)
+dealloc(MYNA00)
+unregistersymbol(MYNA00)

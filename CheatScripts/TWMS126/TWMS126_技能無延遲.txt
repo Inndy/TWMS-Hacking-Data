@@ -1,0 +1,30 @@
+[ENABLE]
+alloc(HookTime,4)
+alloc(MyHookTime,128)
+label(ReturnRealVal)
+007CE02F:
+jmp MyHookTime
+MyHookTime:
+mov eax,[00CDEC18]
+sub [eax+1C],2710
+mov eax,[00CDE80C]
+mov [eax+44C],0
+cmp [eax+454],ffffffff
+je ReturnRealVal
+mov [eax+454],ffffffff
+add [HookTime],bb8
+jmp ReturnRealVal
+ReturnRealVal:
+mov eax,[00CDEC18]
+add [eax+1C],2710
+mov eax,[00CDEC18]
+mov eax,[eax+1C]
+add eax,[HookTime]
+ret
+[DISABLE]
+007CE02F:
+mov eax,[00CDEC18]
+mov eax,[eax+1C]
+ret
+dealloc(HookTime)
+dealloc(MyHookTime)

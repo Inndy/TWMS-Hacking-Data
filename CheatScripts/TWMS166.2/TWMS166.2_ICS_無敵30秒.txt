@@ -1,0 +1,31 @@
+[ENABLE]
+Alloc(GodMode, 128)
+Label(God)
+Label(Normal)
+GlobalAlloc(GodTick, 4)
+
+GodMode:
+	Cmp  [Esp], 00C552E0 // 8B C8 E8 ?? ?? ?? FF 85 C0 0F 85 ?? ?? 00 00 57 8B
+	Jne  Normal
+
+	Call 00C9CE0B
+	Cmp  Eax, [GodTick]
+	Jl   God
+
+	Add  Eax, #30000
+	Mov  [GodTick], Eax
+    Jmp  Normal
+
+God:
+	Mov  [Esp], 00C57BA5 // Exit Function, Jne To...
+
+Normal:
+	Jmp  00C60141 // A1 ?? ?? ?? ?? 05 ?? ?? 00 00 C3 81 C1
+
+012C8914:
+DD GodMode
+[DISABLE]
+012C8914:
+DD 00C60141
+
+Dealloc(GodMode)

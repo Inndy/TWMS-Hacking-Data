@@ -1,0 +1,8 @@
+// TWMS145 ICS ¤Hª«·l¦å¤£°h
+// Auther: Inndy
+[ENABLE]
+00BB62A4:
+DD 008DF445
+[DISABLE]
+00BB62A4:
+DD 008DF40C

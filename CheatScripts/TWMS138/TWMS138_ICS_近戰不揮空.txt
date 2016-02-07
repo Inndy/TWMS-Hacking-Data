@@ -1,0 +1,38 @@
+[enable]
+alloc(CallCheck,256)
+alloc(NoEmptyAtk,256)
+
+00c96784:
+DD CallCheck
+
+CallCheck:
+cmp [esp],00844EAE
+jne OffsetRect
+mov [esp],NoEmptyAtk
+jmp OffsetRect
+
+NoEmptyAtk: //ff 15 ?? ?? ?? 00 ff b5 ?? ?? ff ff 6a 00 6a 00 6a 00 6a 00 6a 00 6a 00
+push [ebp-000001a4]
+push 00
+push 00
+push 00
+push 00
+push 00
+push 00
+push [ebp-00000188]
+lea eax,[ebp-00000184]
+push eax
+lea eax,[ebp-68]
+push eax
+call 00432caf
+mov ecx,eax
+call 005ca422
+mov [ebp-78],eax
+jmp 00844EE0
+
+[disable]
+00c96784:
+DD OffsetRect
+
+dealloc(CallCheck)
+dealloc(NoEmptyAtk)

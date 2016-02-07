@@ -1,0 +1,74 @@
+[ENABLE]
+GlobalAlloc(MobVacSwitch, 4)
+GlobalAlloc(VacXY, 8)
+Alloc(MobVac, 1024)
+Label(SetXY)
+Label(TestRoutine)
+Label(__MobVac)
+Label(Return)
+Label(StartVac)
+
+MobVac:
+Cmp  [Esp+34], 0064DF8D // [1/4] 最後一個CALL // 8D 4D ?? E8 ?? ?? ?? FF E8 ?? ?? ?? 00 C2 28 00
+Jne  GetProcessHeap
+Mov  [Esp+34], TestRoutine
+Jmp  GetProcessHeap
+
+TestRoutine:
+Mov  Eax, [MobVacSwitch]
+Dec  Eax
+Je   SetXY      // 1
+Dec  Eax
+Je   __MobVac   // 2
+Jmp  Return
+
+SetXY:
+Pushad
+Push VacXY
+Mov  Ecx, [00F6C8DC]
+Add  Ecx, 04
+Call 004B5238
+Popad
+Sub  [VacXY+04], 5
+Mov  [MobVacSwitch], 2
+Jmp  __MobVac
+
+__MobVac:
+Cmp  [Esi+000002B8], 01
+Je   StartVac
+Cmp  [Esi+000002B8], 03
+Je   StartVac
+Jmp  Return
+
+StartVac:
+Cmp  [Esi+04], 0
+Jg   Return
+Inc  [Esi+04]
+Pushad
+Mov  Eax, Esi
+Mov  Ebx, Eax
+Mov  Ecx, Ebx
+Add  Eax, 10
+Add  Ecx, 10
+Mov  Edi, [Eax]
+Push 00
+Push 00
+Push 00
+Push 00
+Push [VacXY+4]
+Push [VacXY]
+Push 06
+Call dword ptr [Edi+00000088] // ff ?? ?? 00 00 00 8b ?? ?? ?? 00 00 83 ?? ?? ?? 00 00 00 74
+Popad
+Jmp  Return
+
+Return:
+Jmp  0064DF8D
+
+00F7D0B4:
+DD   MobVac
+[DISABLE]
+00F7D0B4:
+DD   GetProcessHeap
+
+Dealloc(MobVac)

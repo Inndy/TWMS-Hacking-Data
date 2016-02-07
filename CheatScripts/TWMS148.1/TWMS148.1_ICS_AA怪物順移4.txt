@@ -1,0 +1,17 @@
+//v148.1 ·s©Çª«Àþ²¾4 by.aaaddress1.
+alloc(MyIcsMobGo,64)
+label(Set)
+
+MyIcsMobGo:
+cmp dword ptr [esp+3c],0061D188
+jne 0A1033DC
+mov [esp+3c],Set
+jmp 0A1033DC
+
+Set:
+mov ecx,esi
+call 0061C8F8
+jmp 0061D188
+
+00DE5FEC:
+dd MyIcsMobGo

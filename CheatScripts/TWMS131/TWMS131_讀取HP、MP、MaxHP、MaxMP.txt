@@ -1,0 +1,42 @@
+[enable]
+registersymbol(GetHpMp)
+alloc(GetHpMp,128)
+registersymbol(HpValue)
+alloc(HpValue,4)
+registersymbol(MpValue)
+alloc(MpValue,4)
+registersymbol(MaxHpValue)
+alloc(MaxHpValue,4)
+registersymbol(MaxMpValue)
+alloc(MaxMpValue,4)
+
+006FAE9E:
+jmp GetHpMp
+
+GetHpMp:
+call 0040496d
+mov [MaxMpValue],ax
+push [esi+6b]
+mov ebx,eax
+lea eax,[esi+63]
+push eax
+call 0040496d
+mov [MpValue],ax
+push [edi+00002108]
+add edi,00002100
+push edi
+mov [ebp-1c],eax
+call 0040496d
+mov [MaxHpValue],ax
+push [esi+53]
+mov edi,eax
+lea eax,[esi+4b]
+push eax
+call 0040496d
+mov [HpValue],ax
+add esp,20
+jmp 006FAED7
+
+[disable]
+006FAE9E:
+call 0040496d

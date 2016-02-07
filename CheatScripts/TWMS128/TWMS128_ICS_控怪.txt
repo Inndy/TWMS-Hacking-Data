@@ -1,0 +1,151 @@
+//v128 控怪方向-ics
+[enable]
+registersymbol(Hook)
+alloc(Hook, 128)
+label(DullMob)
+label(DullMob1)
+registersymbol(gwgs)
+alloc(gwgs,1024)
+registersymbol(zgkg)
+alloc(zgkg,4)
+alloc(CharX,4)
+label(zouguai)
+label(guaiwugensui)
+label(gwxret)
+label(gwxy)
+label(gwxz)
+label(gwxzj)
+label(gwxzk)
+label(gwxzl)
+//-----------
+zgkg:  //控制方向
+dd 3    //3為跟隨 , 1向左走 , 2向右走 ， 4 定點
+//========
+00cd0c5c:
+dd Hook
+//========
+Hook:
+  cmp [esp+44],007f6623
+  jne 0065dd71
+  mov [esp+44],DullMob
+  jmp 0065dd71
+DullMob:
+  fstp st(0)
+  call 0086e6ad
+  cmp [esp],007f7175
+  je DullMob1
+  jmp 007f662a
+DullMob1:
+  add esp,8
+  mov eax,[ebx]
+  xor esi,esi
+  push esi
+  lea ecx,[ebp+7c]
+  push ecx
+  lea ecx,[ebp+34]
+  push ecx
+  mov ecx,ebx
+  call gwgs
+  jmp 007f7187
+gwgs:
+  push ebp
+  mov ebp,esp
+  sub esp,1c
+  push ebx
+  push esi
+  mov ebx,ecx
+  push edi
+  mov edi,[00ce99c0]
+  lea eax,[ebx+00000140]
+  push [eax+10]
+  push eax
+  call 004d955f
+  fstp qword ptr [ebp-1c]
+  mov eax,[ebp+08]
+  push [eax+10]
+  push eax
+  call 004d955f
+db dc 6d e4 83 c4 10
+pushad
+call guaiwugensui
+popad
+  jmp 007fcdf4
+
+guaiwugensui:
+cmp [ebx+000002e0],1  //走怪
+je zouguai
+cmp [ebx+000002e0],3  //跳怪
+je zouguai
+ret
+
+zouguai:
+push eax
+mov eax,[00ce99c4]
+mov eax,[eax+18]
+cmp eax,0
+pop eax
+jg gwxret
+cmp [zgkg],1
+je gwxz
+cmp [zgkg],2
+je gwxy
+cmp [zgkg],3
+je gwxzj
+cmp [zgkg],4
+je gwxzk
+cmp [zgkg],5
+je gwxzl
+gwxret:
+ret
+
+
+gwxz:
+mov [ebx+000001e8],FFFFFFFF
+mov [ebx+000001d8],5
+ret
+
+gwxy:
+mov [ebx+000001e8],1
+mov [ebx+000001d8],4
+ret
+
+gwxzj:
+push eax
+mov eax,[00ce9fe0]
+mov eax,[eax+b00]
+//add eax,3c  //50   //離右 40
+//sub eax,64  //28   //離左 40
+cmp [ebx+0000071c],eax
+pop eax
+jl gwxy
+jg gwxz
+ret
+
+gwxzk:
+push eax
+mov eax,[00ce9fe0]
+mov eax,[eax+b00]
+mov [CharX],eax
+pop eax
+mov [zgkg],5
+ret
+
+gwxzl:
+push eax
+mov eax,[CharX]
+cmp [ebx+0000071c],eax
+pop eax
+jl gwxy
+jg gwxz
+ret
+
+[disable]
+00cd0c5c:
+dd 0065dd71  //我的電腦是這個,你們的可能是 0065db71
+unregistersymbol(zgkg)
+dealloc(zgkg)
+dealloc(CharX)
+unregistersymbol(gwgs)
+dealloc(gwgs)
+unregistersymbol(Hook)
+dealloc(Hook)

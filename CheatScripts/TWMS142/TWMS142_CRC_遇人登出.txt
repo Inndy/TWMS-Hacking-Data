@@ -1,0 +1,35 @@
+//遇人登出  TWMSv142
+//Address：005DCB67 
+//EIP：AutoDC
+[Enable]
+registersymbol(AutoDC)
+registersymbol(DCx)
+alloc(AutoDC,32)
+alloc(DCx,4)
+
+DCx:
+dd 1  //人數
+
+AutoDC:
+pushad
+mov eax,[00CC44F8]  
+mov eax,[eax+2C]
+cmp [DCx],eax
+popad
+ja 005DCB6F  
+jmp 005DCC53 
+
+005DCB67:
+JMP AutoDC
+
+[Disable]
+
+005DCB67:
+test eax,eax
+je 005dcc53
+lea eax,[ebp+08]
+
+dealloc(AutoDC)
+dealloc(DCx)
+unregistersymbol(DCx)
+unregistersymbol(AutoDC)

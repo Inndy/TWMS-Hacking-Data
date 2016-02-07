@@ -1,0 +1,35 @@
+[ENABLE]
+//TWMS131_跳怪掉落點式吸怪
+//Auther:Aaaddress1
+//更新：Inndy
+alloc(JmpMobVac,128)
+label(Vac)
+alloc(rec,4)
+
+007CC26E:
+jmp JmpMobVac
+nop
+
+JmpMobVac:
+push eax
+mov eax,[00acf52c] //人物PID
+mov eax,[eax+17A8]
+sub eax,c
+mov eax,[eax+1a0]
+mov [rec],eax
+pop eax
+
+Vac:
+push [rec]
+pop [ebx+1a0]
+mov [ebx+2e0],6
+mov eax,[ebx+1a0]
+jmp 007CC274
+
+
+[DISABLE]
+007CC26E:
+db 8B 83 A0 01 00 00
+
+dealloc(JmpMobVac)
+dealloc(rec)

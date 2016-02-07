@@ -1,0 +1,60 @@
+// TWMS147.3 ICS 人物快速移動
+// Update: Inndy
+// UpdateTime: 2012-07-25
+[enable]
+alloc(SpeedUp,128)
+alloc(Speed,4)
+alloc(FakeTime,4)
+label(SpeedChk)
+label(Normal)
+label(HookTime)
+
+Speed: // 移動速度
+dd 0A
+
+SpeedUp:
+cmp [esp], 008F8243 // 8B 83 ?? 00 00 00 8B 4D ?? 83 C0
+jne 00942B9D
+add esp, 4
+push esi
+mov esi,[Speed]
+
+SpeedChk:
+test esi,esi
+je Normal
+
+dec esi
+push esi
+push ecx
+push eax
+call dword ptr [eax]
+pop eax
+pop ecx
+pop esi
+jmp SpeedChk
+
+Normal:
+pop esi
+jmp 008F8243
+
+HookTime:
+add eax, [FakeTime]
+add [FakeTime], 000001FE
+jmp 00E8FF60
+
+00C3349C:
+dd SpeedUp
+
+00FA92AF:
+jmp HookTime
+
+[disable]
+00C3349C: // [9/10] // 008E0059
+dd 00942B9D // [2/2] // 53 56 57 8b f9 8d 77 ?? 8b 06
+
+00FA92AF: // [4/4] 倒數第4個jmp // dd 1c 24 68 ? ? ? ? e9 ? ? ? ? 68 ? ? ? ? e9 ? ? ? ? db 45 ? 68 ? ? ? ? e9 ? ? ? ? dd 58 ? 68 ? ? ? ? e9 ? ? ? ? dd 40 ? 68 ? ? ? ? e9 ? ? ? ?
+jmp 00E8FF60
+
+dealloc(SpeedUp)
+dealloc(Speed)
+dealloc(FakeTime)

@@ -1,0 +1,69 @@
+//v144.給私服用的反盾
+//PG血控: Inndy.aaddress1
+//反盾化: 祤痕
+//不過私服還是有個小檢測是必須損1滴才能啟動
+[Enable]
+Alloc(Initialize,32)
+Alloc(PGuard, 128)
+Alloc(PGuardVal, 4)
+Alloc(SSTime, 32)
+Alloc(Time, 16)
+Alloc(MYKB,512)
+label(AllMap)
+00D00638:
+DD MYKB
+
+MYKB:
+Cmp [Esp],005E2C7B
+je AllMap
+Cmp  [Esp], 005E2696 //83 4d fc ff 8d 4d f0 85 c0
+Jne  IntersectRect
+Add  Esp, 4
+Call IntersectRect
+or dword ptr [ebp-04],ff
+lea ecx,[ebp-10]
+test eax,eax
+jmp 005e26cb
+AllMap:
+jmp 005E2C87
+
+PGuardVal:
+DD 99999 //反彈傷害數值
+//-----------------
+Time:
+readmem([00CF83B8]+1C, 8)
+
+PGuard:
+Mov Eax, [Eax+04]
+Mov Ecx, 1
+Mov [Eax+0C], Cx
+Push [PGuardVal]
+Pop Ecx
+Mov [Eax+1F], Cx
+Mov Eax, [Esp+04]
+Mov Ecx,[00CF3924]
+Jmp 00488BE1
+//-----------------
+0087FA47:
+Call PGuard
+
+Initialize:
+Mov [ebp+58],0
+Mov [ebp+60],0
+Jmp 0087EF7C+5
+
+SSTime:
+Add [Time], 1388
+Mov Eax, [Time]
+Jmp 0087F85F+5
+//-----------------
+0087EF7C:
+Jmp Initialize
+//-----------------
+0087F85F:
+Jmp SSTime
+[Disable]
+0087EF7C:
+Mov [Ebp+60],000005DC
+0087FA47:
+Call 00488BE1

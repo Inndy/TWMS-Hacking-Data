@@ -1,0 +1,28 @@
+//TWMS141 取得血、魔、經驗值
+//原創：Inndy
+[ENABLE]
+Alloc(Params, 28)
+Alloc(Hook, 128)
+RegisterSymbol(Params)
+
+Hook:
+Add Esp, 04
+Pop [Params+00] // HpNow
+Pop [Params+04] // HpFull
+Pop [Params+08] // MpNow
+Pop [Params+0C] // MpFull
+Pop [Params+10] // ExpNow
+Pop [Params+14] // ExpFull
+Pop [Params+18] // Unknow
+Sub Esp, 20
+Jmp 007B8EB0
+
+007BD8DC: // E8 ?? ?? FF FF 8D B7 ?? ?? 00 00 8B CE
+Call Hook
+[DISABLE]
+007BD8DC:
+Call 007B8EB0
+
+Dealloc(Params)
+Dealloc(Hook)
+UnregisterSymbol(Params)

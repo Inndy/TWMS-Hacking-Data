@@ -1,0 +1,95 @@
+//v1.31.1 狂狼反盾全圖攻擊
+//auther:aaaddress1
+//Fixed By 小翊game、草泥馬
+//技術支援:頑皮鬼
+[ENABLE]
+alloc(SetXY,128)
+alloc(SetBump,128)
+alloc(Hit,128) 
+alloc(BlockHit,128)
+alloc(HitTime,4)
+label(BlockHurt)
+registersymbol(Get)
+alloc(Get,4)
+0078327F:
+db eb 1b 
+//--------------怪物穩如泰山--------------
+00586DE6:
+jg 00586e7f
+//--------------狂狼反盾清除連擊----------
+00787C30: 
+jmp Hit
+
+Hit:
+cmp [ebx+000045d0],258 
+jl 00787c53
+mov eax,[ebx+000045d4]
+jmp 00787C47
+//--------------狂狼反盾無敵-------------
+0077901C:
+jmp BlockHit
+nop
+BlockHit:
+call 00420774
+push ecx
+mov ecx,[00ACF940]
+mov ecx,[ecx+1c]
+cmp ecx,[HitTime]
+jl BlockHurt
+mov eax,[ebx+00000454]
+and eax,fe
+mov [HitTime],ecx
+add [HitTime],4E20
+pop ecx
+jmp 00779040
+
+BlockHurt:
+pop ecx
+jmp 0077aa01
+//--------------狂狼反盾連撞-------------
+00783117:
+call SetBump
+nop
+ 
+SetBump:
+add ecx,3a14
+call 0075c8e0
+mov [ebp-20],00 
+mov [ebp-000001a0],00 
+mov [ebp-00000100],00 
+mov [esp],007831aa
+ret
+//-------------動態狂狼反盾---------------
+00AD97DE:
+DB 15 8E 8E 03 D0 79 1C 80 CE 5B B8 6F EA 79 20 95 0B A7 67 53 32 5D 90 86 1F C6
+//-------------SS全圖---------------------
+00588D1B:
+call SetXY
+SetXY:
+push esi
+push edi
+mov edi,[00acf52c]
+push [edi+44c4]
+mov esi,ecx
+lea ecx,[esi+0c]
+call 004201be
+push [edi+44c8]
+mov ecx,esi
+call 004201be
+pop edi
+mov eax,esi
+pop esi
+ret 04
+//-------------怪物強制弱化----------------
+00783267:
+mov eax,00000000
+//-----------------------------------------
+00AD8FE1:
+db 90 29 6E 04 CC B1 4D 9E 71 92 E5 7E 53 4B 35 11 3B 55 F8 DE B8 C8 67 36 7F E0 49 4A 0D CE B8 27 C1 44 95 11 E1 57 CD 3F D2
+[DISABLE]
+00783178:
+db 75 30
+00AD97DE:
+DB 15 8E 9D CC D8 9B 64 C6 DE EC 48 70 EA 6D 8D F0 AE B2 84 77 95 6D 88 8F D5 6D
+00588D1B:
+call 0044054A

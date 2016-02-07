@@ -1,0 +1,439 @@
+// TWMS151.2 怪物走向資料
+
+// 跳怪走向固定
+009C0EA3:
+Ret
+
+// 走怪走向固定
+009C0A93:
+Ret
+
+
+
+// 底下的CALL進去之後會決定怪物走向，直接jmp 009c3cf1就維持走向
+// 所以怪物走向先改0
+009C3C89 - 8b 86 a8 02 00 00          - mov eax,[esi+000002a8] // MonsterType
+009C3C8F - 2b c3                      - sub eax,ebx
+009C3C91 - 74 46                      - je 009c3cd9 // Type == 0
+009C3C93 - 48                         - dec eax
+009C3C94 - 74 3a                      - je 009c3cd0 // Type == 1
+009C3C96 - 48                         - dec eax
+009C3C97 - 48                         - dec eax
+009C3C98 - 74 2d                      - je 009c3cc7 // Type == 3
+009C3C9A - 48                         - dec eax
+009C3C9B - 74 1a                      - je 009c3cb7 // Type == 4
+009C3C9D - 48                         - dec eax
+009C3C9E - 48                         - dec eax
+009C3C9F - 74 0d                      - je 009c3cae // Type == 6
+009C3CA1 - 48                         - dec eax
+009C3CA2 - 48                         - dec eax
+009C3CA3 - 75 4c                      - jne 009c3cf1 // Type != 9
+009C3CA5 - 8b ce                      - mov ecx,esi // Type == 9
+009C3CA7 - e8 0a d0 ff ff             - call 009c0cb6
+009C3CAC - eb 43                      - jmp 009c3cf1
+009C3CAE - 8b ce                      - mov ecx,esi
+009C3CB0 - e8 17 d6 ff ff             - call 009c12cc
+009C3CB5 - eb 3a                      - jmp 009c3cf1
+009C3CB7 - 8b ce                      - mov ecx,esi
+009C3CB9 - e8 6e da ff ff             - call 009c172c
+009C3CBE - 8b ce                      - mov ecx,esi
+009C3CC0 - e8 a4 f7 ff ff             - call 009c3469
+009C3CC5 - eb 2a                      - jmp 009c3cf1
+009C3CC7 - 8b ce                      - mov ecx,esi
+009C3CC9 - e8 d5 d1 ff ff             - call 009c0ea3 // 處理跳怪
+009C3CCE - eb 21                      - jmp 009c3cf1
+009C3CD0 - 8b ce                      - mov ecx,esi
+009C3CD2 - e8 bc cd ff ff             - call 009c0a93
+009C3CD7 - eb 18                      - jmp 009c3cf1
+009C3CD9 - 8b ce                      - mov ecx,esi
+009C3CDB - e8 e1 cb ff ff             - call 009c08c1
+009C3CE0 - eb 0f                      - jmp 009c3cf1
+
+
+
+// 處理跳怪
+009C0EA3 - 55                         - push ebp
+009C0EA4 - 8b ec                      - mov ebp,esp
+009C0EA6 - 83 ec 10                   - sub esp,10
+009C0EA9 - 56                         - push esi
+009C0EAA - 57                         - push edi
+009C0EAB - 8b f1                      - mov esi,ecx
+009C0EAD - 33 ff                      - xor edi,edi
+009C0EAF - 39 be bc 00 00 00          - cmp [esi+000000bc],edi
+009C0EB5 - 74 0f                      - je 009c0ec6
+009C0EB7 - 8d 4e 10                   - lea ecx,[esi+10]
+009C0EBA - 8b 01                      - mov eax,[ecx]
+009C0EBC - 57                         - push edi
+009C0EBD - 57                         - push edi
+009C0EBE - ff 50 3c                   - call dword ptr [eax+3c]
+009C0EC1 - e9 f8 03 00 00             - jmp 009c12be
+009C0EC6 - a1 00 20 e9 00             - mov eax,[00e92000] : 06BA64FC
+009C0ECB - 89 45 f4                   - mov [ebp-0c],eax
+009C0ECE - e8 3a 8a ff ff             - call 009b990d
+009C0ED3 - 85 c0                      - test eax,eax
+009C0ED5 - 0f 84 d8 03 00 00          - je 009c12b3
+009C0EDB - 53                         - push ebx
+009C0EDC - 8d 9e 64 06 00 00          - lea ebx,[esi+00000664]
+009C0EE2 - 8b 0b                      - mov ecx,[ebx]
+009C0EE4 - e8 ff ad c5 ff             - call 0061bce8
+009C0EE9 - 85 c0                      - test eax,eax
+009C0EEB - 74 42                      - je 009c0f2f
+009C0EED - 8b 0b                      - mov ecx,[ebx]
+009C0EEF - 57                         - push edi
+009C0EF0 - e8 46 8b c0 ff             - call 005c9a3b
+009C0EF5 - 39 be fc 00 00 00          - cmp [esi+000000fc],edi
+009C0EFB - 74 32                      - je 009c0f2f
+009C0EFD - 8b 8e 68 06 00 00          - mov ecx,[esi+00000668]
+009C0F03 - e8 c7 7a a6 ff             - call 004289cf
+009C0F08 - dd 46 30                   - fld qword ptr [esi+30]
+009C0F0B - 51                         - push ecx
+009C0F0C - 51                         - push ecx
+009C0F0D - dd 1c 24                   - fstp qword ptr [esp]
+009C0F10 - 8b d8                      - mov ebx,eax
+009C0F12 - e8 6e 67 b3 ff             - call 004f7685
+009C0F17 - 59                         - pop ecx
+009C0F18 - 59                         - pop ecx
+009C0F19 - 3b c3                      - cmp eax,ebx
+009C0F1B - 75 12                      - jne 009c0f2f
+009C0F1D - 8b 96 fc 00 00 00          - mov edx,[esi+000000fc]
+009C0F23 - 8d 4e 10                   - lea ecx,[esi+10]
+009C0F26 - 8b 01                      - mov eax,[ecx]
+009C0F28 - 57                         - push edi
+009C0F29 - f7 da                      - neg edx
+009C0F2B - 52                         - push edx
+009C0F2C - ff 50 3c                   - call dword ptr [eax+3c]
+009C0F2F - dd 05 00 d7 c6 00          - fld qword ptr [00c6d700] : 0000
+009C0F35 - 83 ec 18                   - sub esp,18
+009C0F38 - dd 5c 24 10                - fstp qword ptr [esp+10]
+009C0F3C - 8d 9e fc 00 00 00          - lea ebx,[esi+000000fc]
+009C0F42 - dd 86 88 00 00 00          - fld qword ptr [esi+00000088]
+009C0F48 - 8b ce                      - mov ecx,esi
+009C0F4A - dd 5c 24 08                - fstp qword ptr [esp+08]
+009C0F4E - db 03                      - fild dword ptr [ebx]
+009C0F50 - dd 1c 24                   - fstp qword ptr [esp]
+009C0F53 - e8 b5 89 ff ff             - call 009b990d
+009C0F58 - 8b c8                      - mov ecx,eax
+009C0F5A - e8 25 eb 07 00             - call 00a3fa84
+009C0F5F - 3b c7                      - cmp eax,edi
+009C0F61 - 0f 84 fb 00 00 00          - je 009c1062
+009C0F67 - 39 3b                      - cmp [ebx],edi
+009C0F69 - 0f 84 f3 00 00 00          - je 009c1062
+009C0F6F - 8d 78 0c                   - lea edi,[eax+0c]
+009C0F72 - 8b 07                      - mov eax,[edi]
+009C0F74 - 8b cf                      - mov ecx,edi
+009C0F76 - ff 50 1c                   - call dword ptr [eax+1c]
+009C0F79 - dc 1d 98 7f c6 00          - fcomp qword ptr [00c67f98] : 0000
+009C0F7F - df e0                      - fnstsw ax
+009C0F81 - f6 c4 41                   - test ah,41
+009C0F84 - 0f 8a d6 00 00 00          - jp 009c1060
+009C0F8A - 8b 03                      - mov eax,[ebx]
+009C0F8C - 89 45 fc                   - mov [ebp-04],eax
+009C0F8F - 8b 07                      - mov eax,[edi]
+009C0F91 - 8b cf                      - mov ecx,edi
+009C0F93 - ff 50 20                   - call dword ptr [eax+20]
+009C0F96 - da 4d fc                   - fimul [ebp-04]
+009C0F99 - dc 1d 98 7f c6 00          - fcomp qword ptr [00c67f98] : 0000
+009C0F9F - df e0                      - fnstsw ax
+009C0FA1 - f6 c4 05                   - test ah,05
+009C0FA4 - 0f 8a b6 00 00 00          - jp 009c1060
+009C0FAA - 8b ce                      - mov ecx,esi
+009C0FAC - e8 5c 89 ff ff             - call 009b990d
+009C0FB1 - 83 7d fc 00                - cmp dword ptr [ebp-04],00
+009C0FB5 - 8d 48 0c                   - lea ecx,[eax+0c]
+009C0FB8 - 8b 01                      - mov eax,[ecx]
+009C0FBA - 7d 05                      - jnl 009c0fc1
+009C0FBC - ff 50 38                   - call dword ptr [eax+38]
+009C0FBF - eb 03                      - jmp 009c0fc4
+009C0FC1 - ff 50 34                   - call dword ptr [eax+34]
+009C0FC4 - 85 c0                      - test eax,eax
+009C0FC6 - 0f 84 81 00 00 00          - je 009c104d
+009C0FCC - 8d 78 0c                   - lea edi,[eax+0c]
+009C0FCF - 8b 07                      - mov eax,[edi]
+009C0FD1 - 8b cf                      - mov ecx,edi
+009C0FD3 - ff 50 1c                   - call dword ptr [eax+1c]
+009C0FD6 - dc 1d 98 7f c6 00          - fcomp qword ptr [00c67f98] : 0000
+009C0FDC - df e0                      - fnstsw ax
+009C0FDE - f6 c4 41                   - test ah,41
+009C0FE1 - 7a 6a                      - jp 009c104d
+009C0FE3 - 8b 03                      - mov eax,[ebx]
+009C0FE5 - 89 45 fc                   - mov [ebp-04],eax
+009C0FE8 - 8b 07                      - mov eax,[edi]
+009C0FEA - 8b cf                      - mov ecx,edi
+009C0FEC - ff 50 20                   - call dword ptr [eax+20]
+009C0FEF - da 4d fc                   - fimul [ebp-04]
+009C0FF2 - dc 1d 98 7f c6 00          - fcomp qword ptr [00c67f98] : 0000
+009C0FF8 - df e0                      - fnstsw ax
+009C0FFA - f6 c4 05                   - test ah,05
+009C0FFD - 7a 4e                      - jp 009c104d
+009C0FFF - 83 7d fc 00                - cmp dword ptr [ebp-04],00
+009C1003 - 7d 13                      - jnl 009c1018
+009C1005 - d9 e8                      - fld1
+009C1007 - dc 9e 88 00 00 00          - fcomp qword ptr [esi+00000088]
+009C100D - df e0                      - fnstsw ax
+009C100F - f6 c4 41                   - test ah,41
+009C1012 - 74 28                      - je 009c103c
+009C1014 - 83 7d fc 00                - cmp dword ptr [ebp-04],00
+009C1018 - 7e 33                      - jle 009c104d
+009C101A - 8b ce                      - mov ecx,esi
+009C101C - e8 ec 88 ff ff             - call 009b990d
+009C1021 - 8d 48 0c                   - lea ecx,[eax+0c]
+009C1024 - 8b 01                      - mov eax,[ecx]
+009C1026 - ff 50 24                   - call dword ptr [eax+24]
+009C1029 - dc 25 48 77 c6 00          - fsub qword ptr [00c67748] : 0000
+009C102F - dc 9e 88 00 00 00          - fcomp qword ptr [esi+00000088]
+009C1035 - df e0                      - fnstsw ax
+009C1037 - f6 c4 05                   - test ah,05
+009C103A - 7a 11                      - jp 009c104d
+009C103C - 8b 13                      - mov edx,[ebx]
+009C103E - 8d 4e 10                   - lea ecx,[esi+10]
+009C1041 - 8b 01                      - mov eax,[ecx]
+009C1043 - 6a 00                      - push 00
+009C1045 - f7 da                      - neg edx
+009C1047 - 52                         - push edx
+009C1048 - ff 50 3c                   - call dword ptr [eax+3c]
+009C104B - eb 13                      - jmp 009c1060
+009C104D - 8b 8e 60 06 00 00          - mov ecx,[esi+00000660]
+009C1053 - e8 77 79 a6 ff             - call 004289cf
+009C1058 - 85 c0                      - test eax,eax
+009C105A - 0f 8f b1 00 00 00          - jg 009c1111
+009C1060 - 33 ff                      - xor edi,edi
+009C1062 - 8b 8e 60 06 00 00          - mov ecx,[esi+00000660]
+009C1068 - 39 be b0 02 00 00          - cmp [esi+000002b0],edi
+009C106E - 0f 84 9b 01 00 00          - je 009c120f
+009C1074 - e8 56 79 a6 ff             - call 004289cf
+009C1079 - 85 c0                      - test eax,eax
+009C107B - 0f 8e 9e 00 00 00          - jng 009c111f
+009C1081 - 8b ce                      - mov ecx,esi
+009C1083 - e8 85 88 ff ff             - call 009b990d
+009C1088 - 8b 8e b0 02 00 00          - mov ecx,[esi+000002b0]
+009C108E - 8d 58 0c                   - lea ebx,[eax+0c]
+009C1091 - 8b 01                      - mov eax,[ecx]
+009C1093 - ff 50 18                   - call dword ptr [eax+18]
+009C1096 - 8b 13                      - mov edx,[ebx]
+009C1098 - 8b cb                      - mov ecx,ebx
+009C109A - 89 45 fc                   - mov [ebp-04],eax
+009C109D - ff 52 18                   - call dword ptr [edx+18]
+009C10A0 - 8b 4d fc                   - mov ecx,[ebp-04]
+009C10A3 - 3b c1                      - cmp eax,ecx
+009C10A5 - 74 78                      - je 009c111f
+009C10A7 - 8b 8e b0 02 00 00          - mov ecx,[esi+000002b0]
+009C10AD - 8b 01                      - mov eax,[ecx]
+009C10AF - 8d 55 f8                   - lea edx,[ebp-08]
+009C10B2 - 52                         - push edx
+009C10B3 - ff 50 10                   - call dword ptr [eax+10]
+009C10B6 - db 40 04                   - fild dword ptr [eax+04]
+009C10B9 - dc 5e 30                   - fcomp qword ptr [esi+30]
+009C10BC - df e0                      - fnstsw ax
+009C10BE - f6 c4 05                   - test ah,05
+009C10C1 - 7a 5c                      - jp 009c111f
+009C10C3 - 8b 8e b0 02 00 00          - mov ecx,[esi+000002b0]
+009C10C9 - 8b 01                      - mov eax,[ecx]
+009C10CB - ff 50 18                   - call dword ptr [eax+18]
+009C10CE - 8b 4d f4                   - mov ecx,[ebp-0c]
+009C10D1 - 8b 49 2c                   - mov ecx,[ecx+2c]
+009C10D4 - 8d 0c c1                   - lea ecx,[ecx+eax*8]
+009C10D7 - db 01                      - fild dword ptr [ecx]
+009C10D9 - dc 5e 28                   - fcomp qword ptr [esi+28]
+009C10DC - df e0                      - fnstsw ax
+009C10DE - f6 c4 05                   - test ah,05
+009C10E1 - 7a 3c                      - jp 009c111f
+009C10E3 - db 41 04                   - fild dword ptr [ecx+04]
+009C10E6 - dc 5e 28                   - fcomp qword ptr [esi+28]
+009C10E9 - df e0                      - fnstsw ax
+009C10EB - f6 c4 41                   - test ah,41
+009C10EE - 75 2f                      - jne 009c111f
+009C10F0 - 8d 8e d0 02 00 00          - lea ecx,[esi+000002d0]
+009C10F6 - e8 d0 7b a4 ff             - call 00408ccb
+009C10FB - 6a 03                      - push 03
+009C10FD - 33 d2                      - xor edx,edx
+009C10FF - 59                         - pop ecx
+009C1100 - f7 f1                      - div ecx
+009C1102 - 85 d2                      - test edx,edx
+009C1104 - 75 19                      - jne 009c111f
+009C1106 - 8d 8e 08 06 00 00          - lea ecx,[esi+00000608]
+009C110C - e8 f5 e6 ff ff             - call 009bf806
+009C1111 - 6a 01                      - push 01
+009C1113 - 8b ce                      - mov ecx,esi
+009C1115 - e8 28 e7 ff ff             - call 009bf842
+009C111A - e9 93 01 00 00             - jmp 009c12b2
+009C111F - 8b 8e 60 06 00 00          - mov ecx,[esi+00000660]
+009C1125 - e8 a5 78 a6 ff             - call 004289cf
+009C112A - 85 c0                      - test eax,eax
+009C112C - 0f 8f 80 01 00 00          - jg 009c12b2
+009C1132 - 8d 8e d0 02 00 00          - lea ecx,[esi+000002d0]
+009C1138 - e8 8e 7b a4 ff             - call 00408ccb
+009C113D - 33 d2                      - xor edx,edx
+009C113F - b9 90 01 00 00             - mov ecx,00000190
+009C1144 - f7 f1                      - div ecx
+009C1146 - 6a 5a                      - push 5a
+009C1148 - 59                         - pop ecx
+009C1149 - 8b c2                      - mov eax,edx
+009C114B - 05 20 03 00 00             - add eax,00000320
+009C1150 - 33 d2                      - xor edx,edx
+009C1152 - f7 f1                      - div ecx
+009C1154 - 8b 8e 60 06 00 00          - mov ecx,[esi+00000660]
+009C115A - 50                         - push eax
+009C115B - e8 ed 72 a6 ff             - call 0042844d
+009C1160 - 8b 8e 5c 06 00 00          - mov ecx,[esi+0000065c]
+009C1166 - e8 64 78 a6 ff             - call 004289cf
+009C116B - 85 c0                      - test eax,eax
+009C116D - 74 55                      - je 009c11c4
+009C116F - 8b 8e b0 02 00 00          - mov ecx,[esi+000002b0]
+009C1175 - 8b 01                      - mov eax,[ecx]
+009C1177 - 8d 55 f0                   - lea edx,[ebp-10]
+009C117A - 52                         - push edx
+009C117B - ff 50 10                   - call dword ptr [eax+10]
+009C117E - db 00                      - fild dword ptr [eax]
+009C1180 - 51                         - push ecx
+009C1181 - 51                         - push ecx
+009C1182 - dc 66 28                   - fsub qword ptr [esi+28]
+009C1185 - dd 1c 24                   - fstp qword ptr [esp]
+009C1188 - e8 8d de 09 00             - call 00a5f01a
+009C118D - dc 1d a8 7f c6 00          - fcomp qword ptr [00c67fa8] : 0000
+009C1193 - 59                         - pop ecx
+009C1194 - 59                         - pop ecx
+009C1195 - df e0                      - fnstsw ax
+009C1197 - f6 c4 05                   - test ah,05
+009C119A - 7a 28                      - jp 009c11c4
+009C119C - db 86 dc 00 00 00          - fild dword ptr [esi+000000dc]
+009C11A2 - dc 5e 28                   - fcomp qword ptr [esi+28]
+009C11A5 - df e0                      - fnstsw ax
+009C11A7 - f6 c4 44                   - test ah,44
+009C11AA - 7a 04                      - jp 009c11b0
+009C11AC - 6a 01                      - push 01
+009C11AE - eb 3a                      - jmp 009c11ea
+009C11B0 - db 86 e4 00 00 00          - fild dword ptr [esi+000000e4]
+009C11B6 - dc 5e 28                   - fcomp qword ptr [esi+28]
+009C11B9 - df e0                      - fnstsw ax
+009C11BB - f6 c4 44                   - test ah,44
+009C11BE - 7a 35                      - jp 009c11f5
+009C11C0 - 6a ff                      - push ff
+009C11C2 - eb 26                      - jmp 009c11ea
+009C11C4 - 8b 8e b0 02 00 00          - mov ecx,[esi+000002b0]
+009C11CA - 8b 01                      - mov eax,[ecx]
+009C11CC - 8d 55 f0                   - lea edx,[ebp-10]
+009C11CF - 52                         - push edx
+009C11D0 - ff 50 10                   - call dword ptr [eax+10]
+009C11D3 - db 00                      - fild dword ptr [eax]
+009C11D5 - dc 5e 28                   - fcomp qword ptr [esi+28]
+009C11D8 - df e0                      - fnstsw ax
+009C11DA - f6 c4 05                   - test ah,05
+009C11DD - 7a 07                      - jp 009c11e6
+009C11DF - b8 ff ff ff ff             - mov eax,ffffffff
+009C11E4 - eb 03                      - jmp 009c11e9
+009C11E6 - 33 c0                      - xor eax,eax
+009C11E8 - 40                         - inc eax
+009C11E9 - 50                         - push eax
+009C11EA - 8b 8e 5c 06 00 00          - mov ecx,[esi+0000065c]
+009C11F0 - e8 58 72 a6 ff             - call 0042844d
+009C11F5 - 8b 8e 5c 06 00 00          - mov ecx,[esi+0000065c]
+009C11FB - e8 cf 77 a6 ff             - call 004289cf
+009C1200 - 8d 4e 10                   - lea ecx,[esi+10]
+009C1203 - 8b 11                      - mov edx,[ecx]
+009C1205 - 57                         - push edi
+009C1206 - 50                         - push eax
+009C1207 - ff 52 3c                   - call dword ptr [edx+3c]
+009C120A - e9 a3 00 00 00             - jmp 009c12b2
+009C120F - e8 bb 77 a6 ff             - call 004289cf
+009C1214 - 85 c0                      - test eax,eax
+009C1216 - 0f 8f 96 00 00 00          - jg 009c12b2
+009C121C - 8d be d0 02 00 00          - lea edi,[esi+000002d0]
+009C1222 - 8b cf                      - mov ecx,edi
+009C1224 - e8 a2 7a a4 ff             - call 00408ccb
+009C1229 - 6a 05                      - push 05
+009C122B - 33 d2                      - xor edx,edx
+009C122D - 59                         - pop ecx
+009C122E - f7 f1                      - div ecx
+009C1230 - 85 d2                      - test edx,edx
+009C1232 - 75 09                      - jne 009c123d
+009C1234 - 8b ce                      - mov ecx,esi
+009C1236 - e8 a0 a5 ff ff             - call 009bb7db
+009C123B - eb 75                      - jmp 009c12b2
+009C123D - 8b cf                      - mov ecx,edi
+009C123F - c7 86 f4 02 00 00 01 00 00 00 - mov [esi+000002f4],00000001
+009C1249 - e8 7d 7a a4 ff             - call 00408ccb
+009C124E - 33 d2                      - xor edx,edx
+009C1250 - b9 d0 07 00 00             - mov ecx,000007d0
+009C1255 - f7 f1                      - div ecx
+009C1257 - 6a 5a                      - push 5a
+009C1259 - 59                         - pop ecx
+009C125A - 8b c2                      - mov eax,edx
+009C125C - 05 e8 03 00 00             - add eax,000003e8
+009C1261 - 33 d2                      - xor edx,edx
+009C1263 - f7 f1                      - div ecx
+009C1265 - 8b 8e 60 06 00 00          - mov ecx,[esi+00000660]
+009C126B - 50                         - push eax
+009C126C - e8 dc 71 a6 ff             - call 0042844d
+009C1271 - 8b cf                      - mov ecx,edi
+009C1273 - e8 53 7a a4 ff             - call 00408ccb
+009C1278 - 6a 03                      - push 03
+009C127A - 59                         - pop ecx
+009C127B - 89 47 20                   - mov [edi+20],eax
+009C127E - 33 d2                      - xor edx,edx
+009C1280 - f7 f1                      - div ecx
+009C1282 - c7 47 28 01 00 00 00       - mov [edi+28],00000001
+009C1289 - 8d be 5c 06 00 00          - lea edi,[esi+0000065c]
+009C128F - 8b 0f                      - mov ecx,[edi]
+009C1291 - 4a                         - dec edx
+009C1292 - 52                         - push edx
+009C1293 - e8 b5 71 a6 ff             - call 0042844d
+009C1298 - 8b 0f                      - mov ecx,[edi]
+009C129A - e8 30 77 a6 ff             - call 004289cf
+009C129F - 8d 4e 10                   - lea ecx,[esi+10]
+009C12A2 - 8b 11                      - mov edx,[ecx]
+009C12A4 - 6a 00                      - push 00
+009C12A6 - 50                         - push eax
+009C12A7 - ff 52 3c                   - call dword ptr [edx+3c] // 009B975A // 此CALL內寫入怪物走向
+009C12AA - 8b 03                      - mov eax,[ebx]
+009C12AC - 89 86 fc 02 00 00          - mov [esi+000002fc],eax
+009C12B2 - 5b                         - pop ebx
+009C12B3 - 8b 8e 60 06 00 00          - mov ecx,[esi+00000660]
+009C12B9 - e8 bf e5 ff ff             - call 009bf87d
+009C12BE - 5f                         - pop edi
+009C12BF - c7 86 a4 05 00 00 01 00 00 00 - mov [esi+000005a4],00000001
+009C12C9 - 5e                         - pop esi
+009C12CA - c9                         - leave
+009C12CB - c3                         - ret
+
+
+
+
+Ret Addr of Call 009B975A
+009C12AA
+009C2C8D
+009C104B
+009C1A2F
+009C0C94
+009C0C27
+009C1678
+009C1351
+009C1380
+
+
+
+
+009B975A - 8b c1                      - mov eax,ecx
+009B975C - 8b 48 08                   - mov ecx,[eax+08]
+009B975F - 53                         - push ebx
+009B9760 - 8b 5c 24 0c                - mov ebx,[esp+0c]
+009B9764 - 56                         - push esi
+009B9765 - 8d 50 f0                   - lea edx,[eax-10]
+009B9768 - f7 da                      - neg edx
+009B976A - 57                         - push edi
+009B976B - 8b 7c 24 10                - mov edi,[esp+10]
+009B976F - 1b d2                      - sbb edx,edx
+009B9771 - 23 d0                      - and edx,eax
+009B9773 - 52                         - push edx
+009B9774 - 8d b0 dc 00 00 00          - lea esi,[eax+000000dc]
+009B977A - ff 36                      - push [esi]
+009B977C - 89 b8 ec 00 00 00          - mov [eax+000000ec],edi // 怪物/人物走向
+009B9782 - 53                         - push ebx
+009B9783 - 89 98 f0 00 00 00          - mov [eax+000000f0],ebx
+009B9789 - 8b 01                      - mov eax,[ecx]
+009B978B - 57                         - push edi
+009B978C - ff 50 04                   - call dword ptr [eax+04]
+009B978F - 5f                         - pop edi
+009B9790 - 89 06                      - mov [esi],eax
+009B9792 - 5e                         - pop esi
+009B9793 - 5b                         - pop ebx
+009B9794 - c2 08 00                   - ret 0008

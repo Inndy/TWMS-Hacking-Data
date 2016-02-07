@@ -1,0 +1,14 @@
+//v1.42 持續技無限時間 By.aaaddress1
+//效果作用範圍:
+//1.機甲戰神-火焰噴射
+//2.惡魔殺手-惡魔佈雷斯
+[ENABLE]
+0087FD09:
+jmp 0087FF3E
+nop
+nop 
+ 
+[DISABLE]
+0087FD09:
+mov [ebp-0c],00001f40
+cmp eax,01dab75d

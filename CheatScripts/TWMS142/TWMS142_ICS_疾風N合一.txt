@@ -1,0 +1,262 @@
+//秒數無敵、Miss無敵、笨怪、物品過濾、怪物不擊退、跳怪不跳、怪物瞬移
+[ENABLE]
+RegisterSymbol(Main)
+Alloc(Main, 4096)
+RegisterSymbol(Time)
+Alloc(Time, 4)
+RegisterSymbol(MissTime)
+Alloc(MissTime, 4)
+RegisterSymbol(MissTimeCmp)
+Alloc(MissTimeCmp, 4)
+RegisterSymbol(FilterMode)
+Alloc(FilterMode, 4)
+RegisterSymbol(LastItem)
+Alloc(LastItem, 4)
+RegisterSymbol(MonsterNoJump)
+Alloc(MonsterNoJump, 4)
+Label(Nohurt)
+Label(NohurtMain)
+Label(NohurtMainI)
+Label(StupidMonster)
+Label(StupidMonsterMain)
+Label(MobNoKB)
+Label(MobNoKBMain)
+Label(ItemFilter)
+Label(ItemFilterMain)
+Label(ItemFilterOr1)
+Label(ItemFilterOr2)
+Label(ItemBlackFilter)
+Label(ItemWhiteFilter)
+Label(SkipItem)
+Label(EndFilter)
+Label(MobNoJump)
+Label(MobNoJumpMain)
+Label(MobFast)
+Label(MobFastMain)
+Alloc(ItemList, 32768)
+
+//==============
+Time:		//無敵時間
+DD FFFF8AD0	//30秒
+
+MissTime:	//迴避次數
+DD 3
+
+FilterMode:	//物品過濾模式
+DD 1		//0關 1黑名單模式 2白名單模式
+
+MonsterNoJump:	//怪物不跳
+DD 1
+//==============
+ItemList:
+//請在以下加入物品清單
+DD 001F6EE0
+DD 001F72C8
+//請在以上加入物品清單
+DD 00
+//==============
+Main:
+Cmp [Esp+1c], 0086160A	//e8 ?? ?? ?? ff f6 80 ?? ?? 00 00 02 74 05
+Je Nohurt				//無敵
+Cmp [Esp+1c], 008B9CB2	//33 d2 b9 60 ea 00 00 f7 f1
+Je StupidMonster		//笨怪
+Cmp [Esp+1c], 008BAC7A	//6a 05 33 d2 59 f7 f1 85 d2
+Je MobNoJump			//跳怪不跳
+Cmp [Esp+34], 005CFF29	//83 7D ?? 01 75 ?? 8B CF
+Je MobNoKB				//怪物不擊退
+Cmp [Esp+34], 005DCE70	//8B 5D ?? E9 ?? ?? ?? ?? 8B 7E ?? 8A 07
+Je MobFast				//怪物瞬移
+Cmp [Esp+64], 004D757C	//8b 45 ?? 8b 75 ?? 88 46 ?? 83 f8 01
+Je ItemFilter			//物品過濾
+
+Jmp 006B3A46
+//==============
+Nohurt:
+Mov [Esp+1C], NohurtMain
+Jmp 006B3A46
+
+StupidMonster:
+Mov [Esp+1C], StupidMonsterMain
+Jmp 006B3A46
+
+MobNoJump:
+Mov [Esp+1C], MobNoJumpMain
+Jmp 006B3A46
+
+MobNoKB:
+Mov [Esp+34], MobNoKBMain
+Jmp 006B3A46
+
+MobFast:
+Mov [Esp+34], MobFastMain
+Jmp 006B3A46
+
+ItemFilter:
+Mov [Esp+64], ItemFilterMain
+Jmp 006B3A46
+//-------------------------
+MobNoJumpMain:
+Push 05
+Xor  edx,edx
+Pop  ecx
+Div  ecx
+Test edx,edx
+Cmp  [MonsterNoJump], 1
+Je   008BAC8E // Jne Adr
+Cmp  [MonsterNoJump], 2
+Je   008BAC85 // Mov  Ecx, Esi
+Jmp  008BAC81 // Test Edx, Edx
+//-------------------------
+StupidMonsterMain:
+Xor  Edx, Edx
+Mov  Ecx, 0000ea60
+Lea  Ecx, [Esi+000002b8]
+Jmp  008B9CC7 // Push Edx
+//-------------------------
+NohurtMain:
+Call 0042EBFE
+Mov  Eax, FFFF8AD0 // 無敵30秒
+Mov  Ecx, [MissTime]
+Cmp  [MissTimeCmp], Ecx
+Jg   NohurtMainI
+Mov  [Ebp+58], 0
+Inc  [MissTimeCmp]
+Jmp  00861B8C	//8d 8b ?? ?? 00 00 50 e8 ?? ?? ?? ff e9 ?? ?? 00 00 6a 05
+//==============
+NohurtMainI:
+Mov  [MissTimeCmp], 0
+Jmp  00861B8C
+//-------------------------
+MobNoKBMain:
+Jmp  005CFF3B
+//-------------------------
+ItemFilterMain:
+Mov  Eax, [Ebp-1c]
+Mov  Esi, [Ebp-50]
+Mov  [Esi+1c], Al
+Cmp  Eax, 01
+Je   ItemFilterOr1
+Cmp  Eax, 02
+Je   ItemFilterOr1
+Xor  Al, Al
+Jmp  ItemFilterOr2
+
+ItemFilterOr1:
+Mov  Al, 01
+ItemFilterOr2:
+Mov  [Esi+1d], Al
+Mov  [Esi+20], Edi
+Mov  Edi, [Ebp+08]
+Mov  Ecx, Edi
+Call 0040858b // ifCall1
+Movzx Eax, Al
+Mov  Ecx, Edi
+Mov  [Esi+30], Eax
+Call 004085e7 // ifCall2
+
+Push Esi
+Mov  Esi, ItemList
+Cmp  Eax, C350
+Jle  EndFilter
+Mov  [LastItem], Eax
+Cmp  [FilterMode], 0
+Je   EndFilter
+Cmp  [FilterMode], 1
+Je   ItemBlackFilter
+Cmp  [FilterMode], 2
+Je   ItemWhiteFilter
+
+
+ItemBlackFilter:
+Cmp  [Esi], 0
+Je   EndFilter
+Cmp  [Esi], Eax
+Je   SkipItem
+Add  Esi, 4
+Jmp  ItemBlackFilter
+
+ItemWhiteFilter:
+Cmp  [Esi], 0
+Je   SkipItem
+Cmp  [Esi], Eax
+Je   EndFilter
+Add  Esi, 4
+Jmp  ItemWhiteFilter
+
+SkipItem:
+Xor  Eax, Eax
+EndFilter:
+Pop  Esi
+Mov  Ecx, Edi
+Mov  [Esi+34], Eax
+Jmp  004D75B7
+//-------------------------
+MobFastMain:
+Mov  Ebx, [Ebp+14]
+Cmp  dword ptr [Esi+2c], 00
+DB   75 05 //jne +5
+Jmp  005DCF62 // Jne下一行
+Mov  Edi, [Esi+30]
+Mov  Al, [Edi]
+Cmp  Al,0B
+Je   005dcf4d
+Movzx Ecx, Al
+Xor  Eax, Eax
+Inc  Eax
+Xor  Edx, Edx
+Call 00947d90 // fmCall1
+Mov Ecx, [Ebp+20]
+Or [Ecx], Eax
+Or [Ecx+04], Edx
+Mov Ecx, Esi
+
+
+//005DCE9C - e8 40 00 fe ff             - call 005bcee1
+Push [ecx+0000008c]
+Add  Ecx, 00000084
+Mov  Eax, Ecx
+Push Ecx
+Call 00404e68 //瞬1 // fmCall2
+Pop  Ecx
+Pop  Ecx
+
+
+Movsx Ecx, word ptr [Edi+10]
+Cmp  Eax, Ecx
+Jl   005dcf62
+Mov  Ecx, Esi
+
+
+//005DCEAF - e8 2d 00 fe ff             - call 005bcee1
+Push [ecx+0000008c]
+Add  Ecx, 00000084
+Mov  Eax, Ecx
+Push Ecx
+//Call 00404e68 //瞬4
+Pop  Ecx
+Pop  Ecx
+
+
+Jmp  005DCEC3
+//-------------------------
+00CA592C:
+dd Main
+[DISABLE]
+00CA592C:
+DD 006B3A46
+//-------------------------
+DeAlloc(Main)
+UnRegisterSymbol(Main)
+DeAlloc(Time)
+UnRegisterSymbol(Time)
+DeAlloc(MissTime)
+UnRegisterSymbol(MissTime)
+DeAlloc(MissTimeCmp)
+UnRegisterSymbol(MissTimeCmp)
+DeAlloc(FilterMode)
+UnRegisterSymbol(FilterMode)
+DeAlloc(ItemList)
+UnRegisterSymbol(MonsterNoJump)
+DeAlloc(MonsterNoJump)
+UnRegisterSymbol(LastItem)
+DeAlloc(LastItem)

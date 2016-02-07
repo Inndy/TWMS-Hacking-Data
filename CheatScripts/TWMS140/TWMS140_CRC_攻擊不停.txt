@@ -1,0 +1,20 @@
+/*
+// Unlimited Attack
+// Updated by Ozko
+// gMS v99.1
+[Enable]
+009C81A0:
+db EB
+
+[Disable]
+009C81A0: // 7E ? 83 ? ? 7D ? 8B
+db 7E
+*/
+//TwMS v140.1 µL­­§ðÀ»(§ðÀ»¤£°±)
+[Enable]
+0083BF68:
+db EB
+
+[Disable]
+0083BF68: // 7E ? 83 ? ? 7D ? 8B
+db 7E

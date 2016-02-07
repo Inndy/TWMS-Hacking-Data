@@ -1,0 +1,18 @@
+//TWMS133 CRC 地雷原地掉落
+//更新:Inndy
+[Enable]
+alloc(Bombnodelay,64)
+
+Bombnodelay:
+call 0080E4FD
+add eax,103E8
+jmp 007C6FDC
+
+007C6FCF:
+jmp Bombnodelay
+[Disable]
+007C6FCF:
+je 007c704c
+call 0080e4fd
+
+dealloc(Bombnodelay)

@@ -1,0 +1,13 @@
+//v142.所有技能設定動作源頭無延遲.[ics]+攻擊不呼吸
+//by.aaaddress1
+alloc(NodelaySkillHook,64)
+00B5DE98:
+dd NodelaySkillHook
+
+NodelaySkillHook:
+cmp dword ptr [esp],0082888A
+jne 00818035
+mov edi,ffffffff
+mov [esi+00000480],edi
+mov [esi+00000478],00
+jmp 00818035

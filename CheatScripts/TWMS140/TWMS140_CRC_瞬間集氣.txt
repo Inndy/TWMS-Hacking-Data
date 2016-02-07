@@ -1,0 +1,9 @@
+//¶°®ðº¡(007)  TWMS V140
+[ENABLE]
+0085E141:
+db 90 90 90 90 90 90
+
+[DISABLE]
+0085E141:
+sub eax,[esi+00005a20]
+push 1e

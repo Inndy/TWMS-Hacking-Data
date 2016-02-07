@@ -1,0 +1,31 @@
+//v150.2 死亡逃獄 
+//原創:貌似是冒險島俠侶
+//Fixed By. aaaddress1
+Alloc(LoseHP, 256)
+Alloc(Hook,64)
+
+LoseHP:
+pushad
+mov ecx,[00E1847C]
+push 01
+push 01
+push 00
+push 00
+push 00
+push 00
+push 00
+push 00
+push 00
+push #01 // 單次扣血量 
+call 00921C61
+popad
+ret
+
+Hook:
+cmp [esp],0088EF6F
+jne PtInRect
+call LoseHP
+jmp PtInRect
+
+00E25E64:
+dd Hook

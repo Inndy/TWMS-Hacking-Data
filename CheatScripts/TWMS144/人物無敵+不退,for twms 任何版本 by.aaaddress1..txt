@@ -1,0 +1,29 @@
+//人物無敵+不退,for twms 任何版本 by.aaaddress1.
+alloc(AutoUpDateScript,256)
+label(FoundAddress01)
+label(FoundAddress02)
+label(SearchArrayOfBytesNoBack)
+label(SearchArrayOfBytesTimeBlock)
+CreateThread(AutoUpDateScript)
+
+
+AutoUpDateScript:
+mov eax,00861AFF
+SearchArrayOfBytesNoBack:
+cmp [eax],390CC483 //人物不退Array Of Bytes
+je FoundAddress01
+inc eax
+jmp SearchArrayOfBytesNoBack
+
+FoundAddress01:
+mov [eax+03],759021EB
+mov ecx,00861B93
+SearchArrayOfBytesTimeBlock:
+cmp [ecx],DC6045C7 //人物無敵Array Of Bytes
+je FoundAddress02
+inc ecx
+jmp SearchArrayOfBytesTimeBlock
+
+FoundAddress02:
+mov [ecx+03],00002710 //無敵秒數
+ret

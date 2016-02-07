@@ -1,0 +1,11 @@
+//142. ¤Hª«¤£°h [ics] by.aaaddress1
+
+alloc(BackHook,32)
+00B5DECC:
+dd BackHook
+
+BackHook:
+cmp [esp],00861B52
+jne 0083E84B
+mov [esp],00861B63
+ret

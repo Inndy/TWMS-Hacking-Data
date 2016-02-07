@@ -1,0 +1,28 @@
+//TWMS142 PVP§ðÀ»«Ê¥]­«½Æ
+//Auther: Inndy
+[ENABLE]
+alloc(FastPVPAtt,128)
+
+00872EFF:
+jmp FastPVPAtt
+
+FastPVPAtt:
+push eax
+call 00486158
+pop eax
+
+push eax
+push eax
+call 00486158
+pop eax
+
+push eax
+push eax
+call 00486158
+pop eax
+jmp 00872F04
+[DISABLE]
+00872EFF:
+call 00486158
+
+dealloc(FastPVPAtt)

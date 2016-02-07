@@ -1,0 +1,27 @@
+//TWMSv158.4人物不退
+//更新 放棄
+//原創 屌王
+[ENABLE]
+alloc(BackICS,64)
+alloc(NoBack,32)
+
+BackICS:
+cmp [esp+40],00A9DBE8//1//
+jne 007E6073//2//
+mov [esp+40],NoBack
+jmp 007E6073//2//
+
+NoBack:
+add esp,18
+mov [ebp+04],ffffffff
+lea edi,[esi+00000094]
+jmp 00A9DBF9//3//
+
+0113A744://4//
+DD BackICS
+[DISABLE]
+
+0113A744://4//
+DD 007E6073//2//
+dealloc(BackICS)
+dealloc(NoBack)

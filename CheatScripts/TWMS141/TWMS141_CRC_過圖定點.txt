@@ -1,0 +1,29 @@
+[ENABLE]
+Registersymbol(myx)
+Alloc(myx,4)
+Registersymbol(myy)
+Alloc(myy,4)
+Alloc(SpawnControl,512)
+
+
+SpawnControl:
+lea eax,[ebx+00004cfc]
+push eax
+mov eax,dword ptr [ebp-24]
+mov [myx],eax
+mov eax,dword ptr [ebp-20]
+mov [myy],eax
+pop eax
+jmp 00852929+6
+
+00852929:
+jmp SpawnControl
+db 90
+
+[DISABLE]
+00852929:
+db 8d 83 fc 4c 00 00
+//00852929 - 8d 83 fc 4c 00 00          - lea eax,[ebx+00004cfc]
+dealloc(SpawnControl)
+dealloc(MapID)
+dealloc(SpawnXY)

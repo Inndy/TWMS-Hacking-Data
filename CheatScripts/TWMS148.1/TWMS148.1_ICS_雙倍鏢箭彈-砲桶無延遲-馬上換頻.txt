@@ -1,0 +1,82 @@
+// TWMS147.4 ICS 標彈箭控制
+//
+// 無形之箭  	008DB988 - 89 85 a8 fe ff ff - mov [ebp-00000158],eax
+// 無限標箭彈	008DB99F - 89 85 ec fd ff ff - mov [ebp-00000214],eax
+// 雙倍標箭彈	008DB9B6 - 89 85 f0 fd ff ff - mov [ebp-00000210],eax
+[ENABLE]
+Alloc(UnlimitedWeapon,1024)
+Label(DoubleAttack)
+Label(PushNoDelay1)
+Label(PushNoDelay2)
+Label(NoBTCNoDC1)
+Label(NoBTCNoDC2)
+Label(NoBTCNoDCFakeJe1)
+Label(UnlimitedWeaponRet)
+
+UnlimitedWeapon:
+Cmp [Esp+10], 0090bbf0 // 85 C0 74 ?? 81 7d ?? ?? ?? ?? 00 74 ?? 81 7d ?? ?? ?? ?? 00 74 ?? 83
+Je  DoubleAttack
+Cmp [Esp+54], 008e559d
+Je PushNoDelay1
+Cmp [Esp+0c], 00503259
+Je NoBTCNoDC1
+jmp UnlimitedWeaponRet
+
+PushNoDelay1:
+mov [esp+54],PushNoDelay2
+jmp UnlimitedWeaponRet
+
+NoBTCNoDC1:
+Mov [Esp+0C],NoBTCNoDC2
+Jmp UnlimitedWeaponRet
+
+PushNoDelay2:
+call 0051fb4e
+Mov Eax,[Ebp+68]
+Jmp 008E55C0
+
+NoBTCNoDC2:
+cmp eax,edi
+je NoBTCNoDCFakeJe1
+test byte ptr [eax+000001bc],10
+je NoBTCNoDCFakeJe1
+push edi
+push edi
+push edi
+push edi
+push edi
+push edi
+push ecx
+mov eax,esp
+mov [ebp+08],esp
+push 00000105
+jmp 0050323d
+
+NoBTCNoDCFakeJe1:
+push 48
+lea ecx,[ebp-1c]
+call 00654067
+push [ebp+08]
+lea ecx,[ebp-1c]
+mov [ebp-04],edi
+call 00412a66
+call 0094cef2
+push ebp
+jmp 00503297
+
+DoubleAttack:
+Mov  [ebp-00000158], 1 // 無形之箭
+Mov  [Ebp-00000214], 1 // 無限標箭彈
+Mov  [Ebp-00000210], 1 // 雙倍標箭彈
+jmp UnlimitedWeaponRet
+
+UnlimitedWeaponRet:
+jmp 0051fb4e 
+
+00BFDDA0:
+DD  UnlimitedWeapon
+[DISABLE]
+00BFDDA0: // [1/51]
+DD  0051fb4e // b9 ?? ?? ?? 00 e9 ?? ?? ?? ff ff 74 24 04
+
+Dealloc(UnlimitedWeapon)

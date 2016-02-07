@@ -1,0 +1,8 @@
+// TWMS146.3 CRC §¹¥þ²Â©Ç
+// Auther: Aaaddress1
+[ENABLE]
+008F0C80: // 89 be ?? ?? 00 00 e8 ?? ?? ?? ff 57 8d 8e ?? ?? 00 00 e8 ?? ?? ?? ff 8b 4e ?? 3b
+db 90 90 90 90 90 90
+[DISABLE]
+008F0C80:
+db 89 BE A8 02 00 00

@@ -1,0 +1,19 @@
+//[Ics] v1.42.攻擊不停(強制可攻擊)
+//Author:aaaddress1.
+alloc(AttackNoStop,128)
+
+00B5DEBC:
+dd AttackNoStop
+
+
+AttackNoStop:
+cmp dword ptr [esp],00864406
+jne 004929A9
+add esp,04
+call 004929A9
+push [eax]
+mov ecx,[ebp-00001BCC]
+add ecx,00004F50
+and dword ptr [ebp-00001370],00
+mov byte ptr [ebp-04],02
+jmp 0086444A

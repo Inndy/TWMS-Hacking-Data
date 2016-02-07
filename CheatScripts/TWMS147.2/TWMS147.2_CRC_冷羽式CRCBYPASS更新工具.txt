@@ -1,0 +1,64 @@
+// TWMS147.2 CRC 冷羽式CRCBYPASS更新工具
+// Auther: Inndy
+// Address: 00FE0633
+// EIP: mGetCRC
+[ENABLE]
+Alloc(mGetCRC, 256)
+Alloc(Index, 4)
+Alloc(Values, 48)
+Alloc(TextBuffer, 256)
+Label(Caption)
+Label(Text)
+Label(Return)
+RegisterSymbol(mGetCRC)
+RegisterSymbol(Values)
+RegisterSymbol(Index)
+
+mGetCRC:
+push ecx
+mov  ecx, [Index]
+cmp  ecx, #12
+jge  Return
+mov  eax,[ebp+08] // CRC計算起始位置
+mov  edx,[ebp+18] // CRC值
+mov  edx, [edx]
+mov  [Values+ecx*4], eax
+inc  ecx
+mov  [Values+ecx*4], edx
+inc  ecx
+mov  [Index], ecx
+cmp  [Index], #12
+jl   Return
+push 40
+push Caption
+push Text
+mov  ecx, [00DB2500]
+push [ecx+04]
+call MessageBoxA
+Return:
+mov  eax,[ebp+08] // CRC計算起始位置
+mov  edx,[ebp+18] // CRC值
+pop  ecx
+push 0cb58b21
+jmp  00e8ff6a
+
+TextBuffer:
+Caption:
+db   'JIA' 27 's MSCRC Update Tool Tips' 00
+
+Text:
+db   'Done..Please Dump Values...' 00
+
+00FE0633:
+jmp  mGetCRC
+[DISABLE]
+00FE0633:
+push 0cb58b21
+
+Dealloc(Index)
+Dealloc(Values)
+Dealloc(mGetCRC)
+Dealloc(TextBuffer)
+UnRegisterSymbol(mGetCRC)
+UnRegisterSymbol(Values)
+UnRegisterSymbol(Index)

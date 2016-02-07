@@ -1,0 +1,26 @@
+// TWMS147.3 ICS ½w­°
+// Auther: Inndy
+[ENABLE]
+alloc(SlowFall, 64)
+
+SlowFall:
+cmp [esp], 0094F8B0 // 85 C0 74 ?? 8B CE E8 ?? ?? FF FF 8D 86
+jne 00942AC2
+add esp, 04
+call 00942AC2
+// Je¸õ
+db 8d 86 b4 02 00 00                     // 0094f90a - lea eax,[esi+000002b4]
+db 83 38 1e                              // 0094f910 - cmp dword ptr [eax],1e
+db 7d 02                                 // 0094f913 - jnl 0094f917
+db 89 18                                 // 0094f915 - mov [eax],ebx
+db 8b 08                                 // 0094f917 - mov ecx,[eax]
+db d9 ee                                 // 0094f919 - fldz
+jmp 0094F91F // Jle+1
+
+00C33544:
+DD SlowFall
+[DISABLE]
+00C33544: // [9/10]
+DD 00942AC2 // 83 C1 F0 E9 ?? ?? FF FF 8B 44
+
+dealloc(SlowFall)

@@ -1,0 +1,22 @@
+// 無形之箭   [ebp-00000154]
+// 無限標箭彈 [ebp-00000214]
+// 雙倍標箭彈 [ebp-00000210]
+[ENABLE]
+Alloc(UnlimitedWeapon, 128)
+Label(Return)
+
+UnlimitedWeapon:
+Cmp  [Esp+10], 0088ABF9
+Jne  Return
+Mov  [Ebp-00000214], 1
+Mov  [Ebp-00000210], 1
+Return:
+Jmp  0050D842
+
+00B55FE8:
+DD  UnlimitedWeapon
+[DISABLE]
+00B55FE8:
+DD  0050D842
+
+Dealloc(UnlimitedWeapon)

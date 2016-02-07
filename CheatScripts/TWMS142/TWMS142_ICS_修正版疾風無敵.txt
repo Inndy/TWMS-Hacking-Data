@@ -1,0 +1,32 @@
+[ENABLE]
+Alloc(OhMyGodICS, 256)
+Label(OhMyGod)
+
+OhMyGodICS:
+Cmp  [Esp+1C], 0086160A
+Jne  006B3A46
+Mov  [Esp+1C], OhMyGod
+Jmp  006B3A46
+
+OhMyGod:
+Mov  Ecx, [Ebp+58]
+Test Ecx, Ecx
+Je   00861B7E
+And  Ecx, 3
+Inc  Ecx
+Mov  [Ebp+58], Ecx
+Mov  Ecx, [Ebp+48]
+Push 05
+Lea  Eax, [Ebp+38]
+Push Eax
+Mov  [Ebp+60], 00002710
+Jmp  00861BAA
+
+
+00CA592C:
+DD   OhMyGodICS
+[DISABLE]
+00CA592C:
+DD   006B3A46
+
+Dealloc(OhMyGodICS)

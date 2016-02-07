@@ -1,0 +1,17 @@
+//Walking Unrandom Right
+[Enable]
+008BA731: //0F 8F ? ? 00 00 83 BE ? ? 00 00 00 0F 84
+jmp 008BABFD //6A 01 EB ? DB 86 ? 00 00 00 DC 5E
+
+[Disable]
+008BA731:
+db 0F 8F A7 01 00 00
+
+//Walking Unrandom Left
+[Enable]
+008BA731: //0F 8F ? ? 00 00 83 BE ? ? 00 00 00 0F 84
+jmp 008BAC11 //6A FF EB ? 8B 8E ? ? 00 00
+
+[Disable]
+008BA731:
+db 0F 8F A7 01 00 00

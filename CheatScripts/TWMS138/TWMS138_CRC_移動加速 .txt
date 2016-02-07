@@ -1,0 +1,37 @@
+[enable]
+Alloc(SpeedSW,4)
+Alloc(SpeedUp,128)
+SpeedUp:
+Push Esi
+Cmp [SpeedSW], 0
+Je RetSpeedUp
+Mov Esi,6
+
+SpeedUp_Loop:
+Cmp Esi,0
+Je RetSpeedUp
+
+Dec Esi
+Push Eax
+Push Ecx
+Call Dword Ptr [Eax]
+Pop Ecx
+Pop Eax
+Jmp SpeedUp_Loop
+
+RetSpeedUp:
+Pop Esi
+Call Dword Ptr [Eax]
+Mov Eax,[Esi+30]
+Jmp 00862BFF
+
+00862BFA: //ff 10 8b 46 30
+Jmp SpeedUp
+
+[disable]
+00862BFA:
+Call Dword Ptr [Eax]
+Mov Eax,[Esi+30]
+
+Dealloc(SpeedSW)
+Dealloc(SpeedUp)

@@ -1,0 +1,18 @@
+// TWMS149.1 ICS ¡Ù¬√©m¶W(CS)
+// UpdateTime: 2012-09-22
+
+[Enable]
+Alloc(NoNameICS, 64)
+
+NoNameICS:
+Cmp [Esp], 008E9AF9 // 85 C0 75 0B 39
+Jne 004A2D35
+Mov [Esp], 008E9B08
+Jmp 004A2D35
+
+00C7FD64:
+DD NoNameICS
+[Disable]
+00C7FD64: // [4/5]
+DD 004A2D35 // 33 C0 C3 81 C1 70 FF FF FF
+DeAlloc(NoNameICS)

@@ -1,0 +1,57 @@
+//PTR:00B2DCD8
+//008DF2FA -> 00862BE0 (00862BFA)
+[enable]
+Alloc(FakeCall,128)
+Alloc(SpeedUp,128)
+Alloc(SpeedSw,4)
+
+SpeedSw:
+DD 1
+
+FakeCall:
+push 78
+mov eax,009e620c
+call 00923a89
+mov esi,ecx
+mov [ebp-14],esi
+mov ecx,[esi+08]
+test ecx,ecx
+je 00862bfc
+mov eax,[ecx]
+Jmp SpeedUp
+
+
+SpeedUp:
+Push Esi
+Cmp [SpeedSW], 0
+Je RetSpeedUp
+Mov Esi,6
+
+SpeedUp_Loop:
+Cmp Esi,0
+Je RetSpeedUp
+
+Dec Esi
+Push Eax
+Push Ecx
+Call Dword Ptr [Eax]
+Pop Ecx
+Pop Eax
+Jmp SpeedUp_Loop
+
+RetSpeedUp:
+Pop Esi
+Call Dword Ptr [Eax]
+Mov Eax,[Esi+30]
+Jmp 00862BFF
+
+
+00B2DCD8:
+DD FakeCall
+[disable]
+00B2DCD8:
+DD 00862BE0
+
+DeAlloc(FakeCall)
+DeAlloc(SpeedUp)
+DeAlloc(SpeedSw)

@@ -1,0 +1,24 @@
+//140.重炮手 三轉技能加農砲控制點 by.aaaddress1
+alloc(SetSkill,128)
+00855ED0:
+jmp SetSkill
+SetSkill:
+mov ecx,[ebp-000015B8]
+add ecx,00000090
+mov eax,[ecx+0000033C]
+mov [ebp-000015DC],0A
+push [ebp+0C]
+mov ecx,[ebp+08]
+call 0066FD45
+mov ecx,eax
+call 0052DB1F
+mov eax,6 //打怪數量
+mov [ebp-000015DC],eax
+mov [ebp-000001C0],eax
+mov ecx,[ebp-0000022C]
+push [ecx+00000F90]
+add ecx,0f88
+push ecx
+call 00404E51
+pop ecx
+jmp 00855F8B

@@ -1,0 +1,29 @@
+ECX		// 00E1856C // 8B 0D ?? ?? ?? 00 E8 ?? ?? ?? 00 C3 FF
+發送	// 004965d2
+接收	// 00496D90 // 6A 08 B8 ?? ?? ?? 00 E8 ?? ?? ?? 00 8B ?? 68 ?? ?? ?? 00 8D
+
+// 快速發包 // FF 74 24 04 8B 0D ?? ?? ?? 00 E8 ?? ?? ?? 00 C3
+004262E3 - ff 74 24 04                - push [esp+04]
+004262E7 - 8b 0d 6c 85 e1 00          - mov ecx,[00e1856c] : 00000000
+004262ED - e8 e0 02 07 00             - call 004965d2
+004262F2 - c3                         - ret
+
+00F17604 - 0F85 65B9FCFF - jne 00EE2F6F // ThreadId Bypass-> jmp
+
+01008305 - 64 A1 18000000        - mov eax,fs:[00000018]	// TEB
+0100830B - E8 481FFCFF           - call 00FCA258
+00FCA258 - 66 0FBE C9            - movsx cx,cl
+00FCA25C - 59                    - pop ecx
+00FCA25D - 8B 80 B8060000        - mov eax,[eax+000006B8]	// TID
+
+// TID Bypass
+Mov Eax,fs:[18]
+Push [Eax+000006B8]
+
+Push [TID]
+Pop  [Eax+000006B8]
+
+Pop  [Eax+000006B8]
+
+// Read Out TID
+00FCA29B - E8 ADB74CFF           - call 00495A4D

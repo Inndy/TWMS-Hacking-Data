@@ -1,0 +1,105 @@
+//-----------
+// 人物資訊
+//-----------
+
+人物HP/MP警告: 
+=> Base Address: 0x00bbadc4
+=> HP Offset: 0x90
+=> MP Offset: 0x94
+
+人物HP/MP值:
+=> Base Address 0x00bbb0b0
+=> HP Offset: 0x17d0
+=> MP Offset: 0x17d4
+
+人物座標:
+=> Base Address: 0x00bbad70
+=> X Offset: 0x1888
+=> Y Offset: 0x188c
+
+人物動作:
+=> Base Address: 0x00bbadd0
+=> Offset: 0x46c
+
+=> 動作值如下: (若有知道其他動作歡迎提供^^)
+=> 向右走: 0x02
+=> 向左走: 0x03
+=> 面向右: 0x04
+=> 面向左: 0x05
+=> 向右跳: 0x06
+=> 向左跳: 0x07
+=> 向右攻: 0x08
+=> 向左攻: 0x09
+=> 向右趴: 0x0a
+=> 向左趴: 0x0b
+=> 爬繩  : 0x0f
+=> 向右坐: 0x14
+=> 向左坐: 0x15
+
+人物攻擊次數:
+=> Base Address: 0x00bbadd0
+=> Offset: 0x4438
+
+人物輔助技能施放次數:
+=> Base Address: 0x00bbadd0
+=> Offset: 0x4448
+
+人物Combo次數:
+=> Base Address: 0x00bbadd0
+=> Offset: 0x5020
+
+人物所在分流:
+=> Address: 0x00BC6184
+
+人物所在頻道:
+=> Address: 0x00BC6188
+
+//-----------
+// 地圖資訊
+//-----------
+
+人物紅點數量:
+=> Base Address: 0x00bbadc8
+=> Offset: 0x2c
+
+地圖怪物數量:
+=> Base Address: 0x00bbadcc
+=> Offset: 0x24
+
+地圖NPC數量:
+=> Base Address: 0x00bbad70
+=> Offset: 0x18c0
+
+地上物品數量:
+=> Base Address: 0x00bbd600
+=> Offset: 0x40
+
+地圖大小:
+=> Base Address: 0x00bbad70
+=> Left Offset: 0x1c
+=> Top Offset: 0x20
+=> Right Offset: 0x24
+=> Buttom Offset: 0x28
+
+地圖編號:
+=> Base Address: 0x00bbb448
+=> Offset: 0xca4
+
+//-----------
+// 其它資訊
+//-----------
+
+滑鼠資訊:
+=> Base Address: 0x00bbb234
+=> Animation Offset: 0x9c4
+=> Location Offset: 0x978
+=> X Offset: 0x8c
+=> Y Offset: 0x88
+
+系統時間:
+=> Base Address: 0x00bbb238
+=> Offset: 0x1c
+
+鍵盤熱鍵碼:
+=> Base Address: 0x00bbb088
+=> Offset: 0x46

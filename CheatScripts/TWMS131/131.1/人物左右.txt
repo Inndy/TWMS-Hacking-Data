@@ -1,0 +1,95 @@
+
+[ENABLE]
+registersymbol(AwesomeMan)
+alloc(AwesomeMan,1024)
+registersymbol(MyAutoLR)
+alloc(MyAutoLR,1024)
+registersymbol(MyAutoLRKey)
+alloc(MyAutoLRKey,4)
+registersymbol(MyAutoLRKeyLR)
+alloc(MyAutoLRKeyLR,4)
+alloc(MyAutoLRXP,4)
+label(MyAutoLR00)
+label(MyAutoLR01)
+label(MyAutoLR02)
+label(MyAutoLRFix)
+
+00AD4980:
+DD AwesomeMan
+
+//-----------------------------------------------
+MyAutoLRKey:
+DD 1
+MyAutoLRKeyLR:
+DD 0
+MyAutoLRXP:
+DD 0
+//-----------------------------------------------
+
+AwesomeMan:
+cmp [esp],007D05A7
+jne GetFocus
+mov [esp],MyAutoLR
+jmp GetFocus
+
+MyAutoLR:
+cmp [MyAutoLRKey],0
+je MyAutoLR00
+cmp [MyAutoLRKey],2
+je MyAutoLRFix
+push eax
+mov eax,[00acf52c]
+mov eax,[eax+44c4]
+mov [MyAutoLRXP],eax
+pop eax
+mov [MyAutoLRKey],2
+MyAutoLRFix:
+add [MyAutoLRKeyLR],1
+cmp [MyAutoLRKeyLR],A
+jle MyAutoLR01
+cmp [MyAutoLRKeyLR],14
+jle MyAutoLR02
+
+//­×¥¿°¾Â÷
+push eax
+mov eax,[00acf52c]
+mov eax,[eax+44c4]
+cmp [MyAutoLRXP],eax 
+pop eax
+mov [MyAutoLRKeyLR],fffffffe
+jl MyAutoLR01
+mov [MyAutoLRKeyLR],2
+jmp MyAutoLR01
+
+MyAutoLR01:
+mov [ebp-8],ffffffff
+xor eax,eax
+xor esi,esi
+cmp [ebp-04],esi
+lea ecx,[edi+00000234]
+jmp 007D07C9
+
+MyAutoLR02:
+mov [ebp-8],1
+xor eax,eax
+xor esi,esi
+cmp [ebp-04],esi
+lea ecx,[edi+00000234]
+jmp 007D07C9
+
+MyAutoLR00:
+xor eax,eax
+xor esi,esi
+cmp [ebp-04],esi
+lea ecx,[edi+00000234]
+jmp 007D07C9
+
+
+[DISABLE]
+00AD4980:
+DD GetFocus
+
+unregistersymbol(AwesomeMan)
+dealloc(AwesomeMan)
+unregistersymbol(MyAutoLR)
+dealloc(MyAutoLR)

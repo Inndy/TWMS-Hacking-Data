@@ -1,0 +1,16 @@
+//v.1.30.1 遠攻全圖攻擊(全職+不CS)
+//auther:aaaddress1
+//此位置為各怪物與人物之間的距離差.
+[ENABLE]
+alloc(MobSetBlockXY,128)
+
+0058517E:
+jmp MobSetBlockXY
+
+MobSetBlockXY:
+push 00
+lea eax,[ebp-80]
+push 00
+jmp 00585183
+
+[DISABLE]

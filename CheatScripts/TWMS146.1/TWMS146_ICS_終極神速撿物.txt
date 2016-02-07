@@ -1,0 +1,54 @@
+// TWMS146 ICS 終極神速撿物走路自動撿取
+// Auther: Inndy
+[ENABLE]
+Alloc(FakeTime, 4)
+Alloc(PickTimes, 4)
+Alloc(AutoPick, 256)
+Label(GoBack)
+Label(PickUp)
+
+AutoPick:
+Cmp  [Esp], 008F8092
+Jne  GetFocus
+Pushad
+Push Esp
+Mov  Ebp, Esp
+Mov  [PickTimes], 05
+PickUp:
+Dec  [PickTimes]
+Push 00
+Push 00
+Push Esp
+Mov  Ecx, [00D3069C] // 人物Base
+Add  Ecx, 4
+Call dword ptr [00BC37C0] // 0049627B
+Push Eax
+Mov  Eax, [00D35140]
+Mov  Ecx, [FakeTime]
+Add  [Eax+1C], Ecx
+Mov  Ecx, [00D38220]
+Call 004DB708
+Mov  Ebx, [00D35140]
+Mov  Ecx, [FakeTime]
+Sub  [Ebx+1C], Ecx
+Test Eax, Eax
+Je   GoBack
+Add  [FakeTime], 3C
+Mov  Eax, [00D30364]
+And  [Eax+20C4], 00
+GoBack:
+Cmp  [PickTimes], 00
+Jg   PickUp
+Leave
+Popad
+Jmp  GetFocus
+
+00D3D7C8:
+DD AutoPick
+[DISABLE]
+00D3D7C8:
+DD GetFocus
+
+Dealloc(AutoPick)
+Dealloc(FakeTime)
+Dealloc(PickTimes)

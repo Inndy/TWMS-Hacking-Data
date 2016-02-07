@@ -1,0 +1,27 @@
+[Enable]
+Alloc(WalkingHook, 64)
+Alloc(WalkingSwitch, 4)
+RegisterSymbol(WalkingSwitch)
+
+WalkingHook:
+Cmp  [WalkingSwitch], 1	// Right
+Je   008B9579			//6A 01 EB ?? DB 86 ?? 00 00 00 DC 5E
+Cmp  [WalkingSwitch], 2	// Left
+Je   008B958D			//6A FF EB ?? 8B 8E ?? ?? 00 00
+Cmp  [WalkingSwitch], 3	// Stop
+Je   008B90B3
+
+Test Eax, Eax
+Jg   008B925A
+Jmp  008B90B3
+
+008B90AD: //0F 8F ? ? 00 00 83 BE ? ? 00 00 00 0F 84
+Jmp  WalkingHook
+Nop
+[Disable]
+008B90AD:
+db 0F 8F A7 01 00 00
+
+Dealloc(WalkingHook, 64)
+Dealloc(WalkingSwitch, 4)
+UnregisterSymbol(WalkingSwitch)

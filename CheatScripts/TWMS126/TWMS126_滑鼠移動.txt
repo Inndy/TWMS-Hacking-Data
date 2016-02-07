@@ -1,0 +1,111 @@
+//·Æ¹«²¾°Ê(¥k­w¥ª­wªO) TWMS0126
+//¥N½X:007F3058
+//EIP:CSX
+[Enable]
+alloc(MouserX,512) 
+alloc(MouserY,512) 
+alloc(CSX,128)
+alloc(OnOff,128)
+label(normal)
+label(normalx) 
+label(normaly) 
+label(back) 
+label(return)
+label(On) 
+label(Off)
+registersymbol(CSX)
+registersymbol(OnOff)
+
+OnOff:
+dd 0
+
+CSX:
+push eax
+mov eax,[00CDE80C]
+cmp [eax+0450],a
+je On
+cmp [eax+0450],b
+je Off
+pop eax
+jmp MouserX
+
+normal:
+pop eax
+mov [ebx], eax 
+mov edi,[ebp+10] 
+jmp back
+
+back:
+jmp 007F305D
+return: 
+jmp 007F30AB
+
+On:
+pop eax
+mov [OnOff],1
+jmp MouserX
+
+Off:
+pop eax
+mov [OnOff],0
+jmp MouserX
+
+MouserX:
+cmp [OnOff],0
+je normalx
+push eax
+mov eax,[00CDE80C]
+mov eax,[eax+17F4]
+cmp esi,eax 
+pop eax 
+jne normalx 
+
+
+mov eax,[00CDEC14]
+mov eax, [eax+0978]
+mov eax, [eax+88]
+mov [ebx], eax 
+mov edi,[ebp+10] 
+test edi, edi
+jne MouserY
+jmp 007F305A
+
+normalx: 
+mov [ebx], eax 
+mov edi,[ebp+10] 
+jmp back 
+
+MouserY: 
+push eax 
+mov eax,[00CDE80C]
+mov eax,[eax+17F4]
+cmp esi,eax 
+pop eax 
+jne normaly 
+
+mov eax, [00CDEC14]
+mov eax, [eax+0978]
+mov eax, [eax+8C]
+mov [edi], eax 
+mov ebx,[ebp+14] 
+jmp return 
+
+normaly: 
+mov [edi], eax 
+mov ebx,[ebp+14] 
+jmp return
+
+007F3058:
+JMP CSX
+[Disable]
+
+007F3058:
+mov [ebx],eax
+mov edi,[ebp+10]
+
+dealloc(MouserX) 
+dealloc(MouserY)
+dealloc(CSX)
+dealloc(OnOff)
+unregistersymbol(CSX)
+unregistersymbol(OnOff)

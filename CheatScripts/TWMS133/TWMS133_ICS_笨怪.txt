@@ -1,0 +1,35 @@
+//TWMS133 ICS ²Â©Ç
+//§ó·s:Inndy
+[enable]
+alloc(ICSMAIN,128)
+label(Back)
+alloc(Main,64)
+
+00B9A07C:
+DD ICSMAIN
+
+ICSMAIN:
+cmp [esp+1C],00839FAC
+jne Back
+mov [esp+1C],Main
+Back:
+jmp 0066B43D
+
+Main:
+Xor Edx,Edx
+Mov Ecx,0000EA60
+Lea Ecx,[Esi+000002B0]
+Push Edx
+Call 00420f21
+Mov Ebx,[Ebp+0C]
+Lea Edi,[Esi+000002A0]
+Cmp [Edi],Ebx
+Je 00839fdf
+Jmp 00839FD4
+
+[disable]
+00B9A07C:
+DD 0066B43D
+
+dealloc(ICSMAIN)
+dealloc(Main)

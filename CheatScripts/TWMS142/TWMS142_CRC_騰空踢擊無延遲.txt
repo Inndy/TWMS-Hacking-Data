@@ -1,0 +1,92 @@
+// TWMS V1.42.1 每N秒騰空踢擊無延遲N下
+// Made by 冷羽楓痕
+// 說明：無延遲N下後，須等N秒才能再無延遲N下，每次無延遲最多只能2X下，超過一定會斷線
+
+[enable]
+alloc(CheckTime,256)
+alloc(FakeTime,04)
+alloc(NextTime,04)
+alloc(NextTime2,04)
+alloc(MaxAtkCount, 04)
+alloc(NowAtkCount, 04)
+label(MyFakeTime)
+label(CheckTime2)
+label(Normal)
+
+MaxAtkCount: // 每MaxAtkCount秒無延遲MaxAtkCount次，超過2X會斷
+DD #05
+
+FakeTime:
+readmem([00cc4a38]+1c, 04)
+
+CheckTime:
+cmp [ebp-000001A4],0160A176 // 騰空踢擊技能ID
+jne Normal
+
+mov eax,[00cc4a38] // 00890C81 - A1 ?? ?? ?? ?? 8B 40 ?? C3
+mov eax,[eax+1c]
+cmp eax,[NextTime]
+jl CheckTime2
+
+inc [NowAtkCount]
+mov eax,[MaxAtkCount]
+cmp eax,[NowAtkCount]
+jge 00863972 // 無延遲
+
+mov [NowAtkCount],00
+imul eax,eax,3e8
+push ebx
+mov ebx,[00cc4a38]
+mov ebx,[ebx+1c]
+add ebx,eax
+mov [NextTime],ebx
+pop ebx
+jmp 00863972
+
+CheckTime2:
+mov eax,[00cc4a38]
+mov eax,[eax+1c]
+cmp eax,[NextTime2]
+jl 008638FF
+
+mov eax,[00cc4a38]
+mov eax,[eax+1c]
+add eax,000003e8
+mov [NextTime2],eax
+jmp 00863972
+
+Normal:
+call 00421107
+jmp 008638FB
+
+MyFakeTime:
+mov eax,[FakeTime]
+add eax,000003e8
+mov [FakeTime],eax
+jmp 00865728
+
+0086D032:
+jmp 0086d05e
+
+008638F6:
+jmp CheckTime
+
+00865723:
+jmp MyFakeTime
+
+[disable]
+0086D032: // 直接放 騰空踢擊
+jne 0086d05e
+
+008638F6: // 無延遲
+call 00421107
+
+00865723: // FakeTime
+call 00890c81
+
+dealloc(MyFakeTime)
+dealloc(FakeTime)
+dealloc(NextTime)
+dealloc(NextTime2)
+dealloc(NowAtkCount)
+dealloc(MaxAtkCount)

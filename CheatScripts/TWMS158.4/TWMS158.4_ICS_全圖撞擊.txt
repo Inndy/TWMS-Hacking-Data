@@ -1,0 +1,21 @@
+[ENABLE]
+Alloc(FullMapHit, 64)
+
+FullMapHit:
+Cmp [Esp], 006A0EE3
+Jne IntersectRect
+Add Esp, 04
+Call IntersectRect
+or dword ptr [ebp-04],FF
+lea ecx,[ebp-10]
+test eax,eax
+Jmp 006A0F0F
+
+0116FA50:
+DD FullMapHit
+
+[DISABLE]
+0116FA50:
+DD IntersectRect
+
+DeAlloc(FullMapHit)

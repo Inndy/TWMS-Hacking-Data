@@ -1,0 +1,36 @@
+[enable]
+Registersymbol(DamageControl)
+Alloc(DamageControl, 64)
+Alloc(Damage, 4)
+Label(normal)
+
+0046C3F5:
+jmp DamageControl
+nop
+nop
+
+Damage://¶Ë®`
+dd 1
+
+
+DamageControl:
+cmp [esp],007647B0
+jne normal
+push esi
+mov esi,[esp+08]
+mov esi,[esi+4]
+push [Damage]
+pop [esi+8]
+pop esi
+normal:
+push 38
+mov eax,0084BDD5
+jmp 0046C3FC
+
+[disable]
+0046C3F5:
+db 6a 38 b8 d5 bd 84 00
+
+Unregistersymbol(DamageControl)
+Dealloc(DamageControl)
+Dealloc(Damage)

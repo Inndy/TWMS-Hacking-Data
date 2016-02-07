@@ -1,0 +1,14 @@
+//------------------------------------------------------------------
+// Name¡G	Super Stupid Monster
+// Version:	TWMS140
+// Update:	Inndy
+// Address¡G	005CFD9E or 005CFD8F
+// EIP¡G	005CFE56
+// Aob¡G	0F 85 ?? 00 00 00 8b ce e8 ?? ?? ?? ff 85 c0 0f 85 ?? 00 00 00 38
+//------------------------------------------------------------------
+[ENABLE]
+005CFD8F:
+db 90 e9
+[DISABLE]
+005CFD8F:
+db 0f 85

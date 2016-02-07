@@ -1,0 +1,26 @@
+// TWMS 147.3 ICS µo°e«Ê¥]¹LÂo
+// Auther: Inndy
+[ENABLE]
+Alloc(PacketFilter, 256)
+Label(Back)
+
+PacketFilter:
+Cmp [Esp+08], 004926C4
+Jne 0070052D
+Push Eax
+Mov Eax, [Ebp+08]
+Mov Eax, [Eax+04]
+Cmp word ptr [Eax], 0057
+Jne Back
+Jmp 0049278E
+Back:
+Pop Eax 
+Jmp 0070052D
+
+00D927C4:
+DD PacketFilter
+[DISABLE]
+00D927C4:
+DD 0070052D
+
+Dealloc(PacketFilter)

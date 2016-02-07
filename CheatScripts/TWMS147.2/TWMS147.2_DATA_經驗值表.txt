@@ -1,0 +1,4 @@
+006C82BE - ff 74 24 04                - push [esp+04]
+006C82C2 - b9 48 aa db 00             - mov ecx,00dbaa48
+006C82C7 - e8 d2 ff ff ff             - call 006c829e
+006C82CC - c3                         - ret

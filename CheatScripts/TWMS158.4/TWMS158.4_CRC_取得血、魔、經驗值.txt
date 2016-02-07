@@ -1,0 +1,31 @@
+// TWMS158.4 CRC 取得血、魔、經驗值
+// Auther: Inndy
+// HP, MaxHP, MP, MaxMP, (int64)Exp, (int64)MaxExp
+[ENABLE]
+Alloc(Params, 36)
+Alloc(Hook, 128)
+RegisterSymbol(Params)
+
+Hook:
+Add Esp, 04
+Pop [Params+00] // [Esp+04] // HpNow
+Pop [Params+04] // [Esp+08] // HpFull
+Pop [Params+08] // [Esp+0C] // MpNow
+Pop [Params+0C] // [Esp+10] // MpFull
+Pop [Params+10] // [Esp+14] // ExpNow
+Pop [Params+14] // [Esp+18]
+Pop [Params+18] // [Esp+1C] // ExpFull
+Pop [Params+1C] // [Esp+20]
+Pop [Params+20] // [Esp+24] // Unknow
+Sub Esp, 28
+Jmp 0097770B
+
+0097D2DB: // +4 // 57 FF 75 ?? E8 ?? ?? ?? FF 83 EC
+Call Hook
+[DISABLE]
+0097D2DB:
+call 0097770B
+
+Dealloc(Params)
+Dealloc(Hook)
+UnregisterSymbol(Params)

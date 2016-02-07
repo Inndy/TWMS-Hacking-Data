@@ -1,0 +1,48 @@
+//走路加速(007)  Twms142
+[enable]
+Label(return)
+Label(normal)
+Registersymbol(speed)
+Alloc(speed, 4)
+Registersymbol(Walking_speed)
+Alloc(Walking_speed, 128)
+
+speed:
+dd 1 //數值越大速度越快 (0為正常)
+
+Walking_speed:
+push esi
+mov esi,[speed]
+
+return:
+cmp esi,0
+je normal
+
+dec esi
+push eax
+push ecx
+call dword ptr [eax]
+pop ecx
+pop eax
+jmp return
+
+normal:
+pop esi
+call dword ptr [eax]
+mov eax,[esi+30]
+jmp 0088360F+5
+
+0088360F:
+jmp Walking_speed
+
+[disable]
+
+0088360F:  //FF  8B   89   85  74  8D   50 E8     8B   59 8B
+call dword ptr [eax]
+mov eax,[esi+30]
+mov [ebp-10],eax
+
+Unregistersymbol(speed)
+Dealloc(speed)
+Unregistersymbol(Walking_speed)
+Dealloc(Walking_speed)

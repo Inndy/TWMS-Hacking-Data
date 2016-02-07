@@ -1,0 +1,864 @@
+00969DC7 - push ebp
+00969DC8 - sub esp,00000414
+00969DCE - lea ebp,[esp-04]
+00969DD2 - mov eax,[00dabfa0]          : 98BC0589
+00969DD7 - xor eax,ebp
+00969DD9 - mov [ebp+00000414],eax
+00969DDF - push 00000118
+00969DE4 - mov eax,00abb5cc
+00969DE9 - call 009d83dc
+00969DEE - mov eax,[ebp+00000428]
+00969DF4 - xor ebx,ebx
+00969DF6 - push ebx
+00969DF7 - mov [ebp-18],eax
+00969DFA - mov eax,[ebp+00000420]
+00969E00 - mov [ebp-24],ebx
+00969E03 - mov [00dbf808],eax          : 00400000
+00969E08 - lea eax,[ebp-38]
+00969E0B - push eax
+00969E0C - push ebx
+00969E0D - push 02
+00969E0F - push ebx
+00969E10 - push ebx
+00969E11 - push ebx
+00969E12 - push 00c34660
+00969E17 - push 80000002
+00969E1C - mov [ebp-38],ebx
+00969E1F - call dword ptr [00dbb138]   : RegCreateKeyExA
+00969E25 - cmp eax,ebx
+00969E27 - jne 00969e56
+00969E29 - cmp [ebp-38],ebx
+00969E2C - je 00969e56
+00969E2E - push 04
+00969E30 - lea eax,[ebp-28]
+00969E33 - push eax
+00969E34 - push 04
+00969E36 - push ebx
+00969E37 - push 00c34638
+00969E3C - push [ebp-38]
+00969E3F - xor esi,esi
+00969E41 - inc esi
+00969E42 - mov [ebp-28],esi
+00969E45 - call dword ptr [00dbb14c]   : RegSetValueExA
+00969E4B - push [ebp-38]
+00969E4E - call dword ptr [00dbb13c]   : RegCloseKey
+00969E54 - jmp 00969e59
+00969E56 - xor esi,esi
+00969E58 - inc esi
+00969E59 - push ebx
+00969E5A - call 0096e852
+00969E5F - push eax
+00969E60 - call 00969bcb
+00969E65 - pop ecx
+00969E66 - pop ecx
+00969E67 - lea eax,[ebp-28]
+00969E6A - push 0000046c
+00969E6F - push eax
+00969E70 - mov [00dbc0c4],0096ee03     : 0096EE03
+00969E7A - mov [00dbc0bc],esi          : 00000001
+00969E80 - mov [00dbc0c0],esi          : 00000001
+00969E86 - call 007039f7
+00969E8B - mov ecx,eax
+00969E8D - call 004201c8
+00969E92 - push [eax]                  : lpName, ("WvsClientMtx")
+00969E94 - mov [ebp-04],ebx
+00969E97 - push esi                    : bInitialOwner
+00969E98 - push ebx                    : lpMutexAttributes
+00969E99 - call dword ptr [00dbae70]   : CreateMutexA, 建立互斥體
+00969E9F - or dword ptr [ebp-04],ff
+00969EA3 - mov [ebp-2c],eax            : Handle丟掉區域變數 [Ebp-2C]
+00969EA6 - mov eax,[ebp-28]
+00969EA9 - cmp eax,ebx
+00969EAB - je 00969eb7
+00969EAD - add eax,f4
+00969EB0 - push eax
+00969EB1 - call 0040ed09
+00969EB6 - pop ecx
+00969EB7 - cmp [ebp-2c],ebx            : Ebx == 0, 跳了就慘了
+00969EBA - je 0096a84a
+00969EC0 - call dword ptr [00dbaf2c]   : RtlGetLastWin32Error
+00969EC6 - cmp eax,000000b7            : ERROR_ALREADY_EXISTS
+00969ECB - jne 00969f6c                : 不跳就慘了
+00969ED1 - lea eax,[ebp-20]
+00969ED4 - push eax
+00969ED5 - call 0096e8da
+00969EDA - mov edi,eax
+00969EDC - lea eax,[ebp-24]
+00969EDF - mov [esp],000005ac
+00969EE6 - push eax
+00969EE7 - mov [ebp-04],esi
+00969EEA - call 007039f7
+00969EEF - mov ecx,eax
+00969EF1 - call 004201c8
+00969EF6 - mov edi,[edi]
+00969EF8 - mov eax,[eax]
+00969EFA - push edi                    : lpWindowName
+00969EFB - push eax                    : lpClassName
+00969EFC - mov byte ptr [ebp-04],02    : 我不懂幹嘛要用FindWindow
+00969F00 - call dword ptr [00dbb0ac]   : FindWindowA
+00969F06 - mov [ebp-1c],eax            : Hwnd放在區域變數 [Ebp-1C]
+00969F09 - mov eax,[ebp-24]
+00969F0C - mov byte ptr [ebp-04],01
+00969F10 - cmp eax,ebx
+00969F12 - je 00969f1e
+00969F14 - add eax,f4
+00969F17 - push eax
+00969F18 - call 0040ed09
+00969F1D - pop ecx
+00969F1E - mov eax,[ebp-20]
+00969F21 - or edi,ff
+00969F24 - mov [ebp-04],edi
+00969F27 - cmp eax,ebx
+00969F29 - je 00969f35
+00969F2B - add eax,f4
+00969F2E - push eax
+00969F2F - call 0040ed09
+00969F34 - pop ecx
+00969F35 - cmp [ebp-1c],ebx            : Ebx == 0
+00969F38 - je 00969f52                 : 如果FindWindowA沒有找到東西就跳
+00969F3A - push esi
+00969F3B - push [ebp-1c]
+00969F3E - call dword ptr [00dbafc4]   : ShowWindow
+00969F44 - push [ebp-1c]
+00969F47 - call dword ptr [00dbb0a8]   : SetForegroundWindow
+00969F4D - jmp 0096a84a
+00969F52 - push 00001388               : 5秒超時
+00969F57 - push [ebp-2c]               : 等待互斥體Handle掛掉
+00969F5A - call dword ptr [00dbae74]   : WaitForSingleObject
+00969F60 - cmp eax,00000102            : WAIT_TIMEOUT
+00969F65 - jne 00969f6f                : 如不是超時而結束等待就跳
+00969F67 - jmp 0096a84a                : 這裡是一個迴圈
+00969F6C - or edi,ff
+00969F6F - lea eax,[ebp-20]
+00969F72 - push 00000bbf
+00969F77 - push eax
+00969F78 - mov [ebp-40],00000100
+00969F7F - call 007039f7
+00969F84 - mov ecx,eax
+00969F86 - call 004201c8
+00969F8B - mov eax,[eax]
+00969F8D - push ebx
+00969F8E - lea ecx,[ebp-3c]
+00969F91 - push ecx
+00969F92 - push ebx
+00969F93 - push 0f
+00969F95 - push ebx
+00969F96 - push ebx
+00969F97 - push ebx
+00969F98 - push eax
+00969F99 - push 80000002
+00969F9E - mov [ebp-04],00000003
+00969FA5 - call dword ptr [00dbb138]   : RegCreateKeyExA
+00969FAB - neg eax
+00969FAD - sbb al,al
+00969FAF - inc al
+00969FB1 - mov [ebp-14],al
+00969FB4 - mov eax,[ebp-20]
+00969FB7 - mov [ebp-04],edi
+00969FBA - cmp eax,ebx
+00969FBC - je 00969fc8
+00969FBE - add eax,f4
+00969FC1 - push eax
+00969FC2 - call 0040ed09
+00969FC7 - pop ecx
+00969FC8 - cmp [ebp-14],bl
+00969FCB - je 0096a106
+00969FD1 - lea eax,[ebp-28]
+00969FD4 - push 00000bc1
+00969FD9 - push eax
+00969FDA - call 007039f7
+00969FDF - mov ecx,eax
+00969FE1 - call 004201c8
+00969FE6 - mov eax,[eax]
+00969FE8 - lea ecx,[ebp-40]
+00969FEB - push ecx
+00969FEC - lea ecx,[ebp+00000314]
+00969FF2 - push ecx
+00969FF3 - lea ecx,[ebp-44]
+00969FF6 - push ecx
+00969FF7 - push ebx
+00969FF8 - push eax
+00969FF9 - push [ebp-3c]
+00969FFC - mov [ebp-04],00000004
+0096A003 - mov [ebp-24],esi
+0096A006 - call dword ptr [00dbb148]   : RegQueryValueExA
+0096A00C - test eax,eax
+0096A00E - jne 0096a054
+0096A010 - cmp [ebp-44],esi
+0096A013 - jne 0096a054
+0096A015 - mov eax,[ebp-40]
+0096A018 - cmp [ebp+eax+00000313],bl
+0096A01F - jne 0096a054
+0096A021 - lea eax,[ebp-20]
+0096A024 - push 0000046b
+0096A029 - push eax
+0096A02A - call 007039f7
+0096A02F - mov ecx,eax
+0096A031 - call 004201c8
+0096A036 - push [eax]
+0096A038 - lea eax,[ebp+00000314]
+0096A03E - push eax
+0096A03F - mov [ebp-24],00000003
+0096A046 - call 009dd778
+0096A04B - pop ecx
+0096A04C - pop ecx
+0096A04D - mov [ebp-14],bl
+0096A050 - test eax,eax
+0096A052 - je 0096a058
+0096A054 - mov byte ptr [ebp-14],01
+0096A058 - test byte ptr [ebp-24],02
+0096A05C - je 0096a073
+0096A05E - mov eax,[ebp-20]
+0096A061 - and dword ptr [ebp-24],fd
+0096A065 - cmp eax,ebx
+0096A067 - je 0096a073
+0096A069 - add eax,f4
+0096A06C - push eax
+0096A06D - call 0040ed09
+0096A072 - pop ecx
+0096A073 - test byte ptr [ebp-24],01
+0096A077 - mov [ebp-04],edi
+0096A07A - je 0096a08d
+0096A07C - mov eax,[ebp-28]
+0096A07F - cmp eax,ebx
+0096A081 - je 0096a08d
+0096A083 - add eax,f4
+0096A086 - push eax
+0096A087 - call 0040ed09
+0096A08C - pop ecx
+0096A08D - cmp [ebp-14],bl
+0096A090 - je 0096a0fd
+0096A092 - call dword ptr [00dbaf64]   : GetACP
+0096A098 - cmp eax,000003b6
+0096A09D - je 0096a0fd
+0096A09F - call 0091d0a9
+0096A0A4 - push ecx
+0096A0A5 - mov ecx,esp
+0096A0A7 - mov [ebp-18],esp
+0096A0AA - push edi
+0096A0AB - mov esi,00bb1bc0
+0096A0B0 - push esi
+0096A0B1 - mov [ebp-20],eax
+0096A0B4 - mov [ecx],ebx
+0096A0B6 - call 00422852
+0096A0BB - push ecx
+0096A0BC - mov ecx,esp
+0096A0BE - mov [ebp-28],esp
+0096A0C1 - push edi
+0096A0C2 - push esi
+0096A0C3 - mov [ebp-04],00000005
+0096A0CA - mov [ecx],ebx
+0096A0CC - call 00422852
+0096A0D1 - push ecx
+0096A0D2 - mov eax,esp
+0096A0D4 - mov [ebp-1c],esp
+0096A0D7 - mov byte ptr [ebp-04],06
+0096A0DB - push 00000bc2
+0096A0E0 - push eax
+0096A0E1 - call 007039f7
+0096A0E6 - mov ecx,eax
+0096A0E8 - call 004201c8
+0096A0ED - mov ecx,[ebp-20]
+0096A0F0 - mov [ebp-04],edi
+0096A0F3 - call 00611fcb
+0096A0F8 - jmp 0096a84a
+0096A0FD - push [ebp-3c]
+0096A100 - call dword ptr [00dbb13c]   : RegCloseKey
+0096A106 - call 00969cb8
+0096A10B - push 02
+0096A10D - push ebx
+0096A10E - call dword ptr [00aeb408]   : CoInitializeEx
+0096A114 - test eax,eax
+0096A116 - jnl 0096a15b
+0096A118 - call 0091d0a9
+0096A11D - push ecx
+0096A11E - mov ecx,esp
+0096A120 - mov [ebp-18],esp
+0096A123 - push edi
+0096A124 - mov esi,00bb1bc0
+0096A129 - push esi
+0096A12A - mov [ebp-20],eax
+0096A12D - mov [ecx],ebx
+0096A12F - call 00422852
+0096A134 - push ecx
+0096A135 - mov ecx,esp
+0096A137 - mov [ebp-28],esp
+0096A13A - push edi
+0096A13B - push esi
+0096A13C - mov [ebp-04],00000007
+0096A143 - mov [ecx],ebx
+0096A145 - call 00422852
+0096A14A - push ecx
+0096A14B - mov eax,esp
+0096A14D - mov [ebp-1c],esp
+0096A150 - mov byte ptr [ebp-04],08
+0096A154 - push 00000bc3
+0096A159 - jmp 0096a0e0
+0096A15B - mov [ebp-04],00000009
+0096A162 - call 00969b33
+0096A167 - jmp 0096a171
+0096A169 - mov eax,0096a16f
+0096A16E - ret
+0096A16F - xor ebx,ebx
+0096A171 - mov [ebp-28],ebx
+0096A174 - mov [ebp-2c],ebx
+0096A177 - push [ebp-18]
+0096A17A - lea ecx,[ebp-00000114]
+0096A180 - mov [ebp-04],0000000c
+0096A187 - call 0096fe01
+0096A18C - lea ecx,[ebp-00000114]
+0096A192 - mov byte ptr [ebp-04],0d
+0096A196 - call 00970173
+0096A19B - mov [ebp-1c],ebx
+0096A19E - mov byte ptr [ebp-04],0e
+0096A1A2 - cmp [ebp-1c],ebx
+0096A1A5 - je 0096a1fa
+0096A1A7 - mov eax,[00dad700]          : 00DBFA60
+0096A1AC - cmp [eax+00004db4],ebx
+0096A1B2 - je 0096a1bf
+0096A1B4 - push 000003e8
+0096A1B9 - call dword ptr [00aeb090]   : 05310D12
+0096A1BF - mov ecx,[00dad700]          : 00DBFA60
+0096A1C5 - call 00997935
+0096A1CA - push [ebp-1c]
+0096A1CD - lea ecx,[ebp-18]
+0096A1D0 - call 004f2099
+0096A1D5 - lea ecx,[ebp-18]
+0096A1D8 - call 004f215a
+0096A1DD - push ebx
+0096A1DE - push eax
+0096A1DF - call 005b2eb6
+0096A1E4 - mov eax,[00db2500]          : 00000000
+0096A1E9 - cmp dword ptr [eax+28],03
+0096A1ED - pop ecx
+0096A1EE - pop ecx
+0096A1EF - jne 0096a1fa
+0096A1F1 - push ebx
+0096A1F2 - call dword ptr [00dbafa4]   : PostQuitMessage
+0096A1F8 - jmp 0096a20c
+0096A1FA - lea eax,[ebp-20]
+0096A1FD - push eax
+0096A1FE - lea ecx,[ebp-00000114]
+0096A204 - mov [ebp-20],ebx
+0096A207 - call 0096cb0d
+0096A20C - mov eax,[ebp-000000e4]
+0096A212 - mov [ebp-28],eax
+0096A215 - cmp [ebp-000000e0],ebx
+0096A21B - je 0096a22e
+0096A21D - mov eax,[00db1fc4]          : 00000000
+0096A222 - mov [ebp-2c],00000001
+0096A229 - cmp [eax+14],ebx
+0096A22C - jne 0096a231
+0096A22E - mov [ebp-2c],ebx
+0096A231 - lea ecx,[ebp-00000114]
+0096A237 - mov byte ptr [ebp-04],0c
+0096A23B - call 00970bff
+0096A240 - mov byte ptr [ebp-04],0b
+0096A244 - call 00969bad
+0096A249 - or dword ptr [ebp-04],ff
+0096A24D - jmp 0096a702
+0096A252 - mov eax,[ebp-5c]
+0096A255 - mov eax,[eax]
+0096A257 - mov [ebp-1c],eax
+0096A25A - mov [ebp-04],0000000d
+0096A261 - mov eax,0096a267
+0096A266 - ret
+0096A267 - xor ebx,ebx
+0096A269 - jmp 0096a19e
+0096A26E - lea eax,[ebp+00000210]
+0096A274 - push eax
+0096A275 - push 00000104
+0096A27A - call dword ptr [00dbaf1c]   : GetCurrentDirectoryA
+0096A280 - or esi,ff
+0096A283 - push esi
+0096A284 - lea eax,[ebp+00000210]
+0096A28A - xor ebx,ebx
+0096A28C - push eax
+0096A28D - lea ecx,[ebp-1c]
+0096A290 - mov [ebp-1c],ebx
+0096A293 - call 00422852
+0096A298 - push esi
+0096A299 - lea eax,[ebp+00000210]
+0096A29F - push eax
+0096A2A0 - lea ecx,[ebp-24]
+0096A2A3 - mov byte ptr [ebp-04],11
+0096A2A7 - mov [ebp-24],ebx
+0096A2AA - call 00422852
+0096A2AF - lea eax,[ebp-18]
+0096A2B2 - push 000005a8
+0096A2B7 - push eax
+0096A2B8 - mov byte ptr [ebp-04],12
+0096A2BC - call 007039f7
+0096A2C1 - mov ecx,eax
+0096A2C3 - call 004201c8
+0096A2C8 - push eax
+0096A2C9 - push 01
+0096A2CB - lea eax,[ebp-14]
+0096A2CE - push eax
+0096A2CF - lea ecx,[ebp-1c]
+0096A2D2 - mov byte ptr [ebp-04],13
+0096A2D6 - mov byte ptr [ebp-14],5c
+0096A2DA - call 00427ac5
+0096A2DF - mov ecx,eax
+0096A2E1 - call 00427cc4
+0096A2E6 - mov eax,[ebp-18]
+0096A2E9 - mov byte ptr [ebp-04],12
+0096A2ED - cmp eax,ebx
+0096A2EF - je 0096a2fb
+0096A2F1 - add eax,f4
+0096A2F4 - push eax
+0096A2F5 - call 0040ed09
+0096A2FA - pop ecx
+0096A2FB - lea eax,[ebp-18]
+0096A2FE - push 000005ab
+0096A303 - push eax
+0096A304 - call 007039f7
+0096A309 - mov ecx,eax
+0096A30B - call 004201c8
+0096A310 - push eax
+0096A311 - push 01
+0096A313 - lea eax,[ebp-14]
+0096A316 - push eax
+0096A317 - lea ecx,[ebp-24]
+0096A31A - mov byte ptr [ebp-04],14
+0096A31E - mov byte ptr [ebp-14],5c
+0096A322 - call 00427ac5
+0096A327 - mov ecx,eax
+0096A329 - call 00427cc4
+0096A32E - mov eax,[ebp-18]
+0096A331 - mov byte ptr [ebp-04],12
+0096A335 - cmp eax,ebx
+0096A337 - je 0096a343
+0096A339 - add eax,f4
+0096A33C - push eax
+0096A33D - call 0040ed09
+0096A342 - pop ecx
+0096A343 - mov [ebp-000000a0],00bb2b1c
+0096A34D - mov [ebp-00000090],esi
+0096A353 - mov [ebp-0000008c],ebx
+0096A359 - mov [ebp-00000088],ebx
+0096A35F - mov [ebp-70],ebx
+0096A362 - mov [ebp-6c],ebx
+0096A365 - push ebx
+0096A366 - push ebx
+0096A367 - push 40000000
+0096A36C - push ebx
+0096A36D - push 00000080
+0096A372 - push 02
+0096A374 - push [ebp-24]
+0096A377 - lea ecx,[ebp-000000a0]
+0096A37D - mov byte ptr [ebp-04],15
+0096A381 - call 0045ec91
+0096A386 - cmp [ebp-00000090],ebx
+0096A38C - jne 0096a427
+0096A392 - call 0091d0a9
+0096A397 - push ecx
+0096A398 - mov ecx,esp
+0096A39A - mov [ebp-18],esp
+0096A39D - push esi
+0096A39E - mov esi,00bb1bc0
+0096A3A3 - push esi
+0096A3A4 - mov edi,eax
+0096A3A6 - mov [ecx],ebx
+0096A3A8 - call 00422852
+0096A3AD - push ecx
+0096A3AE - mov ecx,esp
+0096A3B0 - mov [ebp-20],esp
+0096A3B3 - push ff
+0096A3B5 - push esi
+0096A3B6 - mov byte ptr [ebp-04],16
+0096A3BA - mov [ecx],ebx
+0096A3BC - call 00422852
+0096A3C1 - push ecx
+0096A3C2 - mov eax,esp
+0096A3C4 - mov [ebp-28],esp
+0096A3C7 - push 0000044f
+0096A3CC - push eax
+0096A3CD - mov byte ptr [ebp-04],17
+0096A3D1 - call 007039f7
+0096A3D6 - mov ecx,eax
+0096A3D8 - call 004201c8
+0096A3DD - mov ecx,edi
+0096A3DF - mov byte ptr [ebp-04],15
+0096A3E3 - call 00611fcb
+0096A3E8 - lea ecx,[ebp-000000a0]
+0096A3EE - mov byte ptr [ebp-04],12
+0096A3F2 - call 0045efa9
+0096A3F7 - mov eax,[ebp-24]
+0096A3FA - mov byte ptr [ebp-04],11
+0096A3FE - cmp eax,ebx
+0096A400 - je 0096a40c
+0096A402 - add eax,f4
+0096A405 - push eax
+0096A406 - call 0040ed09
+0096A40B - pop ecx
+0096A40C - mov eax,[ebp-1c]
+0096A40F - mov byte ptr [ebp-04],10
+0096A413 - cmp eax,ebx
+0096A415 - je 0096a421
+0096A417 - add eax,f4
+0096A41A - push eax
+0096A41B - call 0040ed09
+0096A420 - pop ecx
+0096A421 - mov eax,0096a84a
+0096A426 - ret
+0096A427 - mov eax,[ebp-68]
+0096A42A - push 00000504
+0096A42F - add eax,04
+0096A432 - push eax
+0096A433 - lea ecx,[ebp-000000a0]
+0096A439 - call 0045e99c
+0096A43E - lea ecx,[ebp-000000a0]
+0096A444 - call 0045ec33
+0096A449 - push 44
+0096A44B - pop esi
+0096A44C - push esi
+0096A44D - lea eax,[ebp-000000e4]
+0096A453 - push ebx
+0096A454 - push eax
+0096A455 - call 009d7a60
+0096A45A - add esp,0c
+0096A45D - lea eax,[ebp-00000124]
+0096A463 - push eax
+0096A464 - lea eax,[ebp-000000e4]
+0096A46A - push eax
+0096A46B - push ebx
+0096A46C - push ebx
+0096A46D - push 20
+0096A46F - push ebx
+0096A470 - push ebx
+0096A471 - push ebx
+0096A472 - push ebx
+0096A473 - push [ebp-1c]
+0096A476 - mov [ebp-000000e4],esi
+0096A47C - call dword ptr [00dbae34]   : CreateProcessA
+0096A482 - lea ecx,[ebp-000000a0]
+0096A488 - mov byte ptr [ebp-04],12
+0096A48C - call 0045efa9
+0096A491 - mov eax,[ebp-24]
+0096A494 - mov byte ptr [ebp-04],11
+0096A498 - cmp eax,ebx
+0096A49A - je 0096a4a6
+0096A49C - add eax,f4
+0096A49F - push eax
+0096A4A0 - call 0040ed09
+0096A4A5 - pop ecx
+0096A4A6 - mov eax,[ebp-1c]
+0096A4A9 - mov byte ptr [ebp-04],10
+0096A4AD - cmp eax,ebx
+0096A4AF - je 0096a4bb
+0096A4B1 - add eax,f4
+0096A4B4 - push eax
+0096A4B5 - call 0040ed09
+0096A4BA - pop ecx
+0096A4BB - or dword ptr [ebp-04],ff
+0096A4BF - mov eax,0096a700
+0096A4C4 - ret
+0096A4C5 - mov edi,[ebp-48]
+0096A4C8 - mov eax,[edi]
+0096A4CA - cmp eax,2200000a
+0096A4CF - je 0096a568
+0096A4D5 - cmp eax,22000001
+0096A4DA - jne 0096a517
+0096A4DC - call 00969c7b
+0096A4E1 - push ecx
+0096A4E2 - mov esi,eax
+0096A4E4 - mov eax,esp
+0096A4E6 - mov [ebp-18],esp
+0096A4E9 - push 02
+0096A4EB - push eax
+0096A4EC - call 007039f7
+0096A4F1 - mov ecx,eax
+0096A4F3 - call 004201c8
+0096A4F8 - push ecx
+0096A4F9 - mov eax,esp
+0096A4FB - mov [ebp-20],esp
+0096A4FE - push eax
+0096A4FF - mov ecx,edi
+0096A501 - mov byte ptr [ebp-04],18
+0096A505 - call 004f2187
+0096A50A - mov ecx,esi
+0096A50C - mov byte ptr [ebp-04],10
+0096A510 - call 00612084
+0096A515 - jmp 0096a568
+0096A517 - call 0091d0a9
+0096A51C - push ecx
+0096A51D - mov ecx,esp
+0096A51F - mov [ebp-20],esp
+0096A522 - push ff
+0096A524 - mov esi,00bb1bc0
+0096A529 - xor ebx,ebx
+0096A52B - push esi
+0096A52C - mov [ebp-18],eax
+0096A52F - mov [ecx],ebx
+0096A531 - call 00422852
+0096A536 - push ecx
+0096A537 - mov ecx,esp
+0096A539 - mov [ebp-30],esp
+0096A53C - push ff
+0096A53E - push esi
+0096A53F - mov byte ptr [ebp-04],19
+0096A543 - mov [ecx],ebx
+0096A545 - call 00422852
+0096A54A - push ecx
+0096A54B - mov eax,esp
+0096A54D - mov [ebp-34],esp
+0096A550 - push eax
+0096A551 - mov ecx,edi
+0096A553 - mov byte ptr [ebp-04],1a
+0096A557 - call 004f2187
+0096A55C - mov ecx,[ebp-18]
+0096A55F - mov byte ptr [ebp-04],10
+0096A563 - call 00611fcb
+0096A568 - or dword ptr [ebp-04],ff
+0096A56C - mov eax,0096a700
+0096A571 - ret
+0096A572 - call 0091d0a9
+0096A577 - push ecx
+0096A578 - mov ecx,esp
+0096A57A - mov [ebp-34],esp
+0096A57D - push ff
+0096A57F - mov esi,00bb1bc0
+0096A584 - xor ebx,ebx
+0096A586 - push esi
+0096A587 - mov edi,eax
+0096A589 - mov [ecx],ebx
+0096A58B - call 00422852
+0096A590 - push ecx
+0096A591 - mov ecx,esp
+0096A593 - mov [ebp-30],esp
+0096A596 - push ff
+0096A598 - push esi
+0096A599 - mov byte ptr [ebp-04],1b
+0096A59D - mov [ecx],ebx
+0096A59F - call 00422852
+0096A5A4 - push ecx
+0096A5A5 - mov ecx,[ebp-64]
+0096A5A8 - mov eax,esp
+0096A5AA - mov [ebp-18],esp
+0096A5AD - push eax
+0096A5AE - mov byte ptr [ebp-04],1c
+0096A5B2 - call 009c2732
+0096A5B7 - mov ecx,edi
+0096A5B9 - mov byte ptr [ebp-04],10
+0096A5BD - call 00611fcb
+0096A5C2 - or dword ptr [ebp-04],ff
+0096A5C6 - mov eax,0096a700
+0096A5CB - ret
+0096A5CC - call 0091d0a9
+0096A5D1 - push ecx
+0096A5D2 - mov ecx,esp
+0096A5D4 - mov [ebp-34],esp
+0096A5D7 - push ff
+0096A5D9 - mov esi,00bb1bc0
+0096A5DE - xor ebx,ebx
+0096A5E0 - push esi
+0096A5E1 - mov edi,eax
+0096A5E3 - mov [ecx],ebx
+0096A5E5 - call 00422852
+0096A5EA - push ecx
+0096A5EB - mov ecx,esp
+0096A5ED - mov [ebp-30],esp
+0096A5F0 - push ff
+0096A5F2 - push esi
+0096A5F3 - mov byte ptr [ebp-04],1d
+0096A5F7 - mov [ecx],ebx
+0096A5F9 - call 00422852
+0096A5FE - push ecx
+0096A5FF - mov ecx,[ebp-50]
+0096A602 - mov eax,esp
+0096A604 - mov [ebp-18],esp
+0096A607 - push eax
+0096A608 - mov byte ptr [ebp-04],1e
+0096A60C - call 009c1618
+0096A611 - mov ecx,edi
+0096A613 - mov byte ptr [ebp-04],10
+0096A617 - call 00611fcb
+0096A61C - or dword ptr [ebp-04],ff
+0096A620 - mov eax,0096a700
+0096A625 - ret
+0096A626 - call 0091d0a9
+0096A62B - push ecx
+0096A62C - mov ecx,esp
+0096A62E - mov [ebp-34],esp
+0096A631 - push ff
+0096A633 - mov esi,00bb1bc0
+0096A638 - xor ebx,ebx
+0096A63A - push esi
+0096A63B - mov edi,eax
+0096A63D - mov [ecx],ebx
+0096A63F - call 00422852
+0096A644 - push ecx
+0096A645 - mov ecx,esp
+0096A647 - mov [ebp-30],esp
+0096A64A - push ff
+0096A64C - push esi
+0096A64D - mov byte ptr [ebp-04],1f
+0096A651 - mov [ecx],ebx
+0096A653 - call 00422852
+0096A658 - push ecx
+0096A659 - mov ecx,[ebp-54]
+0096A65C - mov eax,esp
+0096A65E - mov [ebp-18],esp
+0096A661 - push eax
+0096A662 - mov byte ptr [ebp-04],20
+0096A666 - call 009c186e
+0096A66B - mov ecx,edi
+0096A66D - mov byte ptr [ebp-04],10
+0096A671 - call 00611fcb
+0096A676 - or dword ptr [ebp-04],ff
+0096A67A - mov eax,0096a700
+0096A67F - ret
+0096A680 - call 0091d0a9
+0096A685 - push ecx
+0096A686 - mov ecx,esp
+0096A688 - mov [ebp-34],esp
+0096A68B - push ff
+0096A68D - mov esi,00bb1bc0
+0096A692 - xor ebx,ebx
+0096A694 - push esi
+0096A695 - mov edi,eax
+0096A697 - mov [ecx],ebx
+0096A699 - call 00422852
+0096A69E - push ecx
+0096A69F - mov ecx,esp
+0096A6A1 - mov [ebp-30],esp
+0096A6A4 - push ff
+0096A6A6 - push esi
+0096A6A7 - mov byte ptr [ebp-04],21
+0096A6AB - mov [ecx],ebx
+0096A6AD - call 00422852
+0096A6B2 - push ecx
+0096A6B3 - mov ecx,[ebp-58]
+0096A6B6 - mov eax,esp
+0096A6B8 - mov [ebp-18],esp
+0096A6BB - push eax
+0096A6BC - mov byte ptr [ebp-04],22
+0096A6C0 - call 009c1b72
+0096A6C5 - mov ecx,edi
+0096A6C7 - mov byte ptr [ebp-04],10
+0096A6CB - call 00611fcb
+0096A6D0 - or dword ptr [ebp-04],ff
+0096A6D4 - mov eax,0096a700
+0096A6D9 - ret
+0096A6DA - push [ebp-60]
+0096A6DD - call 00922eaa
+0096A6E2 - or dword ptr [ebp-04],ff
+0096A6E6 - pop ecx
+0096A6E7 - mov eax,0096a700
+0096A6EC - ret
+0096A6ED - push [ebp-4c]
+0096A6F0 - call 00922f0e
+0096A6F5 - or dword ptr [ebp-04],ff
+0096A6F9 - pop ecx
+0096A6FA - mov eax,0096a700
+0096A6FF - ret
+0096A700 - xor ebx,ebx
+0096A702 - call dword ptr [00aeb40c]   : CoUninitialize
+0096A708 - call 00969cb8
+0096A70D - cmp [ebp-2c],ebx
+0096A710 - je 0096a76c
+0096A712 - call 0091d0a9
+0096A717 - push ecx
+0096A718 - mov ecx,esp
+0096A71A - mov [ebp-34],esp
+0096A71D - push ff
+0096A71F - mov esi,00bb1bc0
+0096A724 - push esi
+0096A725 - mov edi,eax
+0096A727 - mov [ecx],ebx
+0096A729 - call 00422852
+0096A72E - push ecx
+0096A72F - mov ecx,esp
+0096A731 - mov [ebp-30],esp
+0096A734 - push ff
+0096A736 - push esi
+0096A737 - mov [ebp-04],00000023
+0096A73E - mov [ecx],ebx
+0096A740 - call 00422852
+0096A745 - push ecx
+0096A746 - mov eax,esp
+0096A748 - mov [ebp-18],esp
+0096A74B - push 00000450
+0096A750 - push eax
+0096A751 - mov byte ptr [ebp-04],24
+0096A755 - call 007039f7
+0096A75A - mov ecx,eax
+0096A75C - call 004201c8
+0096A761 - or dword ptr [ebp-04],ff
+0096A765 - mov ecx,edi
+0096A767 - call 00611fcb
+0096A76C - mov ecx,[00db27d0]          : 00000000
+0096A772 - cmp ecx,ebx
+0096A774 - je 0096a79a
+0096A776 - call 009c15b7
+0096A77B - mov ecx,[00db27d0]          : 00000000
+0096A781 - cmp ecx,ebx
+0096A783 - je 0096a79a
+0096A785 - call 009c114b
+0096A78A - mov ecx,[00db27d0]          : 00000000
+0096A790 - call 009c1158
+0096A795 - call 00969bec
+0096A79A - cmp [ebp-28],ebx
+0096A79D - je 0096a811
+0096A79F - lea eax,[ebp-18]
+0096A7A2 - push 04
+0096A7A4 - push eax
+0096A7A5 - mov [ebp+00],bl
+0096A7A8 - call 007039f7
+0096A7AD - mov ecx,eax
+0096A7AF - call 004201c8
+0096A7B4 - push [eax]
+0096A7B6 - lea eax,[ebp+00]
+0096A7B9 - push eax
+0096A7BA - mov [ebp-04],00000025
+0096A7C1 - call dword ptr [00dbaf48]   : lstrcpy
+0096A7C7 - mov eax,[ebp-18]
+0096A7CA - or dword ptr [ebp-04],ff
+0096A7CE - cmp eax,ebx
+0096A7D0 - je 0096a7dc
+0096A7D2 - add eax,f4
+0096A7D5 - push eax
+0096A7D6 - call 0040ed09
+0096A7DB - pop ecx
+0096A7DC - push ebx                    : Ebx == 0, 
+0096A7DD - mov [ebp+00000200],000001ea
+0096A7E7 - mov [ebp+00000204],000000be
+0096A7F1 - mov [ebp+00000208],0000003c
+0096A7FB - call dword ptr [00dbae10]   : GetModuleHandleA(NULL) == 0x00400000, 取得自身Handle
+0096A801 - mov [ebp+0000020c],eax
+0096A807 - lea eax,[ebp+00]
+0096A80A - push eax
+0096A80B - call 004201e4
+0096A810 - pop ecx
+0096A811 - lea eax,[ebp-2c]
+0096A814 - push 000011eb
+0096A819 - push eax
+0096A81A - call 007039f7
+0096A81F - mov ecx,eax
+0096A821 - call 004201c8
+0096A826 - push [eax]
+0096A828 - mov [ebp-04],00000026
+0096A82F - call 0091c3b2
+0096A834 - mov eax,[ebp-2c]
+0096A837 - or dword ptr [ebp-04],ff
+0096A83B - pop ecx
+0096A83C - cmp eax,ebx
+0096A83E - je 0096a84a
+0096A840 - add eax,f4
+0096A843 - push eax
+0096A844 - call 0040ed09
+0096A849 - pop ecx
+0096A84A - xor eax,eax
+0096A84C - mov ecx,[ebp-0c]
+0096A84F - mov fs:[00000000],ecx
+0096A856 - pop ecx
+0096A857 - pop edi
+0096A858 - pop esi
+0096A859 - pop ebx
+0096A85A - mov ecx,[ebp+00000414]
+0096A860 - xor ecx,ebp
+0096A862 - call 009d7ef3
+0096A867 - add ebp,00000418
+0096A86D - leave
+0096A86E - ret 0010

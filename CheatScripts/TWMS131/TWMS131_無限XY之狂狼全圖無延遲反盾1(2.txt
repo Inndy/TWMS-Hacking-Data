@@ -1,0 +1,58 @@
+//v1.31.1 狂狼反盾全圖攻擊
+//auther:aaaddress1(無限XY原作)
+//Fixed By 小翊game、草泥馬
+//技術支援:頑皮鬼
+[ENABLE]
+alloc(SetXY,128)
+alloc(SetBump,128)
+
+//--------------狂狼反盾停止呼吸---------
+0077A30C:
+mov [ebx+00000450],00000000
+0077A1D3:
+mov edi,00000000
+//--------------狂狼反盾連撞-------------
+00783117:
+call SetBump
+nop
+
+SetBump:
+add ecx,00003a14
+call 0075c8e0
+mov [esp],00783147
+ret
+
+00783178:
+db eb 30
+//-------------動態狂狼反盾---------------
+00AD97DE:
+DB 15 8E 8E 03 D0 79 1C 80 CE 5B B8 6F EA 79 20 95 0B A7 67 53 32 5D 90 86 1F C6
+//-------------SS全圖---------------------
+00588D1B:
+call SetXY
+SetXY:
+push esi
+push edi
+mov edi,[00acf52c]
+mov [edi+00000450],0
+mov [edi+000003e4],25
+push [edi+44c4]
+mov esi,ecx
+lea ecx,[esi+0c]
+call 004201be
+push [edi+44c8]
+mov ecx,esi
+call 004201be
+pop edi
+mov eax,esi
+pop esi
+ret 04
+//-----------------------------------------
+[DISABLE]
+
+00783178:
+db 75 30
+00AD97DE:
+DB 15 8E 9D CC D8 9B 64 C6 DE EC 48 70 EA 6D 8D F0 AE B2 84 77 95 6D 88 8F D5 6D
+00588D1B:
+call 0044054A

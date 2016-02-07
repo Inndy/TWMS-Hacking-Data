@@ -1,0 +1,37 @@
+//------------------------------------------------------------------
+// Name：	Full God
+// Version:	TWMS140
+// Update:	Inndy
+// Address：	005D18E3
+// EIP：	FullGodICS
+// Aob：	ff 15 ?? ?? ?? 00 85 c0 74 0e
+//------------------------------------------------------------------
+[Enable]
+alloc(FullGodICS,64)
+
+FullGodICS:
+Cmp  [Esp],005D18E9
+Jne  IsRectEmpty
+Add  Esp,4
+Call IsRectEmpty
+Test eax,eax
+Jmp  005D18ED
+
+00CCA7A4:
+dd FullGodICS
+
+//以下註解取消為CRC數據
+/*
+005D18E3:
+Nop
+Nop
+Call FullGodICS
+*/
+[Disable]
+00CCA7A4:
+dd IsRectEmpty
+
+005D18E3:
+db ff 15 a4 a7 cc 00
+
+dealloc(FullGodICS)

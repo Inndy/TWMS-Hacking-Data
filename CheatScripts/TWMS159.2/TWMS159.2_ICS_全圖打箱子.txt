@@ -1,0 +1,20 @@
+//TwMS v159.2_ICS_全圖打箱子 by Toby
+[Enable]
+Alloc(FullMapBox, 64)
+Label(ICSBack)
+
+FullMapBox:
+Cmp [Esp], 00A94129
+Jne ICSBack
+Mov [Esp], 00A9412D
+Jmp ICSBack
+
+ICSBack:
+Jmp IntersectRect
+
+011DBBF8:
+DD FullMapBox
+[Disable]
+011DBBF8:
+DD IntersectRect
+DeAlloc(FullMapBox)

@@ -1,0 +1,79 @@
+//V131.1 §l¨«©Ç
+[Enable]
+alloc(GhoulDx,256)
+alloc(DxPlatform,4)
+alloc(DxVacToken,4)
+label(ResetDx)
+label(DxVac)
+label(DxEnd)
+label(DxZero)
+label(DxReturn)
+registersymbol(DxPlatform)
+registersymbol(DxVacToken)
+
+
+DxPlatform:
+dd 0
+
+007CA252:
+jmp GhoulDx
+db 90
+
+DxReturn:
+
+GhoulDx:
+push eax
+mov eax, [00acf52c]
+test eax, eax
+je DxEnd
+cmp [DxPlatform], 00
+jne DxVac
+mov eax, [eax+17a8]
+sub eax,c
+mov eax, [eax+1a4]
+test eax, eax
+je ResetDx
+mov [DxPlatform], eax
+jmp DxEnd
+
+
+ResetDx:
+mov [DxPlatform], 00
+jmp DxEnd
+
+DxVac:
+push ebx
+mov ebx, [esi+1a0]
+test ebx, ebx
+pop ebx
+je DxZero
+mov eax, [DxPlatform]
+cmp [esi+1a0], eax
+je DxZero
+mov eax, [DxPlatform]
+mov [esi+1a0], eax
+mov [esi+1a4], eax
+mov [esi+2e0],6
+jmp DxEnd
+
+
+DxZero:
+mov [esi+1a0], 00
+
+
+DxEnd:
+pop eax
+cmp [esi+1b0],ebx
+jmp DxReturn+2
+
+[Disable]
+
+
+007CA252:
+cmp [esi+1b0],ebx
+
+unregistersymbol(DxPlatform)
+unregistersymbol(DxVacToken)
+dealloc(GhoulDx)
+dealloc(DxPlatform)
+dealloc(DxVacToken)

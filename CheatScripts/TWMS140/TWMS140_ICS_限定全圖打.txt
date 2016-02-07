@@ -1,0 +1,36 @@
+//------------------------------------------------------------------
+// Name：	Limited Full Map Attack
+// Version:	TWMS140
+// Update:	Inndy
+// EIP：	FullMapICS
+// Aob：	ff 15 ?? ?? ?? 00 85 c0 75 08 ff 45 e8 83 c7 10 eb c9 8b 45
+//------------------------------------------------------------------
+[Enable]
+alloc(FullMapICS,64)
+
+FullMapICS:
+Cmp  [Esp], 005D1F31
+Jne  IntersectRect
+Add  Esp, 4
+Call IntersectRect
+Test Eax, Eax
+Jmp  005D1F3D
+
+00CCA7A0:
+dd FullMapICS
+
+//以下註解取消為CRC數據
+/*
+005D1F2B:
+Nop
+Nop
+Call FullMapICS
+*/
+[Disable]
+00CCA7A0:
+dd IntersectRect
+
+005D1F2B:
+db ff 15 a0 a7 cc 00
+
+dealloc(FullMapICS)

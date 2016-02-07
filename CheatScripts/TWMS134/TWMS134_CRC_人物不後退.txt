@@ -1,0 +1,16 @@
+//TWMS V134.1人物不後退
+//更新者:stone0127
+[Enable]
+alloc(NoBack,128)
+Registersymbol(NoBack)
+NoBack:
+mov [ebp+54],0
+mov [ebp+58],0
+jmp 007E6209
+
+007e6201:
+jmp NoBack
+[Disable]
+007e6201:
+cmp [ebp+54],edi
+jne 007E620B

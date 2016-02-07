@@ -1,0 +1,100 @@
+[ENABLE]
+//Auther:aaaddress1
+//強化狂狼反盾 For Twms.v1.31.1
+//加強反盾&加速反盾&無敵&連撞
+[ENABLE]
+
+alloc(BlockHit,128)
+alloc(HitTime,4)
+label(BlockHurt)
+alloc(SetBump,1024)
+registersymbol(Get)
+alloc(Get,4)
+label(SetHitRun) 
+//---------------------------------------- 
+0077901C:
+jmp BlockHit
+nop
+00783117:
+call SetBump
+nop
+//---------------------------------------- 
+BlockHit:
+
+call 00420774
+push ecx
+mov ecx,[00ACF940]
+mov ecx,[ecx+1c]
+cmp ecx,[HitTime]
+jl BlockHurt
+mov eax,[ebx+00000454]
+and eax,fe
+mov [HitTime],ecx
+add [HitTime],4E20
+pop ecx
+jmp 00779040
+
+BlockHurt:
+pop ecx
+jmp 0077aa01
+//---------------------------------------- 
+
+SetBump:
+add ecx,3a14
+call 0075c8e0
+mov [ebp-020],00//更動造成反盾CS 
+mov [ebp-1a0],00//更動造成怪物死亡殘影 
+mov [ebp-100],00//不知道衝3小用的 
+mov [ebp-108],00//非主要內定值(連擊次數) 
+mov [ebp-128],01//主要內定值(連擊次數) 
+lea eax,[ebp-0ab4] //狂狼反盾技能碼 
+mov [ebp-135c],eax //狂狼反盾技能碼 
+push 98//設定爆擊資料3 
+push 00//設定爆擊資料2 
+push [ebp-135c] //設定爆擊資料1 
+//call 0083F1E0 //eax=設定爆擊狀態 
+add esp,0c
+mov ecx,[ebp-164]//ecx=0,ecx=ebp+ecx*4-164 
+mov [eax],ecx  //似乎是撞擊時間值 
+push 00 
+mov eax,[ebp-135c]//狂狼反盾技能碼 
+call 005804ca
+mov ecx,[ebp-135c]//狂狼反盾技能碼 
+mov [ecx+08],eax//不可固定的反盾變動值 
+mov eax,[ebp-135c]//狂狼反盾技能碼 
+mov ecx,[eax]//狂狼反盾技能碼 
+call 0063d0a0
+mov ecx,[ebp-135c]//狂狼反盾技能碼 
+mov [ecx+0c],eax//不可固定的反盾變動值 
+mov eax,[ebp-135c]//狂狼反盾技能碼 
+mov ecx,[eax]//狂狼反盾技能碼 
+call 00575cf7//報即計算? 
+mov ecx,[ebp-135c]//狂狼反盾技能碼 
+mov eax,00 
+mov [ecx+04],eax//怪物弱化控制:07=擊退,其餘則不擊退 
+//mov [esp],0078329c //正常程序 
+mov [ebp+14],00//狂狼反盾的呼吸時間? 
+lea eax,[ebp+14]
+mov [ebp-1ea0],eax//狂狼反盾技能碼 
+mov [ebp-1894],eax//狂狼反盾技能碼 
+mov edx,[ebp-135c]//不知道是啥小 
+mov [edx+0090],ecx//反盾技能變動值 
+mov [edx+0094],eax//狂狼反盾技能碼 
+mov [ebp-1358],eax//狂狼反盾技能碼
+mov [esp],SetHitRun
+ret
+SetHitRun:
+and [ebp-34],00
+and [ebp-00000120],00
+and [ebp-1c],00
+and [ebp-00000104],00
+and [ebp-48],00
+and [ebp-30],00
+and [ebp-18],00
+jmp 00783312 
+//-------------動態狂狼反盾---------------
+00AD97DE:
+DB 15 8E 8E 03 D0 79 1C 80 CE 5B B8 6F EA 79 20 95 0B A7 67 53 32 5D 90 86 1F C6
+ 
+ 
+[DISABLE]

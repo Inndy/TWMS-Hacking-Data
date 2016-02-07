@@ -1,0 +1,201 @@
+//------------------------------------------------------------------
+// Name¡Gv1.31.1 MobLR
+// Address¡G007CC031
+// EIP¡GMobLR
+// Cortrol¡GLRKey
+// 0:Off , 1:Left , 2:Right , 3:GoMe , 4:GoXY , 5:GetXY
+//------------------------------------------------------------------
+[Enable]
+Registersymbol(MobLR)
+Alloc(MobLR, 1024)
+Registersymbol(MyState)
+Alloc(MyState, 4)
+Registersymbol(MyXYResh)
+Alloc(MyXYResh, 4)
+Registersymbol(LRKey)
+Alloc(LRKey, 4)
+Registersymbol(LRXY)
+Alloc(LRXY, 4)
+Registersymbol(LRV)
+Alloc(LRV, 4)
+
+Label(MobLRGo)
+Label(CheckMob)
+Label(Left)
+Label(LeftSet)
+Label(Right)
+Label(RightSet)
+Label(LRGoMe)
+Label(LRGoXY)
+Label(LRGoX)
+Label(GetXY)
+Label(GetState)
+Label(XYAdd)
+Label(XYSub)
+//----------------------------
+MobLR:
+Fsubr Qword Ptr [Ebp-1C]
+Add Esp, 10
+Pushad
+Call CheckMob
+//Call MobLRGo
+Popad
+Jmp 007CC037
+//----------------------------
+CheckMob:
+Cmp [Ebx+2E8], 1 //Wolk
+Je MobLRGo
+Cmp [Ebx+2E8], 3 //Jump
+Je MobLRGo
+Ret
+//----------------------------
+MobLRGo:
+Push Eax
+Cmp [LRKey],1
+Je Left
+Cmp [LRKey],2
+Je Right
+Pop Eax
+
+Cmp [LRKey], 3
+Je LRGoMe
+Cmp [LRKey], 4
+Je LRGoXY
+Cmp [LRKey], 5
+Je GetXY
+Cmp [LRKey], 6
+Je LRGoX
+Ret
+//----------------------------
+Left:
+Pop Eax
+Cmp Eax, 01
+//39 9E     7E  FF 76  8D 7E  57 E8     8B
+Mov [Ebx+000001E8], FFFFFFFF
+Cmp [Ebx+000001E8], FFFFFFFF
+Jg LeftSet
+Ret
+//----------------------------
+LeftSet:
+//FF B6     8D 9E     57 50 FF 52 04
+Mov [Ebx+000001D8], 2
+Ret
+//----------------------------
+Right:
+Pop Eax
+Cmp Eax, 01
+Mov [Ebx+000001E8], 00000001
+Cmp [Ebx+000001E8], 00000001
+Jg RightSet
+Ret
+//----------------------------
+RightSet:
+Mov [Ebx+000001D8], 4
+Ret
+//----------------------------
+LRGoMe:
+Call GetState
+Push Eax
+Mov Eax, [00ACF52C]
+Mov Eax, [Eax+44C4]
+Sub Eax, 8
+Add Eax, [MyXYResh]
+Cmp [Ebx+724], Eax
+Jl Right
+Add Eax, 10
+Add Eax, [MyXYResh]
+Cmp [Ebx+724], Eax
+Jg Left
+Pop Eax
+Mov [Ebx+000001E8], 0
+Ret
+//----------------------------
+LRGoXY:
+Push Eax
+Mov Eax,[LRXY]
+Sub Eax, 8
+Cmp [Ebx+724], Eax
+Jl Right
+Add Eax, 10
+Cmp [Ebx+724], Eax
+Jg Left
+Pop Eax
+Mov [Ebx+000001E8], 0
+Ret
+//----------------------------
+GetXY:
+Push Eax
+Mov Eax,[00ACF52C]
+Mov Eax,[Eax+44C4]
+Mov [LRXY],0
+Mov [LRXY],Eax
+Mov [LRKey],4
+Pop Eax
+Ret
+//----------------------------
+LRGoX:
+Push Eax
+Mov Eax, [Ebx+00000724]
+Mov [LRV], Eax
+Pop Eax
+Mov [Ebx+000001D8], 2
+Mov [Ebx+000001E8], 0
+Ret
+//----------------------------
+GetState:
+Push Eax
+Mov Eax, [00ACF52C]
+Mov Eax, [Eax+454]
+Mov [MyState], Eax
+Pop Eax
+Cmp [MyState], 3
+Je XYSub
+Cmp [MyState], 5
+Je XYSub
+Cmp [MyState], 7
+Je XYSub
+Cmp [MyState], 9
+Je XYSub
+
+Cmp [MyState], 2
+Je XYAdd
+Cmp [MyState], 4
+Je XYAdd
+Cmp [MyState], 6
+Je XYAdd
+Cmp [MyState], 8
+Je XYAdd
+Ret
+//----------------------------
+XYAdd:
+Mov [MyXYResh], 00000020
+Ret
+//----------------------------
+XYSub:
+Mov [MyXYResh], FFFFFFE0
+Ret
+//----------------------------
+LRKey:
+Dd 0
+LRXY:
+Dd 0
+//----------------------------
+007CC031:
+Jmp MobLR
+Nop
+//----------------------------
+[Disable]
+007CC031:
+Db DC 6D E4 83 C4 10 DD 55 E4
+Dealloc(LRXY)
+Dealloc(LRKey)
+Dealloc(MyState)
+Dealloc(MyXYResh)
+Dealloc(MobLR)
+Dealloc(LRV)
+Unregistersymbol(LRV)
+Unregistersymbol(LRXY)
+Unregistersymbol(LRKey)
+Unregistersymbol(MyState)
+Unregistersymbol(MyXYResh)
+Unregistersymbol(MobLR)

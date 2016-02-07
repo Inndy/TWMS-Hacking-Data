@@ -1,0 +1,15 @@
+//­ì¦a¥d¬µÃÄ±í  TWMS144
+alloc(NodelayBump,128)
+alloc(CallBumpAttack,128)
+alloc(Count,4)
+
+0052E853:
+jmp NodelayBump
+
+NodelayBump:
+call 00890C81
+mov [esi+00d4],eax
+lea ebx,[esi+000000D4]
+jmp 0052E867
+
+CallBumpAttack:

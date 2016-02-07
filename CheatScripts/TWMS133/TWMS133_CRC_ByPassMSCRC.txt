@@ -1,0 +1,73 @@
+//TWMS133 CRC MSCRC Bypass
+[Enable]
+Alloc(Hook,256)
+
+Hook:
+Label(MSCRCBypass)
+Label(BackToMS)
+Label(MSCRCBypassTwo)
+Label(BackToMSTwo)
+Label(MSCRCCrack)
+Label(BackToCrack)
+
+MSCRCBypass:
+    Push   Esi
+    Xor    Eax, [Esi+Ecx*4]
+    Cmp    Esi, 00400000
+    Jnge   BackToMS
+    Cmp    Esi, 00BFE000
+    Jg     BackToMS
+    Push   Eax
+    Mov    Eax, FakeDump
+    Sub    Eax, 00401000
+    Add    Esi, Eax
+    Pop    Eax
+    Sub    Esi, 00401000
+BackToMS:
+    Xor    Eax, [Esi+Ecx*4]
+    And    Eax, 000000FF
+    Pop    Esi
+    Push   008D5601
+    Ret
+MSCRCBypassTwo:
+    Cmp    Ecx, 00400000
+    Jnge   BackToMSTwo
+    Cmp    Ecx, 00BFE000
+    Jg     BackToMSTwo
+    Push   Eax
+    Sub    Ecx, 00400000
+    Push   Eax
+    Mov    Eax, FakeDump
+    Sub    Eax, 00401000
+    Add    Ecx, Eax
+    Pop    Eax
+    Sub    Ecx, 00400000
+BackToMSTwo:
+    Xor    Edx, Edx
+    Mov    Ebx, [Ebp+08]
+    Push   008D4FFF
+    Ret
+MSCRCCrack:
+    Cmp    Edx, 008D4FF6
+    Jnge   BackToCrack
+    Cmp    Edx, 008D4FFF
+    Jg     BackToCrack
+    Push   Eax
+    Mov    Eax, FakeDump
+    Sub    Eax, 00401000
+    Add    Edx, Eax
+    Pop    Eax
+    Sub    Edx, 00400000	
+    Push   [Edx]
+BackToCrack:
+    Push   00c8f36d
+    Ret
+008D4FFA:
+    Jmp    MSCRCBypassTwo
+008D55FC:
+    Jmp    MSCRCBypass
+00C978a2:
+    Jmp    MSCRCCrack
+004E104A:
+    DB 90 90 90 90 90
+[Disable]

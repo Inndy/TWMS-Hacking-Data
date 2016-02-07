@@ -1,0 +1,20 @@
+[ENABLE]
+alloc(SetMap,128)
+label(Back)
+
+SetMap:
+cmp [esi+2a0],1
+je 008B67B2+6
+Back:
+fld qword ptr [esi+00000090]
+jmp 008B67B2+6
+
+008B67B2:
+jmp SetMap
+nop
+
+[DISABLE]
+
+008B67B2:
+fld qword ptr [esi+00000090]
+mov ecx,esi

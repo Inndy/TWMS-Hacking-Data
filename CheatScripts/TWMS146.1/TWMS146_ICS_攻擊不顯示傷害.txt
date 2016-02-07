@@ -1,0 +1,19 @@
+// TWMS146 ICS §πΐ»¤£Εγ¥ά¶Λ®`
+// Auther: Inndy
+// 005E6FCB - call dword ptr [eax+50]
+[ENABLE]
+Alloc(Hook, 32)
+
+Hook:
+Cmp  [Ebp+04], 005E8239 // 8d 45 cc 50 8b cb e8 ?? ?? ff ff ff
+Jne  00873D8F // 6a 08 b8 ?? ?? ?? 00 e8 ?? ?? ?? 00 8b 0d ?? ?? ?? 00 85 c9 74
+Mov  [Ebp+20], 38FFFFFF
+Jmp  00873D8F
+
+00BC3834:
+DD   Hook
+[DISABLE]
+00BC3834: // [1/1]
+DD   00873D8F
+
+Dealloc(Hook)

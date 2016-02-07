@@ -1,0 +1,41 @@
+// TWMS147.2 ICS Hotkey
+[ENABLE]
+Alloc(MyHotkey, 256)
+Label(HotkeyReturn)
+Label(WallVac)
+
+MyHotkey:
+Cmp  [Esp], 008BB973
+Jne  HotkeyReturn
+Cmp  [Esp+08], 0067EF57
+Jne  HotkeyReturn
+Movzx Eax, byte ptr [Ebp+08]
+Cmp  Eax, 3F // F5
+Je   WallVac
+Jmp  HotkeyReturn
+
+WallVac:
+Mov  Eax, [00DAD994]
+Mov  Eax, [Eax+2260]
+Lea  Eax, [Eax+214]
+Push [Eax]   // L
+Push [Eax+4] // T
+Push [Eax]   // R
+Push [Eax+4] // B
+Mov  Eax, [00DB1F28]
+Pop  [Eax+28] // B
+Pop  [Eax+24] // R
+Pop  [Eax+20] // T
+Pop  [Eax+1C] // L
+Jmp  HotkeyReturn
+
+HotkeyReturn:
+Jmp  006CE722
+
+00BCB110:
+DD   MyHotkey
+[DISABLE]
+00BCB110:
+DD   006CE722
+
+Dealloc(MyHotkey)

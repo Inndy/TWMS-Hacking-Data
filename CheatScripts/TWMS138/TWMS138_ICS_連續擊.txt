@@ -1,0 +1,41 @@
+[ENABLE]
+Alloc(R2_ICSEntry, 64)
+Alloc(R2, 128)
+Alloc(R2KEY, 4)
+Label(R200)
+Label(R2_Return)
+//-----------------------------------------------
+R2KEY:
+DD 0
+//-----------------------------------------------
+R2_ICSEntry:
+Cmp [Esp], 0080AC8C
+Jne 007FA5FD
+Call R2
+Jmp 007FA5FD
+//-----------------------------------------------
+R2:
+Inc [R2KEY]
+Cmp [R2KEY],2
+Jl R2_Return
+Cmp [R2KEY],3
+Jg R200
+Mov Edi,2a //µL©µ¿ð
+//2a ©Î¬O ffffffff
+Jmp R2_Return
+//-----------------------------------------------
+R200:
+Mov [R2KEY],0
+R2_Return:
+Mov [Esi+00000478],Edi
+Ret
+//-----------------------------------------------
+00B2D7CC:
+DD R2_ICSEntry
+[DISABLE]
+00B2D7CC:
+DD 007FA5FD
+
+DeAlloc(R2_ICSEntry)
+DeAlloc(R2)
+DeAlloc(R2KEY)

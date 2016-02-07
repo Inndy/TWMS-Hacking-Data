@@ -1,0 +1,73 @@
+//v1.30.1 平台接點切換吸怪
+//亂改:守護者
+[ENABLE]
+alloc(Vac,512)
+alloc(rec,20)
+label(setvac)
+label(setvac_1)
+label(setvac_2)
+label(relax)
+label(GetVacPid)
+alloc(UnFine,128)
+rec:
+dd 0
+
+007ADBFC:
+jmp Vac
+nop
+//007ADB99:
+//call UnFine
+//nop
+
+Vac:
+push eax
+mov eax,[0A9C45C]
+mov eax,[eax+2C]
+test eax,eax
+pop eax
+jg relax
+cmp [rec],0
+jne setvac
+call GetVacPid
+
+relax:
+mov [esi+1a0],ebx
+jmp 007ADBFC+6
+
+setvac:
+inc [rec+8]
+cmp [rec+8],2  //吸怪間隔時間
+jl relax
+cmp [rec+8],0  //持續吸怪時間(此值減去間隔)
+jl setvac_1
+mov [rec+8],0
+
+setvac_1:
+push eax
+mov eax,[00a9c464]
+mov eax,[eax+1794]
+sub eax,c
+mov ebx,[eax+1a0]
+mov [esi+1a0],ebx
+pop eax
+mov [esi+2e0],6
+jmp 007ADB9F
+
+setvac_2:
+
+
+GetVacPid:
+push eax
+mov eax,[00a9c464]
+mov eax,[eax+1794]
+sub eax,c
+push [eax+1a0]
+pop [rec]
+pop eax
+ret
+
+[DISABLE]
+007ADBFC:
+mov [esi+1a0],ebx
+//007ADB99:
+//mov [esi+1a4],ebx

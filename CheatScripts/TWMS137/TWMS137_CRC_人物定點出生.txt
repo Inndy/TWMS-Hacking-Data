@@ -1,0 +1,67 @@
+[ENABLE]
+Alloc(MoveMent,128)
+    Label(Searching)
+    Label(MoveChar)
+    Label(KamiTeleportMove)
+    Label(Normal)
+Alloc(MapList,8004) //500張地圖
+
+MapList:
+//地圖一
+DD 06422C40 //MapId
+DD 000005AB //X
+DD 000000FF //Y
+DD 00000001 //UseKamiTeleport
+//結束
+DD 0
+
+MoveMent:
+Push  Esi
+Mov   Esi, MapList
+Mov   Ebx, [00BD8D60]
+Mov   Ebx, [Ebx+0CA4]
+
+Searching:
+Cmp   [Esi], 00
+Je    Normal
+Cmp   [Esi], Ebx
+Je    MoveChar
+Add   Esi, 10
+Jmp   Searching
+
+MoveChar:
+Mov   Ecx, [Esi+04] //X 
+Mov   Ebx, [Esi+08] //Y
+Cmp   [Esi+0C], 1
+Je    KamiTeleportMove
+Pop   Esi
+Ret
+
+KamiTeleportMove:
+Push  Eax
+Mov   Eax, [00BD86D8]
+Mov   [Eax+4210], Ecx
+Mov   [Eax+4214], Ebx
+Mov   [Eax+420C], 1
+Mov   [Eax+4208], 1
+Pop   Eax
+Pop   Esi
+Add Ecx,100
+Ret
+
+Normal:
+Mov   Ecx, [Eax+0C] //X
+Mov   Ebx, [Eax+10] //Y
+Pop   Esi
+Ret
+
+007E26C1:
+Call MoveMent
+Nop
+[DISABLE]
+007E26C1:
+Mov Ebx, [Eax+10]
+Mov Ecx, [Eax+0C]
+
+DeAlloc(MoveMent)
+DeAlloc(MapList)

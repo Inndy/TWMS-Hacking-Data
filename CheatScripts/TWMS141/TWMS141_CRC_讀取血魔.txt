@@ -1,0 +1,65 @@
+//TWMS141 CRC 讀取血魔
+//出處:s18leoare (至少我拿到的來源)
+//更新:Inndy
+//改寫:Inndy
+//00B56680->007BD732	//6a ?? b8 ?? ?? ?? 00 e8 ?? ?? ?? 00 89 4d f0 8b 3d ?? ?? ?? 00 8d
+
+[ENABLE]
+Alloc(GetHPMP, 128)
+Label(GetMaxMP)
+Label(GetNowMP)
+Label(GetMaxHP)
+Label(GetNowHP)
+Alloc(MaxMP, 4)
+Alloc(NowMP, 4)
+Alloc(MaxHP, 4)
+Alloc(NowHP, 4)
+RegisterSymbol(MaxMP)
+RegisterSymbol(NowMP)
+RegisterSymbol(MaxHP)
+RegisterSymbol(NowHP)
+
+GetHPMP:
+Call 00942143
+Pop Ebp
+Cmp [Esp], 007BD88A //ff 76 ?? 8b d8 8d 46 ?? 50 e8 ?? ?? ?? ff ff b7
+je GetMaxMP
+Cmp [Esp], 007BD898 //ff b7 ?? ?? 00 00 81 c7 ?? ?? 00 00 57 89 45 ?? e8 ?? ?? ?? ff ff 76 ?? 8b f8
+je GetNowMP
+Cmp [Esp], 007BD8AD //ff 76 ?? 8b f8 8d 46 ?? 50 e8 ?? ?? ?? ff 83 c4 20 ff 75
+je GetMaxHP
+Cmp [Esp], 007BD8BB //83 c4 20 ff 75 ?? 8b ce
+je GetNowHP
+Ret
+
+GetMaxMP:
+Mov [MaxMP], Eax
+Ret
+
+GetNowMP:
+Mov [NowMP], Eax
+Ret
+
+GetMaxHP:
+Mov [MaxHP], Eax
+Ret
+
+GetNowHP:
+Mov [NowHP], Eax
+Ret
+
+0043603E:	//e8 ?? ?? ?? 00 5d c3 8b 44 24 04 85 c0
+Jmp GetHPMP
+[DISABLE]
+0043603E:
+Call 00943ad3
+
+DeAlloc(GetHPMP)
+DeAlloc(MaxMP)
+DeAlloc(NowMP)
+DeAlloc(MaxHP)
+DeAlloc(NowHP)
+UnRegisterSymbol(MaxMP)
+UnRegisterSymbol(NowMP)
+UnRegisterSymbol(MaxHP)
+UnRegisterSymbol(NowHP)

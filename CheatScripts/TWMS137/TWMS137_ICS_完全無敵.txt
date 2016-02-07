@@ -1,0 +1,22 @@
+// TWMS 1.37.1 完全無敵 ICS
+//更新:硍機掰
+//----------------------------------------
+[ENABLE]
+alloc(OhMyGod,32)
+
+00bded2c:
+DD OhMyGod
+
+OhMyGod:
+cmp [esp],005B3E1B
+jne IsRectEmpty
+add esp,4
+call IsRectEmpty
+test eax,eax
+jmp 005B3E1F
+
+[DISABLE]
+00bded2c:
+DD IsRectEmpty
+
+dealloc(OhMyGod)

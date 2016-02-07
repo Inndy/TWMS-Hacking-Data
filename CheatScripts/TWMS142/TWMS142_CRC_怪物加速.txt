@@ -1,0 +1,16 @@
+//v.142.怪物移動加速 by.aaaddress1
+alloc(SetMap,128)
+label(Back)
+008B67BD:
+jmp SetMap
+nop
+
+SetMap:
+fld qword ptr [ebp-10]
+cmp [esi+2a0],1
+je 008B67BD+6
+cmp [esi+2a0],3
+je 008B67BD+6
+Back:
+fmul qword ptr [ebp-08]
+jmp 008B67BD+6

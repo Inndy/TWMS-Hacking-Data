@@ -1,0 +1,20 @@
+// TWMS145 ICS §πΐ»¤£Εγ¥ά¶Λ®`
+// Auther: Inndy
+[ENABLE]
+Alloc(Hook, 32)
+
+Hook:
+//Cmp  [Esp+94], 005E4FAB
+Cmp  [Ebp+04], 005E4FAB
+Jne  0050C513
+//Mov  [Esp+B0], 38FFFFFF
+Mov  [Ebp+20], 38FFFFFF
+Jmp  0050C513
+
+00B46298:
+DD   Hook
+[DISABLE]
+00B46298:
+DD   0050C513
+
+Dealloc(Hook)

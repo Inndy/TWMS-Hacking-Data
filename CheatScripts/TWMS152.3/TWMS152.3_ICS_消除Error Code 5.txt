@@ -1,0 +1,16 @@
+// TWMS152.3 CRC 消除Error Code 5
+00AB9AD3:
+Ret 0008
+
+
+
+
+
+// TWMS152.3 ICS 消除Error Code 5
+Alloc(MY_RET10)
+
+MY_RET10:
+Ret 0010
+
+00BF3210:
+DD MY_RET10

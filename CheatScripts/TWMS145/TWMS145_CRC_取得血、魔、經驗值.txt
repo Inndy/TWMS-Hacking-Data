@@ -1,0 +1,29 @@
+//TWMS145 取得血、魔、經驗值
+//007E2D00 - E8 96C1FFFF                - call 007DEE9B
+//原創：Inndy
+[ENABLE]
+Alloc(Params, 28)
+Alloc(Hook, 128)
+RegisterSymbol(Params)
+
+Hook:
+Add Esp, 04
+Pop [Params+00] // HpNow
+Pop [Params+04] // HpFull
+Pop [Params+08] // MpNow
+Pop [Params+0C] // MpFull
+Pop [Params+10] // ExpNow
+Pop [Params+14] // ExpFull
+Pop [Params+18] // Unknow
+Sub Esp, 20
+Jmp 007DEE9B
+
+007E2D00: // [5/5] E8 ?? ?? ?? FF 83 EC ?? 8B CC 89 65 ?? 68 00 01 00 00 68 ?? ?? ?? 00 E8
+Call Hook
+[DISABLE]
+007E2D00:
+Call 007DEE9B
+
+Dealloc(Params)
+Dealloc(Hook)
+UnregisterSymbol(Params)

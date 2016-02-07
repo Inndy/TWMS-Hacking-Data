@@ -1,0 +1,26 @@
+[enable]
+registersymbol(DoubleFire)
+alloc(DoubleFire, 32)
+registersymbol(DFireKey)
+alloc(DFireKey, 4)
+
+DoubleFire:
+cmp [DFireKey], 00
+je Normal
+xor eax,eax
+inc eax
+Normal:
+call 006295d7
+jmp 007ed095
+
+007ED090:
+jmp DoubleFire
+
+[disable]
+007ED090:
+call 006295d7
+
+unregistersymbol(DoubleFire)
+dealloc(DoubleFire)
+unregistersymbol(DFireKey)
+dealloc(DFireKey)

@@ -1,0 +1,138 @@
+// 55 8B EC 51 51 8B 0D ?? ?? ?? 00 53 56 57
+// 第三個CALL
+void __declspec(naked) __stdcall (*ItemList)(int type, int DB01, int DB00);
+DB   0x55                                                   //009D7D4D - push ebp
+DB   0x8b,0xec                                              //009D7D4E - mov ebp,esp
+DB   0x51                                                   //009D7D50 - push ecx
+DB   0x51                                                   //009D7D51 - push ecx
+DB   0x8b,0x0d,0xe0,0x81,0xe1,0x00                          //009D7D52 - mov ecx,[00e181e0] : 00E2AB58
+DB   0x53                                                   //009D7D58 - push ebx
+DB   0x56                                                   //009D7D59 - push esi
+DB   0x57                                                   //009D7D5A - push edi
+DB   0x8d,0x45,0xf8                                         //009D7D5B - lea eax,[ebp-08]
+DB   0x50                                                   //009D7D5E - push eax
+Mov  Eax,0x00422812                                         //009D7D5F - call 00422812
+Call Eax                                                    //
+DB   0x8b,0x70,0x04                                         //009D7D64 - mov esi,[eax+04]
+DB   0x8d,0x4d,0xf8                                         //009D7D67 - lea ecx,[ebp-08]
+Mov  Eax,0x0042189f                                         //009D7D6A - call 0042189f
+Call Eax                                                    //
+DB   0x8b,0x45,0x08                                         //009D7D6F - mov eax,[ebp+08]
+DB   0x99                                                   //009D7D72 - cdq
+DB   0xb9,0x40,0x42,0x0f,0x00                               //009D7D73 - mov ecx,000f4240
+DB   0xf7,0xf9                                              //009D7D78 - idiv ecx
+DB   0xff,0x75,0x10                                         //009D7D7A - push [ebp+10]
+DB   0x8b,0x3d,0xe4,0x81,0xe1,0x00                          //009D7D7D - mov edi,[00e181e4] : 00000000
+DB   0xff,0x75,0x0c                                         //009D7D83 - push [ebp+0c]
+DB   0x8b,0xce                                              //009D7D86 - mov ecx,esi
+DB   0xff,0x75,0x08                                         //009D7D88 - push [ebp+08]
+DB   0x50                                                   //009D7D8B - push eax
+Call FakeCall
+DB   0x8b,0xd8                                              //009D7D91 - mov ebx,eax
+DB   0x0f,0xb6,0x45,0x0c                                    //009D7D93 - movzx eax,byte ptr [ebp+0c]
+DB   0x50                                                   //009D7D97 - push eax
+DB   0xff,0x75,0x08                                         //009D7D98 - push [ebp+08]
+DB   0x8b,0xcf                                              //009D7D9B - mov ecx,edi
+DB   0x56                                                   //009D7D9D - push esi
+Mov  Eax,0x005a51b1                                         //009D7D9E - call 005a51b1
+Call Eax                                                    //
+DB   0x5f                                                   //009D7DA3 - pop edi
+DB   0x5e                                                   //009D7DA4 - pop esi
+DB   0x03,0xc3                                              //009D7DA5 - add eax,ebx
+DB   0x5b                                                   //009D7DA7 - pop ebx
+DB   0xc9                                                   //009D7DA8 - leave
+DB   0xc2,0x0c,0x00                                         //009D7DA9 - ret 000c
+
+
+
+
+
+
+
+
+
+
+
+long Doggy_00a169e9 = 0x00a169e9;long Doggy_004268e7 = 0x004268e7;long Doggy_004273dc = 0x004273dc;long Doggy_00426cba = 0x00426cba;long Doggy_0042717e = 0x0042717e;long Doggy_0059f97e = 0x0059f97e;long Doggy_004cfff3 = 0x004cfff3;long Doggy_00a16ac1 = 0x00a16ac1;
+
+DB   0x6a,0x14                                              //004D09F1 - push 14
+DB   0xb8,0xc9,0x51,0xa5,0x00                               //004D09F3 - mov eax,00a551c9
+Call Doggy_00a169e9                                         //004D09F8 - call 00a169e9
+DB   0x8b,0xf9                                              //004D09FD - mov edi,ecx
+DB   0xff,0x75,0x08                                         //004D09FF - push [ebp+08]
+DB   0x83,0x65,0xf0,0x00                                    //004D0A02 - and dword ptr [ebp-10],00
+Call Doggy_004268e7                                         //004D0A06 - call 004268e7
+DB   0x33,0xdb                                              //004D0A0B - xor ebx,ebx
+DB   0x43                                                   //004D0A0D - inc ebx
+DB   0x3b,0xc3                                              //004D0A0E - cmp eax,ebx
+DB   0x89,0x45,0xec                                         //004D0A10 - mov [ebp-14],eax
+// 在這裡保存欄位數量 (Eax)
+jnge Doggy004d0a63                                          //004D0A13 - jnge 004d0a63
+Doggy004d0a15:
+DB   0x6a,0x00                                              //004D0A15 - push 00
+DB   0x53                                                   //004D0A17 - push ebx
+DB   0xff,0x75,0x08                                         //004D0A18 - push [ebp+08]
+DB   0x8d,0x45,0xe0                                         //004D0A1B - lea eax,[ebp-20]
+DB   0x50                                                   //004D0A1E - push eax
+DB   0x8b,0xcf                                              //004D0A1F - mov ecx,edi
+Call Doggy_004273dc                                         //004D0A21 - call 004273dc
+DB   0x8b,0x70,0x04                                         //004D0A26 - mov esi,[eax+04]
+DB   0x8d,0x4d,0xe0                                         //004D0A29 - lea ecx,[ebp-20]
+Call Doggy_00426cba                                         //004D0A2C - call 00426cba
+DB   0x85,0xf6                                              //004D0A31 - test esi,esi
+je Doggy004d0a5d                                            //004D0A33 - je 004d0a5d
+DB   0x80,0x7d,0x10,0x00                                    //004D0A35 - cmp byte ptr [ebp+10],00
+jne Doggy004d0a46                                           //004D0A39 - jne 004d0a46
+DB   0x8b,0x06                                              //004D0A3B - mov eax,[esi]
+DB   0x8b,0xce                                              //004D0A3D - mov ecx,esi
+DB   0xff,0x50,0x08                                         //004D0A3F - call dword ptr [eax+08]
+DB   0x85,0xc0                                              //004D0A42 - test eax,eax
+jne Doggy004d0a5d                                           //004D0A44 - jne 004d0a5d
+Doggy004d0a46:
+DB   0x8d,0x4e,0x0c                                         //004D0A46 - lea ecx,[esi+0c]
+Call Doggy_0042717e                                         //004D0A49 - call 0042717e
+// 在這裡保存ID (Eax)
+DB   0x8b,0x06                                              //004D0A53 - mov eax,[esi]
+DB   0x8b,0xce                                              //004D0A55 - mov ecx,esi
+DB   0xff,0x50,0x4c                                         //004D0A57 - call dword ptr [eax+4c]
+DB   0x01,0x45,0xf0                                         //004D0A5A - add [ebp-10],eax
+// 在這裡保存數量 (Eax)
+Doggy004d0a5d:
+DB   0x43                                                   //004D0A5D - inc ebx
+DB   0x3b,0x5d,0xec                                         //004D0A5E - cmp ebx,[ebp-14]
+jle Doggy004d0a15                                           //004D0A61 - jle 004d0a15
+Doggy004d0a63:
+DB   0x83,0x7d,0x14,0x00                                    //004D0A63 - cmp dword ptr [ebp+14],00
+jne Doggy004d0ab6                                           //004D0A67 - jne 004d0ab6
+DB   0xff,0x75,0x0c                                         //004D0A69 - push [ebp+0c]
+DB   0x8b,0x0d,0xe4,0x81,0xe1,0x00                          //004D0A6C - mov ecx,[00e181e4] : 00000000
+Call Doggy_0059f97e                                         //004D0A72 - call 0059f97e
+DB   0x85,0xc0                                              //004D0A77 - test eax,eax
+je Doggy004d0ab6                                            //004D0A79 - je 004d0ab6
+DB   0x6a,0x01                                              //004D0A7B - push 01
+DB   0x57                                                   //004D0A7D - push edi
+DB   0xff,0x75,0x0c                                         //004D0A7E - push [ebp+0c]
+DB   0x8d,0x45,0xe8                                         //004D0A81 - lea eax,[ebp-18]
+DB   0x50                                                   //004D0A84 - push eax
+Call Doggy_004cfff3                                         //004D0A85 - call 004cfff3
+DB   0x83,0xc4,0x10                                         //004D0A8A - add esp,10
+DB   0x8b,0x4d,0xec                                         //004D0A8D - mov ecx,[ebp-14]
+DB   0x83,0x65,0xfc,0x00                                    //004D0A90 - and dword ptr [ebp-04],00
+DB   0x85,0xc9                                              //004D0A94 - test ecx,ecx
+je Doggy004d0aaa                                            //004D0A96 - je 004d0aaa
+DB   0x80,0x7d,0x10,0x00                                    //004D0A98 - cmp byte ptr [ebp+10],00
+jne Doggy004d0aa7                                           //004D0A9C - jne 004d0aa7
+DB   0x8b,0x01                                              //004D0A9E - mov eax,[ecx]
+DB   0xff,0x50,0x08                                         //004D0AA0 - call dword ptr [eax+08]
+DB   0x85,0xc0                                              //004D0AA3 - test eax,eax
+jne Doggy004d0aaa                                           //004D0AA5 - jne 004d0aaa
+Doggy004d0aa7:
+DB   0xff,0x45,0xf0                                         //004D0AA7 - inc [ebp-10]
+Doggy004d0aaa:
+DB   0x83,0x4d,0xfc,0xff                                    //004D0AAA - or dword ptr [ebp-04],ff
+DB   0x8d,0x4d,0xe8                                         //004D0AAE - lea ecx,[ebp-18]
+Call Doggy_00426cba                                         //004D0AB1 - call 00426cba
+Doggy004d0ab6:
+DB   0x8b,0x45,0xf0                                         //004D0AB6 - mov eax,[ebp-10]
+Call Doggy_00a16ac1                                         //004D0AB9 - call 00a16ac1
+DB   0xc2,0x10,0x00                                         //004D0ABE - ret 0010

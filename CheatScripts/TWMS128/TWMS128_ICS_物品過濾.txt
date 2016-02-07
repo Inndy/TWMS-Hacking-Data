@@ -1,0 +1,54 @@
+//物品過濾-ics
+[enable]
+alloc(xuHook,512)
+registersymbol(xuHook)
+label(HookItem)
+label(HookItem1)
+label(HookItem2)
+//===========
+00cd0c5c:
+dd xuHook
+//===========
+xuHook:
+  mov [00ce3e1c],1
+  cmp [esp+64],004c8e04
+  jne 0065dd71
+  mov [esp+64],HookItem
+  jmp 0065dd71
+//===========
+HookItem:
+//004c8dff - call 004c8523
+  mov [00ce3e10],1
+  mov eax,[ebp-1c]
+  mov esi,[ebp-50]
+  mov [esi+1c],al
+  cmp eax,01
+  je HookItem1  //004c8e1b
+  cmp eax,02
+  je HookItem1  //004c8e1b
+  xor al,al
+  jmp HookItem2  //004c8e1d
+HookItem1:
+  mov al,01
+HookItem2:
+  mov [esi+1d],al
+  mov [esi+20],edi
+  mov edi,[ebp+08]
+  mov ecx,edi
+  call 0040ba71
+  movzx eax,al
+  mov ecx,edi
+  mov [esi+30],eax
+  call 0040bacd
+  //====(目前是怪只掉錢@@)
+  mov ecx,edi      
+  mov [esi+34],00  //原是 eax
+  //====
+  jmp  004c8e3f  
+[disable]
+00cd0c5c:
+dd 0065dd71
+//=============
+dealloc(xuHook)
+unregistersymbol(xuHook)
+//=============

@@ -1,0 +1,92 @@
+//Twms v131.1 CSX攻擊不停
+[Enable]
+
+registersymbol(CSX)
+
+alloc(CSX,128)
+
+label(CSXReturn)
+
+label(CSXXX)
+
+CSX:
+
+push eax
+
+mov eax,[00acf52c]
+
+mov eax,[eax+3A1C] //主動技能次數
+
+cmp eax,15 //放技能N次回原位
+
+pop eax
+
+jg CSXReturn
+
+push eax
+
+mov eax,[00acf52c]
+
+mov eax,[eax+3A1C]
+
+cmp eax,14 //放技能N次偏移
+
+pop eax
+
+jg CSXXX
+
+push eax
+
+mov eax,[00acf52c]
+
+mov eax,[eax+3a2c] //輔助技能次數
+
+cmp eax,5
+
+pop eax
+
+jg CSXXX
+
+CSXReturn:
+
+mov [ebx], eax
+
+mov edi,[ebp+10]
+
+test edi,edi
+
+je 007c75b6
+
+jmp 007C756D
+
+CSXXX:
+
+push eax
+
+mov eax,[00acf52c]
+
+mov eax,[eax+17a8] //Char PID
+
+cmp esi,eax
+
+pop eax
+
+jne CSXReturn
+
+add eax,0a
+
+jmp CSXReturn
+
+007c7566:
+
+jmp CSX
+
+[Disable]
+
+007c7566:
+
+DB 89 03 8B 7D 10 85 FF 74
+
+unregistersymbol(CSX)
+
+dealloc(CSX)

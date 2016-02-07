@@ -1,0 +1,9 @@
+//150.2 ¶W¯Å¶i¾Ô By.aaaddress1.
+alloc(Hook,12)
+
+Hook:
+mov [ebp-54],01
+jmp 00926366
+
+009259E7: // E9 ?? ?? 00 00 81 BD ?? ?? FF FF 91 A1 12 00 74 0B
+jmp Hook

@@ -1,0 +1,64 @@
+
+
+/*
+[Release] v.99.01 SS Mouse Fly CE script
+[ENABLE]
+alloc(SSFlyVac,128)
+label(SSFlyRet)
+
+009FD306:
+jmp SSFlyVac
+db 90
+SSFlyRet:
+
+SSFlyVac:
+pushad
+mov eax,[00DC7CB8] // Mouse Pointer
+mov eax,[eax+978] // Mouse Location
+mov eax,[eax+8C] // Mouse X
+mov ecx,[00DC7CB8] // Mouse Pointer
+mov ecx,[ecx+978] // Mouse Location
+mov ecx,[ecx+88] // Mouse Y
+mov ebx,[00DC775C] // Character Base
+mov [ebx+43D8],eax // Tele X
+mov [ebx+43DC],ecx // Tele Y
+mov [ebx+43D0],01 // Teleport Toggle
+popad
+jmp SSFlyRet
+
+[DISABLE]
+009FD306:
+db 0F 84 5C 01 00 00
+
+dealloc(SSFlyVac) 
+*/
+
+//TwMS v140.1 ·Æ¹«­¸¦æSS
+[ENABLE]
+alloc(SSFlyVac,128)
+label(SSFlyRet)
+
+0086B26D:
+jmp SSFlyVac
+db 90
+SSFlyRet:
+
+SSFlyVac:
+pushad
+mov eax,[00cc2794] // Mouse Pointer
+mov eax,[eax+978] // Mouse Location
+mov eax,[eax+8C] // Mouse X
+mov ecx,[00cc2794] // Mouse Pointer
+mov ecx,[ecx+978] // Mouse Location
+mov ecx,[ecx+88] // Mouse Y
+mov ebx,[00cbdcd0] // Character Base
+mov [ebx+4D48],eax // Tele X
+mov [ebx+4D4C],ecx // Tele Y
+mov [ebx+4D40],01 // Teleport Toggle
+popad
+jmp SSFlyRet
+
+[DISABLE]
+0086B26D:
+db 0f 84 87 01 00 00
+dealloc(SSFlyVac)

@@ -1,0 +1,25 @@
+[enable]
+alloc(ItemVac,64)
+label(SetItemXY)
+00D2A0BC:
+dd ItemVac
+ItemVac:
+cmp [esp],004DA65C
+je SetItemXY
+cmp [esp],004D9904
+jne PtInRect
+mov [esp],004D9908
+jmp PtInRect
+SetItemXY:
+push eax
+mov eax,[esp+0c]
+mov [ebx],eax
+mov eax,[esp+10]
+mov [edi+04],eax
+pop eax
+mov [esp],004DA678
+jmp PtInRect
+[disable]
+00D2A0BC:
+dd PtInRect
+dealloc(ItemVac)

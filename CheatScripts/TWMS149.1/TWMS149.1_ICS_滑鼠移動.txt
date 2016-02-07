@@ -1,0 +1,115 @@
+//================================
+//TwMS v149.1_ICS_·Æ¹«²¾°Ê
+//§ó·s:lovely99
+//================================
+[Enable]
+Registersymbol(Ics_CSX)
+Registersymbol(CSXon)
+Registersymbol(CSX)
+Alloc(Ics_CSX,128)
+Alloc(CSX,1024)
+Alloc(CSXon,4)
+Label(CSXReturnX)
+Label(CSXReturnY)
+Label(HookCSX)
+Label(MouserX)
+Label(MouserY)
+
+CSXon: //0Ãö 1·Æ¹«²¾°Ê 
+DD 1
+
+Ics_CSX:
+PUSH EBP
+MOV  EBP,ESP
+PUSH EBX
+PUSH ESI
+MOV  ESI,[EBP+08]
+XOR  EBX,EBX
+PUSH EDI
+CMP  [ESI+14],EBX
+JE   HookCSX
+JMP  00978874
+
+HookCSX:
+MOV  ECX,[00E10A10]
+CALL 0097883F
+MOV  [EBP+08],EAX
+FILD [EBP+08]
+MOV  EDI,[EBP+0C]
+FDIV [00C04030]
+FSTP [EBP+34]
+CMP  EDI,EBX
+JE   009788F2
+FLD  [ESI+3C]
+PUSH ECX
+FSUB [ESI+1C]
+PUSH ECX
+FMUL [EBP+34]
+FADD [ESI+1C]
+FSTP [ESP]
+CALL 004E99EE
+POP  ECX
+POP  ECX
+JMP  CSX
+
+CSX:
+CMP  [CSXon],1
+JE   MouserX
+JMP  CSXReturnX
+
+CSXReturnX:
+MOV  [EDI],EAX
+MOV  EDI,[EBP+10]
+JMP  009788F5
+
+CSXReturnY:
+MOV  [EDI],EAX
+MOV  EDI,[EBP+14]
+CMP  EDI,EBX
+JMP  00978916
+
+//------------------·Æ¹«²¾°Ê
+MouserX:
+PUSH EAX
+MOV  EAX,[00E0BE9C]  //CHAR PID 8B 0D  8D 45  50 8D 45  50 E8
+MOV  EAX,[EAX+2364]  //6A FF FF B6 ?? ?? ?? ?? 8B CE E8
+CMP  ESI,EAX
+POP  EAX
+JNE  CSXReturnX
+PUSH EAX
+MOV  EAX,[00E10A0C]  //·Æ¹«ÂIÀ» 8B 0D ?? ?? ?? ?? 57 E8 ?? ?? ?? ?? 8D 45
+MOV  EAX,[EAX+978]
+MOV  EAX,[EAX+84]  //X-8C
+MOV  [EDI],EAX
+POP  EAX
+MOV  EDI,[EBP+10]
+CMP  EDI,EBX
+JE   MouserY
+JMP  CSXReturnX+5
+
+MouserY:
+PUSH EAX
+MOV  EAX,[00E0BE9C]  //CHAR PID
+MOV  EAX,[EAX+2364]
+CMP  ESI,EAX
+POP  EAX
+JNE  CSXReturnY
+PUSH EAX
+MOV  EAX,[00E10A0C]  //·Æ¹«ÂIÀ»
+MOV  EAX,[EAX+978]
+MOV  EAX,[EAX+88]  //Y
+MOV  [EDI], EAX
+POP  EAX
+MOV  EDI,[EBP+14]
+JMP  CSXReturnY+5
+
+//------------------·Æ¹«²¾°Ê
+
+00C83DE8:  //9 4BY 
+DD Ics_CSX
+[Disable]
+00C83DE8:
+DD 00978864
+
+UnRegistersymbol(CSX)
+DeAlloc(CSX)

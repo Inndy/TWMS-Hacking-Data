@@ -1,0 +1,37 @@
+//TWMS142 無延遲撿物
+//Auther: Inndy
+//008F0756 - E8 FD59B9FF                - call 00486158 // 發包
+//008F075B - 33 FF                      - xor edi,edi
+//008F075D - 47                         - inc edi
+//008F075E - 57                         - push edi
+//008F075F - 8B CE                      - mov ecx,esi
+//008F0761 - E8 85CAB8FF                - call 0047D1EB // 設定不可撿物
+
+//踹踹幹下面這段NOP掉
+//008F05ED - 6a 00                      - push 00
+//008F05EF - 6a 1e                      - push 1e
+//008F05F1 - e8 b8 cc b8 ff             - call 0047d2ae
+//008F05F6 - 85 c0                      - test eax,eax
+//008F05F8 - 0f 84 7a 01 00 00          - je 008f0778
+[ENABLE]
+Alloc(PreHackPacket, 128)
+Alloc(FakeTime, 4)
+
+PreHackPacket:
+Mov Edi, [Esp+4]    // PacketStruct
+Mov Edi, [Edi+4]    // PacketBuffer
+Mov Eax, [Edi+3]    // Time
+Add Eax, [FakeTime] // 修改包包時間，達成不斷
+Mov [Edi+3], Eax    // 寫入包包時間
+Add [FakeTime],64   // 增加假的時間，可以調整看看
+Mov [Esp], 008F0766 // 修改回跳點，跳過設定無法撿物
+Jmp 00486158        // 跳回發包
+
+008F0756:
+Call PreHackPacket
+[DISABLE]
+008F0756:
+Call 00486158
+
+Dealloc(PreHackPacket)
+Dealloc(FakeTime)

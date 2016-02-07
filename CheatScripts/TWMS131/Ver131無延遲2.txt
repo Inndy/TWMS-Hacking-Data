@@ -1,0 +1,39 @@
+[ENABLE]
+alloc(MySummonGod,128)
+alloc(MyFuckingSlut,32)
+alloc(TimeAdd,4)
+alloc(ReturnBackTime,64)
+0060E6C9:
+jmp MySummonGod
+
+MySummonGod:
+mov edi,[esi+00000134]
+add edi,1770
+add [TimeAdd],1770
+xor eax,eax
+ret
+
+007a2beb:
+jmp MyFuckingSlut
+
+MyFuckingSlut:
+cmp [esp],00646FF0
+jne ReturnBackTime
+add [TimeAdd],2EE0
+jmp ReturnBackTime
+
+ReturnBackTime:
+mov eax,[ztltaskmemreallocimp+2e683e]
+mov eax,[eax+1c]
+add eax,[TimeAdd]
+ret
+
+[DISABLE]
+dealloc(MySummonGod)
+dealloc(MyAddress)
+dealloc(LastAttack)
+dealloc(NoDelaySummon)
+dealloc(NoDelayStarted)
+dealloc(MyFuckingSlut)
+dealloc(TimeAdd)
+dealloc(ReturnBackTime)

@@ -1,0 +1,11 @@
+0065199F - 8b 44 24 04                - mov eax,[esp+04]
+006519A3 - 3d c8 00 00 00             - cmp eax,000000c8
+006519A8 - 7f 0d                      - jg 006519b7
+006519AA - 83 f8 01                   - cmp eax,01
+006519AD - 7d 03                      - jnl 006519b2
+006519AF - 33 c0                      - xor eax,eax
+006519B1 - 40                         - inc eax
+006519B2 - 8b 04 81                   - mov eax,[ecx+eax*4]
+006519B5 - eb 05                      - jmp 006519bc
+006519B7 - b8 ff ff ff 7f             - mov eax,7fffffff
+006519BC - c2 04 00                   - ret 0004

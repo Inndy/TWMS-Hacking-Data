@@ -1,0 +1,37 @@
+[enable]
+Registersymbol(ItemMove)
+Alloc(ItemMove, 128)
+
+ItemMove:
+DB   55                                 //005C9C03 - push ebp
+DB   8b ec                              //005C9C04 - mov ebp,esp
+DB   51                                 //005C9C06 - push ecx
+DB   51                                 //005C9C07 - push ecx
+DB   8d 45 f8                           //005C9C08 - lea eax,[ebp-08]
+DB   50                                 //005C9C0B - push eax
+DB   81 c1 d4 05 00 00                  //005C9C0C - add ecx,000005d4
+call 004313da                           //005C9C12 - call 004313da
+cmp [ebp+04], 005BE28A	//8b 55 ?? 8b c8 8b 45 ?? 03 c2 99 2b c2 8b f0 8b 07 d1 fe 2b 31 8d 4d
+je 005C9C17
+cmp [ebp+04], 005BE2AB
+je 005C9C17
+mov eax,[ebp+08]
+push edx
+mov ecx,[00cc58c8]
+mov edx,[ecx+B0C] //x
+mov ecx,[ecx+B10] //y
+mov [eax],edx
+mov [eax+4],ecx
+pop edx
+leave
+ret 4
+
+00AFC7DC:
+DD ItemMove
+
+[disable]
+00AFC7DC:
+DD 005C9C03
+
+Unregistersymbol(ItemMove)
+Dealloc(ItemMove)

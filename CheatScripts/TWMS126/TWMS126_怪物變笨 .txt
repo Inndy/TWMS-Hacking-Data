@@ -1,0 +1,10 @@
+//Ver1.26笨怪 
+//來源不明 
+//更新: s180leoare(vip235689180) 
+[Enable] 
+007F514B: 
+jmp 007F514D
+[Disable] 
+007F514B:
+cmp [ebp+08],edi
+jne 007f51a1

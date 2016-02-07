@@ -1,0 +1,57 @@
+[ENABLE]
+Alloc(AutoLRICSEntry, 64)
+Label(ICSReturn)
+RegisterSymbol(AutoLRMain)
+Alloc(AutoLRMain, 128)
+Label(GoLeft)
+Label(GoRight)
+RegisterSymbol(AutoLRRange)
+Alloc(AutoLRRange, 4)
+Alloc(AutoLRValue, 4)
+//-----------------------------------------------
+AutoLRRange:
+DD A
+//-----------------------------------------------
+AutoLRICSEntry:
+Cmp   [Esp], 00A1D7CA
+Jne   ICSReturn
+Mov   [Esp], AutoLRMain
+ICSReturn:
+Jmp   GetFocus
+//-------------------
+AutoLRMain:
+Cmp   [AutoLRRange], 0
+Je    00A1D7CA
+Push  Eax
+Inc   [AutoLRValue]
+Mov   Eax, [AutoLRRange]
+Cmp   Eax, [AutoLRValue]
+Jge   GoLeft
+Add   Eax, [AutoLRRange]
+Cmp   Eax, [AutoLRValue]
+Jge   GoRight
+Mov   [AutoLRValue], 1
+Jmp   GoLeft
+
+GoLeft:
+Mov   [Ebp-04], FFFFFFFF
+Pop   Eax
+Jmp   00A1DB0E // ²Ä¤@­ÓJne
+
+GoRight:
+Mov   [Ebp-04], 00000001
+Pop   Eax
+Jmp   00A1DB0E
+//-----------------------------------------------
+00F7D268:
+DD AutoLRICSEntry
+[DISABLE]
+00F7D268:
+DD GetFocus
+
+Dealloc(AutoLRICSEntry)
+UnregisterSymbol(AutoLRMain)
+Dealloc(AutoLRMain)
+UnregisterSymbol(AutoLRRange)
+Dealloc(AutoLRRange)
+Dealloc(AutoLRValue)

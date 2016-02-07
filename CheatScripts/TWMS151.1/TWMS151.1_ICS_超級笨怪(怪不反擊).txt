@@ -1,0 +1,44 @@
+// TWMS151.1 ICS ¶W¯Å²Â©Ç
+// ¨Ó·½: §N¦Ð·¬²ª
+// UpdateTime: 2012-12-09
+
+[Enable]
+alloc(Stupid, 256)
+alloc(Stupid_Switch, 04)
+label(My_Ret)
+registersymbol(Stupid_Switch)
+
+Stupid_Switch:
+DD 00
+
+Stupid:
+cmp dword ptr [esp+48],009C3DD7 // 89 45 08 3b c3 75 07 33 c0 e9
+jne My_Ret
+cmp [Stupid_Switch],01
+jne My_Ret
+
+// ²Â©Ç
+mov [esi+000002B0],00 // [2/2] // 89 BE ?? 02 00 00 E8 ?? ?? ?? FF 57 8D 8E
+// ©Ç¤£¤ÏÀ»
+/*
+push esi // Monster Esi Âà¦¨ KiKi Esi
+mov esi, [esi+18]
+sub esi, 4
+mov [esi+00000488], 1 // 39 9E ?? ?? 00 00 75 0E 8B CE E8 ?? ?? FF FF
+pop esi
+*/
+
+My_Ret:
+push 009BA9CC
+ret
+
+00CF505C:
+DD Stupid
+
+[Disable]
+00CF505C: // [5/10]
+DD 009BA9CC // 83 b9 ? ? 00 00 00 74 ? d9 ee
+
+dealloc(Stupid)
+dealloc(Stupid_Switch)
+unregistersymbol(Stupid_Switch)

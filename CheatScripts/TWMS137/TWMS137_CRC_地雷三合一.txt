@@ -1,0 +1,39 @@
+//Twms V1.37.1 地雷原地掉落
+//更新:冰Smith
+[Enable]
+alloc(Bombnodelay,128)
+Registersymbol(Bombnodelay)
+Bombnodelay:
+call 00821538
+add eax,0
+jmp 007D8261
+007D8254:
+jmp Bombnodelay
+[Disable]
+007D8254:
+je 007d82d1
+call 00821538
+
+
+//Twms V1.37.1 地雷速爆
+//更新:冰Smith
+[ENABLE]
+Alloc(code, 128)
+code:
+call 00821538
+add eax,000103e8
+jmp 00686dfa
+00686DF5:
+jmp code
+[DISABLE]
+00686DF5:
+call 00821538
+
+//地雷動態
+//更新:冰Smith
+[enable]
+00BE4DF1:
+DB 6F 19 92 7E 33 40 CD 9B 01 6A FE B6 6F 29 9A DF D7 02 CF 18 DE 77 9E 56 57 25 32
+[disable]
+00BE4DF1:
+DB 6F 19 92 C5 C1 05 61 0E 2E 08 2B 9C 6F E5 71 6D E1 8C 28 0B 67 44 69 96 6F D5 6D

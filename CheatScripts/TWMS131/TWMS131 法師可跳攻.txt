@@ -1,0 +1,9 @@
+//TWMS131 ªk®v¥i¸õ§ð
+[Enable]
+//From GMS Anti Mage Aircheck
+00774D2F:
+db eb
+
+[Disable]
+00774D2F:
+db 74

@@ -1,0 +1,96 @@
+// Twms v146.1 快捷鍵水量顯示
+[enable]
+registersymbol(Main)
+alloc(Main,512)
+registersymbol(Shift)
+alloc(Shift,4)
+registersymbol(Ins)
+alloc(Ins,4)
+registersymbol(Home)
+alloc(Home,4)
+registersymbol(PageUp)
+alloc(PageUp,4)
+registersymbol(Ctrl)
+alloc(Ctrl,4)
+registersymbol(Del)
+alloc(Del,4)
+registersymbol(End)
+alloc(End,4)
+registersymbol(PageDown)
+alloc(PageDown,4)
+registersymbol(Time)
+alloc(Time,4)
+Label(Return)
+Label(Z1)
+Label(Z2)
+Label(Z3)
+Label(Z4)
+Label(Z5)
+Label(Z6)
+Label(Z7)
+Label(Z8)
+
+Main:
+inc [Time]
+cmp [Time],1
+je Z1
+cmp [Time],2
+je Z2
+cmp [Time],3
+je Z3
+cmp [Time],4
+je Z4
+cmp [Time],5
+je Z5
+cmp [Time],6
+je Z6
+cmp [Time],7
+je Z7
+cmp [Time],8
+je Z8
+jmp Return
+
+
+Z1:
+mov [Shift],eax
+jmp Return
+
+Z2:
+mov [Ins],eax
+jmp Return
+
+Z3:
+mov [Home],eax
+jmp Return
+
+Z4:
+mov [PageUp],eax
+jmp Return
+
+Z5:
+mov [Ctrl],eax
+jmp Return
+
+Z6:
+mov [Del],eax
+jmp Return
+
+Z7:
+mov [End],eax
+jmp Return
+
+Z8:
+mov [PageDown],eax
+mov [Time],0
+jmp Return
+
+Return:
+mov [ebx+08],eax
+jmp 007E3E35
+
+007E3DAC:
+jmp Main
+[disable]
+007E3DAC:
+mov [ebx+08],eax
+jmp 007E3E35

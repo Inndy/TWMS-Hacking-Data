@@ -1,0 +1,173 @@
+// TWMS V1.41.1 ICS 打怪吸怪
+// 原創: ms890110
+// ICS: 冷羽楓痕
+
+[enable]
+alloc(Vac, 512)
+alloc(VacXY, 8)
+label(ForceVac)
+label(ForceVac2)
+label(Label1)
+label(Label2)
+label(InitMob)
+label(Normal)
+label(FullMapVac)
+label(StartVac)
+label(Normal01)
+label(Normal02)
+label(Normal03)
+
+VacXY:
+ReadMem([00cbff70]+5A18, 8)
+
+Vac:
+ForceVac:
+cmp [esp], 005D1341	//eb 0e 8b ce e8 ?? ?? ?? ff 83 e0 01 53
+jne 008B4C3C		//8b 81 ?? ?? 00 00 c3 8b 44 24 04 89 81 ?? ?? 00 00 c2 04 00 8b c1
+mov [esp], ForceVac2
+jmp 008B4C3C
+
+ForceVac2:
+push eax
+mov ecx, esi
+call 005cbc1d
+and edi, [ebp-20]
+cmp edi, ff
+jne 005d13b7
+
+mov ecx, esi
+call 005bd083
+cmp eax, edi
+jle Label1
+
+cmp [ebp-10], ebx
+je 005d13b7
+
+Label1:
+cmp [esi+00000498], ebx
+jne 005d13b7
+
+mov ecx, esi
+call 005bd101
+test eax, eax
+jne 005d13b7
+
+mov ecx, esi
+call 005bd01a
+cmp eax, 03
+je Label2
+
+mov ecx, esi
+call 005bd01a
+cmp eax, 04
+jne 005d13b7
+
+Label2:
+cmp [esi+000003f0], ebx
+jne 005d13b7
+
+push 64
+push ebx
+push ebx
+push ebx
+push ebx
+push ebx
+push ebx
+push ebx
+push ebx
+
+push eax
+mov eax, [esi+00000110]
+test eax, eax
+je Normal
+
+add eax, f4
+cmp dword ptr [eax+000002a0], 00
+je Normal
+cmp dword ptr [eax+000002a0], 06
+jg Normal
+cmp dword ptr [eax+08], 00
+je InitMob
+cmp dword ptr [eax+08], 01
+jne Normal
+
+pop eax
+push 00 // 怪物動作
+jmp 005D13B0
+
+InitMob:
+inc [eax+08]
+
+Normal:
+pop eax
+push FF
+jmp 005D13B0
+
+//--------------------------
+FullMapVac:
+cmp [esp], 005CDEF9	//8b 7d 08 83 c7 ?? 83 ff 02
+jne 008B9B07		//55 8b ec 53 8b 5d 10 56 57
+mov eax, [ebp-10]
+cmp dword ptr [eax+08], 01
+je StartVac
+jmp 008B9B07
+
+StartVac:
+cmp [eax+2a0], 06
+je 008B9B07
+mov [esp+1c], 00
+
+mov eax, [esp+18]
+cmp eax, 04
+je Normal01
+cmp eax, 02
+je Normal01
+cmp eax, 05
+je Normal01
+
+/*
+Normal01:
+mov eax, [esp+14]
+test eax, eax
+je Normal02
+
+
+Normal02:
+mov eax, [esp+10]
+test eax, eax
+je Normal03
+*/
+
+Normal03:
+push ecx
+mov ecx, [ebp-10]
+mov esi, [VacXY]
+mov [esp+0c], esi
+mov [ecx+238], esi
+mov [ecx+69c], esi
+mov eax, [VacXY+04]
+sub eax, 5
+mov [esp+10], eax
+mov [ecx+23a], eax
+mov [ecx+6a0], eax
+mov [ecx+2a0], 06 // 定怪
+pop ecx
+jmp 008B9B07
+
+00B60AF4:
+dd ForceVac
+
+00B60AE8:
+dd FullMapVac
+
+[disable]
+00B60AF4: // 005D05B9 ff 90 ? 00 00 00 eb ? 8b ce e8 ? ? ? ? 83 e0 01
+dd 008B4C3C
+
+00B60AE8: // 005CD175 ff 17 8b 7d ? 83 c7 f9
+dd 008B9B07
+
+dealloc(Vac)
+//TWMS140
+// 005D05B9 call dword ptr [eax+00000090] => eax+90: 00B5E384, [eax+90]: 008B34F0
+// 005CD175 call dword ptr [edi] => edi: 00B5E378, [edi]: 008B83BB

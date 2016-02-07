@@ -1,0 +1,49 @@
+[ENABLE]
+Alloc(SuperNoDelay, 128)
+Label(IsSkill)
+Label(Return)
+
+SuperNoDelay:
+Push Esi
+Push 01
+Mov  Esi, Ecx
+Call 00412CAF
+Mov  Ecx, [Esi+08]
+Mov  Eax, [Esi+04]
+Mov  Dl, [Esp+08]
+
+Cmp  word ptr [Eax], 0057
+Je   IsSkill
+Cmp  word ptr [Eax], 0058
+Je   IsSkill
+Cmp  word ptr [Eax], 0059
+Je   IsSkill
+Cmp  word ptr [Eax], 005A
+Je   IsSkill
+
+Return:
+Jmp  00412D01
+
+IsSkill:
+Cmp  Ecx, 13
+Jl   Return
+Cmp  Ecx, 17
+Jg   Return
+
+Or   Dl, 04
+Jmp  Return
+
+00412CED:
+Jmp  SuperNoDelay
+
+0095B81E:
+Ret  0010
+DB   90 90 90 90
+[DISABLE]
+00412CED:
+DB   56 6A 01 8B F1
+
+0095B81E:
+DB   6A 00 B8 79 25 BA 00
+
+Dealloc(SuperNoDelay)

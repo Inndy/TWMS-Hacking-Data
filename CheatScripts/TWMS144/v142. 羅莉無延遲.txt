@@ -1,0 +1,38 @@
+//v142. 羅莉無延遲(與Z大影片效果相同版)
+// By.aaaddress1.
+alloc(NodelaySkill01,32)
+alloc(NodelaySkill02,64)
+alloc(NodelaySkill03,128)
+alloc(CountTicket,08)
+0044F17C:
+jmp NodelaySkill01 //Bypass NoAttack
+00828881:
+jmp NodelaySkill02 //ByPass AttackTimes1
+00857F4A:
+jmp NodelaySkill03 //Control Attack
+
+NodelaySkill01:
+mov [esi+374],09
+mov eax,[esi+374]
+jmp 0044F1B4
+
+NodelaySkill02:
+mov edi,FFFFFFFF
+mov [esi+00000480],edi
+call dword ptr [eax+20]
+mov [esi+00003DE8],00
+jmp 008288EC
+
+NodelaySkill03:
+call 008287BE
+mov eax,[00cc4a38]
+mov eax,[eax+1c]
+cmp [CountTicket],eax
+jg 00857F53
+inc [CountTicket+04]
+cmp [CountTicket+04],03
+jl 00857F83
+mov [CountTicket+04],00
+mov [CountTicket],eax
+add [CountTicket],BB8
+jmp 00857F83

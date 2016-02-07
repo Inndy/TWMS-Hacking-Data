@@ -1,0 +1,31 @@
+// TWMS145 ICS 人物位置設定(CS)
+// Auther: Inndy
+[ENABLE]
+Alloc(FakePoint, 128)
+Alloc(FakeXY, 8)
+
+FakeXY:
+ReadMem([[00D1D0DC]+209C]+214, 8)
+
+FakePoint:
+Mov  Eax, [Esp+04]
+Push [FakeXY+00]
+Pop  [Eax+00]
+Push [FakeXY+04]
+Pop  [Eax+04]
+Ret  04
+
+00BB28F0:
+DD   FakePoint
+
+00BB28F4:
+DD   FakePoint
+[DISABLE]
+00BB28F0:
+DD   00495DF0
+
+00BB28F4:
+DD   00495E16
+
+Dealloc(FakePoint)
+Dealloc(FakeXY)

@@ -1,0 +1,40 @@
+[enable]
+Alloc(ItemVac,256)
+Label(SetItemXY)
+Label(ExitVac)
+
+ItemVac:
+Cmp  [Esp], 004EB686 // 85 c0 75 ?? 83 4d fc ff 8d 4d ?? e8 ?? ?? ff ff 83 7d f0 00 0f 85
+Je   SetItemXY
+Cmp  [Esp], 004Ea92E // 85 C0 74 07 39 5D ?? 75
+Jne  PtInRect
+Xor  Eax,Eax
+Inc  Eax
+Ret  000C
+
+SetItemXY:
+Sub  [Eax], 10 // L
+Add  [Eax+08], 10 // R
+Push [Esp+0C]
+Push [Esp+0C]
+Push Eax
+Call PtInRect
+Test Eax, Eax
+Je   ExitVac
+Push Eax
+Mov  Eax, [Esp+0C]
+Mov  [Ebx], Eax
+Mov  Eax, [Esp+10]
+Mov  [Ebx+04], Eax
+Pop  Eax
+ExitVac:
+Ret  000C
+
+00E1986C:
+DD   ItemVac
+
+[disable]
+00E1986C:
+DD   PtInRect
+
+DEalloc(ItemVac)

@@ -1,0 +1,27 @@
+//超級撿物
+//0047D26B - 89 86 a4 20 00 00          - mov [esi+000020a4],eax
+//0047D276 - 89 86 a8 20 00 00          - mov [esi+000020a8],eax
+//0047D27D - c2 04 00                   - ret 0004
+[ENABLE]
+alloc(Hook, 64)
+
+Hook:
+mov [ecx+000020a4],0
+mov [ecx+000020a8],0
+ret 0004
+
+0047D264:
+jmp Hook
+[DISABLE]
+0047D264:
+db 8b 44 24 04 56
+
+dealloc(Hook)
+
+//物品定位
+[Enable]
+004D4B68:  //75 ?? 8b c3 2b 46 ?? 3d
+db 90 90
+[Disable]
+004D4B68:
+db 75 4e

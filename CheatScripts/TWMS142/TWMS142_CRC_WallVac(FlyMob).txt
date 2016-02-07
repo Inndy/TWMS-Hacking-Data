@@ -1,0 +1,47 @@
+//-------------------------------
+//§l­¸/´å©Ç For twmsV142
+//auther:aaaddress1
+//
+//tips:
+//First,Clear All Mob In Map.
+//
+//Second, All Fly Mob Will Appear
+//At The Place When You Enable 
+//This Script.
+//-------------------------------
+[ENABLE]
+alloc(FlyMobVac,512) 
+alloc(XY_Bit,8) 
+//-------------------------------
+XY_Bit:
+readmem([00cbff70]+5A18,8)
+//-------------------------------
+FlyMobVac:
+push edx
+mov edx,[00CC4458]
+push [XY_Bit] // X
+push [XY_Bit] // X
+push [XY_Bit+04] // Y
+push [XY_Bit+04] // Y
+pop [edx+20] // Top
+pop [edx+28] // Bottom
+pop [edx+1C] // Left
+pop [edx+24] // Right
+pop edx
+jmp 005D136A // Je¦ì§}
+//-------------------------------
+005D131B: // 3B C7 7E 05 39
+jmp FlyMobVac
+nop
+nop
+//-------------------------------
+005CFF39: // 7d 04 33 d2 eb 03
+nop
+nop
+//-------------------------------
+[DISABLE]
+005D131B:
+DB 3B C7 7E 05 39 5D F0
+//-------------------------------
+005CFF39:
+DB 7D 04

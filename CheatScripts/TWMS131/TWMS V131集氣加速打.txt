@@ -1,0 +1,39 @@
+//TWMS V131集氣加速打
+//附註1:星光打幣專用數據
+//附註2:請配合急速詠唱
+[enable]
+Registersymbol(Nodelay)
+Alloc(Nodelay, 128)
+Registersymbol(AttackTimes)
+Alloc(AttackTimes, 4)
+Label(Refresh)
+//------------------------------------------------------------------
+Nodelay:
+inc [AttackTimes]
+cmp [AttackTimes],2 //此值與下列值互減得到的等於正常次數
+jle 0077867E
+call 0083f1e0
+cmp [AttackTimes],3 //此值至少要比上面的大1
+jg Refresh
+jmp 0077867E //*與Refresh相同
+//------------------------------------------------------------------
+Refresh:
+mov [AttackTimes],0 //無延遲間格
+jmp 0077867E //*與Nodelay jmp相同
+//------------------------------------------------------------------
+00778679://無延遲 // E8 ?? ?? ?? 00 83 C4 0C E8 ?? ?? ?? 00 C3
+jmp Nodelay
+//------------------------------------------------------------------
+007782BA://瞬間集氣 // E8 ?? ?? ?? 00 2B 87 ?? ?? 00 00 6A 1E 59
+db 90 90 90 90 90
+//------------------------------------------------------------------
+[disable]
+Unregistersymbol(Nodelay)
+dealloc(Nodelay)
+Unregistersymbol(AttackTimes)
+dealloc(AttackTimes)
+00778679://無延遲
+call 0083f1e0
+
+007782BA://瞬間集氣
+call 0078c0bc

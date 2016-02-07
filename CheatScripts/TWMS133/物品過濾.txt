@@ -1,0 +1,73 @@
+[Enable]
+Alloc(DropsFucker,128)
+Label(White)
+Label(Black)
+Label(Disappear)
+Label(Appear)
+Alloc(Mode,4)
+Alloc(WhiteTable,1024)
+Alloc(BlackTable,1024)
+Alloc(LastDropedItem,4)
+Registersymbol(LastDropedItem)
+//------------------------------
+Mode:
+DD 0 //0關1不掉物2黑3白
+//------------------------------
+DropsFucker:
+push esi
+push ebx
+cmp eax,C350
+je Appear
+xor ebx,ebx
+mov [LastDropedItem],eax
+
+cmp [Mode],1
+je Disappear
+
+mov esi,BlackTable
+cmp [Mode],2
+je Black
+
+mov esi,WhiteTable
+cmp [Mode],3
+je White
+
+jmp Appear
+//---------------
+White:
+cmp [esi],eax
+je Appear
+cmp [esi],ebx
+je Disappear
+add esi,4
+jmp White
+//---------------
+Black:
+cmp [esi],eax
+je Disppear
+cmp [esi],ebx
+je Appear
+add esi,4
+jmp Black
+//---------------
+Disappear:
+xor eax,eax
+Appear:
+pop ebx
+pop esi
+mov ecx,edi
+mov [esi+34],eax
+jmp 004c5873
+//------------------------------
+004C586E:
+jmp DropsFucker
+[Disable]
+004C586E:
+db 8b cf 89 46 34
+//------------------------------
+Dealloc(DropsFucker)
+Dealloc(WhiteTable)
+Dealloc(BlackTable)
+Dealloc(Mode)
+Dealloc(LastDropedItem,4)
+Unegistersymbol(LastDropedItem)

@@ -1,0 +1,8 @@
+//TwMS v140.1 怪物下雨(怪物亂飛)
+[Enable]
+005DC212: // D9 C0 D8 C9 D9 C0
+db D9 C1
+
+[Disable]
+005DC212:
+db D9 C0

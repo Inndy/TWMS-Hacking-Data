@@ -1,0 +1,53 @@
+//V128 i-進戰不揮空
+//-----------------------------------------------
+[ENABLE]
+registersymbol(Empty)
+alloc(Empty,1024)
+label(Empty01)
+//-----------------------------------------------
+Empty:
+cmp [esp],007AD669
+jne OffsetRect  
+mov [esp],Empty01
+jmp OffsetRect 
+//------Main------    
+Empty01:
+//DB ff 15 04 ed ce 00          //007AD663 - call dword ptr [00ceed04] : OffsetRect
+DB ff b5 58 fe ff ff          //007AD669 - push [ebp-000001a8]
+DB 6a 00                      //007AD66F - push 00
+DB 6a 00                      //007AD671 - push 00
+DB 6a 00                      //007AD673 - push 00
+DB 6a 00                      //007AD675 - push 00
+DB 6a 00                      //007AD677 - push 00
+DB 6a 00                      //007AD679 - push 00
+DB ff b5 78 fe ff ff          //007AD67B - push [ebp-00000188]
+DB 8d 85 7c fe ff ff          //007AD681 - lea eax,[ebp-00000184]
+DB 50                         //007AD687 - push eax
+DB 8d 45 98                   //007AD688 - lea eax,[ebp-68]
+DB 50                         //007AD68B - push eax
+call 0042eecb
+DB 8b c8                      //007AD691 - mov ecx,eax
+call 005ab362
+DB 89 45 84                   //007AD698 - mov [ebp-7c],eax
+
+
+  cmp eax,0    //沒打到怪
+  je 007ad945
+  jmp 007AD69B
+
+
+//----------------------------------------------
+//007AD8ED - 81 bd 58 fe ff ff 3a 41 40 00 - cmp [ebp-000001a8],0040413a
+//007AD8F7 - 74 4c                      - je 007ad945   //<==上面
+
+//---------------------------------------------
+00ceed04:
+        dd Empty
+[DISABLE]
+00ceed04:
+        dd OffsetRect      
+
+dealloc(Empty)
+unregistersymbol(Empty)
+dealloc(Empty00)
+unregistersymbol(Empty00)

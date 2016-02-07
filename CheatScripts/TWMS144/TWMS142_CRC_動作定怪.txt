@@ -1,0 +1,9 @@
+//TWMS142 °Ê§@©w©Ç
+//Auther: Aaaddress1
+//Update: Inndy
+[ENABLE]
+005D131D:
+je 005d136a
+[DISABLE]
+005D131D:
+jle 005d1324

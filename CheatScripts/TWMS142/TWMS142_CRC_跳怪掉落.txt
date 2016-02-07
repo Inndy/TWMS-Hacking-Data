@@ -1,0 +1,16 @@
+//TWMS141 ¸õ©Ç±¼¸¨
+[ENABLE]
+//008B690F - FF 50 08                   - call dword ptr [eax+08]
+//008BB026 - 55                         - push ebp
+008BAF76:	//0f 85 ? 00 00 00 8b 86 ?? 00 00 00 ba ff ff ff 7f
+db 90 e9
+
+//008B683B - FF 50 04                   - call dword ptr [eax+04]
+//008B4561 - 55                         - push ebp
+008BC644:	//0f 85 ?? ?? 00 00 e8 ?? ? ff ff 8d 48 ?? 8b 01 ff 50 ?? 8b 4e
+db 90 e9
+[DISABLE]
+008BAF76:
+db 0f 85
+008BC644:
+db 0f 85

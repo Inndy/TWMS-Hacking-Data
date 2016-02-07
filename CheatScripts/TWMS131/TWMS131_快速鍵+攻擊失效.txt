@@ -1,0 +1,53 @@
+﻿//V131 攻擊失效
+[enable]
+registersymbol(HotKey)
+alloc(HotKey, 256)
+registersymbol(PRESSEDKEY)
+alloc(PRESSEDKEY, 4)
+label(key01)
+label(key02)
+label(key03)
+label(AttackKey)
+label(PickUpKey)
+
+//快捷鍵設定參考:
+//Shift:002A0003
+//9: 010A0000
+//n: 00310000
+//x: 002d0000
+//z: 002c0000
+
+HotKey:
+        mov [PRESSEDKEY],eax
+        cmp eax,[AttackKey]        //攻擊鍵
+        jne key03
+        push eax
+        mov eax,[00ACF528]
+        mov eax,[eax+24]
+        cmp eax,0                //怪物數
+        pop eax
+        jg key02
+key01:
+        mov eax,[PickUpKey]        //撿取鍵z
+        jmp key03
+key02:
+        mov eax,[AttackKey]        //攻擊鍵
+        jmp key03
+key03:
+        mov ecx,[00ACADF0]
+        jmp 00784FC0
+AttackKey:
+DD 001D0000
+PickUpKey:
+DD 002C0000
+
+00784FBA:
+     jmp HotKey
+
+
+[disable]
+00784FBA:
+        mov ecx,[00ACADF0]
+
+unregistersymbol(HotKey)
+dealloc(HotKey)

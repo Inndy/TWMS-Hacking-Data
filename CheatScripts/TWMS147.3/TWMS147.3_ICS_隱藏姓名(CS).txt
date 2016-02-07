@@ -1,0 +1,17 @@
+//TWMS147.3 ICS ¡Ù¬√©m¶W(CS)
+
+[Enable]
+Alloc(NoNameICS, 64)
+
+NoNameICS:
+Cmp [Esp], 008B6BFC
+Jne 0049EB90
+Mov [Esp], 008B6C0B
+Jmp 0049EB90
+
+00C2F57C:
+DD NoNameICS
+[Disable]
+00C2F57C:
+DD 0049EB90
+DeAlloc(NoNameICS)

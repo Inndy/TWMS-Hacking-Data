@@ -1,0 +1,54 @@
+[ENABLE]
+Alloc(JumpDown1, 128)
+Alloc(JumpDown2, 64)
+
+JumpDown1:
+db 55                    // push ebp
+db 8b ec                 // mov ebp,esp
+db 83 ec 20              // sub esp,20
+db 8b 45 08              // mov eax,[ebp+08]
+db 53                    // push ebx
+db 56                    // push esi
+db 8b 35 30 e7 c8 00     // mov esi,[00c8e730]
+db 8b d9                 // mov ebx,ecx
+db 57                    // push edi
+db 8d bb 88 00 00 00     // lea edi,[ebx+00000088]
+db dd 07                 // fld qword ptr [edi]
+db dc 20                 // fsub qword ptr [eax]
+db dd 5d e8              // fstp qword ptr [ebp-18]
+db d9 ee                 // fldz
+db dc 55 e8              // fcom qword ptr [ebp-18]
+db df e0                 // fnstsw ax
+db f6 c4 44              // test ah,44
+jnp 0089ef15             // jnp 0089ef15
+db 8b 83 98 02 00 00     // mov eax,[ebx+00000298]
+db 83 f8 01              // cmp eax,01
+je 0089E811
+db dd d8                 // fstp st(0)
+jmp 0089ebb3
+
+JumpDown2:
+db 55                    // push ebp
+db 8b ec                 // mov ebp,esp
+db 83 ec 0c              // sub esp,0c
+db 53                    // push ebx
+db 56                    // push esi
+db 8b f1                 // mov esi,ecx
+db 83 be 98 02 00 00 03  // cmp dword ptr [esi+00000298],03
+db 57                    // push edi
+db 8b 3d 30 e7 c8 00     // mov edi,[00c8e730]
+jmp 0089d6f6
+
+00B30978:
+DD JumpDown1
+
+00B3097C:
+DD JumpDown2
+[DISABLE]
+00B30978:
+DD 0089E7D1
+00B3097C:
+DD 0089D61D
+
+Dealloc(JumpDown1)
+Dealloc(JumpDown2)

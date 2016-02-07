@@ -1,0 +1,34 @@
+/*
+0080AC89 - ff 50 14                   - call dword ptr [eax+14]
+0080AC8C - 83 be 98 39 00 00 00       - cmp dword ptr [esi+00003998],00
+*/
+[ENABLE]
+alloc(R2,256)
+alloc(R2KEY,4)
+label(R200)
+label(return)
+//-----------------------------------------------
+R2KEY:
+DD 0
+//-----------------------------------------------
+R2:
+inc [R2KEY]
+cmp [R2KEY],2
+jl return
+cmp [R2KEY],3
+jg R200
+mov edi,2a //µL©µ¿ð
+jmp return
+//-----------------------------------------------
+R200:
+mov [R2KEY],0
+return:
+mov [esi+00000478],edi
+jmp 0080AC89
+//-----------------------------------------------
+0080AC83:
+jmp R2
+db 90
+[DISABLE]
+0080AC83:
+db 89 be 78 04 00 00

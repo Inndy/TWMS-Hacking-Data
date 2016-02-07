@@ -1,0 +1,165 @@
+//------------------------------
+//名稱：v126.吸怪定怪
+//Origin：aaaddress1
+//※使用方式:
+//開啟後,設定LR_SET為需要模式.
+//就會看到全圖怪物定住,並且吸到你指定的方向.
+//更改:草尼馬(新增Y軸)
+//------------------------------
+[enable]
+Alloc(Drop, 256)
+Alloc(y_axis, 256)
+Alloc(Vac, 512)
+Alloc(Control, 4)
+Alloc(OnoffLr, 4)
+registersymbol(gwgs)
+alloc(gwgs,512)
+registersymbol(zgkzkg)
+alloc(zgkzkg,4)
+registersymbol(zgkzkg)
+alloc(zgkzkg,4)
+label(gwxy)
+label(gwxz)
+label(gwxzj)
+label(ksxz)
+label(ksxy)
+Label(Vac02)
+Label(Vac01)
+Label(TrueInfo)
+Label(Vac03)
+Label(Vac04)
+Label(Drop01)
+Label(y_axis02)
+//------------------------------
+gwgs:
+db dc 6d e4 83 c4 10
+pushad
+call gwxzj
+popad
+jmp 007F7BDF
+//------------------------------
+gwxz:
+cmp eax,01
+mov [ebx+000001e8],FFFFFFFF
+cmp [ebx+000001e8],FFFFFFFF
+jg  ksxz
+ret
+//------------------------------
+ksxz:
+mov [ebx+000001dc],2
+ret
+//------------------------------
+gwxy:
+cmp eax,01
+mov [ebx+000001e8],1
+cmp [ebx+000001e8],1
+jg ksxy
+ret
+//------------------------------
+ksxy:
+mov [ebx+000001dc],4
+ret
+//------------------------------
+gwxzj:
+push eax
+mov eax,[00CDEE20] 
+mov eax,[eax+B00]
+sub eax,64
+cmp [ebx+0000071c],eax 
+pop eax
+jl gwxy
+push eax
+mov eax,[00CDEE20] 
+mov eax,[eax+B00]
+add eax,64
+cmp [ebx+0000071c],eax 
+pop eax
+jg gwxz
+mov [ebx+000001e8],0
+ret
+//------------------------------
+Drop:
+cmp [OnoffLr],0
+je Drop01
+
+Drop01:
+mov eax,[ebx+000002e0]
+jmp 007F7BF9
+//-------------------------------------------------------------//Y軸部分
+
+y_axis:
+cmp [OnoffLr],0
+je y_axis02
+
+y_axis02:
+cmp dword ptr [ebx+000001dc],00
+je Drop
+mov ecx,[ebx+000001a4]
+jmp 007f0796
+
+//-------------------------------------------------------------//Y軸部分
+Vac:
+cmp [esp],005B3BBA
+je Vac01
+cmp [esp],005B3C80
+je Vac02
+//------------------------------
+TrueInfo:
+push ebp
+mov ebp,esp
+mov eax,[ebp+08]
+jmp 00405900
+//------------------------------
+Vac02:
+add esp,4
+pop ecx
+pop ecx
+mov ecx,esi
+mov edi,eax
+call 00594265
+mov edx,eax
+sub edx,edi
+mov ecx,esi
+push eax
+mov eax,[00CDEC18]
+mov eax,[eax+1c]
+cmp eax,[Control]
+jl Vac03
+sub eax,bb8           //吸5秒
+cmp eax,[Control]
+jl Vac04
+mov [Control],eax
+add [Control],1770    //放5秒
+Vac04:                
+pop eax
+mov [OnoffLr],1
+jmp 005b3e3b
+Vac03:
+pop eax
+mov [OnoffLr],0
+jmp 005B3C9E
+Vac01:
+ret
+//------------------------------
+004058fa:
+jmp Vac
+nop
+007F7BF3:
+jmp Drop
+nop
+007F7BD9:
+jmp gwgs
+007F0753:
+jmp y_axis
+//------------------------------
+[disable]
+007F7BF3:
+mov eax,[ebx+000002e0]
+004058fa:
+push ebp
+mov ebp,esp
+mov eax,[ebp+08]
+007F7BD9:
+DB dc 6d e4 83 c4 10 dd 55 e4
+007F0753:
+DB 83 bb dc 01 00 00 00

@@ -1,0 +1,36 @@
+[ENABLE]
+alloc(NoDelay,32)
+alloc(FakeTime,32)
+alloc(AddedTime,4)
+//---------------------------
+NoDelay:
+mov edi,FFFFFFFF  //技能動作
+mov [esi+00000470],edi
+add [AddedTime],BB8
+ret
+//---------------------------
+0081011A:
+mov eax,[00bba238]
+mov eax,[eax+1c]
+add eax,[AddedTime]
+ret
+//---------------------------
+AddedTime:
+DD 0
+//---------------------------
+0081011A:
+jmp FakeTime
+//---------------------------
+007A8DF0:
+call NoDelay
+
+[DISABLE]
+007A8DE5:
+db ff 75 0c 8d 8e 88 00 00 00
+//---------------------------
+0081011A:
+db a1 38 a2 bb 00
+//---------------------------
+dealloc(NoDelay)
+dealloc(FakeTime)
+dealloc(AddedTime)

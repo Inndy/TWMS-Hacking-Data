@@ -1,0 +1,48 @@
+﻿//Twms V131.1  怪物數量低於N無法攻擊
+//更新者 迷樣政
+//怪物數量 內設1(1在楓之谷中為無怪物)
+//地圖實際怪物量 = 怪物數量(pointer: 00acf528 offset: 24 )減1
+[enable]
+Registersymbol(StopAttack)
+Alloc(StopAttack, 64)
+Registersymbol(StopAttack01)
+Alloc(StopAttack01, 64)
+registersymbol(ReturnAttack)
+alloc(ReturnAttack, 64)
+registersymbol(StopCount)
+alloc(StopCount, 4)
+
+StopCount:
+dd 1 //怪物數量
+StopAttack:
+mov esi,ecx
+push eax
+mov eax,[00acf528]
+mov eax,[eax+24]
+cmp eax,[StopCount]
+pop eax
+jle StopAttack01
+jmp ReturnAttack
+
+StopAttack01:
+cmp dword ptr [esi+00002088],00
+je 00463d1f
+jmp 00463CEA
+
+ReturnAttack:
+cmp dword ptr [esi+00002088],00
+jne 00463d1f
+jmp 00463CEA
+
+00463CDF:
+jmp StopAttack
+[disable]
+Unregistersymbol(StopAttack)
+dealloc(StopAttack)
+Unregistersymbol(StopAttack01)
+dealloc(StopAttack01)
+Unregistersymbol(ReturnAttack)
+dealloc(ReturnAttack)
+00463CDF:
+mov esi,ecx
+cmp dword ptr [esi+00002088],00

@@ -1,0 +1,36 @@
+// Twms V140.1
+// 怪物數量低於N無法攻擊
+// 更新：Inndy
+[enable]
+Alloc(StopAttack, 256)
+Label(ReturnAttack)
+RegisterSymbol(StopCount)
+Alloc(StopCount, 4)
+
+StopCount:
+dd 1 //怪物數量
+
+StopAttack:
+push eax
+mov eax,[00cc225c]
+mov eax,[eax+24]
+cmp eax,[StopCount]
+pop eax
+jle 0047d338
+jmp ReturnAttack
+
+ReturnAttack:
+cmp dword ptr [esi+000020a4],00
+jmp 0047D301
+
+0047D2FA: // 83 BE ?? ?? 00 00 00 75 ? 83 7C 24 ?? 00 75
+jmp StopAttack
+nop
+nop
+[disable]
+0047D2FA:
+db 83 be a4 20 00 00 00
+
+DeAlloc(StopAttack)
+DeAlloc(StopCount)
+UnRegisterSymbol(StopCount)

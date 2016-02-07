@@ -1,0 +1,266 @@
+//HookPtr
+00B602D0
+00B60538
+00B60720
+00B609C0
+00B60BB0
+00B60DD0
+00B60FC8
+00B611B0
+00B61398
+00B61588
+
+//Memory
+008B7787 - 55                         - push ebp
+008B7788 - 8b ec                      - mov ebp,esp
+008B778A - 53                         - push ebx
+008B778B - 56                         - push esi
+008B778C - 8b 75 08                   - mov esi,[ebp+08]
+008B778F - 33 db                      - xor ebx,ebx
+008B7791 - 57                         - push edi
+008B7792 - 39 5e 14                   - cmp [esi+14],ebx
+008B7795 - 74 43                      - je 008b77da
+008B7797 - 8b 46 14                   - mov eax,[esi+14]
+008B779A - 3b c3                      - cmp eax,ebx
+008B779C - 75 0a                      - jne 008b77a8
+008B779E - 68 03 40 00 80             - push 80004003
+008B77A3 - e8 f8 b6 08 00             - call 00942ea0
+008B77A8 - 83 ec 10                   - sub esp,10
+008B77AB - 8b 08                      - mov ecx,[eax]
+008B77AD - 8b fc                      - mov edi,esp
+008B77AF - 53                         - push ebx
+008B77B0 - 53                         - push ebx
+008B77B1 - 53                         - push ebx
+008B77B2 - 53                         - push ebx
+008B77B3 - ff 75 18                   - push [ebp+18]
+008B77B6 - 8d 75 2c                   - lea esi,[ebp+2c]
+008B77B9 - ff 75 14                   - push [ebp+14]
+008B77BC - a5                         - movsd
+008B77BD - ff 75 10                   - push [ebp+10]
+008B77C0 - a5                         - movsd
+008B77C1 - ff 75 0c                   - push [ebp+0c]
+008B77C4 - a5                         - movsd
+008B77C5 - 50                         - push eax
+008B77C6 - a5                         - movsd
+008B77C7 - ff 91 8c 00 00 00          - call dword ptr [ecx+0000008c]
+008B77CD - 3b c3                      - cmp eax,ebx
+008B77CF - 0f 8d a3 00 00 00          - jnl 008b7878
+008B77D5 - e9 ca 00 00 00             - jmp 008b78a4
+008B77DA - 8b 0d 38 4a cc 00          - mov ecx,[00cc4a38] : 00000000
+008B77E0 - e8 7d ff ff ff             - call 008b7762
+008B77E5 - 89 45 08                   - mov [ebp+08],eax
+008B77E8 - db 45 08                   - fild dword ptr [ebp+08]
+008B77EB - 8b 7d 0c                   - mov edi,[ebp+0c]
+008B77EE - dc 35 90 47 af 00          - fdiv qword ptr [00af4790] : 0000
+008B77F4 - dd 5d 34                   - fstp qword ptr [ebp+34]
+008B77F7 - 3b fb                      - cmp edi,ebx
+008B77F9 - 74 1a                      - je 008b7815
+008B77FB - dd 46 3c                   - fld qword ptr [esi+3c]
+008B77FE - 51                         - push ecx
+008B77FF - dc 66 1c                   - fsub qword ptr [esi+1c]
+008B7802 - 51                         - push ecx
+008B7803 - dc 4d 34                   - fmul qword ptr [ebp+34]
+008B7806 - dc 46 1c                   - fadd qword ptr [esi+1c]
+008B7809 - dd 1c 24                   - fstp qword ptr [esp]
+008B780C - e8 3d b8 c1 ff             - call 004d304e
+008B7811 - 59                         - pop ecx
+008B7812 - 59                         - pop ecx
+008B7813 - 89 07                      - mov [edi],eax
+008B7815 - 8b 7d 10                   - mov edi,[ebp+10]
+008B7818 - 3b fb                      - cmp edi,ebx
+008B781A - 74 1a                      - je 008b7836
+008B781C - dd 46 44                   - fld qword ptr [esi+44]
+008B781F - 51                         - push ecx
+008B7820 - dc 66 24                   - fsub qword ptr [esi+24]
+008B7823 - 51                         - push ecx
+008B7824 - dc 4d 34                   - fmul qword ptr [ebp+34]
+008B7827 - dc 46 24                   - fadd qword ptr [esi+24]
+008B782A - dd 1c 24                   - fstp qword ptr [esp]
+008B782D - e8 1c b8 c1 ff             - call 004d304e
+008B7832 - 59                         - pop ecx
+008B7833 - 59                         - pop ecx
+008B7834 - 89 07                      - mov [edi],eax
+008B7836 - 8b 7d 14                   - mov edi,[ebp+14]
+008B7839 - 3b fb                      - cmp edi,ebx
+008B783B - 74 1a                      - je 008b7857
+008B783D - dd 46 3c                   - fld qword ptr [esi+3c]
+008B7840 - 51                         - push ecx
+008B7841 - dc 66 1c                   - fsub qword ptr [esi+1c]
+008B7844 - 51                         - push ecx
+008B7845 - dc 4d 34                   - fmul qword ptr [ebp+34]
+008B7848 - dc 46 1c                   - fadd qword ptr [esi+1c]
+008B784B - dd 1c 24                   - fstp qword ptr [esp]
+008B784E - e8 fb b7 c1 ff             - call 004d304e
+008B7853 - 59                         - pop ecx
+008B7854 - 59                         - pop ecx
+008B7855 - 89 07                      - mov [edi],eax
+008B7857 - 8b 7d 18                   - mov edi,[ebp+18]
+008B785A - 3b fb                      - cmp edi,ebx
+008B785C - 74 1a                      - je 008b7878
+008B785E - dd 46 44                   - fld qword ptr [esi+44]
+008B7861 - 51                         - push ecx
+008B7862 - dc 66 24                   - fsub qword ptr [esi+24]
+008B7865 - 51                         - push ecx
+008B7866 - dc 4d 34                   - fmul qword ptr [ebp+34]
+008B7869 - dc 46 24                   - fadd qword ptr [esi+24]
+008B786C - dd 1c 24                   - fstp qword ptr [esp]
+008B786F - e8 da b7 c1 ff             - call 004d304e
+008B7874 - 59                         - pop ecx
+008B7875 - 59                         - pop ecx
+008B7876 - 89 07                      - mov [edi],eax
+008B7878 - 8b 45 1c                   - mov eax,[ebp+1c]
+008B787B - 3b c3                      - cmp eax,ebx
+008B787D - 74 02                      - je 008b7881
+008B787F - 89 18                      - mov [eax],ebx
+008B7881 - 8b 45 20                   - mov eax,[ebp+20]
+008B7884 - 3b c3                      - cmp eax,ebx
+008B7886 - 74 02                      - je 008b788a
+008B7888 - 89 18                      - mov [eax],ebx
+008B788A - 8b 45 24                   - mov eax,[ebp+24]
+008B788D - d9 ee                      - fldz
+008B788F - 3b c3                      - cmp eax,ebx
+008B7891 - 74 02                      - je 008b7895
+008B7893 - dd 10                      - fst qword ptr [eax]
+008B7895 - 8b 45 28                   - mov eax,[ebp+28]
+008B7898 - 3b c3                      - cmp eax,ebx
+008B789A - 74 04                      - je 008b78a0
+008B789C - dd 18                      - fstp qword ptr [eax]
+008B789E - eb 02                      - jmp 008b78a2
+008B78A0 - dd d8                      - fstp st(0)
+008B78A2 - 33 c0                      - xor eax,eax
+008B78A4 - 5f                         - pop edi
+008B78A5 - 5e                         - pop esi
+008B78A6 - 5b                         - pop ebx
+008B78A7 - 5d                         - pop ebp
+008B78A8 - c2 34 00                   - ret 0034
+
+//ASM
+DB   0x55                                                             //008B7787 - push ebp
+DB   0x8b, 0xec                                                       //008B7788 - mov ebp,esp
+DB   0x53                                                             //008B778A - push ebx
+DB   0x56                                                             //008B778B - push esi
+DB   0x8b, 0x75, 0x08                                                 //008B778C - mov esi,[ebp+08]
+DB   0x33, 0xdb                                                       //008B778F - xor ebx,ebx
+DB   0x57                                                             //008B7791 - push edi
+DB   0x39, 0x5e, 0x14                                                 //008B7792 - cmp [esi+14],ebx
+je Dark008b77da                                                       //008B7795 - je 008b77da
+DB   0x8b, 0x46, 0x14                                                 //008B7797 - mov eax,[esi+14]
+DB   0x3b, 0xc3                                                       //008B779A - cmp eax,ebx
+jne Dark008b77a8                                                      //008B779C - jne 008b77a8
+DB   0x68, 0x03, 0x40, 0x00, 0x80                                     //008B779E - push 80004003
+call my00942ea0                                                       //008B77A3 - call 00942ea0
+Dark008b77a8:
+DB   0x83, 0xec, 0x10                                                 //008B77A8 - sub esp,10
+DB   0x8b, 0x08                                                       //008B77AB - mov ecx,[eax]
+DB   0x8b, 0xfc                                                       //008B77AD - mov edi,esp
+DB   0x53                                                             //008B77AF - push ebx
+DB   0x53                                                             //008B77B0 - push ebx
+DB   0x53                                                             //008B77B1 - push ebx
+DB   0x53                                                             //008B77B2 - push ebx
+DB   0xff, 0x75, 0x18                                                 //008B77B3 - push [ebp+18]
+DB   0x8d, 0x75, 0x2c                                                 //008B77B6 - lea esi,[ebp+2c]
+DB   0xff, 0x75, 0x14                                                 //008B77B9 - push [ebp+14]
+DB   0xa5                                                             //008B77BC - movsd
+DB   0xff, 0x75, 0x10                                                 //008B77BD - push [ebp+10]
+DB   0xa5                                                             //008B77C0 - movsd
+DB   0xff, 0x75, 0x0c                                                 //008B77C1 - push [ebp+0c]
+DB   0xa5                                                             //008B77C4 - movsd
+DB   0x50                                                             //008B77C5 - push eax
+DB   0xa5                                                             //008B77C6 - movsd
+DB   0xff, 0x91, 0x8c, 0x00, 0x00, 0x00                               //008B77C7 - call dword ptr [ecx+0000008c]
+DB   0x3b, 0xc3                                                       //008B77CD - cmp eax,ebx
+jnl Dark008b7878                                                      //008B77CF - jnl 008b7878
+jmp Dark008b78a4                                                      //008B77D5 - jmp 008b78a4
+Dark008b77da:
+DB   0x8b, 0x0d, 0x38, 0x4a, 0xcc, 0x00                               //008B77DA - mov ecx,[00cc4a38] : 00000000
+call my008b7762                                                       //008B77E0 - call 008b7762
+DB   0x89, 0x45, 0x08                                                 //008B77E5 - mov [ebp+08],eax
+DB   0xdb, 0x45, 0x08                                                 //008B77E8 - fild dword ptr [ebp+08]
+DB   0x8b, 0x7d, 0x0c                                                 //008B77EB - mov edi,[ebp+0c]
+DB   0xdc, 0x35, 0x90, 0x47, 0xaf, 0x00                               //008B77EE - fdiv qword ptr [00af4790] : 0000
+DB   0xdd, 0x5d, 0x34                                                 //008B77F4 - fstp qword ptr [ebp+34]
+DB   0x3b, 0xfb                                                       //008B77F7 - cmp edi,ebx
+je Dark008b7815                                                       //008B77F9 - je 008b7815
+DB   0xdd, 0x46, 0x3c                                                 //008B77FB - fld qword ptr [esi+3c]
+DB   0x51                                                             //008B77FE - push ecx
+DB   0xdc, 0x66, 0x1c                                                 //008B77FF - fsub qword ptr [esi+1c]
+DB   0x51                                                             //008B7802 - push ecx
+DB   0xdc, 0x4d, 0x34                                                 //008B7803 - fmul qword ptr [ebp+34]
+DB   0xdc, 0x46, 0x1c                                                 //008B7806 - fadd qword ptr [esi+1c]
+DB   0xdd, 0x1c, 0x24                                                 //008B7809 - fstp qword ptr [esp]
+call my004d304e                                                       //008B780C - call 004d304e
+DB   0x59                                                             //008B7811 - pop ecx
+DB   0x59                                                             //008B7812 - pop ecx
+DB   0x89, 0x07                                                       //008B7813 - mov [edi],eax
+Dark008b7815:
+DB   0x8b, 0x7d, 0x10                                                 //008B7815 - mov edi,[ebp+10]
+DB   0x3b, 0xfb                                                       //008B7818 - cmp edi,ebx
+je Dark008b7836                                                       //008B781A - je 008b7836
+DB   0xdd, 0x46, 0x44                                                 //008B781C - fld qword ptr [esi+44]
+DB   0x51                                                             //008B781F - push ecx
+DB   0xdc, 0x66, 0x24                                                 //008B7820 - fsub qword ptr [esi+24]
+DB   0x51                                                             //008B7823 - push ecx
+DB   0xdc, 0x4d, 0x34                                                 //008B7824 - fmul qword ptr [ebp+34]
+DB   0xdc, 0x46, 0x24                                                 //008B7827 - fadd qword ptr [esi+24]
+DB   0xdd, 0x1c, 0x24                                                 //008B782A - fstp qword ptr [esp]
+call my004d304e                                                       //008B782D - call 004d304e
+DB   0x59                                                             //008B7832 - pop ecx
+DB   0x59                                                             //008B7833 - pop ecx
+DB   0x89, 0x07                                                       //008B7834 - mov [edi],eax
+Dark008b7836:
+DB   0x8b, 0x7d, 0x14                                                 //008B7836 - mov edi,[ebp+14]
+DB   0x3b, 0xfb                                                       //008B7839 - cmp edi,ebx
+je Dark008b7857                                                       //008B783B - je 008b7857
+DB   0xdd, 0x46, 0x3c                                                 //008B783D - fld qword ptr [esi+3c]
+DB   0x51                                                             //008B7840 - push ecx
+DB   0xdc, 0x66, 0x1c                                                 //008B7841 - fsub qword ptr [esi+1c]
+DB   0x51                                                             //008B7844 - push ecx
+DB   0xdc, 0x4d, 0x34                                                 //008B7845 - fmul qword ptr [ebp+34]
+DB   0xdc, 0x46, 0x1c                                                 //008B7848 - fadd qword ptr [esi+1c]
+DB   0xdd, 0x1c, 0x24                                                 //008B784B - fstp qword ptr [esp]
+call my004d304e                                                       //008B784E - call 004d304e
+DB   0x59                                                             //008B7853 - pop ecx
+DB   0x59                                                             //008B7854 - pop ecx
+DB   0x89, 0x07                                                       //008B7855 - mov [edi],eax
+Dark008b7857:
+DB   0x8b, 0x7d, 0x18                                                 //008B7857 - mov edi,[ebp+18]
+DB   0x3b, 0xfb                                                       //008B785A - cmp edi,ebx
+je Dark008b7878                                                       //008B785C - je 008b7878
+DB   0xdd, 0x46, 0x44                                                 //008B785E - fld qword ptr [esi+44]
+DB   0x51                                                             //008B7861 - push ecx
+DB   0xdc, 0x66, 0x24                                                 //008B7862 - fsub qword ptr [esi+24]
+DB   0x51                                                             //008B7865 - push ecx
+DB   0xdc, 0x4d, 0x34                                                 //008B7866 - fmul qword ptr [ebp+34]
+DB   0xdc, 0x46, 0x24                                                 //008B7869 - fadd qword ptr [esi+24]
+DB   0xdd, 0x1c, 0x24                                                 //008B786C - fstp qword ptr [esp]
+call my004d304e                                                       //008B786F - call 004d304e
+DB   0x59                                                             //008B7874 - pop ecx
+DB   0x59                                                             //008B7875 - pop ecx
+DB   0x89, 0x07                                                       //008B7876 - mov [edi],eax
+Dark008b7878:
+DB   0x8b, 0x45, 0x1c                                                 //008B7878 - mov eax,[ebp+1c]
+DB   0x3b, 0xc3                                                       //008B787B - cmp eax,ebx
+DB   0x74, 0x02                                                       //008B787D - je 008b7881
+DB   0x89, 0x18                                                       //008B787F - mov [eax],ebx
+DB   0x8b, 0x45, 0x20                                                 //008B7881 - mov eax,[ebp+20]
+DB   0x3b, 0xc3                                                       //008B7884 - cmp eax,ebx
+DB   0x74, 0x02                                                       //008B7886 - je 008b788a
+DB   0x89, 0x18                                                       //008B7888 - mov [eax],ebx
+DB   0x8b, 0x45, 0x24                                                 //008B788A - mov eax,[ebp+24]
+DB   0xd9, 0xee                                                       //008B788D - fldz
+DB   0x3b, 0xc3                                                       //008B788F - cmp eax,ebx
+DB   0x74, 0x02                                                       //008B7891 - je 008b7895
+DB   0xdd, 0x10                                                       //008B7893 - fst qword ptr [eax]
+DB   0x8b, 0x45, 0x28                                                 //008B7895 - mov eax,[ebp+28]
+DB   0x3b, 0xc3                                                       //008B7898 - cmp eax,ebx
+DB   0x74, 0x04                                                       //008B789A - je 008b78a0
+DB   0xdd, 0x18                                                       //008B789C - fstp qword ptr [eax]
+DB   0xeb, 0x02                                                       //008B789E - jmp 008b78a2
+DB   0xdd, 0xd8                                                       //008B78A0 - fstp st(0)
+DB   0x33, 0xc0                                                       //008B78A2 - xor eax,eax
+Dark008b78a4:
+DB   0x5f                                                             //008B78A4 - pop edi
+DB   0x5e                                                             //008B78A5 - pop esi
+DB   0x5b                                                             //008B78A6 - pop ebx
+DB   0x5d                                                             //008B78A7 - pop ebp
+DB   0xc2, 0x34, 0x00                                                 //008B78A8 - ret 0034

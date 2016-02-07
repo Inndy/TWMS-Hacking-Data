@@ -1,0 +1,11 @@
+// TWMS146 ICS 控制人物面向
+// Auther: aaaddress1
+alloc(ControlHumanSide,32)
+
+ControlHumanSide:
+mov [ecx+000000DC],00 //動作
+mov eax,[ecx+000000DC]
+ret
+
+00BC71AC:
+dd ControlHumanSide

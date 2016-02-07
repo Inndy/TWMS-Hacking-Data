@@ -1,0 +1,48 @@
+// TWMS148.1 ICS Hotkey + KamiTeleport
+// F6 §ì¨ú·Æ¹«¦ì§}, F7 Àþ²¾
+[ENABLE]
+Alloc(MyHotkey, 512)
+Label(HotkeyReturn)
+Label(SetTeleportXY)
+Label(Teleport)
+
+MyHotkey:
+Cmp  [Esp], 008EB8E1 // 0F B6 C0 C3 0F
+Jne  HotkeyReturn
+Cmp  [Esp+08], 006A05F8 // 85 C0 75 ?? 8B 4B ?? 89
+Jne  HotkeyReturn
+Cmp  [Ebp+0C], 1
+Jne  HotkeyReturn
+Movzx Eax, byte ptr [Ebp+08]
+Mov  [01006004], Eax
+Cmp  Eax, 40 // F6
+Je   SetTeleportXY
+Cmp  Eax, 41 // F7
+Je   Teleport
+Jmp  HotkeyReturn
+
+SetTeleportXY:
+Mov  Eax, [00E0624C]
+Mov  Eax, [Eax+00000978]
+Push [Eax+00000088] // Y
+Push [Eax+0000008C] // X
+Mov  Eax, [00E016DC]
+Pop  [Eax+00005E78] // X
+Pop  [Eax+00005E7C] // Y
+Jmp  HotkeyReturn
+
+Teleport:
+Mov  Eax, [00E0624C]
+Mov  [Eax+00005E70], 1
+Jmp  HotkeyReturn
+
+HotkeyReturn:
+Jmp  006F1A0C
+
+00C112A8:
+DD   MyHotkey
+[DISABLE]
+00C112A8:
+DD   006F1A0C // E8 ?? ?? ?? FF 33 C9 39 08 0F 95 C1 8A C1 C3 33 C0 C3 F6
+
+Dealloc(MyHotkey)

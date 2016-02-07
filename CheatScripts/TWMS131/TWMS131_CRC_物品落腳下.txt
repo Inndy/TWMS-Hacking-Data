@@ -1,0 +1,30 @@
+[enable]
+Registersymbol(ItemMove)
+Alloc(ItemMove, 128)
+
+00582922:
+jmp ItemMove
+
+ItemMove:
+call 00440b21 //? ? 8b ? 8d ? ? e8 ? ? ? ? 8b ? ? ? 8b
+cmp [ebp+04],0057bf60
+je 00582927
+cmp [ebp+04],0057bf81
+je 00582927
+mov eax,[ebp+08]
+push edx
+mov ecx,[00acfb58]
+mov edx,[ecx+B0c] //x
+mov ecx,[ecx+B10] //y
+mov [eax],edx
+mov [eax+4],ecx
+pop edx
+jmp 00582935
+
+
+[disable]
+00582922:
+call 00440B21
+
+Unregistersymbol(ItemMove)
+Dealloc(ItemMove)

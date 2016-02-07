@@ -1,0 +1,25 @@
+//------------------------------------------------------------------
+// Name¡G	Limited Full Map Attack
+// Version:	TWMS145
+// Update:	Inndy
+// EIP¡G	FullMapICS
+// Aob¡G	ff 15 ?? ?? ?? 00 85 c0 75 08 ff 45 e8 83 c7 10 eb c9 8b 45
+//------------------------------------------------------------------
+[Enable]
+alloc(FullMapICS,64)
+
+FullMapICS:
+Cmp  [Esp], 005E7519
+Jne  IntersectRect
+Add  Esp, 4
+Call IntersectRect
+Test Eax, Eax
+Jmp  005E7525 // Jne To...
+
+00D2A0E0:
+dd FullMapICS
+[Disable]
+00D2A0E0:
+dd IntersectRect
+
+dealloc(FullMapICS)

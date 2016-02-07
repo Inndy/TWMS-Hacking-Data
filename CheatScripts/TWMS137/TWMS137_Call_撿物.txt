@@ -1,0 +1,20 @@
+pushad
+mov ecx,[00BD86D8]
+add ecx,4
+lea esi,[ecx+19a0]
+lea ecx,[esi+0c]
+call 004215da
+mov [rx],eax
+mov ecx, esi
+mov edi, eax
+call 004215da
+mov edi,eax
+mov [ry],eax
+//以上貌似為取得XY
+//以下貌似為撿物
+mov edi,[00bdaf18]
+lea eax,[rx] // Eax指向X軸座標
+push eax
+mov ecx,edi
+call 004c6c3f
+popad

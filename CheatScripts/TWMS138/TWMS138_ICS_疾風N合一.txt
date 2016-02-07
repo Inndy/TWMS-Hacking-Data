@@ -1,0 +1,208 @@
+[ENABLE]
+registersymbol(Main)
+alloc(Main,1024)
+registersymbol(Time)
+alloc(Time,4)
+registersymbol(RLCtrlW)
+alloc(RLCtrlW,4)
+registersymbol(RLCtrlJ)
+alloc(RLCtrlJ,4)
+registersymbol(StupidMons)
+alloc(StupidMons,4)
+registersymbol(MissTime)
+alloc(MissTime,4)
+registersymbol(MissTimeCmp)
+alloc(MissTimeCmp,4)
+label(Nohurt)
+label(NohurtMain)
+label(NohurtMainI)
+label(NohurtMainII)
+label(StupidMonster)
+label(StupidMonsterMain)
+label(StupidMonsterMainI)
+label(JumpControl)
+label(JumpControlMain)
+label(WalkControl)
+label(WalkControlMain)
+label(StupidReturn)
+label(JumpRet)
+label(WalkRet)
+//==============
+Time:		//無敵時間
+DD FFFF8AD0
+MissTime:	//迴避次數
+DD 5
+RLCtrlW:	// 走 2左3右 4關
+DD 4
+RLCtrlJ:	// 跳 2左3右 4關
+DD 4   
+StupidMons:	// 笨怪 0關 1開
+DD 1
+//==============
+00C71084:
+dd Main
+//==============
+
+Main:
+cmp [esp+1c],0084204E	// 6A 64 33 D2 59 F7 F1 89 55
+je Nohurt		//無敵
+cmp [esp+1c],0089C371	// 33 d2 b9 60 ea 00 00 f7 f1
+je StupidMonster	//笨怪
+cmp [esp+1c],0089D388	// 6a 03 59 89 47 20 33 d2 f7 f1 c7 47
+je JumpControl		//控怪 跳
+cmp [esp+1c],0089CF63	// 6a 03 59 89 47 20 33 d2 f7 f1 89 5f
+je WalkControl		//控怪
+jmp 0069C0A8
+//==============
+Nohurt:
+mov [esp+1c],NohurtMain
+jmp 0069C0A8
+
+StupidMonster:
+mov [esp+1c],StupidMonsterMain
+jmp 0069C0A8
+
+JumpControl:
+mov [esp+1c],JumpControlMain
+jmp 0069C0A8
+
+WalkControl:
+mov [esp+1c],WalkControlMain
+jmp 0069C0A8
+
+DontJump:
+mov [esp+1c],DontJumpMain
+jmp 0069C0A8
+//-------------------------
+WalkControlMain:
+push 03
+pop ecx
+cmp [RLCtrlW],4
+je WalkRet
+mov eax,[RLCtrlW]
+mov [edi+20],eax
+jmp 0089CF69
+
+WalkRet:
+mov [edi+20],eax
+jmp 0089CF69
+
+//-------------------------
+JumpControlMain:
+push 03
+pop ecx
+cmp [RLCtrlJ],4
+je JumpRet
+mov eax,[RLCtrlJ]
+mov [edi+20],eax
+jmp 0089D38E
+
+JumpRet:
+mov [edi+20],eax
+jmp 0089D38E
+
+//-------------------------
+StupidMonsterMain:
+cmp [StupidMons],1
+jne StupidReturn
+xor edx,edx
+mov ecx,0000ea60
+lea ecx,[esi+000002b0]
+push edx
+call 00422cc3
+mov ebx,[ebp+0c]
+lea edi,[esi+000002a0]
+cmp [edi],ebx
+je StupidMonsterMainI
+jmp 0089C397
+
+StupidMonsterMainI:
+jmp 0089C3A4
+
+StupidReturn:
+jmp 0089C371
+//-------------------------
+NohurtMain:
+push 64
+xor edx,edx
+pop ecx
+div ecx
+call 0042baaf
+test byte ptr [eax+000001b0],02
+je NohurtMainI
+jmp 00842066
+//==============
+NohurtMainI:
+lea ecx,[ebx+000038AC]
+push [Time]
+push eax
+mov eax,[MissTime]
+cmp [MissTimeCmp],eax
+pop eax
+jg NohurtMainII
+mov [ebp+58],0
+inc [MissTimeCmp]
+jmp 00842771
+//==============
+NohurtMainII:
+mov [MissTimeCmp],0
+jmp 00842771
+//-------------------------
+MobFast:
+mov ebx,[ebp+14]
+cmp dword ptr [esi+2c],00
+jne MobFast1
+jmp 005DC22D
+MobFast1:
+mov edi,[esi+30]
+mov al,[edi]
+cmp al,0b
+je 005dc218
+movzx ecx,al
+xor eax,eax
+inc eax
+xor edx,edx
+call 009464d0
+mov eax,[ebp+20]
+or [ecx],eax
+or [ecx+04],edx
+mov ecx,esi
+//call 005bc1ac  //標註起來是瞬4
+push [ecx+0000008c]
+add ecx,00000084
+mov eax,ecx
+push ecx
+call 00404e51  //標註起來是瞬1
+pop ecx
+pop ecx
+movsx ecx,word ptr [edi+10]
+cmp eax,ecx
+jl 005dc22d
+mov ecx,esi
+push [ecx+0000008c]
+add ecx,00000084
+mov eax,ecx
+push ecx
+call 00404e51  //標註起來是瞬1,4
+pop ecx
+pop ecx
+jmp 005DC17F
+//-------------------------
+[DISABLE]
+00C71084:
+dd 0069C0A8
+
+dealloc(Main)
+unregistersymbol(Main)
+dealloc(Time)
+unregistersymbol(Time)
+dealloc(RLCtrlW)
+unregistersymbol(RLCtrlW)
+dealloc(RLCtrlJ)
+unregistersymbol(RLCtrlJ)
+dealloc(StupidMons)
+unregistersymbol(StupidMons)
+dealloc(MissTime)
+unregistersymbol(MissTime)
+dealloc(MissTimeCmp)
+unregistersymbol(MissTimeCmp)

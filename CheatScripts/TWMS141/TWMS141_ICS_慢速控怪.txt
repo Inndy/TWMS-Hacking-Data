@@ -1,0 +1,43 @@
+//141慢速控怪e8 ? ? ? ? 23 7d e0 83 ff ff 75 56
+[enable]
+Registersymbol(Main)
+Alloc(Main, 512)
+Label(MobControl)
+Label(MobControlMain)
+alloc(Race,4)
+alloc(LR,4)
+alloc(X,4)
+
+Main:
+Cmp Dword Ptr [Esp+40],005D1359
+Je MobControl
+Jmp 006B3ADB
+
+MobControl:
+Mov [Esp+40],MobControlMain
+Jmp 006B3ADB
+
+MobControlMain:
+Pushad
+Mov Ebx,[Esi+110]
+Sub Ebx,C
+mov eax,[Ebx+000002A0]
+mov [Race],eax
+Mov eax,[Ebx+000000FC]
+mov [LR],eax
+Mov Eax,[Ebx+69C]
+mov [X],eax
+Mov [Ebx+000000FC],1//右
+Mov [Ebx+000000EC],4//面向右
+Popad
+Jmp 005D1359 //同位子
+
+00ca593c:
+dd Main
+
+[DISABLE]
+00ca593c:
+DD 006B3ADB
+
+dealloc(Main)
+unregistersymbol(Main)

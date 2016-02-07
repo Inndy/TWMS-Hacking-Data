@@ -1,0 +1,9 @@
+?//v.144.滾筒原地自轉 ics by.aaaddress1
+alloc(hook,128)
+
+hook:
+//mov [esp],005379AC//直接爆
+ret
+
+00B8E07C: //005379C2 call dword ptr [eax]
+dd hook

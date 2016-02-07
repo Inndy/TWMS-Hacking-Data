@@ -1,0 +1,18 @@
+// TWMS148.1 ICS ¡Ù¬√©m¶W(CS)
+// UpdateTime: 2012-08-15
+
+[Enable]
+Alloc(NoNameICS, 64)
+
+NoNameICS:
+Cmp [Esp], 008E6A6E // 85 C0 75 0B 39
+Jne 004A2458
+Mov [Esp], 008E6A7D
+Jmp 004A2458
+
+00C77774:
+DD NoNameICS
+[Disable]
+00C77774: // [4/5]
+DD 004A2458 // 33 C0 C3 81 C1 70 FF FF FF
+DeAlloc(NoNameICS)

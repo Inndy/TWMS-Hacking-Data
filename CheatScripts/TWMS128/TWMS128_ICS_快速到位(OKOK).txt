@@ -1,0 +1,104 @@
+//i-快速到位-v128
+[enable]
+registersymbol(HookFastLocation)
+alloc(HookFastLocation, 1024)
+label(GOTO)
+label(chmap)
+label(map1)
+label(map2)
+label(mapret)
+//----------------------------------------
+HookFastLocation:
+     cmp [esp+24],00799EB3
+     jnz interlockedincrement
+     mov [esp+24],GOTO
+     jmp interlockedincrement
+//-----------------------------------
+
+GOTO:
+//==============================================================
+//DB e8 05 b6 c8 ff             //00799EAE - call 004254b8
+DB 8b 78 04                   //00799EB3 - mov edi,[eax+04]
+DB 8d 4d c0                   //00799EB6 - lea ecx,[ebp-40]
+call 00424c50
+DB 6a ff                      //00799EBE - push ff
+DB 8d 47 04                   //00799EC0 - lea eax,[edi+04]
+DB 8d 8e 9c 17 00 00          //00799EC3 - lea ecx,[esi+0000179c]
+DB 50                         //00799EC9 - push eax
+call 00425c81
+DB 8a 8f d7 00 00 00          //00799ECF - mov cl,[edi+000000d7]
+DB 0f b6 c1                   //00799ED5 - movzx eax,cl
+DB 80 e1 7f                   //00799ED8 - and cl,7f
+DB 88 8f d7 00 00 00          //00799EDB - mov [edi+000000d7],cl
+DB 88 4d f3                   //00799EE1 - mov [ebp-0d],cl
+DB 8b 0d d4 be ce 00          //00799EE4 - mov ecx,[00cebed4] : 00000000
+DB 8b 51 04                   //00799EEA - mov edx,[ecx+04]
+DB c1 e8 07                   //00799EED - shr eax,07
+DB 89 4d e0                   //00799EF0 - mov [ebp-20],ecx
+DB 85 d2                      //00799EF3 - test edx,edx
+DB 75 05                      //00799EF5 - jne 00799efc
+DB 21 55 ec                   //00799EF7 - and [ebp-14],edx
+DB eb 06                      //00799EFA - jmp 00799f02
+DB 8b 52 fc                   //00799EFC - mov edx,[edx-04]
+DB 89 55 ec                   //00799EFF - mov [ebp-14],edx
+DB 85 c0                      //00799F02 - test eax,eax
+jne 00799f18
+DB 0f b6 45 f3                //00799F06 - movzx eax,byte ptr [ebp-0d]
+DB 3b 45 ec                   //00799F0A - cmp eax,[ebp-14]
+jnl 00799f18
+DB 8b 49 04                   //00799F0F - mov ecx,[ecx+04]
+DB 8b 44 c1 04                //00799F12 - mov eax,[ecx+eax*8+04]
+//00799F16 - eb 7b                      - jmp 00799f93
+
+//--------------------------
+call chmap
+jmp 00799F99
+
+
+chmap:
+
+push edx
+mov edx,[00ce9fe0]
+cmp edx,0
+je mapret
+
+mov edx,[edx+c48]
+cmp edx,2c2ac340 //fishmap
+je map1
+cmp edx,2c2ac341 //shopmap
+je map2
+
+mov ecx,[ce3e10+44]   //打魚右牆
+mov eax,1F4  //Y=500(安全值)
+
+//正常
+//mov ecx,[eax+0c]
+//mov eax,[eax+10]
+jmp mapret
+
+
+map1:
+mov ecx,360  //864
+mov eax,a0   //160
+jmp mapret
+
+map2:
+mov ecx,FFFFFF22
+mov eax,dc
+jmp mapret
+
+mapret:
+pop edx
+ret
+
+
+//------------------ Enter Point ---------------
+00b2a0a0:
+           dd HookFastLocation
+//----------------------------------------------
+[DISABLE]
+00b2a0a0:
+dd interlockedincrement
+
+dealloc(HookFastLocation)
+unregistersymbol(HookFastLocation)

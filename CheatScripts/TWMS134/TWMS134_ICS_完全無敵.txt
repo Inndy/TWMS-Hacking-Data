@@ -1,0 +1,19 @@
+[Enable]
+alloc(NoHurtIcs,64)
+
+00bc03e4:
+dd NoHurtIcs
+
+NoHurtIcs:
+cmp [esp],005ABE0B
+jne IsRectEmpty
+add esp,4
+call IsRectEmpty
+test eax,eax
+jmp 005ABE0F
+
+[Disable]
+00bc03e4:
+dd IsRectEmpty
+
+dealloc(NoHurtIcs)

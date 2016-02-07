@@ -1,0 +1,73 @@
+// TWMS166.2 ICS 移動加速
+// Update: Inndy
+
+[enable]
+alloc(SpeedUp,128)
+alloc(Client,128)
+alloc(Speed,4)
+alloc(FakeTime,4)
+label(SpeedChk)
+label(Normal)
+label(SpeedUpMain)
+
+Speed: // 移動速度
+dd 0A
+
+
+SpeedUp:
+cmp [esp], 00C5AFCF //8b ?? ?? 00 00 00 8b 4d ?? 83 c0 ??  //00C1971A
+jne 00CD2C7C
+add esp, 4
+push esi
+mov esi,[Speed]
+jmp SpeedChk
+
+SpeedUpMain:
+add esp, 4
+push esi
+mov esi,6
+jmp SpeedChk
+
+SpeedChk:
+test esi,esi
+je Normal
+dec esi
+
+Pushad
+Mov Ecx,[Client]
+mov eax,[01537670]  //point~ A1 ?? ?? ?? ?? 8B 50 //mov eax,[014b4830]
+Lea Eax,[Eax+1C]    
+Add [Eax],Ecx
+Popad
+
+push esi
+push ecx
+push eax
+call dword ptr [eax]
+pop eax
+pop ecx
+pop esi
+
+Pushad
+Mov Ecx,[Client]
+mov eax,[01537670]  //mov eax,[014b4830]
+Lea Eax,[Eax+1C]
+Sub [Eax],Ecx
+Add [Client],000001Fe
+Popad
+jmp SpeedChk
+
+Normal:
+pop esi
+jmp 00C5AFCF   //00C1971A
+
+012CE4C4:   //0125BD54
+dd SpeedUp
+
+[disable]
+012CE4C4: // [-3/N]  //0125BD54
+dd 00CD2C7C // [2/2] // 53 56 57 8b f9 8d 77 ?? 8b 06  //00C8EEE4
+
+dealloc(SpeedUp)
+dealloc(Speed)
+dealloc(FakeTime)

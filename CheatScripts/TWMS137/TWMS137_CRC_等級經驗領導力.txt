@@ -1,0 +1,18 @@
+004AC62E://ff b1 93 00 00 00 81 c1 ? ? ? ? 51 e8 ? ? ? ? 59 59 c3
+jmp GetMyExp
+GetMyExp:
+call 00404d7d
+mov [MyExp],eax
+jmp 004AC633
+
+
+006519A3://3D C8 00 00 00 7F ? 83 F8 01 7d ? 33 c0 40 8b 04 81
+jmp GetLevel
+GetLevel:
+mov [MyLevel],eax
+cmp eax,c8
+jmp 006519A3+5
+
+004AC658://ff b1 eb ? ? ? 81 c1 e3 00 00 00 51 e8 ? ? ? ? 59 59 c3
+mov eax,7fffffff//»â¾É¤O±±¨î
+

@@ -1,0 +1,52 @@
+// Auther: Inndy
+[ENABLE]
+Alloc(FakeTime, 4)
+Alloc(SuperPick, 512)
+Label(LoopPick)
+Label(NormalPick)
+
+SuperPick:
+Cmp  [Esp], 00A9B782 // 50 8B ?? E8 ?? ?? ?? FF 8B ?? 8D ?? ?? 51 8B
+Jne  004CDCEA
+Add  Esp, 4
+Call 004CDCEA
+Mov  Ecx, A
+LoopPick:
+Dec  Ecx
+Test Ecx, Ecx
+Je   NormalPick
+Push Ecx
+Push Eax
+
+Push Eax
+Mov  Ecx, [FakeTime]
+Mov  Eax, [011605F0]
+Add  [Eax+1C], Ecx
+Mov  Ecx, [01160F50]
+Call 0052867B
+Mov  Ecx, [FakeTime]
+Mov  Eax, [011605F0]
+Sub  [Eax+1C], Ecx
+Add  [FakeTime], 1E
+Mov  Eax, [0115B800]
+And  [Eax+00002108], 0
+Pop  Eax
+Pop  Ecx
+Jmp  LoopPick
+NormalPick:
+Push Eax
+Mov  Eax, [0115B800]
+And  [Eax+00002108], 0
+And  [Eax+0000210C], 0
+Mov  Ecx, [01160F50]
+Call 0052867B
+Jmp  00A9B78A
+
+00F69CD8:
+DD   SuperPick
+[DISABLE]
+00F69CD8:
+DD   004CDCEA
+
+Dealloc(SuperPick)
+Dealloc(FakeTime)

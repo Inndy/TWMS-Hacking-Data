@@ -1,0 +1,28 @@
+// TWMS147.4 ICS 採集微加速
+// Auther: Inndy
+// 因為採集基本上是由SV端控制，所以瞬間發送所有封包也沒輒
+// 發送->接收 才能發送下一個包
+// 終極加速就是收包後馬上發送採集包
+//
+// 以下 Esi == [00DAD9B4] (CharBase)
+// 008C6AB1 - FF 8E 70680000             - dec [esi+00006870]     // 採集次數 (4 -> 0)
+// 008C6AB7 - A1 8C5ADB00                - mov eax,[00DB5A8C]     // 間隔時間
+// 008C6ABC - 8B 40 5C                   - mov eax,[eax+5C]
+// 008C6AC2 - 89 86 6C680000             - mov [esi+0000686C],eax // 下一次的時間
+[ENABLE]
+Alloc(Faster, 64)
+
+Faster:
+Cmp [Esp], 008F5ECB
+Jne 008BBDD8
+Mov Eax, [00DB5A8C]
+Mov [Eax+5C], #480 // 請斟酌調整...原本是720
+Jmp 008BBDD8
+
+00C2F53C:
+DD Faster
+[DISABLE]
+00C2F53C:
+DD 008BBDD8
+
+Dealloc(Faster)

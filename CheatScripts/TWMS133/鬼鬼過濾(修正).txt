@@ -1,0 +1,35 @@
+004C586E - e9 8d a7 68 04             - jmp 04b50000
+
+04B50000 - 83 3d 00 00 b6 04 01       - cmp dword ptr [04b60000],01
+04B50007 - 74 0a                      - je 04b50013
+04B50009 - 83 3d 00 00 b6 04 02       - cmp dword ptr [04b60000],02
+04B50010 - 74 1d                      - je 04b5002f
+04B50012 - c3                         - ret
+04B50013 - 89 05 00 00 b7 04          - mov [04b70000],eax
+04B50019 - 53                         - push ebx
+04B5001A - 56                         - push esi
+04B5001B - 31 db                      - xor ebx,ebx
+04B5001D - be 00 00 b8 04             - mov esi,04b80000 : [ZtlTaskMemReallocImp+262C68]
+04B50022 - 3b 06                      - cmp eax,[esi]
+04B50024 - 74 25                      - je 04b5004b
+04B50026 - 39 1e                      - cmp [esi],ebx
+04B50028 - 74 23                      - je 04b5004d
+04B5002A - 83 c6 04                   - add esi,04
+04B5002D - eb f3                      - jmp 04b50022
+04B5002F - 89 05 00 00 b7 04          - mov [04b70000],eax
+04B50035 - 53                         - push ebx
+04B50036 - 56                         - push esi
+04B50037 - 31 db                      - xor ebx,ebx
+04B50039 - be 00 00 b9 04             - mov esi,04b90000 : [ZtlTaskMemReallocImp+262C68]
+04B5003E - 3b 06                      - cmp eax,[esi]
+04B50040 - 75 09                      - jne 04b5004b
+04B50042 - 39 1e                      - cmp [esi],ebx
+04B50044 - 75 07                      - jne 04b5004d
+04B50046 - 83 c6 04                   - add esi,04
+04B50049 - eb f3                      - jmp 04b5003e
+04B5004B - 31 c0                      - xor eax,eax
+04B5004D - 5e                         - pop esi
+04B5004E - 5b                         - pop ebx
+04B5004F - 8b cf                      - mov ecx,edi
+04B50051 - 89 46 34                   - mov [esi+34],eax
+04B50054 - e9 1a 58 97 fb             - jmp 004c5873

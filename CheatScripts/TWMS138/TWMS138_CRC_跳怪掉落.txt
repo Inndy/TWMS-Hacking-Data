@@ -1,0 +1,11 @@
+//TWMS 1.38¸õ©Ç±¼¸¨
+[ENABLE]
+0089D635:
+jmp 0089d6f6
+0089E940:
+jmp 0089ebb3
+[DISABLE]
+0089D635:
+jne 0089d6f6
+0089E940:
+jne 0089ebb3

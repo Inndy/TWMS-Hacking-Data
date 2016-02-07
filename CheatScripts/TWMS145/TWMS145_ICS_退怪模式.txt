@@ -1,0 +1,69 @@
+//TWMS 1.45 退怪模式
+//原創 max大大
+//更新+ICS:冰Smith
+//Address:005E477F
+//AAttackDir:0怪不動 1怪退正常 2怪退遠 3怪反退到底 A怪退到底
+//EIP:AABack
+[ENABLE]
+registersymbol(AABack)
+registersymbol(AABackOnOff)
+registersymbol(AAttackDir)
+alloc(AABack_ICS, 256)
+alloc(AABack, 128)
+alloc(AABackOnOff, 4)
+alloc(AAttackDir, 4)
+label(doAABackNormal)
+label(AABack_Hook)
+
+00d02d84:
+dd AABack_ICS
+
+AABack_ICS:
+Cmp [Esp+34], 005E4784
+JE AABack_Hook
+jmp 006D34B2
+
+AABack_Hook:
+mov [esp+34],AABack
+jmp 006D34B2
+
+AABack:
+call 005d1f7b
+cmp [AABackOnOff],0
+jz doAABackNormal
+push eax
+mov eax,[AAttackDir]
+mov [ebp+3c],eax
+pop eax
+
+doAABackNormal:
+cmp dword ptr [ebp+3c],01
+jmp 005E4792
+
+AABackOnOff:
+dd 1  // {0: 關閉 | 1: 開啟 }
+
+AAttackDir:
+dd 4 //遠攻者可改2
+    // 0: 怪不動
+    // 1: 怪退後一點點 (正常值)
+    // 2: 怪退後很多點
+    // 3: 怪反方向退到底
+    // A(以上): 怪退到底
+
+//005E4789:
+//JMP AABack
+
+[DISABLE]
+00d02d84:
+dd 006D34B2
+//005E4789:
+//call 005d1f7b
+//cmp dword ptr [ebp+3c],01
+
+dealloc(AABack)
+dealloc(AABackOnOff)
+dealloc(AAttackDir)
+unregistersymbol(AABack)
+unregistersymbol(AABackOnOff)
+unregistersymbol(AAttackDir)

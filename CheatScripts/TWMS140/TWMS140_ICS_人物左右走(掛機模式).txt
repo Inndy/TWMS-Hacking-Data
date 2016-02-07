@@ -1,0 +1,108 @@
+[ENABLE]
+alloc(MyAutoLR,1024)
+alloc(MyAutoLRKey,4)
+alloc(MyAutoLRKeyLR,4)
+alloc(tick,4)
+alloc(delay,4)
+alloc(nextGo,4)
+registersymbol(step)
+alloc(step,4)
+label(MyAutoLR00)
+label(MyAutoLR01)
+label(MyAutoLR02)
+label(test1)
+label(test2)
+label(SetLR)
+label(back)
+label(Set01)
+label(Set02)
+//-----------------------------------------------
+MyAutoLRKey:
+DD 1
+MyAutoLRKeyLR:
+DD 0
+step:
+DD 0
+delay:
+DD 1388
+//-----------------------------------------------
+MyAutoLR:
+Cmp   [Esp], 008C127E
+Jne   GetFocus
+Add   Esp, 4
+cmp [step],0
+je 008C127E
+cmp [step],2
+jle back
+push eax
+call 00890D49
+sub eax,[delay]
+cmp eax,[nextGo]
+pop eax
+jbe  MyAutoLR00
+push eax
+call 00890D49
+add eax,[delay]
+mov [nextGo],eax
+pop eax
+jmp  SetLR
+
+SetLR:
+
+cmp [step],3
+je Set02
+cmp [step],4
+je Set01
+Set01:
+mov [step],1
+jmp back
+Set02:
+mov [step],2
+jmp back
+back:
+cmp [step],1
+je test1
+cmp [step],2
+je test2
+jmp MyAutoLR00
+
+test1:
+add [MyAutoLRKeyLR],1
+cmp [MyAutoLRKeyLR],12//¥ª¥k²¾°Ê¶ZÂ÷
+jle MyAutoLR01
+mov [step],3
+mov [MyAutoLRKeyLR],0
+jmp MyAutoLR02
+test2:
+add [MyAutoLRKeyLR],1
+cmp [MyAutoLRKeyLR],12//¥ª¥k²¾°Ê¶ZÂ÷
+jle MyAutoLR02
+mov [step],4
+mov [MyAutoLRKeyLR],0
+jmp MyAutoLR01
+MyAutoLR01:
+Mov   [Ebp-08], FFFFFFFF
+Jmp   008bfdb5
+MyAutoLR02:
+Mov   [Ebp-08], 00000001
+Jmp   008bfdb5
+MyAutoLR00:
+Jmp   008bfdb5
+
+00CCA7D8:
+DD MyAutoLR
+
+step:
+dd 1
+[DISABLE]
+00CCA7D8:
+DD GetFocus
+
+dealloc(MyAutoLR)
+dealloc(MyAutoLRKey)
+dealloc(MyAutoLRKeyLR)
+dealloc(tick)
+dealloc(delay)
+dealloc(nextGo)
+unregistersymbol(step)
+dealloc(step,4)

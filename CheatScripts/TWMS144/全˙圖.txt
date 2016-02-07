@@ -1,0 +1,28 @@
+//TwMS v144.1_ICS_全圖撞擊
+//改寫更新:Onion
+[ENABLE]
+Alloc(MYKB,512)
+label(AllMap)
+00D00638:
+DD MYKB
+
+MYKB:
+Cmp [Esp],005E2C7B
+je AllMap
+Cmp  [Esp], 005E2696 //83 4d fc ff 8d 4d f0 85 c0
+Jne  IntersectRect
+Add  Esp, 4
+Call IntersectRect
+or dword ptr [ebp-04],ff
+lea ecx,[ebp-10]
+test eax,eax
+jmp 005e26cb
+AllMap:
+jmp 005E2C87
+
+
+[DISABLE]
+00D00638:
+DD IntersectRect
+
+DeAlloc(MYKB)

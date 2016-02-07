@@ -1,0 +1,30 @@
+0089D905 - 8b 86 98 02 00 00          - mov eax,[esi+00000298]
+0089D90B - 83 f8 01                   - cmp eax,01
+0089D90E - 0f 84 4f 07 00 00          - je 0089e063
+0089D914 - 83 f8 03                   - cmp eax,03
+0089D917 - 0f 84 46 07 00 00          - je 0089e063
+0089D91D - 83 f8 06                   - cmp eax,06
+0089D920 - 0f 84 3d 07 00 00          - je 0089e063
+0089D926 - 83 f8 04                   - cmp eax,04
+0089D929 - 0f 85 8c 07 00 00          - jne 0089e0bb
+
+
+//V138跳怪+走怪掉落
+//原作:zgenden
+//更新:冰Smith
+//更新日期 2011/11/11
+//Address: 0089E802
+//EIP: ALLDOWN
+[ENABLE]
+registersymbol(ALLDOWN)
+alloc(ALLDOWN,128)
+
+ALLDOWN:
+add [ebx+00000298],1
+mov eax,[ebx+00000298]
+cmp eax,01
+jmp 0089E80B
+
+[DISABLE]
+dealloc(ALLDOWN)
+unregistersymbol(ALLDOWN)

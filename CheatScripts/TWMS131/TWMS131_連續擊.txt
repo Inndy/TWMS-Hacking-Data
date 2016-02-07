@@ -1,0 +1,36 @@
+[ENABLE]
+registersymbol(R2)
+alloc(R2,1024)
+registersymbol(R2KEY)
+alloc(R2KEY,4)
+label(R200)
+//-----------------------------------------------
+R2KEY:
+DD 0
+//-----------------------------------------------
+R2:
+add [R2KEY],1
+cmp [R2KEY],2
+jg R200
+mov edi,ffffffff  		//技能動作 (16進位)
+push [ebp+0c]
+lea ecx,[esi+88]
+mov eax,[ecx]
+jmp 007486fa 		//add+3
+//-----------------------------------------------
+R200:
+mov [R2KEY],0
+push [ebp+0c]
+lea ecx,[esi+88]
+mov eax,[ecx]
+jmp 007486fa 		//add+3
+//-----------------------------------------------
+007486ef: 		//007486ef
+jmp R2
+[DISABLE]
+007486ef: 		//ff ? ? 8d ? ? ? ? ? 8b ? 89 ? ? ? ? ? ff ? ? 39
+db FF 75 0C 8D 8E 88 	//
+dealloc(R2)
+unregistersymbol(R2)
+dealloc(R2KEY)
+unregistersymbol(R2KEY)

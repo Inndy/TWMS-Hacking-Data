@@ -1,0 +1,33 @@
+//TWMSv158.4怪物瞬移
+//更新 放棄
+//原創 未知
+[Enable]
+Alloc(CheckESP,128)
+Label(ShunYi)
+CheckESP:
+
+Cmp [Esp+3C],006B3762//1//
+Je ShunYi
+Jmp 007E6073//2//
+
+ShunYi:
+Push Edx
+Mov Eax,[Esp+3C]
+Add Eax,84
+Mov Edx,Eax
+Mov Eax,[Esp+38]
+Movsx Eax,word ptr [Eax+10]
+Sub Edx,Eax
+Mov [Esp+14],Edx
+Mov [Esp+2C],Edx
+Pop Edx
+Jmp 007E6073//2
+
+0113A744: 
+DD CheckESP
+
+[Disable]
+
+0113A744://3
+DD 007E6073//2
+DeAlloc(CheckESP)

@@ -1,0 +1,44 @@
+//¤Hª«§lª«   Twms137
+[enable]
+alloc(GetPlz,100)
+alloc(UsePlz,100)
+alloc(iXY,8)
+label(GetRet)
+label(UseRet)
+
+004D3E9A:
+nop
+nop
+
+008B4E11:
+jmp 008B4E1D
+
+004D4BDF:
+jmp 004D4BF9
+
+004D4BC9:
+jmp GetPlz
+GetRet:
+
+008F0715:
+jmp UsePlz
+UseRet:
+
+GetPlz:
+call 00430603
+mov ecx,[eax]
+mov [iXY],ecx
+mov ecx,[eax+04]
+mov [iXY+04],ecx
+jmp GetRet
+
+UsePlz:
+call 0041064C
+mov edi,iXY
+jmp UseRet+3
+
+[disable]
+
+dealloc(GetPlz)
+dealloc(UsePlz)
+dealloc(iXY)

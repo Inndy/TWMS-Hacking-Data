@@ -1,0 +1,27 @@
+// TWMS148.1 ICS 一秒製作完成
+// Auther: Inndy
+[ENABLE]
+Alloc(UltraMaking, 64)
+
+UltraMaking:
+push 18
+mov eax,00ab921e
+call 00a0c6f9
+mov esi,ecx
+mov ecx,[esi+00000114]
+call 0045c0bf
+lea ecx,[esi+00000118]
+call 004404a9
+mov eax,[esi+000000a0]
+xor ebx,ebx
+sub eax,ebx
+je 007D5BBC
+jmp 007D5A35
+
+00C6241C:
+DD UltraMaking
+[DISABLE]
+00C6241C:
+DD 007D5A01
+
+Dealloc(UltraMaking)

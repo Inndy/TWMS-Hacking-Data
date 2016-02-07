@@ -1,0 +1,3 @@
+//v144.怪物受擊不顯示 by.aaaddress1
+0087AD2A:
+db 0f 8c

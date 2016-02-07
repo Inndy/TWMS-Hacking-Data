@@ -1,0 +1,11 @@
+//AOB:8b 75 08 74 23 8d 45 0c 50 e8 // +2
+[ENABLE]
+GR2D_DX8.dll+6790:
+db eb
+GR2D_DX9.DLL+6D06:
+db eb
+[DISABLE]
+GR2D_DX8.dll+6790:
+db 74
+GR2D_DX9.DLL+6D06:
+db 74

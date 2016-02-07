@@ -1,0 +1,25 @@
+// TWMS146 ICS WallVac
+// Auther: Inndy
+[ENABLE]
+Alloc(MobVac, 128)
+Alloc(XY, 8)
+
+XY:
+ReadMem([00D3069C]+6290, 8)
+
+MobVac:
+Push [XY+4]
+Push [XY]
+Push [XY+4]
+Push [XY]
+Pop  [Ecx+000000DC]
+Pop  [Ecx+000000E0]
+Pop  [Ecx+000000E4]
+Pop  [Ecx+000000E8]
+Jmp  008F3330
+
+00BC6A98:
+DD   MobVac
+[DISABLE]
+00BC6A98:
+DD   008F3330 // 55 8B EC 83 EC ?? 8B 45 08 53 56 8B 35

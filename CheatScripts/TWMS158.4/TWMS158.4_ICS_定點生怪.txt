@@ -1,0 +1,72 @@
+//TWMSv158.4定點生怪
+//更新 放棄
+//原創 歐歐
+[ENABLE]
+RegisterSymbol(ReLifeVac)
+Alloc(ReLifeVac, 256)
+RegisterSymbol(RelifeXY)
+Alloc(RelifeXY,8)
+RegisterSymbol(RelifeSwitch)
+Alloc(RelifeSwitch, 4)
+Label(ReLifeVacXY)
+Label(DoRelife)
+Label(Return)
+
+RelifeSwitch:
+DD 1
+
+ReLifeVac:
+Cmp [RelifeSwitch],1
+Je  ReLifeVacXY
+Cmp [RelifeSwitch],2
+Je  DoRelife
+Jmp Return
+
+ReLifeVacXY:
+Push Eax
+Mov  Eax,[01165218]
+Push [Eax+0000127C]
+Pop  [RelifeXY]
+Push [Eax+000010A4]
+Pop  [RelifeXY+4]
+Pop  Eax
+Mov  [RelifeSwitch],2
+Jmp  Return
+
+DoRelife:
+Cmp [Esp], 00695C80//1//
+Jne Return
+Cmp dword ptr [Esp+18],02
+Jne Return
+Push Ecx
+Mov  Eax,[RelifeXY]
+Mov  [Esp+0c], eax
+Mov  Eax,[RelifeXY+4]
+Mov  [Esp+10], eax
+Push Eax
+Mov  Ecx,[01069EF8]
+Call 00439A65//2//
+Mov  Ecx, eax
+Mov  [Esp+20], ecx
+Pop  Ecx
+Jmp  Return
+
+Return:
+push ebp
+mov ebp,esp
+push ebx
+push esi
+Jmp 00B08239//3//
+
+00F6DB00://5
+DD ReLifeVac
+[DISABLE]
+
+00F6DB00://5
+DD 00B08234//4//
+UnRegisterSymbol(ReLifeVac)
+DeAlloc(ReLifeVac)
+UnRegisterSymbol(RelifeXY)
+DeAlloc(RelifeXY)
+UnRegisterSymbol(RelifeSwitch)
+DeAlloc(RelifeSwitch)

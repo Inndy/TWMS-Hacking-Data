@@ -1,0 +1,23 @@
+// TWMS147.4 ICS ²×·¥§ðÀ»µL©µ¿ð
+[ENABLE]
+Alloc(NDFA, 512)
+Label(Main)
+
+NDFA:
+Cmp  [Esp+1C], 008FFE6C // 33 FF 39 Be ?? ?? 00 00 0F 84 ?? 00 00 00 2B
+Jne  xxxxxxxx
+Mov  [Esp+1C], Main
+Jmp  xxxxxxxx
+
+Main:
+Xor Edi, Edi
+MOV [ESI+541C], #1300002
+JMP 008FFE86 // Push [Esi+????????]
+
+00aeb098:
+DD xxxxxxxx
+[DISABLE]
+Dealloc(NDFA)
+
+00aeb098:
+DD xxxxxxxx

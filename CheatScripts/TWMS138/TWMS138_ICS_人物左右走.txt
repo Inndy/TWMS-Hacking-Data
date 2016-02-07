@@ -1,0 +1,73 @@
+//------------------------------------------------------------------
+// Name¡G		AutoLR
+// Version:		TWMS138
+// Update:		Inndy
+// Address¡G	008A2DB2
+// EIP¡G		AutoLRMain
+// Aob¡G		ff 15 ?? ?? ?? 00 3b c7 0f 85
+// Cortrol¡G	AutoLRRange
+// 0: Off, Else: Range
+//------------------------------------------------------------------
+[ENABLE]
+Alloc(AutoLRICSEntry, 64)
+Label(ICSReturn)
+RegisterSymbol(AutoLRMain)
+Alloc(AutoLRMain, 128)
+Label(GoLeft)
+Label(GoRight)
+RegisterSymbol(AutoLRRange)
+Alloc(AutoLRRange, 4)
+Alloc(AutoLRValue, 4)
+//-----------------------------------------------
+AutoLRRange:
+DD A
+//-----------------------------------------------
+AutoLRICSEntry:
+Cmp   [Esp], 008A2DB8
+Jne   ICSReturn
+Mov   [Esp], AutoLRMain
+ICSReturn:
+Jmp   GetFocus
+//-------------------
+AutoLRMain:
+Cmp   [AutoLRRange], 0
+Je    008A2DB8
+Push  Eax
+Inc   [AutoLRValue]
+Mov   Eax, [AutoLRRange]
+Cmp   Eax, [AutoLRValue]
+Jge   GoLeft
+Add   Eax, [AutoLRRange]
+Cmp   Eax, [AutoLRValue]
+Jge   GoRight
+Mov   [AutoLRValue], 1
+Jmp   GoLeft
+
+GoLeft:
+Mov   [Ebp-08], FFFFFFFF
+Pop   Eax
+Jmp   008A3001
+
+GoRight:
+Mov   [Ebp-08], 00000001
+Pop   Eax
+Jmp   008A3001
+//-----------------------------------------------
+00C96810:
+DD AutoLRICSEntry
+/*
+008A2DB2:
+Nop
+Nop
+Call   AutoLRICSEntry
+*/
+[DISABLE]
+00C96810:
+DD GetFocus
+
+Dealloc(AutoLRICSEntry)
+UnregisterSymbol(AutoLRMain)
+Dealloc(AutoLRMain)
+UnregisterSymbol(AutoLRRange)
+Dealloc(AutoLRRange)
+Dealloc(AutoLRValue)

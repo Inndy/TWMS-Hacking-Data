@@ -1,0 +1,7 @@
+//»W®ð¬í©ñ(ÅQ¥Dª©)
+[ENABLE]
+0085F81E:
+DB 7F
+[DISABLE]
+0085F81E:
+DB 7C

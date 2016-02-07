@@ -1,0 +1,42 @@
+//TWMS142 損血量控制
+//Auther: Inndy
+//人物看到的損血量是正常值，其實有修改
+[ENABLE]
+Alloc(PreHackPacket, 128)
+Label(Zero)
+Alloc(LossHP, 4)
+RegisterSymbol(LossHP)
+
+PreHackPacket:
+Mov  Eax, [Eax+04] // Packet Buffer
+Mov  Ecx, [00CC8F80]
+And  Ecx, 0000000F
+Mov  [Eax+0C], Ecx
+Mov  [Eax+18], Ecx
+Mov  Eax, [Esp+04]
+Mov  Ecx, [00CBFFA4]
+Inc  [LossHP]
+
+Cmp  [LossHP], 5
+Jg   Zero
+Jmp  00486158
+
+Zero:
+And  [LossHP], 0
+Jmp  00486158
+
+0086265F:
+Call PreHackPacket
+
+00861B52: // 人物不退
+DB 6A 00 90 8B 10 6A 00 90
+[DISABLE]
+0086265F:
+Call 00486158
+
+00861B52:
+DB FF 75 60 8B 10 FF 75 5C
+
+Dealloc(PreHackPacket)
+Dealloc(LossHP)
+UnregisterSymbol(LossHP)

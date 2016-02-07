@@ -1,0 +1,90 @@
+[Enable]
+alloc(ControlMonster,512)
+alloc(ControlMode,4)
+registersymbol(ControlMode)
+label(JumpMonster)
+label(WalkMonster)
+label(MonsterFallow)
+label(GoRight)
+label(GoLeft)
+label(GoRight)
+label(ksxz)
+label(ksxy)
+
+ControlMode:   //©Çª«¤è ¦V 1¥ª 2¥k 3¸òÀH
+dd 3
+
+
+ControlMonster:
+db dc 6d e4 83 c4 10
+pushad
+call MonsterFallow
+popad
+jmp 007F7BDF
+
+MonsterFallow:
+cmp [ebx+000002e0],1
+je WalkMonster
+cmp [ebx+000002e0],3
+je JumpMonster
+ret
+
+WalkMonster:
+cmp [ControlMode],1
+je GoLeft
+cmp [ControlMode],2
+je GoRight
+cmp [ControlMode],3
+je GoRight
+ret
+
+JumpMonster:
+cmp [ControlMode],1
+je GoLeft
+cmp [ControlMode],2
+je GoRight
+cmp [ControlMode],3
+je GoRight
+ret
+
+GoLeft:
+cmp eax,01
+mov [ebx+000001e8],FFFFFFFF       
+cmp [ebx+000001e8],FFFFFFFF
+jg  ksxz
+ret
+
+ksxz:
+mov [ebx+000001d0],2
+ret
+
+GoRight:
+cmp eax,01
+mov [ebx+000001e8],1
+cmp [ebx+000001e8],1
+jg ksxy
+ret
+
+ksxy:
+mov [ebx+000001d0],4
+ret
+
+GoRight:
+push eax
+mov eax,[00cde80c]   //8b 0d ?? ?? ?? 00 ff 75 f8 e8
+mov eax,[eax+000044b4] //89 8e ?? ?? 00 00 8b 40 04 89 86 ?? ?? 00
+//sub eax,28
+cmp [ebx+00000278],eax //c7 86 ?? 02 00 00 02 00 00 00
+pop eax
+jl GoRight
+jg GoLeft
+ret
+
+007F7BD9:
+JMP ControlMonster
+[disable]
+007F7BD9:
+DB dc 6d e4 83 c4 10 dd 55 e4
+dealloc(ControlMonster)
+dealloc(ControlMode)
+unregistersymbol(ControlMode)

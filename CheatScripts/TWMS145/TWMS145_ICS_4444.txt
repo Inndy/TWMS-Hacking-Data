@@ -1,0 +1,86 @@
+//TwMS v1.45_ICS_DFMode
+[Enable]
+alloc(DFMODE,512)
+Label(FakeCall1)
+Label(FakeCall2)
+Label(HookFun1)
+Label(HookFun2)
+
+DFMODE:
+CMP [ESP+8],1D905C4
+JNZ 006720de
+MOV [ESP+8],1D909B0
+JMP 006720de
+Ret
+
+FakeCall1:
+CMP [ESP+0C],008A6964 //8d 88 ?? ?? 00 00 e8 ?? ?? ?? ff 50 e8 ?? ?? ?? ff 59 85 c0 0f 85
+JNE 0050C513
+MOV [ESP+0C],HookFun1
+JMP 0050C513 //b9 ?? ?? ?? 00 e9 ?? ?? ?? ff ff 74 24 04 e8
+
+HookFun1:
+lea ecx,[eax+000001a8]
+call 004609db
+push eax
+call 005348a0
+pop ecx
+test eax,eax
+mov esi,[ebp+5c]
+push [esi+000003e4]
+call 00459f18
+push [esi+000003e8]
+mov [ebp+78],eax
+call 00459f18
+pop ecx
+pop ecx
+mov ecx,[00d1cd9c]
+mov [ebp+00],eax
+xor eax,eax
+push eax
+mov [ebp+58],eax
+mov [ebp+28],eax
+lea eax,[ebp+58]
+push eax
+push edi
+push ebx
+call DFMODE
+Jmp 008A69B9
+
+FakeCall2:
+CMP [ESP],008A9771 //50 e8 ?? ?? ?? ff 33 ff 59 85 c0 74 ?? 8b
+JNE 0086A0EA
+MOV [ESP],HookFun2
+JMP 0086A0EA //6a 08 b8 ?? ?? ?? 00 e8 ?? ?? ?? 00 8b 0d ?? ?? ?? 00 85 c9
+
+HookFun2:
+push eax
+call 00490c4b
+xor ebx,ebx
+pop ecx
+
+mov eax,[ebp+14]
+
+mov ecx,[00d1cd9c]
+push ebx
+lea eax,[ebp+6c]
+push eax
+push edi
+push [ebp+4c]
+mov [ebp+6c],ebx
+call DFMODE
+JMP 008A9819
+
+00B46298:
+DD FakeCall1
+
+00BB2964:
+DD FakeCall2
+
+[Disable]
+00B46298:
+DD 0050C513
+
+00BB2964:
+DD 0086A0EA
+dealloc(DFMODE)

@@ -1,0 +1,27 @@
+[ENABLE]
+Alloc(Mob_NoKB_ICS_Entry, 32)
+Alloc(Mob_NoKB, 64)
+
+Mob_NoKB_ICS_Entry:
+Cmp [Esp+34], 005CF1EA	//8b 55 40 8b cb e8 ?? ?? ff ff 83 7d ?? 01 75 10 8b cf
+Jne 006B28D9
+Mov [Esp+34], Mob_NoKB
+Jmp 006B28D9
+
+Mob_NoKB:
+mov edx,[ebp+40]
+mov ecx,ebx
+call 005bf796
+Mov Ecx, Edi
+Call 005bcdda
+xor edx,edx
+jmp 005cf20d
+
+00CA36F4:
+DD Hook
+[DISABLE]
+00CA36F4:
+DD 006B28D9
+
+DeAlloc(Mob_NoKB_ICS_Entry)
+DeAlloc(Mob_NoKB)

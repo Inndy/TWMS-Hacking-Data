@@ -1,0 +1,27 @@
+//V148 perfect mining
+//From EMS by Benny v82.1
+[Enable]
+8f6a3d://Bypass Timestamp
+db 90 90
+
+8f6a45://Bypass Slash-limit
+db EB
+
+8ff627://Bypass time between mines
+db 90 90
+// [0092717E]==00926F3A
+
+007D5BBA://一秒製作完成
+DB 90 90
+[Disable]
+8f6a3d:
+db 7C 31
+
+8f6a45:
+db 7F
+
+8ff627:
+db 75 0e
+
+007D5BBA:
+DB 7C 07

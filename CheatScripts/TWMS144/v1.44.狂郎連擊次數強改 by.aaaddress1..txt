@@ -1,0 +1,11 @@
+//v1.44.狂郎連擊次數強改 by.aaaddress1.
+[ENABLE]
+alloc(SetSkill,32)
+00859477:
+jmp SetSkill
+SetSkill:
+mov [esp+04],2710//連擊次數保持10000
+mov eax,[esp+04]
+push esi
+jmp 0085947C
+[DISABLE]

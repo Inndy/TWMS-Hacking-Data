@@ -1,0 +1,54 @@
+[Enable]
+Alloc(MBornX,4)
+Alloc(MBornY,4)
+Alloc(ControlBorn,64)
+Alloc(CopyIt,64)
+Alloc(Switch,4)
+RegisterSymbol(MBornX)
+RegisterSymbol(MBornY)
+CreateThread(CopyIt)
+
+Switch
+DD 0
+
+CopyIt:
+mov eax,[00CDE80C]
+mov eax,[eax+44B4]
+mov [MBornX],eax
+mov eax,[00CDE80C]
+mov eax,[eax+44B8]
+mov [MBornY],eax
+mov [Switch],1
+ret
+
+ControlBorn:
+DB dc 6d e4 83 c4 10
+
+cmp [Switch],1
+jne 007F7BDF
+push eax
+mov eax,[MBornX]
+mov [ebp+c],eax
+mov eax,[MBornY]
+mov [ebp+10],eax
+pop eax
+jmp 007F7BDF
+
+007F7BD9:
+JMP ControlBorn
+
+007EF206:
+jmp 007ef21b
+[Disable]
+007F7BD9:
+DB dc 6d e4 83 c4 10 dd 55 e4
+
+007ef206:
+je 007ef21b
+DeAlloc(MBornX)
+DeAlloc(MBornY)
+DeAlloc(ControlBorn)
+DeAlloc(CopyIt)
+DeAlloc(Switch)
+UnRegisterSymbol(MBornX)
+UnRegisterSymbol(MBornY)

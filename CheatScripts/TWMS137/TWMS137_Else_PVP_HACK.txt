@@ -1,0 +1,47 @@
+[enable]
+Registersymbol(MyEnabled)
+Registersymbol(SkillID)
+RegisterSymbol(SkillLevel)
+alloc(MyEnabled,4)
+alloc(SkillID,4)
+alloc(SkillLevel,4)
+alloc(SendPacket,256)
+alloc(Packet,16)
+alloc(Data,24)
+CreateThread(SendPacket)
+MyEnabled:
+dd 0
+SkillLevel:
+dd #20
+SkillID:
+dd 0
+Data: db 36 00 00 00 00 00 14 00 00 00 00 00 09 00 00 00 05 13 00 00 00 00 00 00
+SendPacket:
+push 64
+call Sleep
+cmp [MyEnabled],0
+je SendPacket
+mov eax,[SkillLevel]
+mov [Data+6],eax
+mov eax,[SkillID]
+mov [Data+2],eax
+mov [Packet],0 // Null1
+mov [Packet+04],Data // 封包資料
+mov [Packet+08],18 // 封包長度
+mov [Packet+0c],0 // Null2
+mov ecx,[00bd4204]
+lea eax,[Packet]
+push SendPacket
+push eax
+push 00401005 // 任何ret的位置 =>因為送封包的函式會檢查返回值是否在MSCRC保護記憶體範圍, 所以要給假的的返回位址
+jmp 0047C24C
+[disable]
+UnRegistersymbol(MyEnabled)
+UnRegistersymbol(SkillID)
+UnRegistersymbol(SkillLevel)
+DeAlloc(MyEnabled)
+DeAlloc(SkillID)
+DeAlloc(SkillLevel)
+DeAlloc(SendPacket)
+DeAlloc(Packet)
+DeAlloc(Data)
